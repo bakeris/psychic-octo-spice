@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'errors#routing''
+  root 'errors#routing'
 
   get '/6ba041bf35229938ba869a7a9c59f3a0/api/civility/list' => 'civilities#api_list'
 
