@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  civility_id: 1
+  sex_id: 1
+  pseudo: MyString
+  firstname: MyString
+  lastname: MyString
+  email: MyString
+  password: MyString
+  msisdn: MyString
+  birthdate: 2015-06-24
+  creation_mode: 1
+  reset_password_token: MyString
+
+two:
+  civility_id: 1
+  sex_id: 1
+  pseudo: MyString
+  firstname: MyString
+  lastname: MyString
+  email: MyString
+  password: MyString
+  msisdn: MyString
+  birthdate: 2015-06-24
+  creation_mode: 1
+  reset_password_token: MyString

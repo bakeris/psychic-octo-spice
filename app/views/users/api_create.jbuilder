@@ -1,0 +1,7 @@
+if @status
+  json.user @user, :id, :civility_id, :sex_id, :pseudo, :firstname, :lastname, :email, :msisdn, :birthdate
+else
+  json.errors @user.errors.full_messages.map do |error|
+    json.message error
+  end
+end
