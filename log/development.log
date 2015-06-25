@@ -1732,6 +1732,7 @@ Processing by UsersController#api_msisdn_login as HTML
   [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users"  WHERE "users"."msisdn" = '58908957' LIMIT 1
   Rendered users/api_msisdn_login.jbuilder (0.7ms)
 Completed 200 OK in 87ms (Views: 3.2ms | ActiveRecord: 6.4ms)
+<<<<<<< HEAD
   [1m[36m (90.7ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" character varying(255) NOT NULL) [0m
   [1m[35m (65.4ms)[0m  CREATE UNIQUE INDEX  "unique_schema_migrations" ON "schema_migrations"  ("version")
   [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
@@ -1825,3 +1826,230 @@ Started GET "/" for 41.189.43.101 at 2015-06-25 07:40:08 +0000
 Processing by ErrorsController#routing as HTML
   Rendered public/404.html (0.4ms)
 Completed 404 Not Found in 3ms (Views: 2.4ms | ActiveRecord: 0.0ms)
+=======
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/civility/list" for 127.0.0.1 at 2015-06-25 07:43:58 +0000
+  [1m[36mActiveRecord::SchemaMigration Load (29.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by CivilitiesController#api_list as HTML
+  [1m[35mCivility Load (19.3ms)[0m  SELECT "civilities".* FROM "civilities"
+  Rendered civilities/api_list.jbuilder (108.6ms)
+Completed 200 OK in 181ms (Views: 82.7ms | ActiveRecord: 65.9ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/sex/list" for 127.0.0.1 at 2015-06-25 07:45:09 +0000
+Processing by SexesController#api_list as HTML
+  [1m[36mSex Load (51.8ms)[0m  [1mSELECT "sexes".* FROM "sexes"[0m
+  Rendered sexes/api_list.jbuilder (66.8ms)
+Completed 200 OK in 73ms (Views: 14.3ms | ActiveRecord: 55.3ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/create/1/1/didi/duke/nukem/dietricherwane@yahoofr/dukenukemdie/dukenukemdie/5890857/19-10-1985/0504fe0b64c5e08d46c49ab41d33be94" for 127.0.0.1 at 2015-06-25 07:54:33 +0000
+Processing by UsersController#api_create as HTML
+  Parameters: {"civility_id"=>"1", "sex_id"=>"1", "pseudo"=>"didi", "firstname"=>"duke", "lastname"=>"nukem", "email"=>"dietricherwane@yahoofr", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "msisdn"=>"5890857", "birthdate"=>"19-10-1985", "creation_mode"=>"0504fe0b64c5e08d46c49ab41d33be94"}
+  [1m[35mCreationMode Load (26.3ms)[0m  SELECT  "creation_modes".* FROM "creation_modes"  WHERE "creation_modes"."token" = '0504fe0b64c5e08d46c49ab41d33be94' LIMIT 1
+WARNING: Can't mass-assign protected attributes for User: controller, action, password_confirmation, creation_mode
+	app/controllers/users_controller.rb:13:in `api_create'
+  [1m[36m (0.6ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (39.0ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."msisdn" = '5890857' LIMIT 1
+  [1m[36mUser Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE "users"."pseudo" = 'didi' LIMIT 1[0m
+  [1m[35mUser Exists (1.1ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."email" = 'dietricherwane@yahoofr' LIMIT 1
+  [1m[36m (0.6ms)[0m  [1mROLLBACK[0m
+  Rendered users/api_create.jbuilder (1.6ms)
+Completed 200 OK in 347ms (Views: 4.1ms | ActiveRecord: 78.8ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/create/1/1/didi/duke/nukem/dietricherwane@yahoo.fr/dukenukemdie/dukenukemdie/58908957/19-10-1985/0504fe0b64c5e08d46c49ab41d33be94" for 127.0.0.1 at 2015-06-25 07:55:11 +0000
+Processing by UsersController#api_create as HTML
+  Parameters: {"civility_id"=>"1", "sex_id"=>"1", "pseudo"=>"didi", "firstname"=>"duke", "lastname"=>"nukem", "email"=>"dietricherwane@yahoo.fr", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "msisdn"=>"58908957", "birthdate"=>"19-10-1985", "creation_mode"=>"0504fe0b64c5e08d46c49ab41d33be94"}
+  [1m[35mCreationMode Load (0.8ms)[0m  SELECT  "creation_modes".* FROM "creation_modes"  WHERE "creation_modes"."token" = '0504fe0b64c5e08d46c49ab41d33be94' LIMIT 1
+WARNING: Can't mass-assign protected attributes for User: controller, action, password_confirmation, creation_mode
+	app/controllers/users_controller.rb:13:in `api_create'
+  [1m[36m (0.5ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.6ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."msisdn" = '58908957' LIMIT 1
+  [1m[36mUser Exists (0.4ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE "users"."pseudo" = 'didi' LIMIT 1[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."email" = 'dietricherwane@yahoo.fr' LIMIT 1
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  Rendered users/api_create.jbuilder (1.2ms)
+Completed 200 OK in 22ms (Views: 3.3ms | ActiveRecord: 2.7ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/create/1/1/didi/duke/nukem/dietricherwane@yahoo.fr/dukenukemdie/dukenukemdie/58908957/19-10-1985/0504fe0b64c5e08d46c49ab41d33be94" for 127.0.0.1 at 2015-06-25 07:56:11 +0000
+Processing by UsersController#api_create as HTML
+  Parameters: {"civility_id"=>"1", "sex_id"=>"1", "pseudo"=>"didi", "firstname"=>"duke", "lastname"=>"nukem", "email"=>"dietricherwane@yahoo.fr", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "msisdn"=>"58908957", "birthdate"=>"19-10-1985", "creation_mode"=>"0504fe0b64c5e08d46c49ab41d33be94"}
+  [1m[35mCreationMode Load (0.7ms)[0m  SELECT  "creation_modes".* FROM "creation_modes"  WHERE "creation_modes"."token" = '0504fe0b64c5e08d46c49ab41d33be94' LIMIT 1
+WARNING: Can't mass-assign protected attributes for User: controller, action, password_confirmation, creation_mode
+	app/controllers/users_controller.rb:13:in `api_create'
+  [1m[36m (0.5ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.6ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."msisdn" = '58908957' LIMIT 1
+  [1m[36mUser Exists (0.6ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE "users"."pseudo" = 'didi' LIMIT 1[0m
+  [1m[35mUser Exists (0.5ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."email" = 'dietricherwane@yahoo.fr' LIMIT 1
+  [1m[36mSQL (20.4ms)[0m  [1mINSERT INTO "users" ("birthdate", "civility_id", "created_at", "creation_mode_id", "email", "firstname", "lastname", "msisdn", "password", "pseudo", "salt", "sex_id", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING "id"[0m  [["birthdate", "1985-10-19"], ["civility_id", 1], ["created_at", "2015-06-25 07:56:11.512571"], ["creation_mode_id", 1], ["email", "dietricherwane@yahoo.fr"], ["firstname", "duke"], ["lastname", "nukem"], ["msisdn", "58908957"], ["password", "856b329ae04b9c99b4ca116c511e83c34bfe628c6b07edb86c94558cd6c1097a"], ["pseudo", "didi"], ["salt", "xSGWfgsv8RM="], ["sex_id", 1], ["updated_at", "2015-06-25 07:56:11.512571"]]
+  [1m[35m (16.9ms)[0m  COMMIT
+  Rendered users/api_create.jbuilder (0.8ms)
+Completed 200 OK in 118ms (Views: 4.8ms | ActiveRecord: 41.1ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/update/3/1/1/zort/faadae/freddy/dietricherwane@ive.fr/58908957/19-10-1895" for 127.0.0.1 at 2015-06-25 08:36:15 +0000
+  [1m[36mActiveRecord::SchemaMigration Load (28.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by UsersController#api_update as HTML
+  Parameters: {"id"=>"3", "civility_id"=>"1", "sex_id"=>"1", "pseudo"=>"zort", "firstname"=>"faadae", "lastname"=>"freddy", "email"=>"dietricherwane@ive.fr", "msisdn"=>"58908957", "birthdate"=>"19-10-1895"}
+  [1m[35mUser Load (39.5ms)[0m  SELECT  "users".* FROM "users"  WHERE "users"."id" = 3 LIMIT 1
+  Rendered text template (0.0ms)
+Completed 200 OK in 199ms (Views: 34.1ms | ActiveRecord: 93.7ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/update/4/1/1/zort/faadae/freddy/dietricherwane@ive.fr/58908957/19-10-1895" for 127.0.0.1 at 2015-06-25 08:36:45 +0000
+Processing by UsersController#api_update as HTML
+  Parameters: {"id"=>"4", "civility_id"=>"1", "sex_id"=>"1", "pseudo"=>"zort", "firstname"=>"faadae", "lastname"=>"freddy", "email"=>"dietricherwane@ive.fr", "msisdn"=>"58908957", "birthdate"=>"19-10-1895"}
+  [1m[36mUser Load (1.1ms)[0m  [1mSELECT  "users".* FROM "users"  WHERE "users"."id" = 4 LIMIT 1[0m
+  Rendered text template (0.0ms)
+Completed 200 OK in 6ms (Views: 1.1ms | ActiveRecord: 1.1ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/update/5/1/1/zort/faadae/freddy/dietricherwane@ive.fr/58908957/19-10-1895" for 127.0.0.1 at 2015-06-25 08:36:49 +0000
+Processing by UsersController#api_update as HTML
+  Parameters: {"id"=>"5", "civility_id"=>"1", "sex_id"=>"1", "pseudo"=>"zort", "firstname"=>"faadae", "lastname"=>"freddy", "email"=>"dietricherwane@ive.fr", "msisdn"=>"58908957", "birthdate"=>"19-10-1895"}
+  [1m[35mUser Load (1.1ms)[0m  SELECT  "users".* FROM "users"  WHERE "users"."id" = 5 LIMIT 1
+  [1m[36m (0.6ms)[0m  [1mBEGIN[0m
+WARNING: Can't mass-assign protected attributes for User: controller, action, id
+	app/controllers/users_controller.rb:28:in `api_update'
+  [1m[35mUser Exists (11.5ms)[0m  SELECT  1 AS one FROM "users"  WHERE ("users"."msisdn" = '58908957' AND "users"."id" != 5) LIMIT 1
+  [1m[36mUser Exists (0.9ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE ("users"."pseudo" = 'zort' AND "users"."id" != 5) LIMIT 1[0m
+  [1m[35mUser Exists (0.9ms)[0m  SELECT  1 AS one FROM "users"  WHERE ("users"."email" = 'dietricherwane@ive.fr' AND "users"."id" != 5) LIMIT 1
+  [1m[36mSQL (1.2ms)[0m  [1mUPDATE "users" SET "birthdate" = $1, "email" = $2, "firstname" = $3, "lastname" = $4, "password" = $5, "pseudo" = $6, "updated_at" = $7 WHERE "users"."id" = 5[0m  [["birthdate", "1895-10-19"], ["email", "dietricherwane@ive.fr"], ["firstname", "faadae"], ["lastname", "freddy"], ["password", "c5ed2e8ff5e7cc4b768cfd1fc620cbe0fef11191a21c63c61dd03b9215d36d9e"], ["pseudo", "zort"], ["updated_at", "2015-06-25 08:36:49.736737"]]
+  [1m[35m (14.3ms)[0m  COMMIT
+  Rendered users/api_update.jbuilder (30.3ms)
+Completed 200 OK in 273ms (Views: 56.3ms | ActiveRecord: 31.3ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/msisdn/login/58908957/dukenukemdi" for 127.0.0.1 at 2015-06-25 08:39:45 +0000
+Processing by UsersController#api_msisdn_login as HTML
+  Parameters: {"msisdn"=>"58908957", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (0.9ms)[0m  [1mSELECT  "users".* FROM "users"  WHERE "users"."msisdn" = '58908957' LIMIT 1[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users"  WHERE "users"."msisdn" = '58908957' LIMIT 1
+  Rendered users/api_msisdn_login.jbuilder (1.4ms)
+Completed 200 OK in 73ms (Views: 12.8ms | ActiveRecord: 0.9ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/email/login/dietricherwane@yahoo.fr/dukenukemdi" for 127.0.0.1 at 2015-06-25 08:40:18 +0000
+Processing by UsersController#api_email_login as HTML
+  Parameters: {"email"=>"dietricherwane@yahoo.fr", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (0.8ms)[0m  [1mSELECT  "users".* FROM "users"  WHERE "users"."email" = 'dietricherwane@yahoo.fr' LIMIT 1[0m
+  Rendered text template (0.0ms)
+Completed 200 OK in 4ms (Views: 0.6ms | ActiveRecord: 0.8ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/email/login/dietricherwane@yahoo.fr/dukenukemdie" for 127.0.0.1 at 2015-06-25 08:41:19 +0000
+Processing by UsersController#api_email_login as HTML
+  Parameters: {"email"=>"dietricherwane@yahoo.fr", "password"=>"[FILTERED]"}
+  [1m[35mUser Load (0.9ms)[0m  SELECT  "users".* FROM "users"  WHERE "users"."email" = 'dietricherwane@yahoo.fr' LIMIT 1
+  Rendered text template (0.1ms)
+Completed 200 OK in 3ms (Views: 0.4ms | ActiveRecord: 0.9ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/email/login/dietricherwane@ive.fr/dukenukemdie" for 127.0.0.1 at 2015-06-25 08:42:03 +0000
+Processing by UsersController#api_email_login as HTML
+  Parameters: {"email"=>"dietricherwane@ive.fr", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (0.8ms)[0m  [1mSELECT  "users".* FROM "users"  WHERE "users"."email" = 'dietricherwane@ive.fr' LIMIT 1[0m
+  Rendered text template (0.0ms)
+Completed 200 OK in 4ms (Views: 0.5ms | ActiveRecord: 0.8ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/email/login/dietricherwane@ive.fr/dukenukemdie" for 127.0.0.1 at 2015-06-25 08:43:42 +0000
+Processing by UsersController#api_email_login as HTML
+  Parameters: {"email"=>"dietricherwane@ive.fr", "password"=>"[FILTERED]"}
+  [1m[35mUser Load (0.8ms)[0m  SELECT  "users".* FROM "users"  WHERE "users"."email" = 'dietricherwane@ive.fr' LIMIT 1
+  Rendered text template (0.0ms)
+Completed 200 OK in 4ms (Views: 0.6ms | ActiveRecord: 0.8ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/create/1/1/didi/duke/nukem/dietricherwane@yahoo.fr/dukenukemdie/dukenukemdie/58908957/19-10-1985/0504fe0b64c5e08d46c49ab41d33be94" for 127.0.0.1 at 2015-06-25 08:44:39 +0000
+Processing by UsersController#api_create as HTML
+  Parameters: {"civility_id"=>"1", "sex_id"=>"1", "pseudo"=>"didi", "firstname"=>"duke", "lastname"=>"nukem", "email"=>"dietricherwane@yahoo.fr", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "msisdn"=>"58908957", "birthdate"=>"19-10-1985", "creation_mode"=>"0504fe0b64c5e08d46c49ab41d33be94"}
+  [1m[36mCreationMode Load (20.9ms)[0m  [1mSELECT  "creation_modes".* FROM "creation_modes"  WHERE "creation_modes"."token" = '0504fe0b64c5e08d46c49ab41d33be94' LIMIT 1[0m
+WARNING: Can't mass-assign protected attributes for User: controller, action, password_confirmation, creation_mode
+	app/controllers/users_controller.rb:13:in `api_create'
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36mUser Exists (0.8ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE "users"."msisdn" = '58908957' LIMIT 1[0m
+  [1m[35mUser Exists (0.6ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."pseudo" = 'didi' LIMIT 1
+  [1m[36mUser Exists (0.6ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE "users"."email" = 'dietricherwane@yahoo.fr' LIMIT 1[0m
+  [1m[35mSQL (15.8ms)[0m  INSERT INTO "users" ("birthdate", "civility_id", "created_at", "creation_mode_id", "email", "firstname", "lastname", "msisdn", "password", "pseudo", "salt", "sex_id", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING "id"  [["birthdate", "1985-10-19"], ["civility_id", 1], ["created_at", "2015-06-25 08:44:39.795677"], ["creation_mode_id", 1], ["email", "dietricherwane@yahoo.fr"], ["firstname", "duke"], ["lastname", "nukem"], ["msisdn", "58908957"], ["password", "0005dbf1a8963e4efe8b60f687e240145a333e11ccd7f8c551bcf45a7e017e4d"], ["pseudo", "didi"], ["salt", "mQbmbNjQmLc="], ["sex_id", 1], ["updated_at", "2015-06-25 08:44:39.795677"]]
+  [1m[36m (16.7ms)[0m  [1mCOMMIT[0m
+  Rendered users/api_create.jbuilder (1.6ms)
+Completed 200 OK in 131ms (Views: 16.0ms | ActiveRecord: 59.9ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/email/login/dietricherwane@yahoo.fr/dukenukemdie" for 127.0.0.1 at 2015-06-25 08:44:48 +0000
+Processing by UsersController#api_email_login as HTML
+  Parameters: {"email"=>"dietricherwane@yahoo.fr", "password"=>"[FILTERED]"}
+  [1m[35mUser Load (1.2ms)[0m  SELECT  "users".* FROM "users"  WHERE "users"."email" = 'dietricherwane@yahoo.fr' LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users"  WHERE "users"."email" = 'dietricherwane@yahoo.fr' LIMIT 1[0m
+  Rendered users/api_email_login.jbuilder (0.9ms)
+Completed 200 OK in 34ms (Views: 28.5ms | ActiveRecord: 1.2ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/update/6/1/1/zort/faadae/freddy/dietricherwane@ive.fr/58908957/19-10-1895" for 127.0.0.1 at 2015-06-25 08:45:23 +0000
+Processing by UsersController#api_update as HTML
+  Parameters: {"id"=>"6", "civility_id"=>"1", "sex_id"=>"1", "pseudo"=>"zort", "firstname"=>"faadae", "lastname"=>"freddy", "email"=>"dietricherwane@ive.fr", "msisdn"=>"58908957", "birthdate"=>"19-10-1895"}
+  [1m[35mUser Load (1.0ms)[0m  SELECT  "users".* FROM "users"  WHERE "users"."id" = 6 LIMIT 1
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+WARNING: Can't mass-assign protected attributes for User: controller, action, id
+	app/controllers/users_controller.rb:28:in `api_update'
+  [1m[35mUser Exists (0.7ms)[0m  SELECT  1 AS one FROM "users"  WHERE ("users"."msisdn" = '58908957' AND "users"."id" != 6) LIMIT 1
+  [1m[36mUser Exists (0.4ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE ("users"."pseudo" = 'zort' AND "users"."id" != 6) LIMIT 1[0m
+  [1m[35mUser Exists (0.4ms)[0m  SELECT  1 AS one FROM "users"  WHERE ("users"."email" = 'dietricherwane@ive.fr' AND "users"."id" != 6) LIMIT 1
+  [1m[36mSQL (0.5ms)[0m  [1mUPDATE "users" SET "birthdate" = $1, "email" = $2, "firstname" = $3, "lastname" = $4, "password" = $5, "pseudo" = $6, "updated_at" = $7 WHERE "users"."id" = 6[0m  [["birthdate", "1895-10-19"], ["email", "dietricherwane@ive.fr"], ["firstname", "faadae"], ["lastname", "freddy"], ["password", "6f2df4ebd4203fe8b53a5ad6694d58d205d33808d8d1b0d1dcb46059e26f519d"], ["pseudo", "zort"], ["updated_at", "2015-06-25 08:45:23.218469"]]
+  [1m[35m (11.1ms)[0m  COMMIT
+  Rendered users/api_update.jbuilder (0.6ms)
+Completed 200 OK in 32ms (Views: 4.5ms | ActiveRecord: 14.5ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/email/login/dietricherwane@ive.fr/dukenukemdie" for 127.0.0.1 at 2015-06-25 08:45:42 +0000
+Processing by UsersController#api_email_login as HTML
+  Parameters: {"email"=>"dietricherwane@ive.fr", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (1.3ms)[0m  [1mSELECT  "users".* FROM "users"  WHERE "users"."email" = 'dietricherwane@ive.fr' LIMIT 1[0m
+  Rendered text template (0.1ms)
+Completed 200 OK in 7ms (Views: 2.2ms | ActiveRecord: 1.3ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/create/1/1/didi/duke/nukem/dietricherwane@yahoo.fr/dukenukemdie/dukenukemdie/58908957/19-10-1985/0504fe0b64c5e08d46c49ab41d33be94" for 127.0.0.1 at 2015-06-25 08:48:30 +0000
+Processing by UsersController#api_create as HTML
+  Parameters: {"civility_id"=>"1", "sex_id"=>"1", "pseudo"=>"didi", "firstname"=>"duke", "lastname"=>"nukem", "email"=>"dietricherwane@yahoo.fr", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "msisdn"=>"58908957", "birthdate"=>"19-10-1985", "creation_mode"=>"0504fe0b64c5e08d46c49ab41d33be94"}
+  [1m[35mCreationMode Load (0.7ms)[0m  SELECT  "creation_modes".* FROM "creation_modes"  WHERE "creation_modes"."token" = '0504fe0b64c5e08d46c49ab41d33be94' LIMIT 1
+WARNING: Can't mass-assign protected attributes for User: controller, action, password_confirmation, creation_mode
+	app/controllers/users_controller.rb:13:in `api_create'
+  [1m[36m (0.5ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.9ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."msisdn" = '58908957' LIMIT 1
+  [1m[36mUser Exists (0.6ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE "users"."pseudo" = 'didi' LIMIT 1[0m
+  [1m[35mUser Exists (0.6ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."email" = 'dietricherwane@yahoo.fr' LIMIT 1
+  [1m[36mSQL (0.9ms)[0m  [1mINSERT INTO "users" ("birthdate", "civility_id", "created_at", "creation_mode_id", "email", "firstname", "lastname", "msisdn", "password", "pseudo", "salt", "sex_id", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING "id"[0m  [["birthdate", "1985-10-19"], ["civility_id", 1], ["created_at", "2015-06-25 08:48:30.535792"], ["creation_mode_id", 1], ["email", "dietricherwane@yahoo.fr"], ["firstname", "duke"], ["lastname", "nukem"], ["msisdn", "58908957"], ["password", "147fa1c066f708ff3e10183aa4e4d05951bb3bb074ec572b8d904e75ca8d8498"], ["pseudo", "didi"], ["salt", "C+USgLcZBh8="], ["sex_id", 1], ["updated_at", "2015-06-25 08:48:30.535792"]]
+  [1m[35m (8.1ms)[0m  COMMIT
+  Rendered users/api_create.jbuilder (0.6ms)
+Completed 200 OK in 66ms (Views: 4.3ms | ActiveRecord: 20.8ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/update/7/1/1/zort/faadae/freddy/dietricherwane@ive.fr/58908957/19-10-1895" for 127.0.0.1 at 2015-06-25 08:48:52 +0000
+Processing by UsersController#api_update as HTML
+  Parameters: {"id"=>"7", "civility_id"=>"1", "sex_id"=>"1", "pseudo"=>"zort", "firstname"=>"faadae", "lastname"=>"freddy", "email"=>"dietricherwane@ive.fr", "msisdn"=>"58908957", "birthdate"=>"19-10-1895"}
+  [1m[36mUser Load (1.0ms)[0m  [1mSELECT  "users".* FROM "users"  WHERE "users"."id" = 7 LIMIT 1[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+WARNING: Can't mass-assign protected attributes for User: controller, action, id
+	app/controllers/users_controller.rb:28:in `api_update'
+  [1m[36mUser Exists (0.9ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE ("users"."msisdn" = '58908957' AND "users"."id" != 7) LIMIT 1[0m
+  [1m[35mUser Exists (0.6ms)[0m  SELECT  1 AS one FROM "users"  WHERE ("users"."pseudo" = 'zort' AND "users"."id" != 7) LIMIT 1
+  [1m[36mUser Exists (0.5ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE ("users"."email" = 'dietricherwane@ive.fr' AND "users"."id" != 7) LIMIT 1[0m
+  [1m[35mSQL (0.6ms)[0m  UPDATE "users" SET "birthdate" = $1, "email" = $2, "firstname" = $3, "lastname" = $4, "pseudo" = $5, "updated_at" = $6 WHERE "users"."id" = 7  [["birthdate", "1895-10-19"], ["email", "dietricherwane@ive.fr"], ["firstname", "faadae"], ["lastname", "freddy"], ["pseudo", "zort"], ["updated_at", "2015-06-25 08:48:52.343708"]]
+  [1m[36m (55.1ms)[0m  [1mCOMMIT[0m
+  Rendered users/api_update.jbuilder (0.7ms)
+Completed 200 OK in 79ms (Views: 4.5ms | ActiveRecord: 59.0ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/email/login/dietricherwane@ive.fr/dukenukemdie" for 127.0.0.1 at 2015-06-25 08:49:10 +0000
+Processing by UsersController#api_email_login as HTML
+  Parameters: {"email"=>"dietricherwane@ive.fr", "password"=>"[FILTERED]"}
+  [1m[35mUser Load (1.1ms)[0m  SELECT  "users".* FROM "users"  WHERE "users"."email" = 'dietricherwane@ive.fr' LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users"  WHERE "users"."email" = 'dietricherwane@ive.fr' LIMIT 1[0m
+  Rendered users/api_email_login.jbuilder (0.4ms)
+Completed 200 OK in 9ms (Views: 4.2ms | ActiveRecord: 1.1ms)
+>>>>>>> 2f02aa81880ccbd1f919793da5ec90e50b917d0c

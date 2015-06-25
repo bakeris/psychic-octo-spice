@@ -6,11 +6,15 @@ class UsersController < ApplicationController
     if creation_mode.blank?
       render text: %Q[{"errors":"Vous n'avez pas pu être authentifié"}]
     else
-      @status = false
-      @user = User.new(params.merge({:creation_mode_id => creation_mode.id}).merge({:salt => SecureRandom.base64(8).to_s}))
+      if params[:password] != params[:password_confirmation]
+        render text: %Q[{"errors":"Le mot de passe et sa confirmation ne concordent pas"}]
+      else
+        @status = false
+        @user = User.new(params.merge({:creation_mode_id => creation_mode.id}).merge({:salt => SecureRandom.base64(8).to_s}))
 
-      if @user.save
-        @status = true
+        if @user.save
+          @status = true
+        end
       end
     end
   end
@@ -40,7 +44,7 @@ class UsersController < ApplicationController
     if User.authenticate_with_msisdn(params[:msisdn], params[:password]) == true
       @user = User.find_by_msisdn(params[:msisdn])
     else
-      render text: %Q[{"errors":"Veuillez vérifier le numéro et le mot de passe"}]
+      render text: %Q[{"errors":"Veuillez vérifier le numéro de téléphone et le mot de passe"}]
     end
   end
 
