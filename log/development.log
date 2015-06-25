@@ -1819,3 +1819,9 @@ SyntaxError (/var/www/html/PaymoneyGateway/config/routes.rb:8: syntax error, une
   Rendered /home/ngser/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.2ms)
   Rendered /home/ngser/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.9ms)
   Rendered /home/ngser/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (14.6ms)
+
+
+Started GET "/" for 41.189.43.101 at 2015-06-25 07:40:08 +0000
+Processing by ErrorsController#routing as HTML
+  Rendered public/404.html (0.4ms)
+Completed 404 Not Found in 3ms (Views: 2.4ms | ActiveRecord: 0.0ms)
