@@ -1732,3 +1732,68 @@ Processing by UsersController#api_msisdn_login as HTML
   [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users"  WHERE "users"."msisdn" = '58908957' LIMIT 1
   Rendered users/api_msisdn_login.jbuilder (0.7ms)
 Completed 200 OK in 87ms (Views: 3.2ms | ActiveRecord: 6.4ms)
+  [1m[36m (90.7ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" character varying(255) NOT NULL) [0m
+  [1m[35m (65.4ms)[0m  CREATE UNIQUE INDEX  "unique_schema_migrations" ON "schema_migrations"  ("version")
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateCivilities (20150624080401)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (65.4ms)[0m  [1mCREATE TABLE "civilities" ("id" serial primary key, "name" character varying(255), "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20150624080401"]]
+  [1m[36m (12.9ms)[0m  [1mCOMMIT[0m
+Migrating to CreateSexes (20150624080408)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (36.5ms)[0m  [1mCREATE TABLE "sexes" ("id" serial primary key, "name" character varying(255), "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20150624080408"]]
+  [1m[36m (10.2ms)[0m  [1mCOMMIT[0m
+Migrating to CreateCreationModes (20150624080436)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (63.7ms)[0m  [1mCREATE TABLE "creation_modes" ("id" serial primary key, "name" character varying(255), "token" character varying(255), "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20150624080436"]]
+  [1m[36m (16.3ms)[0m  [1mCOMMIT[0m
+Migrating to CreateUsers (20150624081156)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (55.9ms)[0m  [1mCREATE TABLE "users" ("id" serial primary key, "civility_id" integer, "sex_id" integer, "pseudo" character varying(255), "firstname" character varying(255), "lastname" character varying(255), "email" character varying(255), "password" character varying(255), "msisdn" character varying(13), "birthdate" date, "creation_mode_id" integer, "reset_password_token" character varying(255), "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (24.1ms)[0m  CREATE  INDEX  "index_users_on_civility_id" ON "users"  ("civility_id")
+  [1m[36m (24.3ms)[0m  [1mCREATE  INDEX  "index_users_on_sex_id" ON "users"  ("sex_id")[0m
+  [1m[35m (24.3ms)[0m  CREATE  INDEX  "index_users_on_creation_mode_id" ON "users"  ("creation_mode_id")
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20150624081156"]]
+  [1m[35m (12.9ms)[0m  COMMIT
+Migrating to AddSaltToUsers (20150624105848)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (7.4ms)[0m  ALTER TABLE "users" ADD COLUMN "salt" character varying(255)
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20150624105848"]]
+  [1m[35m (12.8ms)[0m  COMMIT
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mSQL (0.8ms)[0m  [1mINSERT INTO "civilities" ("created_at", "name", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2015-06-25 07:33:38.779154"], ["name", "M."], ["updated_at", "2015-06-25 07:33:38.779154"]]
+  [1m[35m (9.8ms)[0m  COMMIT
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "civilities" ("created_at", "name", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2015-06-25 07:33:38.794546"], ["name", "Mme."], ["updated_at", "2015-06-25 07:33:38.794546"]]
+  [1m[36m (5.9ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "sexes" ("created_at", "name", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2015-06-25 07:33:38.811145"], ["name", "M"], ["updated_at", "2015-06-25 07:33:38.811145"]]
+  [1m[35m (5.2ms)[0m  COMMIT
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "sexes" ("created_at", "name", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2015-06-25 07:33:38.819256"], ["name", "F"], ["updated_at", "2015-06-25 07:33:38.819256"]]
+  [1m[36m (6.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "creation_modes" ("created_at", "name", "token", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["created_at", "2015-06-25 07:33:38.836902"], ["name", "WEB"], ["token", "0504fe0b64c5e08d46c49ab41d33be94"], ["updated_at", "2015-06-25 07:33:38.836902"]]
+  [1m[35m (4.4ms)[0m  COMMIT
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "creation_modes" ("created_at", "name", "token", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["created_at", "2015-06-25 07:33:38.844342"], ["name", "USSD"], ["token", "d2a29d336c48fe68df6e5827cc49a042"], ["updated_at", "2015-06-25 07:33:38.844342"]]
+  [1m[36m (6.3ms)[0m  [1mCOMMIT[0m
+
+
+Started GET "/" for 41.189.43.101 at 2015-06-25 07:36:05 +0000
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendered /home/ngser/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/railties-4.1.8/lib/rails/templates/rails/welcome/index.html.erb (1.4ms)
+Completed 200 OK in 38ms (Views: 28.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/rails/info/properties" for 41.189.43.101 at 2015-06-25 07:36:10 +0000
+Processing by ErrorsController#routing as */*
+  Parameters: {"rogue_url"=>"rails/info/properties"}
+  Rendered public/404.html (0.5ms)
+Completed 404 Not Found in 16ms (Views: 12.6ms | ActiveRecord: 0.0ms)
