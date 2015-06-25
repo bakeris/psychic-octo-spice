@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   # Callbacks
-  before_save :encrypt_password
+  before_create :encrypt_password
 
   # Relationships
 
