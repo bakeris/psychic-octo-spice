@@ -1797,3 +1797,25 @@ Processing by ErrorsController#routing as */*
   Parameters: {"rogue_url"=>"rails/info/properties"}
   Rendered public/404.html (0.5ms)
 Completed 404 Not Found in 16ms (Views: 12.6ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 41.189.43.101 at 2015-06-25 07:38:12 +0000
+
+SyntaxError (/var/www/html/PaymoneyGateway/config/routes.rb:8: syntax error, unexpected tIDENTIFIER, expecting keyword_end
+...ba041bf35229938ba869a7a9c59f3a0/api/civility/list' => 'civil...
+...                               ^
+/var/www/html/PaymoneyGateway/config/routes.rb:8: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...9a7a9c59f3a0/api/civility/list' => 'civilities#api_list'
+...                               ^
+/var/www/html/PaymoneyGateway/config/routes.rb:8: syntax error, unexpected tIDENTIFIER, expecting keyword_end
+...i/civility/list' => 'civilities#api_list'
+...                               ^):
+  config/routes.rb:8: syntax error, unexpected tIDENTIFIER, expecting keyword_end
+  config/routes.rb:8: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+  config/routes.rb:8: syntax error, unexpected tIDENTIFIER, expecting keyword_end
+
+
+  Rendered /home/ngser/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_source.erb (0.7ms)
+  Rendered /home/ngser/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.2ms)
+  Rendered /home/ngser/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.9ms)
+  Rendered /home/ngser/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (14.6ms)
