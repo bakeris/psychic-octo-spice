@@ -1,0 +1,7 @@
+Bonjour <%= @email %>,
+
+Vous souhaitez créer un compte parieur Lonaci.
+
+Veuillez cliquer sur le lien suivant pour activer votre compte: <%= link_to "Activer mon compte", (Parameter.first.registration_url rescue "") + "/" + @confirmation_token %>
+
+A bientôt.

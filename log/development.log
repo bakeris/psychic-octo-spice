@@ -2052,4 +2052,1304 @@ Processing by UsersController#api_email_login as HTML
   [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users"  WHERE "users"."email" = 'dietricherwane@ive.fr' LIMIT 1[0m
   Rendered users/api_email_login.jbuilder (0.4ms)
 Completed 200 OK in 9ms (Views: 4.2ms | ActiveRecord: 1.1ms)
+<<<<<<< HEAD
 >>>>>>> 2f02aa81880ccbd1f919793da5ec90e50b917d0c
+=======
+
+NoMethodError (undefined method `id' for nil:NilClass):
+  app/controllers/users_controller.rb:6:in `api_create'
+
+
+
+NoMethodError (undefined method `rscue' for #<UsersController:0x00000005382228>):
+  app/controllers/users_controller.rb:6:in `api_create'
+
+
+
+SyntaxError (/home/dietrich/workshop/PaymoneyGateway/app/controllers/users_controller.rb:23: syntax error, unexpected keyword_end, expecting end-of-input):
+  app/controllers/users_controller.rb:23: syntax error, unexpected keyword_end, expecting end-of-input
+
+
+
+SyntaxError (/home/dietrich/workshop/PaymoneyGateway/app/controllers/users_controller.rb:53: syntax error, unexpected keyword_end, expecting end-of-input):
+  app/controllers/users_controller.rb:53: syntax error, unexpected keyword_end, expecting end-of-input
+
+
+
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+	bin/rake db:migrate RAILS_ENV=development
+
+):
+  activerecord (4.1.8) lib/active_record/migration.rb:389:in `check_pending!'
+  activerecord (4.1.8) lib/active_record/migration.rb:377:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/callbacks.rb:29:in `block in call'
+  activesupport (4.1.8) lib/active_support/callbacks.rb:82:in `run_callbacks'
+  actionpack (4.1.8) lib/action_dispatch/middleware/callbacks.rb:27:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/reloader.rb:73:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/remote_ip.rb:76:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/debug_exceptions.rb:17:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+  railties (4.1.8) lib/rails/rack/logger.rb:38:in `call_app'
+  railties (4.1.8) lib/rails/rack/logger.rb:20:in `block in call'
+  activesupport (4.1.8) lib/active_support/tagged_logging.rb:68:in `block in tagged'
+  activesupport (4.1.8) lib/active_support/tagged_logging.rb:26:in `tagged'
+  activesupport (4.1.8) lib/active_support/tagged_logging.rb:68:in `tagged'
+  railties (4.1.8) lib/rails/rack/logger.rb:20:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/request_id.rb:21:in `call'
+  rack (1.5.5) lib/rack/methodoverride.rb:21:in `call'
+  rack (1.5.5) lib/rack/runtime.rb:17:in `call'
+  activesupport (4.1.8) lib/active_support/cache/strategy/local_cache_middleware.rb:26:in `call'
+  rack (1.5.5) lib/rack/lock.rb:17:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/static.rb:84:in `call'
+  rack (1.5.5) lib/rack/sendfile.rb:112:in `call'
+  railties (4.1.8) lib/rails/engine.rb:514:in `call'
+  railties (4.1.8) lib/rails/application.rb:144:in `call'
+  rack (1.5.5) lib/rack/lock.rb:17:in `call'
+  rack (1.5.5) lib/rack/content_length.rb:14:in `call'
+  rack (1.5.5) lib/rack/handler/webrick.rb:60:in `service'
+  /home/dietrich/.rvm/rubies/ruby-2.0.0-p195/lib/ruby/2.0.0/webrick/httpserver.rb:138:in `service'
+  /home/dietrich/.rvm/rubies/ruby-2.0.0-p195/lib/ruby/2.0.0/webrick/httpserver.rb:94:in `run'
+  /home/dietrich/.rvm/rubies/ruby-2.0.0-p195/lib/ruby/2.0.0/webrick/server.rb:295:in `block in start_thread'
+
+
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/create/1/1/didie/duke/nukem/dietricherwane@yahoo.fr/dukenukemdie/dukenukemdie/60086286/19-10-1985/0504fe0b64c5e08d46c49ab41d33be94" for 127.0.0.1 at 2015-07-05 10:52:21 +0000
+  [1m[36mActiveRecord::SchemaMigration Load (1.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by UsersController#api_create as HTML
+  Parameters: {"civility_id"=>"1", "sex_id"=>"1", "pseudo"=>"didie", "firstname"=>"duke", "lastname"=>"nukem", "email"=>"dietricherwane@yahoo.fr", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "msisdn"=>"60086286", "birthdate"=>"19-10-1985", "creation_mode"=>"0504fe0b64c5e08d46c49ab41d33be94"}
+  [1m[35mCreationMode Load (2.2ms)[0m  SELECT  "creation_modes".* FROM "creation_modes"  WHERE "creation_modes"."token" = '0504fe0b64c5e08d46c49ab41d33be94' LIMIT 1
+WARNING: Can't mass-assign protected attributes for User: controller, action, password_confirmation, creation_mode
+	app/controllers/users_controller.rb:13:in `api_create'
+  [1m[36m (0.7ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (1.6ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."msisdn" = '60086286' LIMIT 1
+  [1m[36mUser Exists (0.8ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE "users"."pseudo" = 'didie' LIMIT 1[0m
+  [1m[35mUser Exists (0.7ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."email" = 'dietricherwane@yahoo.fr' LIMIT 1
+  [1m[36mSQL (1.3ms)[0m  [1mINSERT INTO "users" ("birthdate", "civility_id", "created_at", "creation_mode_id", "email", "firstname", "lastname", "msisdn", "password", "pseudo", "salt", "sex_id", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING "id"[0m  [["birthdate", "1985-10-19"], ["civility_id", 1], ["created_at", "2015-07-05 10:52:21.770641"], ["creation_mode_id", 1], ["email", "dietricherwane@yahoo.fr"], ["firstname", "duke"], ["lastname", "nukem"], ["msisdn", "60086286"], ["password", "48a8868d3b53bea0ef572e2bb5e6003c29eb9f2d34552f07a9d60c86c596d985"], ["pseudo", "didie"], ["salt", "+keEx1DCV6U="], ["sex_id", 1], ["updated_at", "2015-07-05 10:52:21.770641"]]
+  [1m[35m (11.6ms)[0m  COMMIT
+  Rendered user_registration/confirmation_email.html.erb (4.2ms)
+
+UserRegistration#confirmation_email: processed outbound mail in 329.6ms
+
+Sent mail to dietricherwane@yahoo.fr (6448.5ms)
+Date: Sun, 05 Jul 2015 10:52:22 +0000
+From: LONACI
+To: dietricherwane@yahoo.fr
+Message-ID: <55990c66204e7_127a190f19064653@dietrich-SATELLITE-L750.mail>
+Subject: Activation de votre compte parieur
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: base64
+
+PCFET0NUWVBFIGh0bWw+CjxodG1sPgrCoMKgPGhlYWQ+CsKgwqDCoMKgPG1l
+dGEgY29udGVudD0ndGV4dC9odG1sOyBjaGFyc2V0PVVURi04JyBodHRwLWVx
+dWl2PSdDb250ZW50LVR5cGUnIC8+CsKgwqA8L2hlYWQ+CsKgwqA8Ym9keT4K
+wqDCoMKgwqA8aDQ+Qm9uam91ciBkaWV0cmljaGVyd2FuZUB5YWhvby5mciwg
+PC9oND4KCsKgwqDCoMKgPHA+CsKgwqDCoMKgwqDCoFZvdXMgc291aGFpdGV6
+IGNyw6llciB1biBjb21wdGUgcGFyaWV1ciBMb25hY2kuCiAgICA8L3A+Cgog
+ICAgPHA+CiAgICAgIFZldWlsbGV6IGNsaXF1ZXIgc3VyIGxlIGxpZW4gc3Vp
+dmFudCBwb3VyIGFjdGl2ZXIgdm90cmUgY29tcHRlOiA8YSBocmVmPSIvODZi
+NDI2YmJiYmZmMzFmZmQ0Mzc5ZDdjMjE4MmNmNzYiPkFjdGl2ZXIgbW9uIGNv
+bXB0ZTwvYT4KICAgIDwvcD4KCsKgwqDCoMKgPHA+CsKgwqDCoMKgICBBIGJp
+ZW50w7R0LgrCoMKgwqDCoDwvcD4KwqDCoDwvYm9keT4KPC9odG1sPgo=
+
+  Rendered users/api_create.jbuilder (5.4ms)
+Completed 200 OK in 6902ms (Views: 10.5ms | ActiveRecord: 29.7ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/create/1/1/didie/duke/nukem/dietricherwane@yahoo.fr/dukenukemdie/dukenukemdie/60086286/19-10-1985/0504fe0b64c5e08d46c49ab41d33be94" for 127.0.0.1 at 2015-07-05 10:53:41 +0000
+  [1m[36mActiveRecord::SchemaMigration Load (0.9ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by UsersController#api_create as HTML
+  Parameters: {"civility_id"=>"1", "sex_id"=>"1", "pseudo"=>"didie", "firstname"=>"duke", "lastname"=>"nukem", "email"=>"dietricherwane@yahoo.fr", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "msisdn"=>"60086286", "birthdate"=>"19-10-1985", "creation_mode"=>"0504fe0b64c5e08d46c49ab41d33be94"}
+  [1m[35mCreationMode Load (2.2ms)[0m  SELECT  "creation_modes".* FROM "creation_modes"  WHERE "creation_modes"."token" = '0504fe0b64c5e08d46c49ab41d33be94' LIMIT 1
+WARNING: Can't mass-assign protected attributes for User: controller, action
+	app/controllers/users_controller.rb:13:in `api_create'
+Completed 500 Internal Server Error in 70ms
+
+ActiveRecord::UnknownAttributeError (unknown attribute: password_confirmation):
+  app/controllers/users_controller.rb:13:in `api_create'
+
+
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_source.erb (0.8ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.3ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.3ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (16.6ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/create/1/1/didie/duke/nukem/dietricherwane@yahoo.fr/dukenukemdie/dukenukemdie/60086286/19-10-1985/0504fe0b64c5e08d46c49ab41d33be94" for 127.0.0.1 at 2015-07-05 10:55:53 +0000
+  [1m[36mActiveRecord::SchemaMigration Load (1.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by UsersController#api_create as HTML
+  Parameters: {"civility_id"=>"1", "sex_id"=>"1", "pseudo"=>"didie", "firstname"=>"duke", "lastname"=>"nukem", "email"=>"dietricherwane@yahoo.fr", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "msisdn"=>"60086286", "birthdate"=>"19-10-1985", "creation_mode"=>"0504fe0b64c5e08d46c49ab41d33be94"}
+  [1m[35mCreationMode Load (2.2ms)[0m  SELECT  "creation_modes".* FROM "creation_modes"  WHERE "creation_modes"."token" = '0504fe0b64c5e08d46c49ab41d33be94' LIMIT 1
+WARNING: Can't mass-assign protected attributes for User: controller, action, password_confirmation
+	app/controllers/users_controller.rb:13:in `api_create'
+Completed 500 Internal Server Error in 68ms
+
+ActiveRecord::UnknownAttributeError (unknown attribute: creation_mode):
+  app/controllers/users_controller.rb:13:in `api_create'
+
+
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_source.erb (0.7ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.2ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.3ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (16.0ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/create/1/1/didie/duke/nukem/dietricherwane@yahoo.fr/dukenukemdie/dukenukemdie/60086286/19-10-1985/0504fe0b64c5e08d46c49ab41d33be94" for 127.0.0.1 at 2015-07-05 10:56:14 +0000
+Processing by UsersController#api_create as HTML
+  Parameters: {"civility_id"=>"1", "sex_id"=>"1", "pseudo"=>"didie", "firstname"=>"duke", "lastname"=>"nukem", "email"=>"dietricherwane@yahoo.fr", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "msisdn"=>"60086286", "birthdate"=>"19-10-1985", "creation_mode"=>"0504fe0b64c5e08d46c49ab41d33be94"}
+  [1m[36mCreationMode Load (0.7ms)[0m  [1mSELECT  "creation_modes".* FROM "creation_modes"  WHERE "creation_modes"."token" = '0504fe0b64c5e08d46c49ab41d33be94' LIMIT 1[0m
+WARNING: Can't mass-assign protected attributes for User: controller, action, password_confirmation, creation_mode
+	app/controllers/users_controller.rb:13:in `api_create'
+  [1m[35m (0.6ms)[0m  BEGIN
+  [1m[36mUser Exists (1.5ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE "users"."msisdn" = '60086286' LIMIT 1[0m
+  [1m[35mUser Exists (0.7ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."pseudo" = 'didie' LIMIT 1
+  [1m[36mUser Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE "users"."email" = 'dietricherwane@yahoo.fr' LIMIT 1[0m
+  [1m[35mSQL (1.2ms)[0m  INSERT INTO "users" ("birthdate", "civility_id", "created_at", "creation_mode_id", "email", "firstname", "lastname", "msisdn", "password", "pseudo", "salt", "sex_id", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING "id"  [["birthdate", "1985-10-19"], ["civility_id", 1], ["created_at", "2015-07-05 10:56:14.675994"], ["creation_mode_id", 1], ["email", "dietricherwane@yahoo.fr"], ["firstname", "duke"], ["lastname", "nukem"], ["msisdn", "60086286"], ["password", "4d883d03904d05e577a950bc91e470552736533affdf12657f40bab880b5f995"], ["pseudo", "didie"], ["salt", "chliFxd0BKw="], ["sex_id", 1], ["updated_at", "2015-07-05 10:56:14.675994"]]
+  [1m[36m (22.5ms)[0m  [1mCOMMIT[0m
+  Rendered user_registration/confirmation_email.html.erb (1.8ms)
+
+UserRegistration#confirmation_email: processed outbound mail in 278.7ms
+
+Sent mail to dietricherwane@yahoo.fr (4860.6ms)
+Date: Sun, 05 Jul 2015 10:56:14 +0000
+From: LONACI
+To: dietricherwane@yahoo.fr
+Message-ID: <55990d4ef2dac_12a6de131826381@dietrich-SATELLITE-L750.mail>
+Subject: Activation de votre compte parieur
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: base64
+
+PCFET0NUWVBFIGh0bWw+CjxodG1sPgrCoMKgPGhlYWQ+CsKgwqDCoMKgPG1l
+dGEgY29udGVudD0ndGV4dC9odG1sOyBjaGFyc2V0PVVURi04JyBodHRwLWVx
+dWl2PSdDb250ZW50LVR5cGUnIC8+CsKgwqA8L2hlYWQ+CsKgwqA8Ym9keT4K
+wqDCoMKgwqA8aDQ+Qm9uam91ciBkaWV0cmljaGVyd2FuZUB5YWhvby5mciwg
+PC9oND4KCsKgwqDCoMKgPHA+CsKgwqDCoMKgwqDCoFZvdXMgc291aGFpdGV6
+IGNyw6llciB1biBjb21wdGUgcGFyaWV1ciBMb25hY2kuCiAgICA8L3A+Cgog
+ICAgPHA+CiAgICAgIFZldWlsbGV6IGNsaXF1ZXIgc3VyIGxlIGxpZW4gc3Vp
+dmFudCBwb3VyIGFjdGl2ZXIgdm90cmUgY29tcHRlOiA8YSBocmVmPSIvZTk1
+ZGY3MjAyMDI5YWFkMTdmZTAyNDg2ZmFmZTljZTIiPkFjdGl2ZXIgbW9uIGNv
+bXB0ZTwvYT4KICAgIDwvcD4KCsKgwqDCoMKgPHA+CsKgwqDCoMKgICBBIGJp
+ZW50w7R0LgrCoMKgwqDCoDwvcD4KwqDCoDwvYm9keT4KPC9odG1sPgo=
+
+  Rendered users/api_create.jbuilder (5.0ms)
+Completed 200 OK in 5254ms (Views: 10.0ms | ActiveRecord: 36.5ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/create/1/1/didie/duke/nukem/dietricherwane@yahoo.fr/dukenukemdie/dukenukemdie/60086286/19-10-1985/0504fe0b64c5e08d46c49ab41d33be94" for 127.0.0.1 at 2015-07-05 10:58:05 +0000
+Processing by UsersController#api_create as HTML
+  Parameters: {"civility_id"=>"1", "sex_id"=>"1", "pseudo"=>"didie", "firstname"=>"duke", "lastname"=>"nukem", "email"=>"dietricherwane@yahoo.fr", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "msisdn"=>"60086286", "birthdate"=>"19-10-1985", "creation_mode"=>"0504fe0b64c5e08d46c49ab41d33be94"}
+  [1m[35mCreationMode Load (0.7ms)[0m  SELECT  "creation_modes".* FROM "creation_modes"  WHERE "creation_modes"."token" = '0504fe0b64c5e08d46c49ab41d33be94' LIMIT 1
+WARNING: Can't mass-assign protected attributes for User: controller, action, password_confirmation, creation_mode
+	app/controllers/users_controller.rb:13:in `api_create'
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.6ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."msisdn" = '60086286' LIMIT 1
+  [1m[36mUser Exists (0.4ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE "users"."pseudo" = 'didie' LIMIT 1[0m
+  [1m[35mUser Exists (0.4ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."email" = 'dietricherwane@yahoo.fr' LIMIT 1
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "users" ("birthdate", "civility_id", "created_at", "creation_mode_id", "email", "firstname", "lastname", "msisdn", "password", "pseudo", "salt", "sex_id", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING "id"[0m  [["birthdate", "1985-10-19"], ["civility_id", 1], ["created_at", "2015-07-05 10:58:05.888239"], ["creation_mode_id", 1], ["email", "dietricherwane@yahoo.fr"], ["firstname", "duke"], ["lastname", "nukem"], ["msisdn", "60086286"], ["password", "6760cc66ffc7d443bb9dfc47898ed395389b60a65a7cb00a966645240166e0e2"], ["pseudo", "didie"], ["salt", "rLaBz/edLsU="], ["sex_id", 1], ["updated_at", "2015-07-05 10:58:05.888239"]]
+  [1m[35m (8.4ms)[0m  COMMIT
+  Rendered user_registration/confirmation_email.html.erb (3.1ms)
+
+UserRegistration#confirmation_email: processed outbound mail in 11.0ms
+
+Sent mail to dietricherwane@yahoo.fr (8414.5ms)
+Date: Sun, 05 Jul 2015 10:58:05 +0000
+From: LONACI
+To: dietricherwane@yahoo.fr
+Message-ID: <55990dbddea54_12a62066e342643c@dietrich-SATELLITE-L750.mail>
+Subject: Activation de votre compte parieur
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: base64
+
+PCFET0NUWVBFIGh0bWw+CjxodG1sPgrCoMKgPGhlYWQ+CsKgwqDCoMKgPG1l
+dGEgY29udGVudD0ndGV4dC9odG1sOyBjaGFyc2V0PVVURi04JyBodHRwLWVx
+dWl2PSdDb250ZW50LVR5cGUnIC8+CsKgwqA8L2hlYWQ+CsKgwqA8Ym9keT4K
+wqDCoMKgwqA8aDQ+Qm9uam91ciBkaWV0cmljaGVyd2FuZUB5YWhvby5mciwg
+PC9oND4KCsKgwqDCoMKgPHA+CsKgwqDCoMKgwqDCoFZvdXMgc291aGFpdGV6
+IGNyw6llciB1biBjb21wdGUgcGFyaWV1ciBMb25hY2kuCiAgICA8L3A+Cgog
+ICAgPHA+CiAgICAgIFZldWlsbGV6IGNsaXF1ZXIgc3VyIGxlIGxpZW4gc3Vp
+dmFudCBwb3VyIGFjdGl2ZXIgdm90cmUgY29tcHRlOiA8YSBocmVmPSIvNTZi
+NmQ2NzcyZjNmMzQ3MWMzMjc5MTRlMTgyODcwOTAiPkFjdGl2ZXIgbW9uIGNv
+bXB0ZTwvYT4KICAgIDwvcD4KCsKgwqDCoMKgPHA+CsKgwqDCoMKgICBBIGJp
+ZW50w7R0LgrCoMKgwqDCoDwvcD4KwqDCoDwvYm9keT4KPC9odG1sPgo=
+
+  Rendered users/api_create.jbuilder (0.7ms)
+Completed 200 OK in 8456ms (Views: 4.8ms | ActiveRecord: 11.5ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/create/1/1/didie/duke/nukem/dietricherwane@yahoo.fr/dukenukemdie/dukenukemdie/60086286/19-10-1985/0504fe0b64c5e08d46c49ab41d33be94" for 127.0.0.1 at 2015-07-05 11:03:58 +0000
+Processing by UsersController#api_create as HTML
+  Parameters: {"civility_id"=>"1", "sex_id"=>"1", "pseudo"=>"didie", "firstname"=>"duke", "lastname"=>"nukem", "email"=>"dietricherwane@yahoo.fr", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "msisdn"=>"60086286", "birthdate"=>"19-10-1985", "creation_mode"=>"0504fe0b64c5e08d46c49ab41d33be94"}
+  [1m[36mCreationMode Load (0.8ms)[0m  [1mSELECT  "creation_modes".* FROM "creation_modes"  WHERE "creation_modes"."token" = '0504fe0b64c5e08d46c49ab41d33be94' LIMIT 1[0m
+WARNING: Can't mass-assign protected attributes for User: controller, action, password_confirmation, creation_mode
+	app/controllers/users_controller.rb:13:in `api_create'
+  [1m[35m (0.7ms)[0m  BEGIN
+  [1m[36mUser Exists (0.9ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE "users"."msisdn" = '60086286' LIMIT 1[0m
+  [1m[35mUser Exists (0.8ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."pseudo" = 'didie' LIMIT 1
+  [1m[36mUser Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE "users"."email" = 'dietricherwane@yahoo.fr' LIMIT 1[0m
+  [1m[35mSQL (1.0ms)[0m  INSERT INTO "users" ("birthdate", "civility_id", "created_at", "creation_mode_id", "email", "firstname", "lastname", "msisdn", "password", "pseudo", "salt", "sex_id", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING "id"  [["birthdate", "1985-10-19"], ["civility_id", 1], ["created_at", "2015-07-05 11:03:59.060127"], ["creation_mode_id", 1], ["email", "dietricherwane@yahoo.fr"], ["firstname", "duke"], ["lastname", "nukem"], ["msisdn", "60086286"], ["password", "96ab3097447d8854bb8585c757ee9577e0818ed50907da50020684c91b1261fa"], ["pseudo", "didie"], ["salt", "QPQABOeMumo="], ["sex_id", 1], ["updated_at", "2015-07-05 11:03:59.060127"]]
+  [1m[36m (21.8ms)[0m  [1mCOMMIT[0m
+  Rendered user_registration/confirmation_email.html.erb (1.6ms)
+
+UserRegistration#confirmation_email: processed outbound mail in 11.6ms
+
+Sent mail to dietricherwane@yahoo.fr (3567.7ms)
+Date: Sun, 05 Jul 2015 11:03:59 +0000
+From: LONACI
+To: dietricherwane@yahoo.fr
+Message-ID: <55990f1f18269_12a6214094026585@dietrich-SATELLITE-L750.mail>
+Subject: Activation de votre compte parieur
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: base64
+
+PCFET0NUWVBFIGh0bWw+CjxodG1sPgrCoMKgPGhlYWQ+CsKgwqDCoMKgPG1l
+dGEgY29udGVudD0ndGV4dC9odG1sOyBjaGFyc2V0PVVURi04JyBodHRwLWVx
+dWl2PSdDb250ZW50LVR5cGUnIC8+CsKgwqA8L2hlYWQ+CsKgwqA8Ym9keT4K
+wqDCoMKgwqA8aDQ+Qm9uam91ciBkaWV0cmljaGVyd2FuZUB5YWhvby5mciwg
+PC9oND4KCsKgwqDCoMKgPHA+CsKgwqDCoMKgwqDCoFZvdXMgc291aGFpdGV6
+IGNyw6llciB1biBjb21wdGUgcGFyaWV1ciBMb25hY2kuCiAgICA8L3A+Cgog
+ICAgPHA+CiAgICAgIFZldWlsbGV6IGNsaXF1ZXIgc3VyIGxlIGxpZW4gc3Vp
+dmFudCBwb3VyIGFjdGl2ZXIgdm90cmUgY29tcHRlOiA8YSBocmVmPSIvYWQ5
+ZWVlNWIxOWU0NjkyYWRhZDAyZDc1MGI1YWNmZDkiPkFjdGl2ZXIgbW9uIGNv
+bXB0ZTwvYT4KICAgIDwvcD4KCsKgwqDCoMKgPHA+CsKgwqDCoMKgICBBIGJp
+ZW50w7R0LgrCoMKgwqDCoDwvcD4KwqDCoDwvYm9keT4KPC9odG1sPgo=
+
+  Rendered users/api_create.jbuilder (0.9ms)
+Completed 200 OK in 3683ms (Views: 5.0ms | ActiveRecord: 26.7ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/create/1/1/didie/duke/nukem/dietricherwane@yahoo.fr/dukenukemdie/dukenukemdie/60086286/19-10-1985/0504fe0b64c5e08d46c49ab41d33be94" for 127.0.0.1 at 2015-07-05 11:04:49 +0000
+Processing by UsersController#api_create as HTML
+  Parameters: {"civility_id"=>"1", "sex_id"=>"1", "pseudo"=>"didie", "firstname"=>"duke", "lastname"=>"nukem", "email"=>"dietricherwane@yahoo.fr", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "msisdn"=>"60086286", "birthdate"=>"19-10-1985", "creation_mode"=>"0504fe0b64c5e08d46c49ab41d33be94"}
+  [1m[35mCreationMode Load (1.0ms)[0m  SELECT  "creation_modes".* FROM "creation_modes"  WHERE "creation_modes"."token" = '0504fe0b64c5e08d46c49ab41d33be94' LIMIT 1
+WARNING: Can't mass-assign protected attributes for User: controller, action, password_confirmation, creation_mode
+	app/controllers/users_controller.rb:13:in `api_create'
+  [1m[36m (0.5ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.8ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."msisdn" = '60086286' LIMIT 1
+  [1m[36mUser Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE "users"."pseudo" = 'didie' LIMIT 1[0m
+  [1m[35mUser Exists (0.6ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."email" = 'dietricherwane@yahoo.fr' LIMIT 1
+  [1m[36mSQL (0.8ms)[0m  [1mINSERT INTO "users" ("birthdate", "civility_id", "created_at", "creation_mode_id", "email", "firstname", "lastname", "msisdn", "password", "pseudo", "salt", "sex_id", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING "id"[0m  [["birthdate", "1985-10-19"], ["civility_id", 1], ["created_at", "2015-07-05 11:04:49.698874"], ["creation_mode_id", 1], ["email", "dietricherwane@yahoo.fr"], ["firstname", "duke"], ["lastname", "nukem"], ["msisdn", "60086286"], ["password", "b2e788b628bbf780beb8389309868f9f1fd456a853e1ccadff7c8794dc3f3a3c"], ["pseudo", "didie"], ["salt", "VQH5KN/gBGU="], ["sex_id", 1], ["updated_at", "2015-07-05 11:04:49.698874"]]
+  [1m[35m (6.7ms)[0m  COMMIT
+  Rendered user_registration/confirmation_email.html.erb (1.9ms)
+
+UserRegistration#confirmation_email: processed outbound mail in 7.8ms
+
+Sent mail to dietricherwane@yahoo.fr (30005.0ms)
+Date: Sun, 05 Jul 2015 11:04:49 +0000
+From: LONACI
+To: dietricherwane@yahoo.fr
+Message-ID: <55990f51af3ad_12a6149967426629@dietrich-SATELLITE-L750.mail>
+Subject: Activation de votre compte parieur
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: base64
+
+PCFET0NUWVBFIGh0bWw+CjxodG1sPgrCoMKgPGhlYWQ+CsKgwqDCoMKgPG1l
+dGEgY29udGVudD0ndGV4dC9odG1sOyBjaGFyc2V0PVVURi04JyBodHRwLWVx
+dWl2PSdDb250ZW50LVR5cGUnIC8+CsKgwqA8L2hlYWQ+CsKgwqA8Ym9keT4K
+wqDCoMKgwqA8aDQ+Qm9uam91ciBkaWV0cmljaGVyd2FuZUB5YWhvby5mciwg
+PC9oND4KCsKgwqDCoMKgPHA+CsKgwqDCoMKgwqDCoFZvdXMgc291aGFpdGV6
+IGNyw6llciB1biBjb21wdGUgcGFyaWV1ciBMb25hY2kuCiAgICA8L3A+Cgog
+ICAgPHA+CiAgICAgIFZldWlsbGV6IGNsaXF1ZXIgc3VyIGxlIGxpZW4gc3Vp
+dmFudCBwb3VyIGFjdGl2ZXIgdm90cmUgY29tcHRlOiA8YSBocmVmPSIvY2Nl
+YzFlZTIwOTI4YjBhNjIyODUwMmNjNzgxZmQ4OGEiPkFjdGl2ZXIgbW9uIGNv
+bXB0ZTwvYT4KICAgIDwvcD4KCsKgwqDCoMKgPHA+CsKgwqDCoMKgICBBIGJp
+ZW50w7R0LgrCoMKgwqDCoDwvcD4KwqDCoDwvYm9keT4KPC9odG1sPgo=
+
+  Rendered users/api_create.jbuilder (0.7ms)
+Completed 200 OK in 30046ms (Views: 4.7ms | ActiveRecord: 11.0ms)
+  [1m[36mActiveRecord::SchemaMigration Load (0.8ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to AddConfirmationTokenAndConfirmedAtToUsers (20150705112918)
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36m (1.4ms)[0m  [1mALTER TABLE "users" ADD COLUMN "confirmation_token" character varying(255)[0m
+  [1m[35m (0.6ms)[0m  ALTER TABLE "users" ADD COLUMN "confirmed_at" timestamp
+  [1m[36m (1.1ms)[0m  [1mALTER TABLE "users" ADD COLUMN "reset_password_token" character varying(255)[0m
+PG::DuplicateColumn: ERROR:  column "reset_password_token" of relation "users" already exists
+: ALTER TABLE "users" ADD COLUMN "reset_password_token" character varying(255)
+  [1m[35m (0.4ms)[0m  ROLLBACK
+  [1m[36mActiveRecord::SchemaMigration Load (1.0ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to AddConfirmationTokenAndConfirmedAtToUsers (20150705112918)
+  [1m[35m (0.6ms)[0m  BEGIN
+  [1m[36m (1.1ms)[0m  [1mALTER TABLE "users" ADD COLUMN "confirmation_token" character varying(255)[0m
+  [1m[35m (0.6ms)[0m  ALTER TABLE "users" ADD COLUMN "confirmed_at" timestamp
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "users" ADD COLUMN "password_reseted_at" timestamp[0m
+  [1m[35mSQL (0.8ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20150705112918"]]
+  [1m[36m (14.4ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.7ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/create/1/1/didie/duke/nukem/dietricherwane@yahoo.fr/dukenukemdie/dukenukemdie/60086286/19-10-1985/0504fe0b64c5e08d46c49ab41d33be94" for 127.0.0.1 at 2015-07-05 11:34:23 +0000
+  [1m[36mActiveRecord::SchemaMigration Load (1.0ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+
+SyntaxError (/home/dietrich/workshop/PaymoneyGateway/app/controllers/users_controller.rb:13: syntax error, unexpected ':', expecting =>
+...4(8).to_s, :confirmation_token: SecureRandom.hex.to_s}))
+...                               ^
+/home/dietrich/workshop/PaymoneyGateway/app/controllers/users_controller.rb:13: syntax error, unexpected '}', expecting keyword_end
+...n_token: SecureRandom.hex.to_s}))
+...                               ^):
+  app/controllers/users_controller.rb:13: syntax error, unexpected ':', expecting =>
+  app/controllers/users_controller.rb:13: syntax error, unexpected '}', expecting keyword_end
+
+
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_source.erb (0.8ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.5ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (9.9ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (25.6ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/create/1/1/didie/duke/nukem/dietricherwane@yahoo.fr/dukenukemdie/dukenukemdie/60086286/19-10-1985/0504fe0b64c5e08d46c49ab41d33be94" for 127.0.0.1 at 2015-07-05 11:35:35 +0000
+
+SyntaxError (/home/dietrich/workshop/PaymoneyGateway/app/controllers/users_controller.rb:13: syntax error, unexpected ':', expecting =>
+...s}).merge({:confirmation_token: SecureRandom.hex.to_s}))
+...                               ^
+/home/dietrich/workshop/PaymoneyGateway/app/controllers/users_controller.rb:13: syntax error, unexpected '}', expecting keyword_end
+...n_token: SecureRandom.hex.to_s}))
+...                               ^):
+  app/controllers/users_controller.rb:13: syntax error, unexpected ':', expecting =>
+  app/controllers/users_controller.rb:13: syntax error, unexpected '}', expecting keyword_end
+
+
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_source.erb (0.7ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.3ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.8ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (16.3ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/create/1/1/didie/duke/nukem/dietricherwane@yahoo.fr/dukenukemdie/dukenukemdie/60086286/19-10-1985/0504fe0b64c5e08d46c49ab41d33be94" for 127.0.0.1 at 2015-07-05 11:35:41 +0000
+
+SyntaxError (/home/dietrich/workshop/PaymoneyGateway/app/controllers/users_controller.rb:13: syntax error, unexpected ':', expecting =>
+...s}).merge({:confirmation_token: SecureRandom.hex.to_s}))
+...                               ^
+/home/dietrich/workshop/PaymoneyGateway/app/controllers/users_controller.rb:13: syntax error, unexpected '}', expecting keyword_end
+...n_token: SecureRandom.hex.to_s}))
+...                               ^):
+  app/controllers/users_controller.rb:13: syntax error, unexpected ':', expecting =>
+  app/controllers/users_controller.rb:13: syntax error, unexpected '}', expecting keyword_end
+
+
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_source.erb (0.7ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.6ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.6ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (16.7ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/create/1/1/didie/duke/nukem/dietricherwane@yahoo.fr/dukenukemdie/dukenukemdie/60086286/19-10-1985/0504fe0b64c5e08d46c49ab41d33be94" for 127.0.0.1 at 2015-07-05 11:36:20 +0000
+Processing by UsersController#api_create as HTML
+  Parameters: {"civility_id"=>"1", "sex_id"=>"1", "pseudo"=>"didie", "firstname"=>"duke", "lastname"=>"nukem", "email"=>"dietricherwane@yahoo.fr", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "msisdn"=>"60086286", "birthdate"=>"19-10-1985", "creation_mode"=>"0504fe0b64c5e08d46c49ab41d33be94"}
+  [1m[35mCreationMode Load (2.2ms)[0m  SELECT  "creation_modes".* FROM "creation_modes"  WHERE "creation_modes"."token" = '0504fe0b64c5e08d46c49ab41d33be94' LIMIT 1
+WARNING: Can't mass-assign protected attributes for User: controller, action, password_confirmation, creation_mode
+	app/controllers/users_controller.rb:13:in `api_create'
+  [1m[36m (0.6ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (1.1ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."msisdn" = '60086286' LIMIT 1
+  [1m[36mUser Exists (1.1ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE "users"."pseudo" = 'didie' LIMIT 1[0m
+  [1m[35mUser Exists (0.9ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."email" = 'dietricherwane@yahoo.fr' LIMIT 1
+  [1m[36mSQL (1.0ms)[0m  [1mINSERT INTO "users" ("birthdate", "civility_id", "confirmation_token", "created_at", "creation_mode_id", "email", "firstname", "lastname", "msisdn", "password", "pseudo", "salt", "sex_id", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING "id"[0m  [["birthdate", "1985-10-19"], ["civility_id", 1], ["confirmation_token", "82c4e6ee3c204fa3ed63ebd72369659c"], ["created_at", "2015-07-05 11:36:20.199027"], ["creation_mode_id", 1], ["email", "dietricherwane@yahoo.fr"], ["firstname", "duke"], ["lastname", "nukem"], ["msisdn", "60086286"], ["password", "b2246b86357509c8584822165827d29743d86534df874905fc7fd8ee072f27cc"], ["pseudo", "didie"], ["salt", "xOAuAgqoONA="], ["sex_id", 1], ["updated_at", "2015-07-05 11:36:20.199027"]]
+  [1m[35m (17.7ms)[0m  COMMIT
+  Rendered user_registration/confirmation_email.html.erb (2.3ms)
+
+UserRegistration#confirmation_email: processed outbound mail in 278.6ms
+
+Sent mail to dietricherwane@yahoo.fr (6.8ms)
+Date: Sun, 05 Jul 2015 11:36:20 +0000
+From: LONACI
+To: dietricherwane@yahoo.fr
+Message-ID: <559916b47e58c_14892e3a7041955d@dietrich-SATELLITE-L750.mail>
+Subject: Activation de votre compte parieur
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: base64
+
+PCFET0NUWVBFIGh0bWw+CjxodG1sPgrCoMKgPGhlYWQ+CsKgwqDCoMKgPG1l
+dGEgY29udGVudD0ndGV4dC9odG1sOyBjaGFyc2V0PVVURi04JyBodHRwLWVx
+dWl2PSdDb250ZW50LVR5cGUnIC8+CsKgwqA8L2hlYWQ+CsKgwqA8Ym9keT4K
+wqDCoMKgwqA8aDQ+Qm9uam91ciBkaWV0cmljaGVyd2FuZUB5YWhvby5mciwg
+PC9oND4KCsKgwqDCoMKgPHA+CsKgwqDCoMKgwqDCoFZvdXMgc291aGFpdGV6
+IGNyw6llciB1biBjb21wdGUgcGFyaWV1ciBMb25hY2kuCiAgICA8L3A+Cgog
+ICAgPHA+CiAgICAgIFZldWlsbGV6IGNsaXF1ZXIgc3VyIGxlIGxpZW4gc3Vp
+dmFudCBwb3VyIGFjdGl2ZXIgdm90cmUgY29tcHRlOiA8YSBocmVmPSIvODJj
+NGU2ZWUzYzIwNGZhM2VkNjNlYmQ3MjM2OTY1OWMiPkFjdGl2ZXIgbW9uIGNv
+bXB0ZTwvYT4KICAgIDwvcD4KCsKgwqDCoMKgPHA+CsKgwqDCoMKgICBBIGJp
+ZW50w7R0LgrCoMKgwqDCoDwvcD4KwqDCoDwvYm9keT4KPC9odG1sPgo=
+
+  Rendered users/api_create.jbuilder (2.3ms)
+Completed 200 OK in 469ms (Views: 4.5ms | ActiveRecord: 36.9ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/create/1/1/didie/duke/nukem/dietricherwane@yahoo.fr/dukenukemdie/dukenukemdie/60086286/19-10-1985/0504fe0b64c5e08d46c49ab41d33be94" for 127.0.0.1 at 2015-07-05 11:39:41 +0000
+Processing by UsersController#api_create as HTML
+  Parameters: {"civility_id"=>"1", "sex_id"=>"1", "pseudo"=>"didie", "firstname"=>"duke", "lastname"=>"nukem", "email"=>"dietricherwane@yahoo.fr", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "msisdn"=>"60086286", "birthdate"=>"19-10-1985", "creation_mode"=>"0504fe0b64c5e08d46c49ab41d33be94"}
+  [1m[36mCreationMode Load (0.8ms)[0m  [1mSELECT  "creation_modes".* FROM "creation_modes"  WHERE "creation_modes"."token" = '0504fe0b64c5e08d46c49ab41d33be94' LIMIT 1[0m
+WARNING: Can't mass-assign protected attributes for User: controller, action, password_confirmation, creation_mode
+	app/controllers/users_controller.rb:13:in `api_create'
+  [1m[35m (0.6ms)[0m  BEGIN
+  [1m[36mUser Exists (0.9ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE "users"."msisdn" = '60086286' LIMIT 1[0m
+  [1m[35mUser Exists (0.8ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."pseudo" = 'didie' LIMIT 1
+  [1m[36mUser Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE "users"."email" = 'dietricherwane@yahoo.fr' LIMIT 1[0m
+  [1m[35mSQL (0.9ms)[0m  INSERT INTO "users" ("birthdate", "civility_id", "confirmation_token", "created_at", "creation_mode_id", "email", "firstname", "lastname", "msisdn", "password", "pseudo", "salt", "sex_id", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING "id"  [["birthdate", "1985-10-19"], ["civility_id", 1], ["confirmation_token", "045ab8398040ac9ff739612919069095"], ["created_at", "2015-07-05 11:39:41.240097"], ["creation_mode_id", 1], ["email", "dietricherwane@yahoo.fr"], ["firstname", "duke"], ["lastname", "nukem"], ["msisdn", "60086286"], ["password", "889b068517cc9f23472752ddc401ff5d30cb4e520f5f415f8f26a71b4a203f3d"], ["pseudo", "didie"], ["salt", "6O2N5Y4wV4U="], ["sex_id", 1], ["updated_at", "2015-07-05 11:39:41.240097"]]
+  [1m[36m (12.1ms)[0m  [1mCOMMIT[0m
+  Rendered user_registration/confirmation_email.html.erb (1.8ms)
+
+UserRegistration#confirmation_email: processed outbound mail in 9.5ms
+Completed 500 Internal Server Error in 151ms
+
+NoMethodError (undefined method `deliver_now' for #<Mail::Message:0x000000041468e8>):
+  app/controllers/users_controller.rb:16:in `api_create'
+
+
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_source.erb (0.7ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.2ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (2.1ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (16.7ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/email/login/dietricherwane@ive.fr/dukenukemdie" for 127.0.0.1 at 2015-07-05 12:03:01 +0000
+Processing by UsersController#api_email_login as HTML
+  Parameters: {"email"=>"dietricherwane@ive.fr", "password"=>"[FILTERED]"}
+  [1m[35mUser Load (1.1ms)[0m  SELECT  "users".* FROM "users"  WHERE "users"."email" = 'dietricherwane@ive.fr' LIMIT 1
+  Rendered text template (0.1ms)
+Completed 200 OK in 28ms (Views: 15.3ms | ActiveRecord: 6.1ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/email/login/dietricherwane@ive.fr/dukenukemdie" for 127.0.0.1 at 2015-07-05 12:03:07 +0000
+Processing by UsersController#api_email_login as HTML
+  Parameters: {"email"=>"dietricherwane@ive.fr", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (0.9ms)[0m  [1mSELECT  "users".* FROM "users"  WHERE "users"."email" = 'dietricherwane@ive.fr' LIMIT 1[0m
+  Rendered text template (0.0ms)
+Completed 200 OK in 3ms (Views: 0.5ms | ActiveRecord: 0.9ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/email/login/dietricherwane@yahoo.fr/dukenukemdie" for 127.0.0.1 at 2015-07-05 12:03:12 +0000
+Processing by UsersController#api_email_login as HTML
+  Parameters: {"email"=>"dietricherwane@yahoo.fr", "password"=>"[FILTERED]"}
+  [1m[35mUser Load (1.3ms)[0m  SELECT  "users".* FROM "users"  WHERE "users"."email" = 'dietricherwane@yahoo.fr' LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users"  WHERE "users"."email" = 'dietricherwane@yahoo.fr' LIMIT 1[0m
+  Rendered text template (0.0ms)
+Completed 200 OK in 22ms (Views: 0.5ms | ActiveRecord: 1.3ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/enable/045ab8398040ac9ff739612919069095" for 127.0.0.1 at 2015-07-05 12:08:30 +0000
+Processing by UsersController#api_enable_account as HTML
+  Parameters: {"confirmation_token"=>"045ab8398040ac9ff739612919069095"}
+  [1m[35mUser Load (0.8ms)[0m  SELECT  "users".* FROM "users"  WHERE "users"."confirmation_token" = '045ab8398040ac9ff739612919069095' LIMIT 1
+  [1m[36m (0.5ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (1.1ms)[0m  SELECT  1 AS one FROM "users"  WHERE ("users"."msisdn" = '60086286' AND "users"."id" != 16) LIMIT 1
+  [1m[36mUser Exists (0.8ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE ("users"."pseudo" = 'didie' AND "users"."id" != 16) LIMIT 1[0m
+  [1m[35mUser Exists (0.7ms)[0m  SELECT  1 AS one FROM "users"  WHERE ("users"."email" = 'dietricherwane@yahoo.fr' AND "users"."id" != 16) LIMIT 1
+  [1m[36mSQL (0.9ms)[0m  [1mUPDATE "users" SET "confirmation_token" = $1, "confirmed_at" = $2, "updated_at" = $3 WHERE "users"."id" = 16[0m  [["confirmation_token", nil], ["confirmed_at", "2015-07-05 12:08:30.387163"], ["updated_at", "2015-07-05 12:08:30.396819"]]
+  [1m[35m (15.5ms)[0m  COMMIT
+  Rendered users/api_enable_account.jbuilder (1.5ms)
+Completed 200 OK in 119ms (Views: 5.9ms | ActiveRecord: 23.8ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password/16" for 127.0.0.1 at 2015-07-05 17:22:05 +0000
+  [1m[36mActiveRecord::SchemaMigration Load (0.8ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by UsersController#api_reset_password as HTML
+  Parameters: {"parameter"=>"16"}
+  [1m[35mUser Load (1.1ms)[0m  SELECT "users".* FROM "users"  WHERE (msisdn = '16' OR id = 16.to_i OR email = '16')
+PG::SyntaxError: ERROR:  syntax error at or near "to_i"
+LINE 1: ...".* FROM "users"  WHERE (msisdn = '16' OR id = 16.to_i OR em...
+                                                             ^
+: SELECT "users".* FROM "users"  WHERE (msisdn = '16' OR id = 16.to_i OR email = '16')
+Completed 500 Internal Server Error in 15ms
+
+ActiveRecord::StatementInvalid (PG::SyntaxError: ERROR:  syntax error at or near "to_i"
+LINE 1: ...".* FROM "users"  WHERE (msisdn = '16' OR id = 16.to_i OR em...
+                                                             ^
+: SELECT "users".* FROM "users"  WHERE (msisdn = '16' OR id = 16.to_i OR email = '16')):
+  app/controllers/users_controller.rb:36:in `api_reset_password'
+
+
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_source.erb (0.7ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.4ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.3ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (16.8ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password/16" for 127.0.0.1 at 2015-07-05 17:22:53 +0000
+Processing by UsersController#api_reset_password as HTML
+  Parameters: {"parameter"=>"16"}
+  [1m[36mUser Load (3.2ms)[0m  [1mSELECT "users".* FROM "users"  WHERE (msisdn = '16' OR id = 16 OR email = '16')[0m
+  [1m[35m (0.7ms)[0m  BEGIN
+  [1m[36mSQL (1.3ms)[0m  [1mUPDATE "users" SET "reset_password_token" = $1, "updated_at" = $2 WHERE "users"."id" = 16[0m  [["reset_password_token", "74f4aec5c3ad83a4a7980f4af159c36c"], ["updated_at", "2015-07-05 17:22:53.295546"]]
+  [1m[35m (8.3ms)[0m  COMMIT
+
+ResetPassword#send_reset_password_email: processed outbound mail in 8.1ms
+Completed 500 Internal Server Error in 131ms
+
+ActionView::MissingTemplate (Missing template reset_password/send_reset_password_email with "mailer". Searched in:
+  * "reset_password"
+):
+  app/mailers/reset_password.rb:8:in `send_reset_password_email'
+  app/controllers/users_controller.rb:40:in `api_reset_password'
+
+
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/missing_template.html.erb within rescues/layout (1.2ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password/16" for 127.0.0.1 at 2015-07-05 17:30:52 +0000
+Processing by UsersController#api_reset_password as HTML
+  Parameters: {"parameter"=>"16"}
+  [1m[36mUser Load (1.0ms)[0m  [1mSELECT "users".* FROM "users"  WHERE (msisdn = '16' OR id = 16 OR email = '16')[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mSQL (0.7ms)[0m  [1mUPDATE "users" SET "reset_password_token" = $1, "updated_at" = $2 WHERE "users"."id" = 16[0m  [["reset_password_token", "8e7946d3a904bde8de767fbd1df79c1c"], ["updated_at", "2015-07-05 17:30:52.968356"]]
+  [1m[35m (18.2ms)[0m  COMMIT
+  Rendered reset_password/send_reset_password_email.jbuilder (1.1ms)
+
+ResetPassword#send_reset_password_email: processed outbound mail in 10.8ms
+Completed 500 Internal Server Error in 39ms
+
+ActionView::Template::Error (undefined method `first' for nil:NilClass):
+    1: json.user @user.first, :id, :civility_id, :sex_id, :pseudo, :firstname, :lastname, :email, :msisdn, :birthdate
+  app/views/reset_password/send_reset_password_email.jbuilder:1:in `_app_views_reset_password_send_reset_password_email_jbuilder__817303814699467529_31616900'
+  app/mailers/reset_password.rb:8:in `send_reset_password_email'
+  app/controllers/users_controller.rb:40:in `api_reset_password'
+
+
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.4ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.2ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (14.1ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password/16" for 127.0.0.1 at 2015-07-05 17:36:42 +0000
+Processing by UsersController#api_reset_password as HTML
+  Parameters: {"parameter"=>"16"}
+  [1m[36mUser Load (1.1ms)[0m  [1mSELECT "users".* FROM "users"  WHERE (msisdn = '16' OR id = 16 OR email = '16')[0m
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36mSQL (1.0ms)[0m  [1mUPDATE "users" SET "reset_password_token" = $1, "updated_at" = $2 WHERE "users"."id" = 16[0m  [["reset_password_token", "58c3c2c429d0c0686b7f5d766292b209"], ["updated_at", "2015-07-05 17:36:42.336375"]]
+  [1m[35m (13.3ms)[0m  COMMIT
+  Rendered reset_password/send_reset_password_email.jbuilder (1.4ms)
+
+ResetPassword#send_reset_password_email: processed outbound mail in 10.2ms
+Completed 500 Internal Server Error in 71ms
+
+ActionView::Template::Error (undefined method `id' for nil:NilClass):
+    1: json.user @user, :id, :civility_id, :sex_id, :pseudo, :firstname, :lastname, :email, :msisdn, :birthdate
+  app/views/reset_password/send_reset_password_email.jbuilder:1:in `_app_views_reset_password_send_reset_password_email_jbuilder__817303814699467529_34857100'
+  app/mailers/reset_password.rb:8:in `send_reset_password_email'
+  app/controllers/users_controller.rb:40:in `api_reset_password'
+
+
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.4ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.0ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (11.3ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password/16" for 127.0.0.1 at 2015-07-05 17:37:45 +0000
+Processing by UsersController#api_reset_password as HTML
+  Parameters: {"parameter"=>"16"}
+  [1m[36mUser Load (1.3ms)[0m  [1mSELECT "users".* FROM "users"  WHERE (msisdn = '16' OR id = 16 OR email = '16')[0m
+  [1m[35m (0.7ms)[0m  BEGIN
+  [1m[36mSQL (1.0ms)[0m  [1mUPDATE "users" SET "reset_password_token" = $1, "updated_at" = $2 WHERE "users"."id" = 16[0m  [["reset_password_token", "7b1f9b359a43f29a0fe3e6cade699e90"], ["updated_at", "2015-07-05 17:37:45.132487"]]
+  [1m[35m (7.7ms)[0m  COMMIT
+  Rendered reset_password/send_reset_password_email.jbuilder (0.8ms)
+
+ResetPassword#send_reset_password_email: processed outbound mail in 6.6ms
+Completed 500 Internal Server Error in 57ms
+
+ActionView::Template::Error (undefined method `id' for nil:NilClass):
+    1: json.user @user, :id, :civility_id, :sex_id, :pseudo, :firstname, :lastname, :email, :msisdn, :birthdate
+  app/views/reset_password/send_reset_password_email.jbuilder:1:in `_app_views_reset_password_send_reset_password_email_jbuilder__817303814699467529_34857100'
+  app/mailers/reset_password.rb:8:in `send_reset_password_email'
+  app/controllers/users_controller.rb:40:in `api_reset_password'
+
+
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.5ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.1ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (11.4ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password/16" for 127.0.0.1 at 2015-07-05 17:38:12 +0000
+Processing by UsersController#api_reset_password as HTML
+  Parameters: {"parameter"=>"16"}
+  [1m[36mUser Load (1.3ms)[0m  [1mSELECT "users".* FROM "users"  WHERE (msisdn = '16' OR id = 16 OR email = '16')[0m
+  [1m[35m (0.7ms)[0m  BEGIN
+  [1m[36mSQL (0.9ms)[0m  [1mUPDATE "users" SET "reset_password_token" = $1, "updated_at" = $2 WHERE "users"."id" = 16[0m  [["reset_password_token", "08566f5d6b357f60e9a6806404531c58"], ["updated_at", "2015-07-05 17:38:12.479766"]]
+  [1m[35m (16.8ms)[0m  COMMIT
+  Rendered reset_password/send_reset_password_email.jbuilder (0.8ms)
+
+ResetPassword#send_reset_password_email: processed outbound mail in 7.9ms
+Completed 500 Internal Server Error in 68ms
+
+ActionView::Template::Error (undefined method `id' for nil:NilClass):
+    1: json.user @user, :id, :civility_id, :sex_id, :pseudo, :firstname, :lastname, :email, :msisdn, :birthdate
+  app/views/reset_password/send_reset_password_email.jbuilder:1:in `_app_views_reset_password_send_reset_password_email_jbuilder__817303814699467529_34857100'
+  app/mailers/reset_password.rb:8:in `send_reset_password_email'
+  app/controllers/users_controller.rb:40:in `api_reset_password'
+
+
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.7ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.1ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (70.3ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password/16" for 127.0.0.1 at 2015-07-05 17:38:33 +0000
+Processing by UsersController#api_reset_password as HTML
+  Parameters: {"parameter"=>"16"}
+  [1m[36mUser Load (1.4ms)[0m  [1mSELECT "users".* FROM "users"  WHERE (msisdn = '16' OR id = 16 OR email = '16')[0m
+  [1m[35m (0.6ms)[0m  BEGIN
+  [1m[36mSQL (1.0ms)[0m  [1mUPDATE "users" SET "reset_password_token" = $1, "updated_at" = $2 WHERE "users"."id" = 16[0m  [["reset_password_token", "ea4872c8cbe63fb301ec161a4fa3096e"], ["updated_at", "2015-07-05 17:38:33.970263"]]
+  [1m[35m (15.1ms)[0m  COMMIT
+  Rendered reset_password/send_reset_password_email.jbuilder (0.8ms)
+
+ResetPassword#send_reset_password_email: processed outbound mail in 10.4ms
+Completed 500 Internal Server Error in 68ms
+
+ActionView::Template::Error (undefined method `id' for nil:NilClass):
+    1: json.user @user, :id, :civility_id, :sex_id, :pseudo, :firstname, :lastname, :email, :msisdn, :birthdate
+  app/views/reset_password/send_reset_password_email.jbuilder:1:in `_app_views_reset_password_send_reset_password_email_jbuilder__817303814699467529_34857100'
+  app/mailers/reset_password.rb:8:in `send_reset_password_email'
+  app/controllers/users_controller.rb:40:in `api_reset_password'
+
+
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.4ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.3ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (12.0ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password/16" for 127.0.0.1 at 2015-07-05 17:38:56 +0000
+Processing by UsersController#api_reset_password as HTML
+  Parameters: {"parameter"=>"16"}
+  [1m[36mUser Load (1.1ms)[0m  [1mSELECT "users".* FROM "users"  WHERE (msisdn = '16' OR id = 16 OR email = '16')[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mSQL (0.7ms)[0m  [1mUPDATE "users" SET "reset_password_token" = $1, "updated_at" = $2 WHERE "users"."id" = 16[0m  [["reset_password_token", "a33b8330935636308ab07e713fc91b22"], ["updated_at", "2015-07-05 17:38:56.078525"]]
+  [1m[35m (7.6ms)[0m  COMMIT
+  Rendered reset_password/send_reset_password_email.jbuilder (2.0ms)
+
+ResetPassword#send_reset_password_email: processed outbound mail in 281.9ms
+
+Sent mail to dietricherwane@yahoo.fr (7.4ms)
+Date: Sun, 05 Jul 2015 17:38:56 +0000
+From: LONACI
+To: dietricherwane@yahoo.fr
+Message-ID: <55996bb05b903_1d1e3fb63c0177f0719f3@dietrich-SATELLITE-L750.mail>
+Subject: =?UTF-8?Q?R=C3=A9initialisation_du_mot_de_passe_de_votre_compte?=
+ =?UTF-8?Q?_parieur?=
+Mime-Version: 1.0
+Content-Type: application/json;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+{}
+  Rendered text template (0.0ms)
+Completed 200 OK in 308ms (Views: 1.5ms | ActiveRecord: 9.7ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password/16" for 127.0.0.1 at 2015-07-05 17:39:11 +0000
+Processing by UsersController#api_reset_password as HTML
+  Parameters: {"parameter"=>"16"}
+  [1m[36mUser Load (1.2ms)[0m  [1mSELECT "users".* FROM "users"  WHERE (msisdn = '16' OR id = 16 OR email = '16')[0m
+  [1m[35m (0.6ms)[0m  BEGIN
+  [1m[36mSQL (0.6ms)[0m  [1mUPDATE "users" SET "reset_password_token" = $1, "updated_at" = $2 WHERE "users"."id" = 16[0m  [["reset_password_token", "6aafff5e14ccb89de5e5f20892919598"], ["updated_at", "2015-07-05 17:39:11.875452"]]
+  [1m[35m (11.3ms)[0m  COMMIT
+  Rendered reset_password/send_reset_password_email.jbuilder (0.2ms)
+
+ResetPassword#send_reset_password_email: processed outbound mail in 7.5ms
+
+Sent mail to dietricherwane@yahoo.fr (3.9ms)
+Date: Sun, 05 Jul 2015 17:39:11 +0000
+From: LONACI
+To: dietricherwane@yahoo.fr
+Message-ID: <55996bbfdcc6d_1d1e3fb63c0177f072093@dietrich-SATELLITE-L750.mail>
+Subject: =?UTF-8?Q?R=C3=A9initialisation_du_mot_de_passe_de_votre_compte?=
+ =?UTF-8?Q?_parieur?=
+Mime-Version: 1.0
+Content-Type: application/json;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+{}
+  Rendered text template (0.0ms)
+Completed 200 OK in 66ms (Views: 1.0ms | ActiveRecord: 18.1ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password/16" for 127.0.0.1 at 2015-07-05 17:39:23 +0000
+Processing by UsersController#api_reset_password as HTML
+  Parameters: {"parameter"=>"16"}
+  [1m[36mUser Load (1.1ms)[0m  [1mSELECT "users".* FROM "users"  WHERE (msisdn = '16' OR id = 16 OR email = '16')[0m
+  [1m[35m (0.6ms)[0m  BEGIN
+  [1m[36mSQL (0.6ms)[0m  [1mUPDATE "users" SET "reset_password_token" = $1, "updated_at" = $2 WHERE "users"."id" = 16[0m  [["reset_password_token", "a4529f43fa80a6a8ba41021beb317f2a"], ["updated_at", "2015-07-05 17:39:23.802140"]]
+  [1m[35m (51.7ms)[0m  COMMIT
+  Rendered reset_password/send_reset_password_email.jbuilder (0.1ms)
+
+ResetPassword#send_reset_password_email: processed outbound mail in 5.3ms
+
+Sent mail to dietricherwane@yahoo.fr (3.3ms)
+Date: Sun, 05 Jul 2015 17:39:23 +0000
+From: LONACI
+To: dietricherwane@yahoo.fr
+Message-ID: <55996bcbd4602_1d1e3fb63c0177f07214@dietrich-SATELLITE-L750.mail>
+Subject: =?UTF-8?Q?R=C3=A9initialisation_du_mot_de_passe_de_votre_compte?=
+ =?UTF-8?Q?_parieur?=
+Mime-Version: 1.0
+Content-Type: application/json;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+{}
+  Rendered text template (0.0ms)
+Completed 200 OK in 102ms (Views: 0.9ms | ActiveRecord: 57.6ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password/16" for 127.0.0.1 at 2015-07-05 17:40:15 +0000
+Processing by UsersController#api_reset_password as HTML
+  Parameters: {"parameter"=>"16"}
+  [1m[36mUser Load (1.3ms)[0m  [1mSELECT "users".* FROM "users"  WHERE (msisdn = '16' OR id = 16 OR email = '16')[0m
+  [1m[35m (0.6ms)[0m  BEGIN
+  [1m[36mSQL (0.7ms)[0m  [1mUPDATE "users" SET "reset_password_token" = $1, "updated_at" = $2 WHERE "users"."id" = 16[0m  [["reset_password_token", "9843a57196b9750de03fd6000da3284d"], ["updated_at", "2015-07-05 17:40:16.021332"]]
+  [1m[35m (22.5ms)[0m  COMMIT
+  Rendered reset_password/send_reset_password_email.jbuilder (1.4ms)
+
+ResetPassword#send_reset_password_email: processed outbound mail in 7.5ms
+Completed 500 Internal Server Error in 70ms
+
+ActionView::Template::Error (undefined method `id' for nil:NilClass):
+    1: json.user @user, :id, :civility_id, :sex_id, :pseudo, :firstname, :lastname, :email, :msisdn, :birthdate
+  app/views/reset_password/send_reset_password_email.jbuilder:1:in `_app_views_reset_password_send_reset_password_email_jbuilder__817303814699467529_34378180'
+  app/mailers/reset_password.rb:8:in `send_reset_password_email'
+  app/controllers/users_controller.rb:40:in `api_reset_password'
+
+
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.4ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.2ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (12.2ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password/16" for 127.0.0.1 at 2015-07-05 17:42:06 +0000
+Processing by UsersController#api_reset_password as HTML
+  Parameters: {"parameter"=>"16"}
+  [1m[36mUser Load (1.2ms)[0m  [1mSELECT "users".* FROM "users"  WHERE (msisdn = '16' OR id = 16 OR email = '16')[0m
+  [1m[35m (0.6ms)[0m  BEGIN
+  [1m[36mSQL (0.7ms)[0m  [1mUPDATE "users" SET "reset_password_token" = $1, "updated_at" = $2 WHERE "users"."id" = 16[0m  [["reset_password_token", "b1fe499102e37cf97dac6e27d6b58cfd"], ["updated_at", "2015-07-05 17:42:06.889112"]]
+  [1m[35m (12.5ms)[0m  COMMIT
+  Rendered reset_password/send_reset_password_email.jbuilder (0.9ms)
+
+ResetPassword#send_reset_password_email: processed outbound mail in 11.1ms
+Completed 500 Internal Server Error in 64ms
+
+ActionView::Template::Error (undefined method `id' for nil:NilClass):
+    1: json.user @user, :id, :civility_id, :sex_id, :pseudo, :firstname, :lastname, :email, :msisdn, :birthdate
+  app/views/reset_password/send_reset_password_email.jbuilder:1:in `_app_views_reset_password_send_reset_password_email_jbuilder__817303814699467529_34378180'
+  app/mailers/reset_password.rb:8:in `send_reset_password_email'
+  app/controllers/users_controller.rb:40:in `api_reset_password'
+
+
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.3ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.2ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (11.4ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password/16" for 127.0.0.1 at 2015-07-05 17:43:00 +0000
+Processing by UsersController#api_reset_password as HTML
+  Parameters: {"parameter"=>"16"}
+  [1m[36mUser Load (1.2ms)[0m  [1mSELECT "users".* FROM "users"  WHERE (msisdn = '16' OR id = 16 OR email = '16')[0m
+  [1m[35m (0.6ms)[0m  BEGIN
+  [1m[36mSQL (0.8ms)[0m  [1mUPDATE "users" SET "reset_password_token" = $1, "updated_at" = $2 WHERE "users"."id" = 16[0m  [["reset_password_token", "8ba50542669221ad3b1c5df8870db635"], ["updated_at", "2015-07-05 17:43:00.698378"]]
+  [1m[35m (15.6ms)[0m  COMMIT
+  Rendered reset_password/send_reset_password_email.jbuilder (0.5ms)
+
+ResetPassword#send_reset_password_email: processed outbound mail in 8.7ms
+
+Sent mail to dietricherwane@yahoo.fr (3.6ms)
+Date: Sun, 05 Jul 2015 17:43:00 +0000
+From: LONACI
+To: dietricherwane@yahoo.fr
+Message-ID: <55996ca4b2806_1d1e1f3ab14722d4@dietrich-SATELLITE-L750.mail>
+Subject: =?UTF-8?Q?R=C3=A9initialisation_du_mot_de_passe_de_votre_compte?=
+ =?UTF-8?Q?_parieur?=
+Mime-Version: 1.0
+Content-Type: application/json;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+{}
+  [1m[36mUser Load (11.7ms)[0m  [1mSELECT  "users".* FROM "users"  WHERE "users"."id" = 16 LIMIT 1[0m
+  Rendered text template (0.1ms)
+Completed 200 OK in 87ms (Views: 2.1ms | ActiveRecord: 33.7ms)
+  [1m[36mActiveRecord::SchemaMigration Load (0.9ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to AddResetPasswordUrlToParameters (20150705174628)
+  [1m[35m (0.6ms)[0m  BEGIN
+  [1m[36m (33.2ms)[0m  [1mALTER TABLE "parameters" ADD COLUMN "reset_password_url" character varying(255)[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20150705174628"]]
+  [1m[36m (10.9ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.5ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password/16" for 127.0.0.1 at 2015-07-05 17:48:50 +0000
+  [1m[36mActiveRecord::SchemaMigration Load (1.0ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by UsersController#api_reset_password as HTML
+  Parameters: {"parameter"=>"16"}
+  [1m[35mUser Load (3.0ms)[0m  SELECT "users".* FROM "users"  WHERE (msisdn = '16' OR id = 16 OR email = '16')
+  [1m[36m (0.7ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (1.1ms)[0m  UPDATE "users" SET "reset_password_token" = $1, "updated_at" = $2 WHERE "users"."id" = 16  [["reset_password_token", "0923a41c2fcfc9cace8f1fc44383810f"], ["updated_at", "2015-07-05 17:48:50.805784"]]
+  [1m[36m (11.1ms)[0m  [1mCOMMIT[0m
+  Rendered reset_password/send_reset_password_email.html.erb (2.6ms)
+
+ResetPassword#send_reset_password_email: processed outbound mail in 281.5ms
+
+Sent mail to dietricherwane@yahoo.fr (7.7ms)
+Date: Sun, 05 Jul 2015 17:48:51 +0000
+From: LONACI
+To: dietricherwane@yahoo.fr
+Message-ID: <55996e031c581_1df51a9d9449682c@dietrich-SATELLITE-L750.mail>
+Subject: =?UTF-8?Q?R=C3=A9initialisation_du_mot_de_passe_de_votre_compte?=
+ =?UTF-8?Q?_parieur?=
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html>
+<html>
+=C2=A0=C2=A0<head>
+=C2=A0=C2=A0=C2=A0=C2=A0<meta content=3D'text/html; charset=3DUTF-8' http=
+-equiv=3D'Content-Type' />
+=C2=A0=C2=A0</head>
+=C2=A0=C2=A0<body>
+=C2=A0=C2=A0=C2=A0=C2=A0<h4>Bonjour dietricherwane@yahoo.fr, </h4>
+
+=C2=A0=C2=A0=C2=A0=C2=A0<p>
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0Vous souhaitez r=C3=A9initialiser le =
+mot de passe de votre compte parieur Lonaci.
+    </p>
+
+    <p>
+      Veuillez cliquer sur le lien suivant pour modifier votre mot de pas=
+se: <a href=3D"/0923a41c2fcfc9cace8f1fc44383810f">Modifier mon mot de pas=
+se</a>
+    </p>
+
+=C2=A0=C2=A0=C2=A0=C2=A0<p>
+=C2=A0=C2=A0=C2=A0=C2=A0  A bient=C3=B4t.
+=C2=A0=C2=A0=C2=A0=C2=A0</p>
+=C2=A0=C2=A0</body>
+</html>
+
+  Rendered users/api_reset_password.jbuilder (2.6ms)
+Completed 200 OK in 371ms (Views: 5.0ms | ActiveRecord: 22.5ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password_activation/0923a41c2fcfc9cace8f1fc44383810f/:password/:password_confirmation" for 127.0.0.1 at 2015-07-05 18:00:08 +0000
+Processing by UsersController#api_reset_password_activation as HTML
+  Parameters: {"reset_password_token"=>"[FILTERED]", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}
+  [1m[35mUser Load (1.5ms)[0m  SELECT  "users".* FROM "users"  WHERE "users"."reset_password_token" IS NULL LIMIT 1
+  Rendered text template (0.1ms)
+Completed 200 OK in 88ms (Views: 54.9ms | ActiveRecord: 7.2ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password_activation/0923a41c2fcfc9cace8f1fc44383810f/:password/:password" for 127.0.0.1 at 2015-07-05 18:00:19 +0000
+Processing by UsersController#api_reset_password_activation as HTML
+  Parameters: {"reset_password_token"=>"[FILTERED]", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}
+  [1m[36mUser Load (1.6ms)[0m  [1mSELECT  "users".* FROM "users"  WHERE "users"."reset_password_token" IS NULL LIMIT 1[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+WARNING: Can't mass-assign protected attributes for User: reset_password_token
+	app/controllers/users_controller.rb:53:in `api_reset_password_activation'
+  [1m[36mUser Exists (1.1ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE ("users"."msisdn" = '58908957' AND "users"."id" != 8) LIMIT 1[0m
+  [1m[35mUser Exists (0.7ms)[0m  SELECT  1 AS one FROM "users"  WHERE ("users"."pseudo" = 'didi' AND "users"."id" != 8) LIMIT 1
+  [1m[36mUser Exists (0.5ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE ("users"."email" = 'dietricherwane@live.fr' AND "users"."id" != 8) LIMIT 1[0m
+  [1m[35mSQL (0.6ms)[0m  UPDATE "users" SET "password" = $1, "password_reseted_at" = $2, "updated_at" = $3 WHERE "users"."id" = 8  [["password", "a5f07690b75366124e7a128fdb61b4c9eb8e65c2787f9fb69f49b75839a71fa7"], ["password_reseted_at", "2015-07-05 18:00:19.281873"], ["updated_at", "2015-07-05 18:00:19.305448"]]
+  [1m[36m (27.2ms)[0m  [1mCOMMIT[0m
+Completed 500 Internal Server Error in 62ms
+
+ActionView::MissingTemplate (Missing template users/api_reset_password_activation, application/api_reset_password_activation with {:locale=>[:en], :formats=>[:html], :variants=>[], :handlers=>[:erb, :builder, :raw, :ruby, :coffee, :jbuilder]}. Searched in:
+  * "/home/dietrich/workshop/PaymoneyGateway/app/views"
+):
+  actionview (4.1.8) lib/action_view/path_set.rb:46:in `find'
+  actionview (4.1.8) lib/action_view/lookup_context.rb:124:in `find'
+  actionview (4.1.8) lib/action_view/renderer/abstract_renderer.rb:18:in `find_template'
+  actionview (4.1.8) lib/action_view/renderer/template_renderer.rb:41:in `determine_template'
+  actionview (4.1.8) lib/action_view/renderer/template_renderer.rb:8:in `render'
+  actionview (4.1.8) lib/action_view/renderer/renderer.rb:42:in `render_template'
+  actionview (4.1.8) lib/action_view/renderer/renderer.rb:23:in `render'
+  actionview (4.1.8) lib/action_view/rendering.rb:99:in `_render_template'
+  actionpack (4.1.8) lib/action_controller/metal/streaming.rb:217:in `_render_template'
+  actionview (4.1.8) lib/action_view/rendering.rb:82:in `render_to_body'
+  actionpack (4.1.8) lib/action_controller/metal/rendering.rb:32:in `render_to_body'
+  actionpack (4.1.8) lib/action_controller/metal/renderers.rb:32:in `render_to_body'
+  actionpack (4.1.8) lib/abstract_controller/rendering.rb:25:in `render'
+  actionpack (4.1.8) lib/action_controller/metal/rendering.rb:16:in `render'
+  actionpack (4.1.8) lib/action_controller/metal/instrumentation.rb:41:in `block (2 levels) in render'
+  activesupport (4.1.8) lib/active_support/core_ext/benchmark.rb:12:in `block in ms'
+  /home/dietrich/.rvm/rubies/ruby-2.0.0-p195/lib/ruby/2.0.0/benchmark.rb:296:in `realtime'
+  activesupport (4.1.8) lib/active_support/core_ext/benchmark.rb:12:in `ms'
+  actionpack (4.1.8) lib/action_controller/metal/instrumentation.rb:41:in `block in render'
+  actionpack (4.1.8) lib/action_controller/metal/instrumentation.rb:84:in `cleanup_view_runtime'
+  activerecord (4.1.8) lib/active_record/railties/controller_runtime.rb:25:in `cleanup_view_runtime'
+  actionpack (4.1.8) lib/action_controller/metal/instrumentation.rb:40:in `render'
+  actionpack (4.1.8) lib/action_controller/metal/implicit_render.rb:10:in `default_render'
+  actionpack (4.1.8) lib/action_controller/metal/implicit_render.rb:5:in `send_action'
+  actionpack (4.1.8) lib/abstract_controller/base.rb:189:in `process_action'
+  actionpack (4.1.8) lib/action_controller/metal/rendering.rb:10:in `process_action'
+  actionpack (4.1.8) lib/abstract_controller/callbacks.rb:20:in `block in process_action'
+  activesupport (4.1.8) lib/active_support/callbacks.rb:113:in `call'
+  activesupport (4.1.8) lib/active_support/callbacks.rb:113:in `call'
+  activesupport (4.1.8) lib/active_support/callbacks.rb:229:in `block in halting'
+  activesupport (4.1.8) lib/active_support/callbacks.rb:229:in `call'
+  activesupport (4.1.8) lib/active_support/callbacks.rb:229:in `block in halting'
+  activesupport (4.1.8) lib/active_support/callbacks.rb:166:in `call'
+  activesupport (4.1.8) lib/active_support/callbacks.rb:166:in `block in halting'
+  activesupport (4.1.8) lib/active_support/callbacks.rb:166:in `call'
+  activesupport (4.1.8) lib/active_support/callbacks.rb:166:in `block in halting'
+  activesupport (4.1.8) lib/active_support/callbacks.rb:166:in `call'
+  activesupport (4.1.8) lib/active_support/callbacks.rb:166:in `block in halting'
+  activesupport (4.1.8) lib/active_support/callbacks.rb:86:in `call'
+  activesupport (4.1.8) lib/active_support/callbacks.rb:86:in `run_callbacks'
+  actionpack (4.1.8) lib/abstract_controller/callbacks.rb:19:in `process_action'
+  actionpack (4.1.8) lib/action_controller/metal/rescue.rb:29:in `process_action'
+  actionpack (4.1.8) lib/action_controller/metal/instrumentation.rb:31:in `block in process_action'
+  activesupport (4.1.8) lib/active_support/notifications.rb:159:in `block in instrument'
+  activesupport (4.1.8) lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+  activesupport (4.1.8) lib/active_support/notifications.rb:159:in `instrument'
+  actionpack (4.1.8) lib/action_controller/metal/instrumentation.rb:30:in `process_action'
+  actionpack (4.1.8) lib/action_controller/metal/params_wrapper.rb:250:in `process_action'
+  activerecord (4.1.8) lib/active_record/railties/controller_runtime.rb:18:in `process_action'
+  actionpack (4.1.8) lib/abstract_controller/base.rb:136:in `process'
+  actionview (4.1.8) lib/action_view/rendering.rb:30:in `process'
+  actionpack (4.1.8) lib/action_controller/metal.rb:196:in `dispatch'
+  actionpack (4.1.8) lib/action_controller/metal/rack_delegation.rb:13:in `dispatch'
+  actionpack (4.1.8) lib/action_controller/metal.rb:232:in `block in action'
+  actionpack (4.1.8) lib/action_dispatch/routing/route_set.rb:82:in `call'
+  actionpack (4.1.8) lib/action_dispatch/routing/route_set.rb:82:in `dispatch'
+  actionpack (4.1.8) lib/action_dispatch/routing/route_set.rb:50:in `call'
+  actionpack (4.1.8) lib/action_dispatch/journey/router.rb:73:in `block in call'
+  actionpack (4.1.8) lib/action_dispatch/journey/router.rb:59:in `each'
+  actionpack (4.1.8) lib/action_dispatch/journey/router.rb:59:in `call'
+  actionpack (4.1.8) lib/action_dispatch/routing/route_set.rb:678:in `call'
+  rack (1.5.5) lib/rack/etag.rb:23:in `call'
+  rack (1.5.5) lib/rack/conditionalget.rb:25:in `call'
+  rack (1.5.5) lib/rack/head.rb:11:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/params_parser.rb:27:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/flash.rb:254:in `call'
+  rack (1.5.5) lib/rack/session/abstract/id.rb:225:in `context'
+  rack (1.5.5) lib/rack/session/abstract/id.rb:220:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/cookies.rb:560:in `call'
+  activerecord (4.1.8) lib/active_record/query_cache.rb:36:in `call'
+  activerecord (4.1.8) lib/active_record/connection_adapters/abstract/connection_pool.rb:621:in `call'
+  activerecord (4.1.8) lib/active_record/migration.rb:380:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/callbacks.rb:29:in `block in call'
+  activesupport (4.1.8) lib/active_support/callbacks.rb:82:in `run_callbacks'
+  actionpack (4.1.8) lib/action_dispatch/middleware/callbacks.rb:27:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/reloader.rb:73:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/remote_ip.rb:76:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/debug_exceptions.rb:17:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+  railties (4.1.8) lib/rails/rack/logger.rb:38:in `call_app'
+  railties (4.1.8) lib/rails/rack/logger.rb:20:in `block in call'
+  activesupport (4.1.8) lib/active_support/tagged_logging.rb:68:in `block in tagged'
+  activesupport (4.1.8) lib/active_support/tagged_logging.rb:26:in `tagged'
+  activesupport (4.1.8) lib/active_support/tagged_logging.rb:68:in `tagged'
+  railties (4.1.8) lib/rails/rack/logger.rb:20:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/request_id.rb:21:in `call'
+  rack (1.5.5) lib/rack/methodoverride.rb:21:in `call'
+  rack (1.5.5) lib/rack/runtime.rb:17:in `call'
+  activesupport (4.1.8) lib/active_support/cache/strategy/local_cache_middleware.rb:26:in `call'
+  rack (1.5.5) lib/rack/lock.rb:17:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/static.rb:84:in `call'
+  rack (1.5.5) lib/rack/sendfile.rb:112:in `call'
+  railties (4.1.8) lib/rails/engine.rb:514:in `call'
+  railties (4.1.8) lib/rails/application.rb:144:in `call'
+  rack (1.5.5) lib/rack/lock.rb:17:in `call'
+  rack (1.5.5) lib/rack/content_length.rb:14:in `call'
+  rack (1.5.5) lib/rack/handler/webrick.rb:60:in `service'
+  /home/dietrich/.rvm/rubies/ruby-2.0.0-p195/lib/ruby/2.0.0/webrick/httpserver.rb:138:in `service'
+  /home/dietrich/.rvm/rubies/ruby-2.0.0-p195/lib/ruby/2.0.0/webrick/httpserver.rb:94:in `run'
+  /home/dietrich/.rvm/rubies/ruby-2.0.0-p195/lib/ruby/2.0.0/webrick/server.rb:295:in `block in start_thread'
+
+
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/missing_template.html.erb within rescues/layout (0.5ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password_activation/0923a41c2fcfc9cace8f1fc44383810f/:password/:password" for 127.0.0.1 at 2015-07-05 18:01:22 +0000
+Processing by UsersController#api_reset_password_activation as HTML
+  Parameters: {"reset_password_token"=>"[FILTERED]", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}
+  [1m[35mUser Load (1.1ms)[0m  SELECT  "users".* FROM "users"  WHERE "users"."reset_password_token" IS NULL LIMIT 1
+  [1m[36m (0.6ms)[0m  [1mBEGIN[0m
+WARNING: Can't mass-assign protected attributes for User: reset_password_token
+	app/controllers/users_controller.rb:53:in `api_reset_password_activation'
+  [1m[35mUser Exists (1.1ms)[0m  SELECT  1 AS one FROM "users"  WHERE ("users"."msisdn" = '58908957' AND "users"."id" != 8) LIMIT 1
+  [1m[36mUser Exists (0.8ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE ("users"."pseudo" = 'didi' AND "users"."id" != 8) LIMIT 1[0m
+  [1m[35mUser Exists (0.7ms)[0m  SELECT  1 AS one FROM "users"  WHERE ("users"."email" = 'dietricherwane@live.fr' AND "users"."id" != 8) LIMIT 1
+  [1m[36mSQL (1.0ms)[0m  [1mUPDATE "users" SET "password" = $1, "password_reseted_at" = $2, "updated_at" = $3 WHERE "users"."id" = 8[0m  [["password", "e7790085d4b4dfb4fa7969b0991b1b12099cc70c0ff57df033bedecffaabcfcf"], ["password_reseted_at", "2015-07-05 18:01:22.128776"], ["updated_at", "2015-07-05 18:01:22.141392"]]
+  [1m[35m (8.5ms)[0m  COMMIT
+  Rendered users/api_reset_password_activation.jbuilder (2.5ms)
+Completed 500 Internal Server Error in 62ms
+
+ActionView::Template::Error (undefined method `first' for #<User:0x00000005181460>):
+    1: json.user @user.first, :id, :civility_id, :sex_id, :pseudo, :firstname, :lastname, :email, :msisdn, :birthdate
+  app/views/users/api_reset_password_activation.jbuilder:1:in `_app_views_users_api_reset_password_activation_jbuilder__3779372323736947590_43477080'
+
+
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.4ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.0ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (11.2ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password_activation/0923a41c2fcfc9cace8f1fc44383810f/:password/:password" for 127.0.0.1 at 2015-07-05 18:01:40 +0000
+Processing by UsersController#api_reset_password_activation as HTML
+  Parameters: {"reset_password_token"=>"[FILTERED]", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}
+  [1m[36mUser Load (0.8ms)[0m  [1mSELECT  "users".* FROM "users"  WHERE "users"."reset_password_token" IS NULL LIMIT 1[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+WARNING: Can't mass-assign protected attributes for User: reset_password_token
+	app/controllers/users_controller.rb:53:in `api_reset_password_activation'
+  [1m[36mUser Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE ("users"."msisdn" = '58908957' AND "users"."id" != 8) LIMIT 1[0m
+  [1m[35mUser Exists (0.4ms)[0m  SELECT  1 AS one FROM "users"  WHERE ("users"."pseudo" = 'didi' AND "users"."id" != 8) LIMIT 1
+  [1m[36mUser Exists (0.4ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE ("users"."email" = 'dietricherwane@live.fr' AND "users"."id" != 8) LIMIT 1[0m
+  [1m[35mSQL (0.8ms)[0m  UPDATE "users" SET "password" = $1, "password_reseted_at" = $2, "updated_at" = $3 WHERE "users"."id" = 8  [["password", "68dc898db551f1b8d31d0795111f90dc354dd96cfaab68c1bbc047d570b5cb3b"], ["password_reseted_at", "2015-07-05 18:01:40.041422"], ["updated_at", "2015-07-05 18:01:40.049821"]]
+  [1m[36m (11.7ms)[0m  [1mCOMMIT[0m
+  Rendered users/api_reset_password_activation.jbuilder (1.7ms)
+Completed 500 Internal Server Error in 29ms
+
+ActionView::Template::Error (undefined method `first' for #<User:0x007f4844af2150>):
+    1: json.user @user.first, :id, :civility_id, :sex_id, :pseudo, :firstname, :lastname, :email, :msisdn, :birthdate
+  app/views/users/api_reset_password_activation.jbuilder:1:in `_app_views_users_api_reset_password_activation_jbuilder__3779372323736947590_43477080'
+
+
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.6ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.4ms)
+  Rendered /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/gems/actionpack-4.1.8/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (70.7ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password_activation/0923a41c2fcfc9cace8f1fc44383810f/:password/:password" for 127.0.0.1 at 2015-07-05 18:02:17 +0000
+Processing by UsersController#api_reset_password_activation as HTML
+  Parameters: {"reset_password_token"=>"[FILTERED]", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}
+  [1m[35mUser Load (1.1ms)[0m  SELECT  "users".* FROM "users"  WHERE "users"."reset_password_token" IS NULL LIMIT 1
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+WARNING: Can't mass-assign protected attributes for User: reset_password_token
+	app/controllers/users_controller.rb:53:in `api_reset_password_activation'
+  [1m[35mUser Exists (0.9ms)[0m  SELECT  1 AS one FROM "users"  WHERE ("users"."msisdn" = '58908957' AND "users"."id" != 8) LIMIT 1
+  [1m[36mUser Exists (0.5ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE ("users"."pseudo" = 'didi' AND "users"."id" != 8) LIMIT 1[0m
+  [1m[35mUser Exists (0.5ms)[0m  SELECT  1 AS one FROM "users"  WHERE ("users"."email" = 'dietricherwane@live.fr' AND "users"."id" != 8) LIMIT 1
+  [1m[36mSQL (0.6ms)[0m  [1mUPDATE "users" SET "password" = $1, "password_reseted_at" = $2, "updated_at" = $3 WHERE "users"."id" = 8[0m  [["password", "ba61d1052b4a8723b60f0f53d49c04101db459406e79349f2131b0e715de8ed9"], ["password_reseted_at", "2015-07-05 18:02:17.605134"], ["updated_at", "2015-07-05 18:02:17.615376"]]
+  [1m[35m (13.7ms)[0m  COMMIT
+  Rendered users/api_reset_password_activation.jbuilder (0.9ms)
+Completed 200 OK in 35ms (Views: 4.4ms | ActiveRecord: 17.8ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password_activation/0923a41c2fcfc9cace8f1fc44383810f/:password/:password" for 127.0.0.1 at 2015-07-05 18:02:56 +0000
+Processing by UsersController#api_reset_password_activation as HTML
+  Parameters: {"reset_password_token"=>"[FILTERED]", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}
+  [1m[36mUser Load (0.9ms)[0m  [1mSELECT  "users".* FROM "users"  WHERE "users"."reset_password_token" = '0923a41c2fcfc9cace8f1fc44383810f' LIMIT 1[0m
+  [1m[35m (0.5ms)[0m  BEGIN
+WARNING: Can't mass-assign protected attributes for User: reset_password_token
+	app/controllers/users_controller.rb:53:in `api_reset_password_activation'
+  [1m[36mUser Exists (0.8ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE ("users"."msisdn" = '60086286' AND "users"."id" != 16) LIMIT 1[0m
+  [1m[35mUser Exists (0.6ms)[0m  SELECT  1 AS one FROM "users"  WHERE ("users"."pseudo" = 'didie' AND "users"."id" != 16) LIMIT 1
+  [1m[36mUser Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE ("users"."email" = 'dietricherwane@yahoo.fr' AND "users"."id" != 16) LIMIT 1[0m
+  [1m[35mSQL (0.8ms)[0m  UPDATE "users" SET "password" = $1, "password_reseted_at" = $2, "updated_at" = $3 WHERE "users"."id" = 16  [["password", "d8ebe91c4ff854ee85b49df6ffb6826b1baf200a21b041ad6d3dadb897dfc0ff"], ["password_reseted_at", "2015-07-05 18:02:56.353054"], ["updated_at", "2015-07-05 18:02:56.364613"]]
+  [1m[36m (9.3ms)[0m  [1mCOMMIT[0m
+  Rendered users/api_reset_password_activation.jbuilder (0.7ms)
+Completed 200 OK in 57ms (Views: 4.0ms | ActiveRecord: 18.2ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password_activation/0923a41c2fcfc9cace8f1fc44383810f/:password/:password" for 127.0.0.1 at 2015-07-05 18:03:25 +0000
+Processing by UsersController#api_reset_password_activation as HTML
+  Parameters: {"reset_password_token"=>"[FILTERED]", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}
+  [1m[35mUser Load (1.1ms)[0m  SELECT  "users".* FROM "users"  WHERE "users"."reset_password_token" = '0923a41c2fcfc9cace8f1fc44383810f' LIMIT 1
+  [1m[36m (0.6ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (1.0ms)[0m  SELECT  1 AS one FROM "users"  WHERE ("users"."msisdn" = '60086286' AND "users"."id" != 16) LIMIT 1
+  [1m[36mUser Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE ("users"."pseudo" = 'didie' AND "users"."id" != 16) LIMIT 1[0m
+  [1m[35mUser Exists (0.6ms)[0m  SELECT  1 AS one FROM "users"  WHERE ("users"."email" = 'dietricherwane@yahoo.fr' AND "users"."id" != 16) LIMIT 1
+  [1m[36mSQL (0.8ms)[0m  [1mUPDATE "users" SET "password" = $1, "password_reseted_at" = $2, "reset_password_token" = $3, "updated_at" = $4 WHERE "users"."id" = 16[0m  [["password", "368c12ee16b8e07cc7fb6f67034343d9ea66201868bef01286584c5e541b18a0"], ["password_reseted_at", "2015-07-05 18:03:25.121706"], ["reset_password_token", nil], ["updated_at", "2015-07-05 18:03:25.131075"]]
+  [1m[35m (21.2ms)[0m  COMMIT
+  Rendered users/api_reset_password_activation.jbuilder (0.6ms)
+Completed 200 OK in 71ms (Views: 4.9ms | ActiveRecord: 30.7ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/create/1/1/didie/duke/nukem/dietricherwane@yahoo.fr/dukenukemdie/dukenukemdie/60086286/19-10-1985/0504fe0b64c5e08d46c49ab41d33be94" for 127.0.0.1 at 2015-07-07 00:00:52 +0000
+  [1m[36mActiveRecord::SchemaMigration Load (35.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by UsersController#api_create as HTML
+  Parameters: {"civility_id"=>"1", "sex_id"=>"1", "pseudo"=>"didie", "firstname"=>"duke", "lastname"=>"nukem", "email"=>"dietricherwane@yahoo.fr", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "msisdn"=>"60086286", "birthdate"=>"19-10-1985", "creation_mode"=>"0504fe0b64c5e08d46c49ab41d33be94"}
+  [1m[35mCreationMode Load (26.4ms)[0m  SELECT  "creation_modes".* FROM "creation_modes"  WHERE "creation_modes"."token" = '0504fe0b64c5e08d46c49ab41d33be94' LIMIT 1
+WARNING: Can't mass-assign protected attributes for User: controller, action, password_confirmation, creation_mode
+	app/controllers/users_controller.rb:13:in `api_create'
+  [1m[36m (0.6ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (1.7ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."msisdn" = '60086286' LIMIT 1
+  [1m[36mUser Exists (0.9ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE "users"."pseudo" = 'didie' LIMIT 1[0m
+  [1m[35mUser Exists (0.8ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."email" = 'dietricherwane@yahoo.fr' LIMIT 1
+  [1m[36mSQL (20.5ms)[0m  [1mINSERT INTO "users" ("birthdate", "civility_id", "confirmation_token", "created_at", "creation_mode_id", "email", "firstname", "lastname", "msisdn", "password", "pseudo", "salt", "sex_id", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING "id"[0m  [["birthdate", "1985-10-19"], ["civility_id", 1], ["confirmation_token", "8a002720e150b14e2d950be788c3df78"], ["created_at", "2015-07-07 00:00:53.634658"], ["creation_mode_id", 1], ["email", "dietricherwane@yahoo.fr"], ["firstname", "duke"], ["lastname", "nukem"], ["msisdn", "60086286"], ["password", "8d68000bc4a47ed2b5bb067aedcfaf3c67d25a1c7d55b0699a53b06f9d691076"], ["pseudo", "didie"], ["salt", "1FcxuCviyxc="], ["sex_id", 1], ["updated_at", "2015-07-07 00:00:53.634658"]]
+  [1m[35m (23.4ms)[0m  COMMIT
+  Rendered user_registration/confirmation_email.html.erb (12.8ms)
+
+UserRegistration#confirmation_email: processed outbound mail in 467.1ms
+
+Sent mail to dietricherwane@yahoo.fr (4070.9ms)
+Date: Tue, 07 Jul 2015 00:00:54 +0000
+From: LONACI
+To: dietricherwane@yahoo.fr
+Message-ID: <559b16b637606_df11f896ec3242@dietrich-SATELLITE-L750.mail>
+Subject: Activation de votre compte parieur
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: base64
+
+PCFET0NUWVBFIGh0bWw+CjxodG1sPgrCoMKgPGhlYWQ+CsKgwqDCoMKgPG1l
+dGEgY29udGVudD0ndGV4dC9odG1sOyBjaGFyc2V0PVVURi04JyBodHRwLWVx
+dWl2PSdDb250ZW50LVR5cGUnIC8+CsKgwqA8L2hlYWQ+CsKgwqA8Ym9keT4K
+wqDCoMKgwqA8aDQ+Qm9uam91ciBkaWV0cmljaGVyd2FuZUB5YWhvby5mciwg
+PC9oND4KCsKgwqDCoMKgPHA+CsKgwqDCoMKgwqDCoFZvdXMgc291aGFpdGV6
+IGNyw6llciB1biBjb21wdGUgcGFyaWV1ciBMb25hY2kuCiAgICA8L3A+Cgog
+ICAgPHA+CiAgICAgIFZldWlsbGV6IGNsaXF1ZXIgc3VyIGxlIGxpZW4gc3Vp
+dmFudCBwb3VyIGFjdGl2ZXIgdm90cmUgY29tcHRlOiA8YSBocmVmPSIvOGEw
+MDI3MjBlMTUwYjE0ZTJkOTUwYmU3ODhjM2RmNzgiPkFjdGl2ZXIgbW9uIGNv
+bXB0ZTwvYT4KICAgIDwvcD4KCsKgwqDCoMKgPHA+CsKgwqDCoMKgICBBIGJp
+ZW50w7R0LgrCoMKgwqDCoDwvcD4KwqDCoDwvYm9keT4KPC9odG1sPgo=
+
+  Rendered users/api_create.jbuilder (30.2ms)
+Completed 200 OK in 4983ms (Views: 81.3ms | ActiveRecord: 85.2ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/create/1/1/didie/duke/nukem/dietricherwane@yahoo.fr/dukenukemdie/dukenukemdie/60086286/19-10-1985/0504fe0b64c5e08d46c49ab41d33be94" for 127.0.0.1 at 2015-07-07 07:35:32 +0000
+  [1m[36mActiveRecord::SchemaMigration Load (29.4ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by UsersController#api_create as HTML
+  Parameters: {"civility_id"=>"1", "sex_id"=>"1", "pseudo"=>"didie", "firstname"=>"duke", "lastname"=>"nukem", "email"=>"dietricherwane@yahoo.fr", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "msisdn"=>"60086286", "birthdate"=>"19-10-1985", "creation_mode"=>"0504fe0b64c5e08d46c49ab41d33be94"}
+  [1m[35mCreationMode Load (27.6ms)[0m  SELECT  "creation_modes".* FROM "creation_modes"  WHERE "creation_modes"."token" = '0504fe0b64c5e08d46c49ab41d33be94' LIMIT 1
+WARNING: Can't mass-assign protected attributes for User: controller, action, password_confirmation, creation_mode
+	app/controllers/users_controller.rb:13:in `api_create'
+  [1m[36m (0.6ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (61.5ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."msisdn" = '60086286' LIMIT 1
+  [1m[36mUser Exists (0.9ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE "users"."pseudo" = 'didie' LIMIT 1[0m
+  [1m[35mUser Exists (0.7ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."email" = 'dietricherwane@yahoo.fr' LIMIT 1
+  [1m[36m (0.5ms)[0m  [1mROLLBACK[0m
+  Rendered users/api_create.jbuilder (82.7ms)
+Completed 200 OK in 551ms (Views: 137.0ms | ActiveRecord: 160.6ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/create/1/1/didie/duke/nukem/dietricherwane@yahoo.fr/dukenukemdie/dukenukemdie/60086286/19-10-1985/0504fe0b64c5e08d46c49ab41d33be94" for 127.0.0.1 at 2015-07-07 07:37:24 +0000
+Processing by UsersController#api_create as HTML
+  Parameters: {"civility_id"=>"1", "sex_id"=>"1", "pseudo"=>"didie", "firstname"=>"duke", "lastname"=>"nukem", "email"=>"dietricherwane@yahoo.fr", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "msisdn"=>"60086286", "birthdate"=>"19-10-1985", "creation_mode"=>"0504fe0b64c5e08d46c49ab41d33be94"}
+  [1m[35mCreationMode Load (0.7ms)[0m  SELECT  "creation_modes".* FROM "creation_modes"  WHERE "creation_modes"."token" = '0504fe0b64c5e08d46c49ab41d33be94' LIMIT 1
+WARNING: Can't mass-assign protected attributes for User: controller, action, password_confirmation, creation_mode
+	app/controllers/users_controller.rb:13:in `api_create'
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.6ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."msisdn" = '60086286' LIMIT 1
+  [1m[36mUser Exists (0.4ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE "users"."pseudo" = 'didie' LIMIT 1[0m
+  [1m[35mUser Exists (0.5ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."email" = 'dietricherwane@yahoo.fr' LIMIT 1
+  [1m[36mSQL (18.6ms)[0m  [1mINSERT INTO "users" ("birthdate", "civility_id", "confirmation_token", "created_at", "creation_mode_id", "email", "firstname", "lastname", "msisdn", "password", "pseudo", "salt", "sex_id", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING "id"[0m  [["birthdate", "1985-10-19"], ["civility_id", 1], ["confirmation_token", "2eb781908a1004ce4bb5ef87725034fd"], ["created_at", "2015-07-07 07:37:24.672389"], ["creation_mode_id", 1], ["email", "dietricherwane@yahoo.fr"], ["firstname", "duke"], ["lastname", "nukem"], ["msisdn", "60086286"], ["password", "564b4af286d48d48faaeed99876872c0e9c528bac23c9288f02a948520b6c944"], ["pseudo", "didie"], ["salt", "4gXivelmrh8="], ["sex_id", 1], ["updated_at", "2015-07-07 07:37:24.672389"]]
+  [1m[35m (23.7ms)[0m  COMMIT
+  Rendered user_registration/confirmation_email.html.erb (11.2ms)
+
+UserRegistration#confirmation_email: processed outbound mail in 367.0ms
+
+Sent mail to dietricherwane@yahoo.fr (4331.1ms)
+Date: Tue, 07 Jul 2015 07:37:25 +0000
+From: LONACI
+To: dietricherwane@yahoo.fr
+Message-ID: <559b81b52754e_d4f110bcb471513@dietrich-SATELLITE-L750.mail>
+Subject: Activation de votre compte parieur
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: base64
+
+PCFET0NUWVBFIGh0bWw+CjxodG1sPgrCoMKgPGhlYWQ+CsKgwqDCoMKgPG1l
+dGEgY29udGVudD0ndGV4dC9odG1sOyBjaGFyc2V0PVVURi04JyBodHRwLWVx
+dWl2PSdDb250ZW50LVR5cGUnIC8+CsKgwqA8L2hlYWQ+CsKgwqA8Ym9keT4K
+wqDCoMKgwqA8aDQ+Qm9uam91ciBkaWV0cmljaGVyd2FuZUB5YWhvby5mciwg
+PC9oND4KCsKgwqDCoMKgPHA+CsKgwqDCoMKgwqDCoFZvdXMgc291aGFpdGV6
+IGNyw6llciB1biBjb21wdGUgcGFyaWV1ciBMb25hY2kuCiAgICA8L3A+Cgog
+ICAgPHA+CiAgICAgIFZldWlsbGV6IGNsaXF1ZXIgc3VyIGxlIGxpZW4gc3Vp
+dmFudCBwb3VyIGFjdGl2ZXIgdm90cmUgY29tcHRlOiA8YSBocmVmPSIvMmVi
+NzgxOTA4YTEwMDRjZTRiYjVlZjg3NzI1MDM0ZmQiPkFjdGl2ZXIgbW9uIGNv
+bXB0ZTwvYT4KICAgIDwvcD4KCsKgwqDCoMKgPHA+CsKgwqDCoMKgICBBIGJp
+ZW50w7R0LgrCoMKgwqDCoDwvcD4KwqDCoDwvYm9keT4KPC9odG1sPgo=
+
+  Rendered users/api_create.jbuilder (1.1ms)
+Completed 200 OK in 4825ms (Views: 5.3ms | ActiveRecord: 45.8ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/enable/:confirmation_token" for 127.0.0.1 at 2015-07-07 07:42:17 +0000
+Processing by UsersController#api_enable_account as HTML
+  Parameters: {"confirmation_token"=>":confirmation_token"}
+  [1m[36mUser Load (1.1ms)[0m  [1mSELECT  "users".* FROM "users"  WHERE "users"."confirmation_token" = ':confirmation_token' LIMIT 1[0m
+  Rendered text template (0.0ms)
+Completed 200 OK in 15ms (Views: 9.6ms | ActiveRecord: 1.1ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password/18" for 127.0.0.1 at 2015-07-07 07:49:22 +0000
+Processing by UsersController#api_reset_password as HTML
+  Parameters: {"parameter"=>"18"}
+  [1m[35mUser Load (1.4ms)[0m  SELECT "users".* FROM "users"  WHERE (msisdn = '18' OR id = 18 OR email = '18')
+  [1m[36m (0.5ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.7ms)[0m  UPDATE "users" SET "reset_password_token" = $1, "updated_at" = $2 WHERE "users"."id" = 18  [["reset_password_token", "16ac3a5c48c126e4cf8308008fb14099"], ["updated_at", "2015-07-07 07:49:22.380057"]]
+  [1m[36m (38.6ms)[0m  [1mCOMMIT[0m
+  Rendered reset_password/send_reset_password_email.html.erb (3.4ms)
+  Rendered reset_password/send_reset_password_email.jbuilder (0.8ms)
+
+ResetPassword#send_reset_password_email: processed outbound mail in 50.6ms
+
+Sent mail to dietricherwane@yahoo.fr (5153.2ms)
+Date: Tue, 07 Jul 2015 07:49:22 +0000
+From: LONACI
+To: dietricherwane@yahoo.fr
+Message-ID: <559b84827fea5_d4f24a9f3c71726@dietrich-SATELLITE-L750.mail>
+Subject: =?UTF-8?Q?R=C3=A9initialisation_du_mot_de_passe_de_votre_compte?=
+ =?UTF-8?Q?_parieur?=
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_559b84827f1d6_d4f24a9f3c7162b";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_559b84827f1d6_d4f24a9f3c7162b
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html>
+<html>
+=C2=A0=C2=A0<head>
+=C2=A0=C2=A0=C2=A0=C2=A0<meta content=3D'text/html; charset=3DUTF-8' http=
+-equiv=3D'Content-Type' />
+=C2=A0=C2=A0</head>
+=C2=A0=C2=A0<body>
+=C2=A0=C2=A0=C2=A0=C2=A0<h4>Bonjour dietricherwane@yahoo.fr, </h4>
+
+=C2=A0=C2=A0=C2=A0=C2=A0<p>
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0Vous souhaitez r=C3=A9initialiser le =
+mot de passe de votre compte parieur Lonaci.
+    </p>
+
+    <p>
+      Veuillez cliquer sur le lien suivant pour modifier votre mot de pas=
+se: <a href=3D"/16ac3a5c48c126e4cf8308008fb14099">Modifier mon mot de pas=
+se</a>
+    </p>
+
+=C2=A0=C2=A0=C2=A0=C2=A0<p>
+=C2=A0=C2=A0=C2=A0=C2=A0  A bient=C3=B4t.
+=C2=A0=C2=A0=C2=A0=C2=A0</p>
+=C2=A0=C2=A0</body>
+</html>
+
+----==_mimepart_559b84827f1d6_d4f24a9f3c7162b
+Content-Type: application/json;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+{}
+----==_mimepart_559b84827f1d6_d4f24a9f3c7162b--
+
+  Rendered users/api_reset_password.jbuilder (62.9ms)
+Completed 200 OK in 5381ms (Views: 77.5ms | ActiveRecord: 41.2ms)
+
+
+Started GET "/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password/25" for 127.0.0.1 at 2015-07-07 07:49:40 +0000
+Processing by UsersController#api_reset_password as HTML
+  Parameters: {"parameter"=>"25"}
+  [1m[35mUser Load (1.1ms)[0m  SELECT "users".* FROM "users"  WHERE (msisdn = '25' OR id = 25 OR email = '25')
+  Rendered text template (0.0ms)
+Completed 200 OK in 6ms (Views: 1.0ms | ActiveRecord: 1.1ms)
+>>>>>>> 85508409cc3b989d0bbbba4464178533e14142f9

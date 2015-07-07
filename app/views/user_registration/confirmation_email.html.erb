@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h4>Bonjour <%= @email %>, </h4>
+
+    <p>
+      Vous souhaitez créer un compte parieur Lonaci.
+    </p>
+
+    <p>
+      Veuillez cliquer sur le lien suivant pour activer votre compte: <%= link_to "Activer mon compte", (Parameter.first.registration_url rescue "") + "/" + @confirmation_token %>
+    </p>
+
+    <p>
+      A bientôt.
+    </p>
+  </body>
+</html>

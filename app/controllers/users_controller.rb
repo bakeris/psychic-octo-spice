@@ -10,11 +10,47 @@ class UsersController < ApplicationController
         render text: %Q[{"errors":"Le mot de passe et sa confirmation ne concordent pas"}]
       else
         @status = false
-        @user = User.new(params.merge({:creation_mode_id => creation_mode.id}).merge({:salt => SecureRandom.base64(8).to_s}))
+        @user = User.new(params.merge({:creation_mode_id => creation_mode.id, :salt => SecureRandom.base64(8).to_s, :confirmation_token => SecureRandom.hex.to_s}))
 
         if @user.save
+          UserRegistration.confirmation_email(params[:email], @user.confirmation_token).deliver
           @status = true
         end
+      end
+    end
+  end
+
+  def api_enable_account
+    @user = User.find_by_confirmation_token(params[:confirmation_token])
+
+    if @user.blank?
+      render text: %Q[{"errors":"Cet utilisateur n'a pas été trouvé"}]
+    else
+      @user.update_attributes(confirmation_token: nil, confirmed_at: DateTime.now)
+    end
+  end
+
+  def api_reset_password
+    @user = User.where("msisdn = '#{params[:parameter]}' OR id = #{params[:parameter].to_i} OR email = '#{params[:parameter]}'")
+
+    if @user.blank?
+      render text: %Q[{"errors":"Cet utilisateur n'a pas été trouvé"}]
+    else
+      @user.first.update_attribute(:reset_password_token, SecureRandom.hex)
+      ResetPassword.send_reset_password_email(@user.first.email, @user.first.reset_password_token).deliver
+    end
+  end
+
+  def api_reset_password_activation
+    @user = User.find_by_reset_password_token(params[:reset_password_token])
+
+    if @user.blank?
+      render text: %Q[{"errors":"Cet utilisateur n'a pas été trouvé"}]
+    else
+      if params[:password] != params[:password_confirmation]
+        render text: %Q[{"errors":"Le mot de passe et sa confirmation ne concordent pas"}]
+      else
+        @user.update_attributes(reset_password_token: nil, password_reseted_at: DateTime.now, password: Digest::SHA2.hexdigest(@user.salt + @user.password))
       end
     end
   end
@@ -35,6 +71,9 @@ class UsersController < ApplicationController
   def api_email_login
     if User.authenticate_with_email(params[:email], params[:password]) == true
       @user = User.find_by_email(params[:email])
+      unless @user.confirmation_token.blank?
+        render text: %Q[{"errors":"Le compte n'a pas encore été activé"}]
+      end
     else
       render text: %Q[{"errors":"Veuillez vérifier le login et le mot de passe"}]
     end
@@ -43,6 +82,9 @@ class UsersController < ApplicationController
   def api_msisdn_login
     if User.authenticate_with_msisdn(params[:msisdn], params[:password]) == true
       @user = User.find_by_msisdn(params[:msisdn])
+      unless @user.confirmation_token.blank?
+        render text: %Q[{"errors":"Le compte n'a pas encore été activé"}]
+      end
     else
       render text: %Q[{"errors":"Veuillez vérifier le numéro de téléphone et le mot de passe"}]
     end
