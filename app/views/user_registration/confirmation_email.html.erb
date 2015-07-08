@@ -11,7 +11,7 @@
     </p>
 
     <p>
-      Veuillez cliquer sur le lien suivant pour activer votre compte: <%= link_to "Activer mon compte", (Parameter.first.registration_url rescue "") + "/" + @confirmation_token %>
+      Veuillez cliquer sur le lien suivant pour activer votre compte: <a target = "_blank" href = "<%= @confirmation_url %>">Activer mon compte</a>
     </p>
 
     <p>

@@ -3353,3 +3353,22 @@ Processing by UsersController#api_reset_password as HTML
   Rendered text template (0.0ms)
 Completed 200 OK in 6ms (Views: 1.0ms | ActiveRecord: 1.1ms)
 >>>>>>> 85508409cc3b989d0bbbba4464178533e14142f9
+
+ActionView::Template::Error (uninitialized constant ActionView::CompiledTemplates::Parameter):
+    11:     </p>
+    12: 
+    13:     <p>
+    14:       Veuillez cliquer sur le lien suivant pour activer votre compte: <a target = "_blank" href = "<%= Parameter.first.registration_url.to_s + '?' + @confirmation_token %>">Activer mon compte</a>
+    15:     </p>
+    16: 
+    17:     <p>
+  app/views/user_registration/confirmation_email.html.erb:14:in `_app_views_user_registration_confirmation_email_html_erb__1407884171922479002_32525120'
+  app/mailers/user_registration.rb:8:in `confirmation_email'
+  app/controllers/users_controller.rb:16:in `api_create'
+
+
+
+NameError (uninitialized constant UsersController::Parameter):
+  app/controllers/users_controller.rb:16:in `api_create'
+
+

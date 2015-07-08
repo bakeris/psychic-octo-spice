@@ -13,7 +13,7 @@ class UsersController < ApplicationController
         @user = User.new(params.merge({:creation_mode_id => creation_mode.id, :salt => SecureRandom.base64(8).to_s, :confirmation_token => SecureRandom.hex.to_s}))
 
         if @user.save
-          UserRegistration.confirmation_email(params[:email], @user.confirmation_token).deliver
+          UserRegistration.confirmation_email(params[:email], (Parameters.first.registration_url.to_s + @user.confirmation_token)).deliver
           @status = true
         end
       end
@@ -37,7 +37,7 @@ class UsersController < ApplicationController
       render text: %Q[{"errors":"Cet utilisateur n'a pas été trouvé"}]
     else
       @user.first.update_attribute(:reset_password_token, SecureRandom.hex)
-      ResetPassword.send_reset_password_email(@user.first.email, @user.first.reset_password_token).deliver
+      ResetPassword.send_reset_password_email(@user.first.email, (Parameters.first.reset_password_url.to_s + @user.first.reset_password_token)).deliver
     end
   end
 

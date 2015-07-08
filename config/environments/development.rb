@@ -10,7 +10,7 @@ Rails.application.configure do
   # Do not eager load code on boot.
   config.eager_load = false
 
-  config.action_mailer.default_url_options = { :host => 'localhost' }
+  config.action_mailer.default_url_options = { :host => '41.189.40.193:10000' }
 
 	ActionMailer::Base.smtp_settings = {
   	:openssl_verify_mode => 'none',
