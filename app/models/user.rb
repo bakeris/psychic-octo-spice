@@ -8,11 +8,11 @@ class User < ActiveRecord::Base
   attr_accessible :civility_id, :sex_id, :pseudo, :firstname, :lastname, :email, :password, :msisdn, :birthdate, :creation_mode_id, :reset_pasword_token, :salt, :confirmation_token, :confirmed_at, :reset_password_token, :password_reseted_at
 
   # Validations
-  validates :msisdn, presence: true
-  validates :msisdn, uniqueness: true
-  validates :pseudo, :firstname, :lastname, length: {minimum: 3, maximum: 255, allow_blank: true}
-  validates :pseudo, uniqueness: true
-  validates :email, uniqueness: {allow_blank: true}
+  #validates :msisdn, presence: true
+  #validates :msisdn, uniqueness: true
+  #validates :pseudo, :firstname, :lastname, length: {minimum: 3, maximum: 255, allow_blank: true}
+  #validates :pseudo, uniqueness: true
+  #validates :email, uniqueness: {allow_blank: true}
   validates :email, format: {with: /^(|(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6})$/i, multiline: true, allow_blank: true}
   validate :msisdn_not_a_number?, :right_msisdn_length?, :right_birthdate?
 
