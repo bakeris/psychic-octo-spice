@@ -4,7 +4,7 @@ class UsersController < ApplicationController
     creation_mode = CreationMode.find_by_token(params[:creation_mode])
 
     if creation_mode.blank?
-      render text: %Q[{"errors":[{"message":"Vous n'avez pas pu être authentifié"}\]}]
+      render text: %Q({"errors":[{"message":"Vous n'avez pas pu être authentifié"}]})
     else
       if params[:password] != params[:password_confirmation]
         render text: %Q[{"errors":[{"message":"Le mot de passe et sa confirmation ne concordent pas"}\]}]
