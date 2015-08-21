@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150710101857) do
+ActiveRecord::Schema.define(version: 20150812220355) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,7 +50,6 @@ ActiveRecord::Schema.define(version: 20150710101857) do
     t.string   "lastname"
     t.string   "email"
     t.string   "password"
-    t.string   "msisdn",               limit: 13
     t.date     "birthdate"
     t.integer  "creation_mode_id"
     t.string   "reset_password_token"
@@ -61,6 +60,7 @@ ActiveRecord::Schema.define(version: 20150710101857) do
     t.datetime "confirmed_at"
     t.datetime "password_reseted_at"
     t.boolean  "account_enabled"
+    t.string   "msisdn",               limit: 20
   end
 
   add_index "users", ["civility_id"], name: "index_users_on_civility_id", using: :btree

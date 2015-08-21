@@ -4,18 +4,26 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-    <h4>Bonjour <%= @email %>, </h4>
+    <h4>Cher(e) Mr/Mme <%= @firstname %> <%= @lastname %>, </h4>
 
     <p>
-      Vous souhaitez créer un compte parieur Lonaci.
+      Pour activer votre compte parieur LONACI, veuillez cliquer sur le lien suivant:
     </p>
 
     <p>
-      Veuillez cliquer sur le lien suivant pour activer votre compte: <a target = "_blank" href = "<%= @confirmation_url %>">Activer mon compte</a>
+      <a target = "_blank" href = "<%= @confirmation_url %>">Activer mon compte</a>
+    </p>
+
+    <p>
+      Si le lien ne s'ouvre pas automatiquement, veuillez le copier et le coller dans votre navigateur.	
+    </p>
+
+    <p>
+      Merci d'avoir créé votre compte. JOUEZ, NOUS PARIONS QUE VOUS ALLEZ GAGNER!
     </p>
 
     <p>
-      A bientôt.
+      L'équipe LONACI.
     </p>
   </body>
 </html>

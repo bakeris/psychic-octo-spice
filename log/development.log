@@ -3386,3 +3386,194 @@ SyntaxError (/var/www/html/PaymoneyGateway/app/controllers/users_controller.rb:1
   app/controllers/users_controller.rb:10: syntax error, unexpected end-of-input, expecting keyword_end
 
 
+
+NameError (undefined local variable or method `user' for #<UsersController:0x007fd074634808>):
+  app/controllers/users_controller.rb:30:in `api_enable_account'
+
+
+
+NameError (undefined local variable or method `user' for #<UsersController:0x00000004fe6240>):
+  app/controllers/users_controller.rb:30:in `api_enable_account'
+
+
+
+NameError (undefined local variable or method `user' for #<UsersController:0x00000005d27fa8>):
+  app/controllers/users_controller.rb:30:in `api_enable_account'
+
+
+
+NameError (undefined local variable or method `user' for #<UsersController:0x00000004e7f898>):
+  app/controllers/users_controller.rb:30:in `api_enable_account'
+
+
+
+NameError (undefined local variable or method `user' for #<UsersController:0x000000054c9e10>):
+  app/controllers/users_controller.rb:30:in `api_enable_account'
+
+
+
+NameError (undefined local variable or method `user' for #<UsersController:0x007fd07494ef48>):
+  app/controllers/users_controller.rb:30:in `api_enable_account'
+
+
+
+NameError (undefined local variable or method `user' for #<UsersController:0x000000053a6470>):
+  app/controllers/users_controller.rb:30:in `api_enable_account'
+
+
+
+NameError (undefined local variable or method `user' for #<UsersController:0x007fd074869560>):
+  app/controllers/users_controller.rb:30:in `api_enable_account'
+
+
+
+NameError (undefined local variable or method `user' for #<UsersController:0x000000052faa80>):
+  app/controllers/users_controller.rb:30:in `api_enable_account'
+
+
+
+NameError (undefined local variable or method `user' for #<UsersController:0x007fd0747bcd10>):
+  app/controllers/users_controller.rb:30:in `api_enable_account'
+
+
+
+NameError (undefined local variable or method `user' for #<UsersController:0x0000000544eff8>):
+  app/controllers/users_controller.rb:30:in `api_enable_account'
+
+
+
+NameError (undefined local variable or method `user' for #<UsersController:0x007fd074a54c30>):
+  app/controllers/users_controller.rb:30:in `api_enable_account'
+
+
+
+NameError (undefined local variable or method `user' for #<UsersController:0x000000051d42a0>):
+  app/controllers/users_controller.rb:30:in `api_enable_account'
+
+
+
+NameError (undefined local variable or method `arams' for #<UsersController:0x00000004e73f98>):
+  app/controllers/users_controller.rb:16:in `api_create'
+
+
+
+NameError (undefined local variable or method `arams' for #<UsersController:0x000000050a22d8>):
+  app/controllers/users_controller.rb:16:in `api_create'
+
+
+
+NameError (undefined local variable or method `arams' for #<UsersController:0x007fc5bc55e338>):
+  app/controllers/users_controller.rb:16:in `api_create'
+
+
+
+NameError (undefined local variable or method `arams' for #<UsersController:0x007f6cd87b0740>):
+  app/controllers/users_controller.rb:16:in `api_create'
+
+
+
+NameError (undefined local variable or method `arams' for #<UsersController:0x000000049055e8>):
+  app/controllers/users_controller.rb:16:in `api_create'
+
+
+
+NameError (undefined local variable or method `arams' for #<UsersController:0x0000000473e138>):
+  app/controllers/users_controller.rb:16:in `api_create'
+
+
+
+NameError (undefined local variable or method `arams' for #<UsersController:0x007f6cd8595e88>):
+  app/controllers/users_controller.rb:16:in `api_create'
+
+
+
+NameError (undefined local variable or method `arams' for #<UsersController:0x000000042f7548>):
+  app/controllers/users_controller.rb:16:in `api_create'
+
+
+
+NameError (undefined local variable or method `arams' for #<UsersController:0x00000004904fa8>):
+  app/controllers/users_controller.rb:16:in `api_create'
+
+
+
+NameError (undefined local variable or method `arams' for #<UsersController:0x007f6cd84ecf40>):
+  app/controllers/users_controller.rb:16:in `api_create'
+
+
+
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+	bin/rake db:migrate RAILS_ENV=development
+
+):
+  activerecord (4.1.8) lib/active_record/migration.rb:389:in `check_pending!'
+  activerecord (4.1.8) lib/active_record/migration.rb:377:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/callbacks.rb:29:in `block in call'
+  activesupport (4.1.8) lib/active_support/callbacks.rb:82:in `run_callbacks'
+  actionpack (4.1.8) lib/action_dispatch/middleware/callbacks.rb:27:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/reloader.rb:73:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/remote_ip.rb:76:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/debug_exceptions.rb:17:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+  railties (4.1.8) lib/rails/rack/logger.rb:38:in `call_app'
+  railties (4.1.8) lib/rails/rack/logger.rb:20:in `block in call'
+  activesupport (4.1.8) lib/active_support/tagged_logging.rb:68:in `block in tagged'
+  activesupport (4.1.8) lib/active_support/tagged_logging.rb:26:in `tagged'
+  activesupport (4.1.8) lib/active_support/tagged_logging.rb:68:in `tagged'
+  railties (4.1.8) lib/rails/rack/logger.rb:20:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/request_id.rb:21:in `call'
+  rack (1.5.5) lib/rack/methodoverride.rb:21:in `call'
+  rack (1.5.5) lib/rack/runtime.rb:17:in `call'
+  activesupport (4.1.8) lib/active_support/cache/strategy/local_cache_middleware.rb:26:in `call'
+  rack (1.5.5) lib/rack/lock.rb:17:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/static.rb:84:in `call'
+  rack (1.5.5) lib/rack/sendfile.rb:112:in `call'
+  railties (4.1.8) lib/rails/engine.rb:514:in `call'
+  railties (4.1.8) lib/rails/application.rb:144:in `call'
+  passenger (4.0.56) lib/phusion_passenger/rack/thread_handler_extension.rb:74:in `process_request'
+  passenger (4.0.56) lib/phusion_passenger/request_handler/thread_handler.rb:141:in `accept_and_process_next_request'
+  passenger (4.0.56) lib/phusion_passenger/request_handler/thread_handler.rb:109:in `main_loop'
+  passenger (4.0.56) lib/phusion_passenger/request_handler.rb:455:in `block (3 levels) in start_threads'
+
+
+
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+	bin/rake db:migrate RAILS_ENV=development
+
+):
+  activerecord (4.1.8) lib/active_record/migration.rb:389:in `check_pending!'
+  activerecord (4.1.8) lib/active_record/migration.rb:377:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/callbacks.rb:29:in `block in call'
+  activesupport (4.1.8) lib/active_support/callbacks.rb:82:in `run_callbacks'
+  actionpack (4.1.8) lib/action_dispatch/middleware/callbacks.rb:27:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/reloader.rb:73:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/remote_ip.rb:76:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/debug_exceptions.rb:17:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+  railties (4.1.8) lib/rails/rack/logger.rb:38:in `call_app'
+  railties (4.1.8) lib/rails/rack/logger.rb:20:in `block in call'
+  activesupport (4.1.8) lib/active_support/tagged_logging.rb:68:in `block in tagged'
+  activesupport (4.1.8) lib/active_support/tagged_logging.rb:26:in `tagged'
+  activesupport (4.1.8) lib/active_support/tagged_logging.rb:68:in `tagged'
+  railties (4.1.8) lib/rails/rack/logger.rb:20:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/request_id.rb:21:in `call'
+  rack (1.5.5) lib/rack/methodoverride.rb:21:in `call'
+  rack (1.5.5) lib/rack/runtime.rb:17:in `call'
+  activesupport (4.1.8) lib/active_support/cache/strategy/local_cache_middleware.rb:26:in `call'
+  rack (1.5.5) lib/rack/lock.rb:17:in `call'
+  actionpack (4.1.8) lib/action_dispatch/middleware/static.rb:84:in `call'
+  rack (1.5.5) lib/rack/sendfile.rb:112:in `call'
+  railties (4.1.8) lib/rails/engine.rb:514:in `call'
+  railties (4.1.8) lib/rails/application.rb:144:in `call'
+  passenger (4.0.56) lib/phusion_passenger/rack/thread_handler_extension.rb:74:in `process_request'
+  passenger (4.0.56) lib/phusion_passenger/request_handler/thread_handler.rb:141:in `accept_and_process_next_request'
+  passenger (4.0.56) lib/phusion_passenger/request_handler/thread_handler.rb:109:in `main_loop'
+  passenger (4.0.56) lib/phusion_passenger/request_handler.rb:455:in `block (3 levels) in start_threads'
+
+

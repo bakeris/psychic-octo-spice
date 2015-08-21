@@ -13,7 +13,7 @@ class UsersController < ApplicationController
         @user = User.new(params.merge({:creation_mode_id => creation_mode.id, :salt => SecureRandom.base64(8).to_s, :confirmation_token => SecureRandom.hex.to_s}))
 
         if @user.save
-          UserRegistration.confirmation_email(params[:email], (Parameters.first.registration_url.to_s + @user.confirmation_token)).deliver
+          UserRegistration.confirmation_email(params[:firstname],params[:lastname], (Parameters.first.registration_url.to_s + @user.confirmation_token), params[:email]).deliver
           @status = true
         end
       end
@@ -27,7 +27,7 @@ class UsersController < ApplicationController
       render text: %Q({"errors":[{"message":"Cet utilisateur n'a pas été trouvé"}]})
     else
       if @user.confirmed_at.blank?
-        user.update_attributes(confirmation_token: nil, confirmed_at: DateTime.now)
+        @user.update_attribute(:confirmed_at, DateTime.now)
       else
         render text: %Q({"errors":[{"message":"Ce compte a déjà été activé"}]})
       end
@@ -75,7 +75,7 @@ class UsersController < ApplicationController
   def api_email_login
     if User.authenticate_with_email(params[:email], params[:password]) == true
       @user = User.find_by_email(params[:email])
-      unless @user.confirmed_at.blank?
+      if @user.confirmed_at.blank?
         render text: %Q({"errors":[{"message":"Le compte n'a pas encore été activé"}]})
       end
     else
@@ -86,7 +86,7 @@ class UsersController < ApplicationController
   def api_msisdn_login
     if User.authenticate_with_msisdn(params[:msisdn], params[:password]) == true
       @user = User.find_by_msisdn(params[:msisdn])
-      unless @user.confirmed_at.blank?
+      if @user.confirmed_at.blank?
         render text: %Q({"errors":[{"message":"Le compte n'a pas encore été activé"}]})
       end
     else
