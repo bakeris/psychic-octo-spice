@@ -3,9 +3,10 @@ class User < ActiveRecord::Base
   before_create :encrypt_password
 
   # Relationships
+  has_many :query_bets
 
   # Set accessible fields
-  attr_accessible :civility_id, :sex_id, :pseudo, :firstname, :lastname, :email, :password, :msisdn, :birthdate, :creation_mode_id, :reset_pasword_token, :salt, :confirmation_token, :confirmed_at, :reset_password_token, :password_reseted_at, :account_enabled
+  attr_accessible :civility_id, :sex_id, :pseudo, :firstname, :lastname, :email, :password, :msisdn, :birthdate, :creation_mode_id, :reset_pasword_token, :salt, :confirmation_token, :confirmed_at, :reset_password_token, :password_reseted_at, :account_enabled, :uuid, :last_successful_message
 
 # Renaming attributes into more friendly text
   HUMANIZED_ATTRIBUTES = {
@@ -14,7 +15,8 @@ class User < ActiveRecord::Base
     email: "L'email",
     password: 'Le mot de passe',
     msisdn: "Le numéro de téléphone",
-    birthdate: "La date de naissance"
+    birthdate: "La date de naissance",
+    uuid: "UUID"
   }
 
   # Using friendly attribute name if it exists and default name otherwise

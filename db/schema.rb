@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150812220355) do
+ActiveRecord::Schema.define(version: 20150821142040) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,41 @@ ActiveRecord::Schema.define(version: 20150812220355) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "reset_password_url"
+    t.string   "ail_username"
+    t.string   "ail_password"
+    t.string   "ail_terminal_id"
+  end
+
+  create_table "query_bets", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "confirm_id"
+    t.datetime "op_code"
+    t.string   "bet_code"
+    t.string   "bet_modifier"
+    t.string   "selector1"
+    t.string   "selector2"
+    t.string   "repeats"
+    t.string   "special_count"
+    t.string   "normal_count"
+    t.string   "entries"
+    t.string   "status"
+    t.string   "response_message_id"
+    t.string   "response_user_id"
+    t.string   "response_datetime"
+    t.string   "audit_number"
+    t.float    "bet_cost_amount"
+    t.string   "response_bet_code"
+    t.string   "response_bet_modifier"
+    t.string   "response_selector1"
+    t.string   "response_selector2"
+    t.string   "response_repeats"
+    t.string   "response_special_count"
+    t.string   "response_normal_count"
+    t.string   "response_entries"
+    t.string   "error_code"
+    t.text     "error_message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "sexes", force: true do |t|
@@ -60,7 +95,12 @@ ActiveRecord::Schema.define(version: 20150812220355) do
     t.datetime "confirmed_at"
     t.datetime "password_reseted_at"
     t.boolean  "account_enabled"
-    t.string   "msisdn",               limit: 20
+    t.string   "msisdn",                 limit: 20
+    t.string   "uuid"
+    t.string   "last_succesful_message"
+    t.string   "integer"
+    t.string   "paymoney_password"
+    t.string   "account_label"
   end
 
   add_index "users", ["civility_id"], name: "index_users_on_civility_id", using: :btree

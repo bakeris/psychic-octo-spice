@@ -12,14 +12,25 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { :host => '41.189.40.193:10000' }
 
-	ActionMailer::Base.smtp_settings = {
+	#ActionMailer::Base.smtp_settings = {
+  	#:openssl_verify_mode => 'none',
+		#:address => "smtp.gmail.com",
+		#:enable_starttls_auto => true,
+		#:port => 587,
+		#:authentication => :plain,
+		#:user_name => "mensah.dietrich@gmail.com",
+		#:password => '20dianapopoulos12'
+	#}
+
+	config.action_mailer.default_url_options = { :host => 'pay-money.net' }
+  ActionMailer::Base.smtp_settings = {
   	:openssl_verify_mode => 'none',
-		:address => "smtp.gmail.com",
+		:address => "smtp.pay-money.net",
 		:enable_starttls_auto => true,
-		:port => 587,
+		:port => 25,
 		:authentication => :plain,
-		:user_name => "mensah.dietrich@gmail.com",
-		:password => '20dianapopoulos12'
+		:user_name => "created-account@pay-money.net",
+		:password => '@monetique123'
 	}
 
   # Show full error reports and disable caching.

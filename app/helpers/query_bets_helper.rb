@@ -1,0 +1,2 @@
+module QueryBetsHelper
+end
