@@ -23,6 +23,39 @@ Rails.application.routes.draw do
   # Prise d'informations relatives aux paris
   get '/6ba041bf35229938ba869a7a9c59f3a0/api/query_bet/:uuid/:bet_code/:bet_modifier/:selector1/:selector2/:repeats/:special_count/:normal_count/:entries' => 'query_bets#query_bet'
 
+  # Return all prematch data
+  get '/spc/api/0790f43181/prematch_data/list' => 'ludwin_api#api_list_prematch_data'
+
+  # List all sports
+  get '/spc/api/882198a635/sports' => 'ludwin_api#api_list_sports'
+
+  # List a specific sport
+  get '/spc/api/8b812ab067/sport/:sport_code' => 'ludwin_api#api_show_sport'
+
+  # List all tournaments - Is returning an empty response
+  get '/spc/api/eba26f36c5/tournaments' => 'ludwin_api#api_list_tournaments'
+
+  # List a specific tournament
+  get '/spc/api/78ff5c89f0/tournament/:tournament_code/:sport_code' => 'ludwin_api#api_show_tournament'
+
+  # List all bets - The Draw node is missing
+  get '/spc/api/b33dcbd3f9/bets' => 'ludwin_api#api_list_bets'
+
+  # List a specific bet - Is returning an empty response
+  get '/spc/api/156dfc6a3b/bet/:bet_code' => 'ludwin_api#api_show_bet'
+
+  # Sell a coupon
+  post '/spc/api/6d3782c78d/coupon/sell' => 'ludwin_api#api_sell_coupon'
+
+  # Cancel a sold coupon
+  get '/spc/api/6d3782c78d/coupon/cancel/:ticket_id' => 'ludwin_api#api_cancel_coupon'
+
+  # Payment notification request
+  post '/spc/api/8679903191/coupon/payment/notification' => 'ludwin_api#api_coupon_payment_notification'
+
+  # Sandbox
+  get '/sandbox/patron' => 'sandbox#patron_client'
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

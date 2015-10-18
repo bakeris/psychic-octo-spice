@@ -11,10 +11,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150821142040) do
+ActiveRecord::Schema.define(version: 20151018223129) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bets", force: true do |t|
+    t.string   "license_code"
+    t.string   "pos_code"
+    t.string   "terminal_id"
+    t.string   "account_id"
+    t.string   "account_type"
+    t.string   "transaction_id"
+    t.string   "amount"
+    t.string   "win_amount"
+    t.string   "pal_code"
+    t.string   "event_code"
+    t.string   "bet_code"
+    t.string   "draw_code"
+    t.string   "odd"
+    t.boolean  "validated"
+    t.datetime "validated_at"
+    t.string   "ticket_id"
+    t.string   "ticket_timestamp"
+    t.boolean  "cancelled"
+    t.datetime "cancelled_at"
+    t.string   "cancellation_timestamp"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "remote_ip_address"
+    t.string   "pn_ticket_status"
+    t.string   "pn_amount_win"
+    t.string   "pn_timestamp"
+    t.string   "pn_transaction_id"
+    t.string   "pn_event_ticket_status"
+    t.string   "pn_type_result"
+    t.string   "pn_winning_value"
+    t.string   "pn_winning_position"
+    t.string   "pr_transaction_id"
+    t.boolean  "pr_status"
+    t.string   "payment_status_datetime"
+  end
 
   create_table "civilities", force: true do |t|
     t.string   "name"
@@ -25,6 +62,24 @@ ActiveRecord::Schema.define(version: 20150821142040) do
   create_table "creation_modes", force: true do |t|
     t.string   "name"
     t.string   "token"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ludwin_logs", force: true do |t|
+    t.string   "operation"
+    t.string   "transaction_id"
+    t.string   "language"
+    t.string   "sport_code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "error_code"
+    t.text     "response_body"
+    t.text     "sent_body"
+    t.string   "remote_ip_address"
+  end
+
+  create_table "ludwins", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end

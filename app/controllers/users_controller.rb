@@ -13,7 +13,7 @@ class UsersController < ApplicationController
         @user = User.new(params.merge({creation_mode_id: creation_mode.id, salt: SecureRandom.base64(8).to_s, confirmation_token: SecureRandom.hex.to_s, uuid: SecureRandom.uuid}))
 
         if @user.save
-          #UserRegistration.confirmation_email(params[:firstname],params[:lastname], (Parameters.first.registration_url.to_s + @user.confirmation_token), params[:email]).deliver
+          UserRegistration.confirmation_email(params[:firstname],params[:lastname], (Parameters.first.registration_url.to_s + @user.confirmation_token), params[:email]).deliver
           @status = true
         end
       end

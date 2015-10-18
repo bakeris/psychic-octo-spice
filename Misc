@@ -1,0 +1,196 @@
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellRequest><CodConc>1000</CodConc><CodDiritto>1000</CodDiritto><IdTerminal>0</IdTerminal><Account><AccountId>scommessina31</AccountId><CodConc>1000</CodConc><CodDiritto>1000</CodDiritto><Type>14</Type></Account><TransactionID>4158766627021584399</TransactionID><AmountCoupon>200</AmountCoupon><AmountWin>3263</AmountWin><BetCoupon><CodPal>14693</CodPal><CodEvent>9</CodEvent><CodBet>3</CodBet><CodDraw>1</CodDraw><Odd>245</Odd></BetCoupon><BetCoupon><CodPal>14685</CodPal><CodEvent>12</CodEvent><CodBet>3</CodBet><CodDraw>1</CodDraw><Odd>185</Odd></BetCoupon></SellRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getBet --header "Content-Type:text/xml" --insecure
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><BetsRequest><TransactionID>7788553232283</TransactionID><Language>FR</Language></BetsRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getBet --header "Content-Type:text/xml" --insecure
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><BetsRequest><TransactionID>778855327832283</TransactionID><Language>FR</Language></BetsRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getEvent --header "Content-Type:text/xml" --insecure
+
+curl --request POST --data "{"coupons":[{"pal_code":"14693", "event_code":"9", "bet_code":"3", "draw_code":"1", "odd":"245"}, {"pal_code":"14685", "event_code":"12", "bet_code":"3", "draw_code":"1", "odd":"185"}], "amount":"200", "win_amount":"3263"}" 0.0.0.0:3000/spc/api/6d3782c78d/coupon/sell
+
+{"coupons":[{"pal_code":"14693", "event_code":"9", "bet_code":"3", "draw_code":"1", "odd":"245"}, {"pal_code":"14685", "event_code":"12", "bet_code":"3", "draw_code":"1", "odd":"185"}], "amount":"200", "win_amount":"3263"}
+
+
+
+
+
+
+
+6.1 Service EventRequest
+
+<?xml version="1.0" encoding="UTF-8"?>
+<ServicesPSQF>
+  <Mobile>
+    <GetEventsResponse>
+      <SportMobile>
+        <CodeSport>2</CodeSport>
+        <DescSport>BASKET</DescSport>
+        <LanguageSport>
+          <Language>
+            <LanguageCode>IT</LanguageCode>
+            <Description>basketball</Description>
+          </Language>
+          <Language>
+            <LanguageCode>ES</LanguageCode>
+            <Description>baloncesto</Description>
+          </Language>
+          <Language>
+            <LanguageCode>EN</LanguageCode>
+            <Description>basketball</Description>
+          </Language>
+          <Language>
+            <LanguageCode>PT</LanguageCode>
+            <Description>basquetebol</Description>
+          </Language>
+          <Language>
+            <LanguageCode>FR</LanguageCode>
+            <Description>basketball</Description>
+          </Language>
+        </LanguageSport>
+        <TournamentMobile>
+          <CodeTournament>154</CodeTournament>
+          <DescTournament>BBL</DescTournament>
+          <LanguageTournament>
+            <Language>
+              <LanguageCode>IT</LanguageCode>
+              <Description>BBL</Description>
+            </Language>
+            <Language>
+              <LanguageCode>EN</LanguageCode>
+              <Description>Germany D1</Description>
+            </Language>
+            <Language>
+              <LanguageCode>ES</LanguageCode>
+              <Description>Alemania L1</Description>
+            </Language>
+            <Language>
+              <LanguageCode>PT</LanguageCode>
+              <Description>Alemanha L1</Description>
+            </Language>
+            <Language>
+              <LanguageCode>FR</LanguageCode>
+              <Description>Allemagne D1</Description>
+            </Language>
+          </LanguageTournament>
+          <EventMobile>
+            <CodePal>1543</CodePal>
+            <CodEvent>4</CodEvent>
+            <TimeStamp>20151019 18:00:00</TimeStamp>
+            <DescEvent>BAYERN MUNICH - MITTELDEUTSCHE</DescEvent>
+            <LanguageEvent>
+              <Language>
+                <LanguageCode>IT</LanguageCode>
+                <Description>BAYERN MUNICH - MITTELDEUTSCHE</Description>
+              </Language>
+              <Language>
+                <LanguageCode>EN</LanguageCode>
+                <Description>BAYERN MUNICH - MITTELDEUTSCHE</Description>
+              </Language>
+              <Language>
+                <LanguageCode>PT</LanguageCode>
+                <Description>BAYERN MUNICH - MITTELDEUTSCHE</Description>
+              </Language>
+              <Language>
+                <LanguageCode>ES</LanguageCode>
+                <Description>BAYERN MUNICH - MITTELDEUTSCHE</Description>
+              </Language>
+              <Language>
+                <LanguageCode>FR</LanguageCode>
+                <Description>BAYERN MUNICH - MITTELDEUTSCHE</Description>
+              </Language>
+            </LanguageEvent>
+            <idBetradar>7794332</idBetradar>
+            <Op>insert</Op>
+            <Status>open</Status>
+            <Market>
+              <CodeBet>110</CodeBet>
+              <DescBet>RÃ‰SULTAT FINAL 1-2</DescBet>
+              <LanguageBet>
+                <Language>
+                  <LanguageCode>IT</LanguageCode>
+                  <Description>testa a testa risultato</Description>
+                </Language>
+                <Language>
+                  <LanguageCode>ES</LanguageCode>
+                  <Description>ganador del partido</Description>
+                </Language>
+                <Language>
+                  <LanguageCode>EN</LanguageCode>
+                  <Description>2 way result</Description>
+                </Language>
+                <Language>
+                  <LanguageCode>PT</LanguageCode>
+                  <Description>vencedor do encontro</Description>
+                </Language>
+                <Language>
+                  <LanguageCode>FR</LanguageCode>
+                  <Description>rÃ©sultat final 1-2</Description>
+                </Language>
+              </LanguageBet>
+              <Handicap>0</Handicap>
+              <LegAAMS>1</LegAAMS>
+              <LegMax>20</LegMax>
+              <LegMin>1</LegMin>
+              <Live>false</Live>
+              <Status>open</Status>
+              <MarketDraw>
+                <CodeDraw>1</CodeDraw>
+                <DescDraw>1</DescDraw>
+                <Odd>101</Odd>
+                <StatusDraw>open</StatusDraw>
+                <LanguageDraw>
+                  <Language>
+                    <LanguageCode>EN</LanguageCode>
+                    <Description>1</Description>
+                  </Language>
+                  <Language>
+                    <LanguageCode>IT</LanguageCode>
+                    <Description>1</Description>
+                  </Language>
+                  <Language>
+                    <LanguageCode>ES</LanguageCode>
+                    <Description>1</Description>
+                  </Language>
+                  <Language>
+                    <LanguageCode>FR</LanguageCode>
+                    <Description>1</Description>
+                  </Language>
+                  <Language>
+                    <LanguageCode>PT</LanguageCode>
+                    <Description>1</Description>
+                  </Language>
+                </LanguageDraw>
+              </MarketDraw>
+              <MarketDraw>
+                <CodeDraw>2</CodeDraw>
+                <DescDraw>2</DescDraw>
+                <Odd>742</Odd>
+                <StatusDraw>open</StatusDraw>
+                <LanguageDraw>
+                  <Language>
+                    <LanguageCode>EN</LanguageCode>
+                    <Description>2</Description>
+                  </Language>
+                  <Language>
+                    <LanguageCode>IT</LanguageCode>
+                    <Description>2</Description>
+                  </Language>
+                  <Language>
+                    <LanguageCode>ES</LanguageCode>
+                    <Description>2</Description>
+                  </Language>
+                  <Language>
+                    <LanguageCode>FR</LanguageCode>
+                    <Description>2</Description>
+                  </Language>
+                  <Language>
+                    <LanguageCode>PT</LanguageCode>
+                    <Description>2</Description>
+                  </Language>
+                </LanguageDraw>
+              </MarketDraw>
+            </Market>
+          </EventMobile>
+        </TournamentMobile>
+      </SportMobile>
+    </GetEventsResponse>
+  </Mobile>
+<ServicesPSQF>
