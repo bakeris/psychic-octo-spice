@@ -1,6 +1,10 @@
-curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellRequest><CodConc>1000</CodConc><CodDiritto>1000</CodDiritto><IdTerminal>0</IdTerminal><Account><AccountId>scommessina31</AccountId><CodConc>1000</CodConc><CodDiritto>1000</CodDiritto><Type>14</Type></Account><TransactionID>4158766627021584399</TransactionID><AmountCoupon>200</AmountCoupon><AmountWin>3263</AmountWin><BetCoupon><CodPal>14693</CodPal><CodEvent>9</CodEvent><CodBet>3</CodBet><CodDraw>1</CodDraw><Odd>245</Odd></BetCoupon><BetCoupon><CodPal>14685</CodPal><CodEvent>12</CodEvent><CodBet>3</CodBet><CodDraw>1</CodDraw><Odd>185</Odd></BetCoupon></SellRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getBet --header "Content-Type:text/xml" --insecure
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellRequest><CodConc>PARIONSDIRECT</CodConc><CodDiritto>ZN901feWzv34Y7</CodDiritto><IdTerminal>0</IdTerminal><Account><AccountId>scommessina31</AccountId><CodConc>PARIONSDIRECT</CodConc><CodDiritto>ZN901feWzv34Y7</CodDiritto><Type>14</Type></Account><TransactionID>4158766627021584399</TransactionID><AmountCoupon>200</AmountCoupon><AmountWin>3263</AmountWin><BetCoupon><CodPal>14693</CodPal><CodEvent>9</CodEvent><CodBet>3</CodBet><CodDraw>1</CodDraw><Odd>245</Odd></BetCoupon><BetCoupon><CodPal>14685</CodPal><CodEvent>12</CodEvent><CodBet>3</CodBet><CodDraw>1</CodDraw><Odd>185</Odd></BetCoupon></SellRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/doBet --header "Content-Type:text/xml" --insecure
 
 curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><BetsRequest><TransactionID>7788553232283</TransactionID><Language>FR</Language></BetsRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getBet --header "Content-Type:text/xml" --insecure
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><TournamentRequest><CodSport>1</CodSport><CodTournament>1</CodTournament><TransactionID>139384397781185</TransactionID><Language>EN</Language></TournamentRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getTournament --header "Content-Type:text/xml" --insecure
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><TournamentRequest><CodSport>1</CodSport><TransactionID>9326449349536720035</TransactionID><Language>EN</Language></TournamentRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getTournament --header "Content-Type:text/xml" --insecure
 
 curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><BetsRequest><TransactionID>778855327832283</TransactionID><Language>FR</Language></BetsRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getEvent --header "Content-Type:text/xml" --insecure
 
@@ -8,6 +12,32 @@ curl --request POST --data "{"coupons":[{"pal_code":"14693", "event_code":"9", "
 
 {"coupons":[{"pal_code":"14693", "event_code":"9", "bet_code":"3", "draw_code":"1", "odd":"245"}, {"pal_code":"14685", "event_code":"12", "bet_code":"3", "draw_code":"1", "odd":"185"}], "amount":"200", "win_amount":"3263"}
 
+coupons={"coupons":[{"pal_code":"14693", "event_code":"9", "bet_code":"3", "draw_code":"1", "odd":"245"}, {"pal_code":"14685", "event_code":"12", "bet_code":"3", "draw_code":"1", "odd":"185"}, {"pal_code":"14709","event_code":"8","bet_code":"3","draw_code":"1","odd":"360"}],"amount":"200","win_amount":"3263"}
+
+
+<ServicesPSQF>
+  <SellRequest>
+    <CodConc>PARIONSDIRECT</CodConc>
+    <CodDiritto>ZN901feWzv34Y7</CodDiritto>
+    <IdTerminal>0</IdTerminal>
+    <Account>
+      <AccountId>scommessina31</AccountId>
+      <CodConc>PARIONSDIRECT</CodConc>
+      <CodDiritto>ZN901feWzv34Y7</CodDiritto>
+      <Type>14</Type>
+    </Account>
+    <TransactionID>4158766627021584399</TransactionID>
+    <AmountCoupon>200</AmountCoupon>
+    <AmountWin>3263</AmountWin>
+    <BetCoupon>
+      <CodPal>14693</CodPal>
+      <CodEvent>9</CodEvent>
+      <CodBet>3</CodBet>
+      <CodDraw>1</CodDraw>
+      <Odd>245</Odd>
+    </BetCoupon>
+  </SellRequest>
+</ServicesPSQF>
 
 
 

@@ -1,0 +1,63 @@
+PMU
+-----------------------------------------------------------------
+Query a bet -
+Get draws - Avoir la liste des courses ou des sessions de loto
+Place a bet
+Cancel a bet
+Refund a bet
+Acknowledge - for refund, cancel, place
+
+Lotto
+-----------------------------------------------------------------
+
+
+
+
+
+
+
+
+DateTime.now.strftime("%Y-%m-%d %H:%M:%S")
+
+Get draws - Is the rows node containing a single draw or a list of draws
+
+What is the use of refunding, cancellation, placement acknowledgement for a bet
+
+Complete list of error codes
+
+Get draw
+{
+  revision: 1,
+  header: {
+    userName: "NGSER",
+    password: "secure1!",
+    terminalID: 10000,
+    operatorID: 1
+    operatorPIN: 1
+    auditID: 1352532180952783583073162270452396875655275694538,
+    messageID: 694634484464045137,
+    userID: 1234,
+    dateTime: "2015-11-01 22:46:49"
+  },
+  content: {
+    drawState: -1,
+    MaxRows: 10
+  }
+}
+
+Where do we get betCode, betModifier, list of entries for placing a bet
+
+What are the mandatory parameters in each request
+
+The betCostAmount is only visible after placing a bet. Maybe the customer should see the amount before deciding if he wants to place the bet.
+
+
+{
+  "bet_code": "15",
+  "bet_modifier": "12",
+  "selector1": "1",
+  "selector2": "2",
+  "repeats": "0",
+  "special_entries":  "1,3,4",
+  "normal_entries":  "1,3,4"
+}

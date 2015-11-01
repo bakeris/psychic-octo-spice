@@ -20,6 +20,8 @@ Rails.application.routes.draw do
   get '/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/email/login/:email/:password' => 'users#api_email_login', :constraints => {:email => /.*/}
   get '/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/msisdn/login/:msisdn/:password' => 'users#api_msisdn_login'
 
+  #---------------------LUDWIN---------------------
+
   # Prise d'informations relatives aux paris
   get '/6ba041bf35229938ba869a7a9c59f3a0/api/query_bet/:uuid/:bet_code/:bet_modifier/:selector1/:selector2/:repeats/:special_count/:normal_count/:entries' => 'query_bets#query_bet'
 
@@ -32,8 +34,8 @@ Rails.application.routes.draw do
   # List a specific sport
   get '/spc/api/8b812ab067/sport/:sport_code' => 'ludwin_api#api_show_sport'
 
-  # List all tournaments - Is returning an empty response
-  get '/spc/api/eba26f36c5/tournaments' => 'ludwin_api#api_list_tournaments'
+  # List all tournaments for a specific sport
+  get '/spc/api/eba26f36c5/tournaments/:sport_code' => 'ludwin_api#api_list_tournaments'
 
   # List a specific tournament
   get '/spc/api/78ff5c89f0/tournament/:tournament_code/:sport_code' => 'ludwin_api#api_show_tournament'
@@ -45,7 +47,7 @@ Rails.application.routes.draw do
   get '/spc/api/156dfc6a3b/bet/:bet_code' => 'ludwin_api#api_show_bet'
 
   # Sell a coupon
-  post '/spc/api/6d3782c78d/coupon/sell' => 'ludwin_api#api_sell_coupon'
+  post '/spc/api/6d3782c78d/coupon/sell/:paymoney_account_token' => 'ludwin_api#api_sell_coupon'
 
   # Cancel a sold coupon
   get '/spc/api/6d3782c78d/coupon/cancel/:ticket_id' => 'ludwin_api#api_cancel_coupon'
@@ -55,6 +57,18 @@ Rails.application.routes.draw do
 
   # Sandbox
   get '/sandbox/patron' => 'sandbox#patron_client'
+
+  #---------------------LUDWIN---------------------
+
+  #---------------------AIL PMU---------------------
+
+  # List available draws
+  get '/ail/pmu/api/d269f9c92e/draws' => 'ail_pmu#api_get_draws'
+
+  # Place a bet
+  post '/ail/pmu/api/dik749742e/bet/place/:paymoney_account_token' => 'ail_pmu#api_place_bet'
+
+  #---------------------AIL PMU---------------------
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

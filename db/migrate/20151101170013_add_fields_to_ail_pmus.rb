@@ -1,0 +1,42 @@
+class AddFieldsToAilPmus < ActiveRecord::Migration
+  def change
+    add_column :ail_pmus, :operation, :string
+    add_column :ail_pmus, :transaction_id, :string
+    add_column :ail_pmus, :message_id, :string
+    add_column :ail_pmus, :confirm_id, :string
+    add_column :ail_pmus, :date_time, :string
+    add_column :ail_pmus, :bet_code, :string
+    add_column :ail_pmus, :bet_modifier, :string
+    add_column :ail_pmus, :selector1, :string
+    add_column :ail_pmus, :selector2, :string
+    add_column :ail_pmus, :repeats, :string
+    add_column :ail_pmus, :special_count, :string
+    add_column :ail_pmus, :normal_count, :string
+    add_column :ail_pmus, :entries, :string
+    add_column :ail_pmus, :special_entries, :string
+    add_column :ail_pmus, :normal_entries, :string
+    add_column :ail_pmus, :response_status, :string
+    add_column :ail_pmus, :response_date_time, :string
+    add_column :ail_pmus, :response_data_name, :string
+    add_column :ail_pmus, :response_error_code, :string
+    add_column :ail_pmus, :response_error_message, :text
+    add_column :ail_pmus, :ticket_number, :string
+    add_column :ail_pmus, :ref_number, :string
+    add_column :ail_pmus, :audit_number, :string
+    add_column :ail_pmus, :bet_cost_amount, :string
+    add_column :ail_pmus, :bet_payout_amount, :string
+    add_column :ail_pmus, :response_bet_code, :string
+    add_column :ail_pmus, :response_bet_modifier, :string
+    add_column :ail_pmus, :response_selector1, :string
+    add_column :ail_pmus, :response_selector2, :string
+    add_column :ail_pmus, :response_repeats, :string
+    add_column :ail_pmus, :response_special_entries, :string
+    add_column :ail_pmus, :response_normal_entries, :string
+    add_column :ail_pmus, :refund_acknowledge, :string
+    add_column :ail_pmus, :refund_acknowledge_date_time, :string
+    add_column :ail_pmus, :cancellation_acknowledge, :string
+    add_column :ail_pmus, :cancellation_acknowledge_date_time, :string
+    add_column :ail_pmus, :placement_acknowledge, :string
+    add_column :ail_pmus, :placement_acknowledge_date_time, :string
+  end
+end

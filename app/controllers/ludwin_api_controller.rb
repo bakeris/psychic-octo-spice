@@ -2,7 +2,7 @@ class LudwinApiController < ApplicationController
 
   def api_list_sports
     remote_ip_address = request.remote_ip
-    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..18]
+    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
     url = 'https://sports4africa.com/testUSSD/getSport'
     language = 'FR'
     @error_code = ''
@@ -74,7 +74,7 @@ class LudwinApiController < ApplicationController
 
   def api_show_sport
     remote_ip_address = request.remote_ip
-    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..18]
+    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
     url = 'https://sports4africa.com/testUSSD/getSport'
     sport_code = params[:sport_code]
     language = 'FR'
@@ -146,8 +146,9 @@ class LudwinApiController < ApplicationController
 
   def api_list_tournaments
     remote_ip_address = request.remote_ip
-    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..18]
+    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
     url = 'https://sports4africa.com/testUSSD/getTournament'
+    sport_code = params[:sport_code]
     language = 'FR'
     @error_code = ''
     @error_description = ''
@@ -156,6 +157,7 @@ class LudwinApiController < ApplicationController
     body = %Q[<?xml version="1.0" encoding="UTF-8"?>
               <ServicesPSQF>
 	              <TournamentRequest>
+	                <CodSport>#{sport_code}</CodSport>
 		              <TransactionID>#{transaction_id}</TransactionID>
                   <Language>#{language}</Language>
 	              </TournamentRequest>
@@ -218,7 +220,7 @@ class LudwinApiController < ApplicationController
 
   def api_show_tournament
     remote_ip_address = request.remote_ip
-    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..18]
+    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
     url = 'https://sports4africa.com/testUSSD/getTournament'
     language = 'FR'
     sport_code = params[:sport_code]
@@ -295,7 +297,7 @@ class LudwinApiController < ApplicationController
   def api_list_prematch_data
     remote_ip_address = request.remote_ip
     language = 'FR'
-    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..18]
+    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
     @error_code = ''
     @error_description = ''
     response_body = ''
@@ -326,7 +328,7 @@ class LudwinApiController < ApplicationController
 
   def api_list_bets
     remote_ip_address = request.remote_ip
-    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..18]
+    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
     url = 'https://sports4africa.com/testUSSD/getBet'
     language = 'FR'
     @error_code = ''
@@ -373,7 +375,7 @@ class LudwinApiController < ApplicationController
 
   def api_show_bet
     remote_ip_address = request.remote_ip
-    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..18]
+    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
     url = 'https://sports4africa.com/testUSSD/getBet'
     language = 'FR'
     bet_code = params[:bet_code]
@@ -422,7 +424,7 @@ class LudwinApiController < ApplicationController
 
   def api_sell_coupon
     remote_ip_address = request.remote_ip
-    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..18]
+    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
     url = 'https://sports4africa.com/testUSSD/doBet'
     license_code = '1000'
     point_of_sale_code = '1000'
@@ -438,6 +440,8 @@ class LudwinApiController < ApplicationController
     coupons = (JSON.parse(params[:coupons]) rescue nil)
     amount = ''
     coupons_details = ''
+    paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
+    paymoney_account_token = params[:paymoney_account_token]
 
     if !coupons.blank?
       amount = coupons["amount"]
@@ -453,16 +457,16 @@ class LudwinApiController < ApplicationController
           @error_code = '5002'
           @error_description = 'Coupons details must be an array.'
         else
+          @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, amount: amount, win_amount: win_amount)
           coupons_details.each do |coupon_details|
             pal_code = (coupon_details["pal_code"].to_s rescue nil)
             event_code = (coupon_details["event_code"].to_s rescue nil)
             bet_code = (coupon_details["bet_code"].to_s rescue nil)
             draw_code = (coupon_details["draw_code"].to_s rescue nil)
             odd = (coupon_details["odd"].to_s rescue nil)
-            #response_body = coupon_details["pal_code"]
 
             unless pal_code.blank? || event_code.blank? || bet_code.blank? || draw_code.blank? || odd.blank?
-              @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, amount: amount, win_amount: win_amount, pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd)
+              @bet.bet_coupons.create(pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd)
               coupons_body << %Q[<BetCoupon>
                                    <CodPal>#{pal_code}</CodPal>
 		                               <CodEvent>#{event_code}</CodEvent>
@@ -496,31 +500,52 @@ class LudwinApiController < ApplicationController
 	                      </SellRequest>
                       </ServicesPSQF>]
 
-            request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "application/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
+            # Checkout gamer account
+            request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/LhSpwtyN/#{paymoney_account_token}/#{amount}", followlocation: true, method: :get, headers: {'Content-Type'=> "application/xml"}, timeout: 30)
 
             request.on_complete do |response|
               if response.success?
                 response_body = response.body
-                nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
 
-                if !nokogiri_response.blank?
-                  response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
-                  if response_code == '0' || response_code == '1024'
-                    @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
-                    @bet.update_attributes(validated: true, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil))
-                  else
-                    @bet.update_attributes(validated: false, validated_at: DateTime.now)
-                    @error_code = '4002'
-                    @error_description = 'The bet could not be processed.'
+                if !response_body.include?("|")
+                  @bet.update_attribute(:paymoney_transaction_id, response_body)
+                  request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "application/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
+
+                  request.on_complete do |response|
+                    if response.success?
+                      response_body = response.body
+                      nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
+
+                      if !nokogiri_response.blank?
+                        response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
+                        if response_code == '0' || response_code == '1024'
+                          @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
+                          @bet.update_attributes(validated: true, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil))
+                        else
+                          Bet.update_attributes(validated: false, validated_at: DateTime.now)
+                          @error_code = '4002'
+                          @error_description = 'The bet could not be processed.'
+                        end
+                      else
+                        @error_code = '4001'
+                        @error_description = 'Error while parsing XML.'
+                      end
+                    else
+                      @error_code = '4000'
+                      @error_description = 'Unavailable resource.'
+                    end
                   end
+
+                  request.run
                 else
-                  @error_code = '4001'
-                  @error_description = 'Error while parsing XML.'
+                  @error_code = '6001'
+                  @error_description = 'Payment error, could not checkout the account. Check the credit.'
                 end
               else
-                @error_code = '4000'
-                @error_description = 'Unavailable resource.'
+                @error_code = '6000'
+                @error_description = 'Cannot join paymoney wallet server.'
               end
+
             end
 
             request.run
@@ -541,7 +566,7 @@ class LudwinApiController < ApplicationController
     license_code = '1000'
     point_of_sale_code = '1000'
     terminal_id = '0'
-    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..18]
+    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
     ticket_id = params[:ticket_id]
     @error_code = ''
     @error_description = ''
@@ -599,7 +624,7 @@ class LudwinApiController < ApplicationController
   def api_coupon_payment_notification
     @error_code = ''
     @error_description = ''
-    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..18]
+    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
     url = 'https://sports4africa.com/testUSSD/paymentTicket'
     payment_notification_envelope = (Nokogiri::XML(request.body.read) rescue nil)
 
@@ -613,7 +638,7 @@ class LudwinApiController < ApplicationController
       bet_code = (payment_notification_envelope.xpath('//PaymentNotificationRequest/EventTicket').at('CodBet').content rescue nil)
       pn_transaction_id = (payment_notification_envelope.xpath('//PaymentNotificationRequest').at('TransactionID').content rescue nil)
 
-      @bet = Bet.where("ticket_id = '#{ticket_id}' AND pal_code = '#{pal_code}' AND event_code = '#{event_code}' AND bet_code = '#{bet_code}'")
+      @bet = Bet.where(ticket_id: ticket_id, pal_code: pal_code, event_code: event_code, bet_code: bet_code)
 
       if @bet.blank?
         @error_code = '5001'
