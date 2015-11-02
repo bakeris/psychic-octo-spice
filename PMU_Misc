@@ -51,6 +51,8 @@ What are the mandatory parameters in each request
 
 The betCostAmount is only visible after placing a bet. Maybe the customer should see the amount before deciding if he wants to place the bet.
 
+How do we make the difference between PMU and Lotto requests
+
 
 {
   "bet_code": "15",

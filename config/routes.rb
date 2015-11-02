@@ -66,7 +66,7 @@ Rails.application.routes.draw do
   get '/ail/pmu/api/d269f9c92e/draws' => 'ail_pmu#api_get_draws'
 
   # Place a bet
-  post '/ail/pmu/api/dik749742e/bet/place/:paymoney_account_token' => 'ail_pmu#api_place_bet'
+  post '/ail/pmu/api/dik749742e/bet/place/:paymoney_account_number' => 'ail_pmu#api_place_bet'
 
   #---------------------AIL PMU---------------------
 

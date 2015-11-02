@@ -441,7 +441,7 @@ class LudwinApiController < ApplicationController
     amount = ''
     coupons_details = ''
     paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
-    paymoney_account_token = params[:paymoney_account_token]
+    paymoney_account_token = check_account_number(params[:paymoney_account_number])
 
     if !coupons.blank?
       amount = coupons["amount"]
@@ -723,6 +723,13 @@ class LudwinApiController < ApplicationController
               </ServicesPSQF>]
 
     render text: body
+  end
+
+  def check_account_number(account_number)
+    token = (RestClient.get "#{Parameter.first.paymoney_wallet_url}/PAYMONEY_WALLET/rest/check2_compte/#{account_number}" rescue "")
+    print token
+
+    return token
   end
 
 end
