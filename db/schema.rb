@@ -11,10 +11,64 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151101224306) do
+ActiveRecord::Schema.define(version: 20151109151714) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "ail_loto_logs", force: true do |t|
+    t.string   "operation"
+    t.string   "transaction_id"
+    t.text     "sent_params"
+    t.text     "response_body"
+    t.string   "remote_ip_address"
+    t.string   "error_code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ail_lotos", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "operation"
+    t.string   "transaction_id"
+    t.string   "message_id"
+    t.string   "confirm_id"
+    t.string   "date_time"
+    t.string   "bet_code"
+    t.string   "bet_modifier"
+    t.string   "selector1"
+    t.string   "selector2"
+    t.string   "repeats"
+    t.string   "special_count"
+    t.string   "normal_count"
+    t.string   "entries"
+    t.string   "special_entries"
+    t.string   "normal_entries"
+    t.string   "response_status"
+    t.string   "response_date_time"
+    t.string   "response_data_name"
+    t.string   "response_error_code"
+    t.text     "response_error_message"
+    t.string   "ticket_number"
+    t.string   "ref_number"
+    t.string   "audit_number"
+    t.string   "bet_cost_amount"
+    t.string   "bet_payout_amount"
+    t.string   "response_bet_code"
+    t.string   "response_bet_modifier"
+    t.string   "response_selector1"
+    t.string   "response_selector2"
+    t.string   "response_repeats"
+    t.string   "response_special_entries"
+    t.string   "response_normal_entries"
+    t.boolean  "refund_acknowledge"
+    t.string   "refund_acknowledge_date_time"
+    t.boolean  "cancellation_acknowledge"
+    t.string   "cancellation_acknowledge_date_time"
+    t.boolean  "placement_acknowledge"
+    t.string   "placement_acknowledge_date_time"
+  end
 
   create_table "ail_pmu_logs", force: true do |t|
     t.string   "operation"
@@ -62,13 +116,13 @@ ActiveRecord::Schema.define(version: 20151101224306) do
     t.string   "response_repeats"
     t.string   "response_special_entries"
     t.string   "response_normal_entries"
-    t.string   "refund_acknowledge"
     t.string   "refund_acknowledge_date_time"
-    t.string   "cancellation_acknowledge"
     t.string   "cancellation_acknowledge_date_time"
-    t.string   "placement_acknowledge"
     t.string   "placement_acknowledge_date_time"
     t.string   "remote_ip_address"
+    t.boolean  "placement_acknowledge"
+    t.boolean  "cancellation_acknowledge"
+    t.boolean  "refund_acknowledge"
   end
 
   create_table "bet_coupons", force: true do |t|

@@ -1,4 +1,22 @@
-curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellRequest><CodConc>PARIONSDIRECT</CodConc><CodDiritto>ZN901feWzv34Y7</CodDiritto><IdTerminal>0</IdTerminal><Account><AccountId>scommessina31</AccountId><CodConc>PARIONSDIRECT</CodConc><CodDiritto>ZN901feWzv34Y7</CodDiritto><Type>14</Type></Account><TransactionID>4158766627021584399</TransactionID><AmountCoupon>200</AmountCoupon><AmountWin>3263</AmountWin><BetCoupon><CodPal>14693</CodPal><CodEvent>9</CodEvent><CodBet>3</CodBet><CodDraw>1</CodDraw><Odd>245</Odd></BetCoupon><BetCoupon><CodPal>14685</CodPal><CodEvent>12</CodEvent><CodBet>3</CodBet><CodDraw>1</CodDraw><Odd>185</Odd></BetCoupon></SellRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/doBet --header "Content-Type:text/xml" --insecure
+CodConc:299
+CodDiritto:595
+IdTerminal: 201
+AccountId:
+
+point of sales name:PARIONSDIRECT
+password:ZN901feWzv34Y7
+Terminal :
+ID:201 port:7201
+ID:202 port:7202
+ID:203 port:7203
+
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>4158766627021584399</TransactionID><AmountCoupon>555</AmountCoupon><AmountWin>555</AmountWin><BetCoupon><CodPal>1545</CodPal><CodEvent>32</CodEvent><CodBet>3</CodBet><CodDraw>1</CodDraw><Odd>555</Odd></BetCoupon></SellRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/doBet --header "Content-Type:text/xml" --insecure
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>4158766627021584399</TransactionID><AmountCoupon>400</AmountCoupon><AmountWin>3263</AmountWin><BetCoupon><CodPal>14693</CodPal><CodEvent>9</CodEvent><CodBet>3</CodBet><CodDraw>1</CodDraw><Odd>245</Odd></BetCoupon></SellRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/doBet --header "Content-Type:text/xml" --insecure
+
+# Specific bet
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><BetsRequest><TransactionID>29387226285314391</TransactionID><Language>FR</Language></BetsRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getBet --header "Content-Type:text/xml" --insecure
 
 curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><BetsRequest><TransactionID>7788553232283</TransactionID><Language>FR</Language></BetsRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getBet --header "Content-Type:text/xml" --insecure
 
@@ -224,3 +242,36 @@ coupons={"coupons":[{"pal_code":"14693", "event_code":"9", "bet_code":"3", "draw
     </GetEventsResponse>
   </Mobile>
 <ServicesPSQF>
+
+Liste des sports
+{"sports":[{"code":"1","acronym":"CALCIO","description":"CALCIO"},{"code":"2","acronym":"BASKET","description":"BASKET"}]}
+
+Sport spécifique
+{"sport":[{"code":"2","acronym":"BASKET","description":"BASKET"}]}
+
+Affichage des tournois liés à un sport
+{"tournaments":[{"tournament_code":"177","sport_code":"2","acronym":"USANBA00177","description":"NBA"},{"tournament_code":"271","sport_code":"2","acronym":"ESPSPAGNOL00271","description":"Spagnola ACB"}]}
+
+Affichage d'un tournoi spécifique
+{"tournament":[{"tournament_code":"177","sport_code":"2","acronym":"USANBA00177","description":"NBA"}]}
+
+Liste des paris
+{"bets":[{"code":"4072","description":"mi-temps total 125.5","is_live":"true","is_handicap":"false","is_static":"true","kind_handicap":"0","num_draw":"2","draws":[]}]}
+
+
+
+
+Specific bet API not working
+
+Where do we find CodPal to place a bet
+
+In the bets, the draw node is missing however, it's a required field for placing a bet as we need CodDraw
+
+How do we determine the amountcoupon and amount win.
+
+Point of sales name : PARIONSDIRECT
+password :ZN901feWzv34Y7
+Terminal :
+ID:201, port:7201
+ID:202 , port :7202
+ID:203, port :7203

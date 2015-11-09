@@ -1,20 +1,16 @@
-if !@error_code.blank?
+if @error_code != 0
   json.error code: @error_code, description: @error_description
 else
+  json.draws_type "PLR"
   json.draws @draws_list do |draw|
-    draw = (JSON.parse(draw) rescue nil)
-    unless draw.blank?
-      json.draw_id draw.at('drawID').content
-      json.system_name draw.at('systemName').content
-      json.draw_type draw.at('DrawType').content
-      json.selector1 draw.at('selector1').content
-      json.selector2 draw.at('selector2').content
-      json.draw_state draw.at('drawState').content
-      json.number_of_entries draw.at('numberOfEntries').content
-      json.payout_released draw.at('payoutReleased').content
-      json.opening_date draw.at('openingDate').content
-      json.closing_date draw.at('closingDate').content
-      json.use_stake_based draw.at('useStakeBased').content
-    end
+    json.id draw["drawID"] rescue nil
+    json.state draw["drawState"] rescue nil
+    json.number_of_entries draw["numberOfEntries"] rescue nil
+    json.opening_date draw["openingDate"] rescue nil
+    json.closing_date draw["closingDate"] rescue nil
+    json.selector1 draw["selector1"] rescue nil
+    json.selector2 draw["selector2"] rescue nil
+    json.payouts_released draw["payoutsReleased"] rescue nil
+    json.use_stake_based draw["useStakeBased"] rescue nil
   end
 end

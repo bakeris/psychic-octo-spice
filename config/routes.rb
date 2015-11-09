@@ -68,7 +68,29 @@ Rails.application.routes.draw do
   # Place a bet
   post '/ail/pmu/api/dik749742e/bet/place/:paymoney_account_number' => 'ail_pmu#api_place_bet'
 
+  # Cancel a bet
+  get '/ail/pmu/api/73b451b673/bet/cancel/:transaction_id' => 'ail_pmu#api_cancel_bet'
+
+  # Refund a bet
+  get '/ail/pmu/api/2f9aa57098/bet/refund/:transaction_id' => 'ail_pmu#api_refund_bet'
+
   #---------------------AIL PMU---------------------
+
+  #---------------------AIL Loto---------------------
+
+  # List available draws
+  get '/ail/loto/api/48e266c970/draws' => 'ail_loto#api_get_draws'
+
+  # Place a bet
+  post '/ail/loto/api/96455396dc/bet/place/:paymoney_account_number' => 'ail_loto#api_place_bet'
+
+  # Cancel a bet
+  get '/ail/loto/api/ead345db03/bet/cancel/:transaction_id' => 'ail_loto#api_cancel_bet'
+
+  # Refund a bet
+  get '/ail/loto/api/ecafdce143/bet/refund/:transaction_id' => 'ail_loto#api_refund_bet'
+
+  #---------------------AIL Loto---------------------
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

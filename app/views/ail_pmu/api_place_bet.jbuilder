@@ -1,18 +1,19 @@
-if !@error_code.blank?
+if @error_code != 0
   json.error code: @error_code, description: @error_description
 else
-  json.bet @bet do |bet|
-    json.ticket_number draw.at('ticketNumber').content
-    json.ref_number draw.at('refNumber').content
-    json.audit_number draw.at('auditNumber').content
-    json.bet_cost_amount draw.at('betCostAmount').content
-    json.bet_payout_amount draw.at('betPayoutAmount').content
-    json.bet_code draw.at('betCode').content
-    json.bet_modifier draw.at('betModifier').content
-    json.selector1 draw.at('selector1').content
-    json.selector2 draw.at('selector2').content
-    json.repeats draw.at('repeats').content
-    json.special_entries draw.at('specialEntries').content
-    json.normal_entries draw.at('special_entries').content
+  json.bet do
+    json.ticket_number @bet["ticketNumber"] rescue nil
+    json.ref_number @bet["refNumber"] rescue nil
+    json.transaction_id @transaction_id rescue nil
+    json.audit_number @bet["auditNumber"] rescue nil
+    json.bet_cost_amount @bet["betCostAmount"] rescue nil
+    json.bet_payout_amount @bet["betPayoutAmount"] rescue nil
+    json.bet_code @bet["betCode"] rescue nil
+    json.bet_modifier @bet["betModifier"] rescue nil
+    json.selector1 @bet["selector1"] rescue nil
+    json.selector2 @bet["selector2"] rescue nil
+    json.repeats @bet["repeats"] rescue nil
+    json.special_entries @bet["specialEntries"].to_s.sub("\n", "") rescue nil
+    json.normal_entries @bet["normalEntries"].to_s.sub("\n", "") rescue nil
   end
 end
