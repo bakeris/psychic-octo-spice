@@ -66,13 +66,22 @@ Rails.application.routes.draw do
   get '/ail/pmu/api/d269f9c92e/draws' => 'ail_pmu#api_get_draws'
 
   # Place a bet
-  post '/ail/pmu/api/dik749742e/bet/place/:paymoney_account_number' => 'ail_pmu#api_place_bet'
+  post '/ail/pmu/api/dik749742e/bet/place' => 'ail_pmu#api_place_bet'
+
+  # Acknowledge the placement of a bet
+  get '/ail/pmu/api/4a66c58e95/bet/place/acknowledge/:transaction_id/:paymoney_account_number' => 'ail_pmu#api_acknowledge_bet'
 
   # Cancel a bet
   get '/ail/pmu/api/73b451b673/bet/cancel/:transaction_id' => 'ail_pmu#api_cancel_bet'
 
+  # Acknowledge the cancellation of a bet
+  get '/ail/pmu/api/8c8a869c38/bet/cancel/acknowledge/:transaction_id' => 'ail_pmu#api_acknowledge_cancel'
+
   # Refund a bet
   get '/ail/pmu/api/2f9aa57098/bet/refund/:transaction_id' => 'ail_pmu#api_refund_bet'
+
+  # Acknowledge the refund of a bet
+  get '/ail/pmu/api/8cedf69c38/bet/refund/acknowledge/:transaction_id' => 'ail_pmu#api_acknowledge_refund'
 
   #---------------------AIL PMU---------------------
 
@@ -82,13 +91,22 @@ Rails.application.routes.draw do
   get '/ail/loto/api/48e266c970/draws' => 'ail_loto#api_get_draws'
 
   # Place a bet
-  post '/ail/loto/api/96455396dc/bet/place/:paymoney_account_number' => 'ail_loto#api_place_bet'
+  post '/ail/loto/api/96455396dc/bet/place/acknowledge' => 'ail_loto#api_place_bet'
+
+  # Acknowledge the placement of a bet
+  get '/ail/loto/api/ddfd5882ab/bet/place/acknowledge/:transaction_id/:paymoney_account_number' => 'ail_loto#api_acknowledge_bet'
 
   # Cancel a bet
   get '/ail/loto/api/ead345db03/bet/cancel/:transaction_id' => 'ail_loto#api_cancel_bet'
 
+  # Acknowledge the cancellation of a bet
+  get '/ail/loto/api/8c8a759c38/bet/cancel/acknowledge/:transaction_id' => 'ail_loto#api_acknowledge_cancel'
+
   # Refund a bet
   get '/ail/loto/api/ecafdce143/bet/refund/:transaction_id' => 'ail_loto#api_refund_bet'
+
+  # Acknowledge the refund of a bet
+  get '/ail/loto/api/7415f69c38/bet/refund/acknowledge/:transaction_id' => 'ail_loto#api_acknowledge_refund'
 
   #---------------------AIL Loto---------------------
 
