@@ -91,7 +91,7 @@ Rails.application.routes.draw do
   get '/ail/loto/api/48e266c970/draws' => 'ail_loto#api_get_draws'
 
   # Place a bet
-  post '/ail/loto/api/96455396dc/bet/place/acknowledge' => 'ail_loto#api_place_bet'
+  post '/ail/loto/api/96455396dc/bet/place' => 'ail_loto#api_place_bet'
 
   # Acknowledge the placement of a bet
   get '/ail/loto/api/ddfd5882ab/bet/place/acknowledge/:transaction_id/:paymoney_account_number' => 'ail_loto#api_acknowledge_bet'

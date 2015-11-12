@@ -11,6 +11,11 @@ ID:202 port:7202
 ID:203 port:7203
 
 
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SportRequest><TransactionID>8552214</TransactionID><Language>FR</Language></SportRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getSport --header "Content-Type:text/xml" --insecure
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><TournamentRequest><CodSport>1</CodSport><TransactionID>8514273</TransactionID><Language>FR</Language></TournamentRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getTournament --header "Content-Type:text/xml" --insecure
+
+
 curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>4158766627021584399</TransactionID><AmountCoupon>555</AmountCoupon><AmountWin>555</AmountWin><BetCoupon><CodPal>1545</CodPal><CodEvent>32</CodEvent><CodBet>3</CodBet><CodDraw>1</CodDraw><Odd>555</Odd></BetCoupon></SellRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/doBet --header "Content-Type:text/xml" --insecure
 
 curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>4158766627021584399</TransactionID><AmountCoupon>400</AmountCoupon><AmountWin>3263</AmountWin><BetCoupon><CodPal>14693</CodPal><CodEvent>9</CodEvent><CodBet>3</CodBet><CodDraw>1</CodDraw><Odd>245</Odd></BetCoupon></SellRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/doBet --header "Content-Type:text/xml" --insecure
@@ -275,3 +280,5 @@ Terminal :
 ID:201, port:7201
 ID:202 , port :7202
 ID:203, port :7203
+
+{"pal_code":"1546","code":"34","datetime":"20151113 17:30:00","description":"QATAR - TURKEY","event_languages":[{"code":"IT","description":"QATAR - TURKEY"},{"code":"EN","description":"QATAR - TURQU?A"},{"code":"PT","description":"QATAR - TURKEY"},{"code":"ES","description":"QUATAR - TURQUIA"},{"code":"FR","description":"QATAR - TURQUIE"}],"id_bet_radar":"8281768","op":"insert","status":"open","market":[{"bet_code":"3","bet_descriptio

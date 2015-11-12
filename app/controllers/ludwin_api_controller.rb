@@ -159,7 +159,6 @@ class LudwinApiController < ApplicationController
 	              <TournamentRequest>
 	                <CodSport>#{sport_code}</CodSport>
 		              <TransactionID>#{transaction_id}</TransactionID>
-                  <Language>#{language}</Language>
 	              </TournamentRequest>
               </ServicesPSQF>]
 =begin
@@ -426,9 +425,9 @@ class LudwinApiController < ApplicationController
     remote_ip_address = request.remote_ip
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
     url = 'https://sports4africa.com/testUSSD/doBet'
-    license_code = '1000'
-    point_of_sale_code = '1000'
-    terminal_id = '0'
+    license_code = '299'
+    point_of_sale_code = '595'
+    terminal_id = '201'
     account_id = 'scommessina31'
     account_type = '14'
     coupons_body = ''
@@ -487,12 +486,6 @@ class LudwinApiController < ApplicationController
                           <CodConc>#{license_code}</CodConc>
 		                      <CodDiritto>#{point_of_sale_code}</CodDiritto>
 		                      <IdTerminal>#{terminal_id}</IdTerminal>
-		                      <Account>
-			                      <AccountId>#{account_id}</AccountId>
-			                      <CodConc>#{license_code}</CodConc>
-			                      <CodDiritto>#{point_of_sale_code}</CodDiritto>
-			                      <Type>#{account_type}</Type>
-		                      </Account>
 		                      <TransactionID>#{transaction_id}</TransactionID>
 		                      <AmountCoupon>#{amount}</AmountCoupon>
 		                      <AmountWin>#{win_amount}</AmountWin>
