@@ -282,3 +282,18 @@ ID:202 , port :7202
 ID:203, port :7203
 
 {"pal_code":"1546","code":"34","datetime":"20151113 17:30:00","description":"QATAR - TURKEY","event_languages":[{"code":"IT","description":"QATAR - TURKEY"},{"code":"EN","description":"QATAR - TURQU?A"},{"code":"PT","description":"QATAR - TURKEY"},{"code":"ES","description":"QUATAR - TURQUIA"},{"code":"FR","description":"QATAR - TURQUIE"}],"id_bet_radar":"8281768","op":"insert","status":"open","market":[{"bet_code":"3","bet_descriptio
+
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>4158766627021584399</TransactionID><AmountCoupon>1000</AmountCoupon><AmountWin>5040</AmountWin><BetCoupon><CodPal>1546</CodPal><CodEvent>34</CodEvent><CodBet>3</CodBet><CodDraw>1</CodDraw><Odd>504</Odd></BetCoupon></SellRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/doBet --header "Content-Type:text/xml" --insecure
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>1111766627021444499</TransactionID><AmountCoupon>1000</AmountCoupon><AmountWin>1980</AmountWin><BetCoupon><CodPal>1546</CodPal><CodEvent>40</CodEvent><CodBet>3</CodBet><CodDraw>1</CodDraw><Odd>198</Odd></BetCoupon></SellRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/doBet --header "Content-Type:text/xml" --insecure
+
+<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><SellResponse><ReturnCode><Code>0</Code><Description>RESULTAT OK</Description><FlgRetry>false</FlgRetry></ReturnCode><TicketSogei>26A6080B27210FD1B0BE</TicketSogei><TimeStamp>20151113 08:52:11</TimeStamp><TransactionID>1111766627021444499</TransactionID><AmountWin>1980</AmountWin></SellResponse></ServicesPSQF>
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>1411766627021444499</TransactionID><TicketSogei>26A6080B27210FD1B0BE</TicketSogei ></PaymentRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/paymentTicket --header "Content-Type:text/xml" --insecure
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>4158766627021584399</TransactionID><TicketSogei>26A6080B27210FD1B0BE</TicketSogei ></PaymentRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/paymentTicket --header "Content-Type:text/xml" --insecure
+
+
+4158766627021584399
+4158766627021444499

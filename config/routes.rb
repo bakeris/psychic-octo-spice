@@ -55,6 +55,9 @@ Rails.application.routes.draw do
   # Payment notification request
   post '/spc/api/8679903191/coupon/payment/notification' => 'ludwin_api#api_coupon_payment_notification'
 
+  # Check coupon status
+  get '/spc/api/e5c89f9add/coupon/status/:transaction_id' => 'ludwin_api#api_coupon_status'
+
   # Sandbox
   get '/sandbox/patron' => 'sandbox#patron_client'
 

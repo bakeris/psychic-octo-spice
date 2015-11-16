@@ -322,7 +322,7 @@ class LudwinApiController < ApplicationController
 
     request.run
 
-    LudwinLog.create(operation: "Liste complète des données d'avant match", transaction_id: transaction_id, language: language, error_code: @error_code, response_body: response_body, remote_ip_address: remote_ip_address)
+    #LudwinLog.create(operation: "Liste complète des données d'avant match", transaction_id: transaction_id, language: language, error_code: @error_code, response_body: response_body, remote_ip_address: remote_ip_address)
   end
 
   def api_list_bets
@@ -369,7 +369,7 @@ class LudwinApiController < ApplicationController
 
     request.run
 
-    LudwinLog.create(operation: 'Liste complète des paris', transaction_id: transaction_id, language: language, error_code: @error_code, sent_body: body, response_body: response_body, remote_ip_address: remote_ip_address)
+    #LudwinLog.create(operation: 'Liste complète des paris', transaction_id: transaction_id, language: language, error_code: @error_code, sent_body: body, response_body: response_body, remote_ip_address: remote_ip_address)
   end
 
   def api_show_bet
@@ -444,25 +444,25 @@ class LudwinApiController < ApplicationController
 
     if !coupons.blank?
       amount = coupons["amount"]
-      win_amount = coupons["win_amount"]
+      win_amount = (((coupons["odd"].to_f / 100) * coupons["amount"].to_i).to_i rescue nil)
 
       if amount.blank? || win_amount.blank?
         @error_code = '5001'
         @error_description = 'Cannot retrieve coupon amount or coupon win amount.'
       else
-        coupons_details = (coupons["coupons"].to_a rescue nil)
+        #coupons_details = (coupons["coupons"].to_a rescue nil)
 
-        if coupons_details.blank?
-          @error_code = '5002'
-          @error_description = 'Coupons details must be an array.'
-        else
+        #if coupons_details.blank?
+          #@error_code = '5002'
+          #@error_description = 'Coupons details must be an array.'
+        #else
           @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, amount: amount, win_amount: win_amount)
-          coupons_details.each do |coupon_details|
-            pal_code = (coupon_details["pal_code"].to_s rescue nil)
-            event_code = (coupon_details["event_code"].to_s rescue nil)
-            bet_code = (coupon_details["bet_code"].to_s rescue nil)
-            draw_code = (coupon_details["draw_code"].to_s rescue nil)
-            odd = (coupon_details["odd"].to_s rescue nil)
+          #coupons_details.each do |coupon_details|
+            pal_code = (coupons["pal_code"].to_s rescue nil)
+            event_code = (coupons["event_code"].to_s rescue nil)
+            bet_code = (coupons["bet_code"].to_s rescue nil)
+            draw_code = (coupons["draw_code"].to_s rescue nil)
+            odd = (coupons["odd"].to_s rescue nil)
 
             unless pal_code.blank? || event_code.blank? || bet_code.blank? || draw_code.blank? || odd.blank?
               @bet.bet_coupons.create(pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd)
@@ -474,7 +474,7 @@ class LudwinApiController < ApplicationController
                                    <Odd>#{odd}</Odd>
                                  </BetCoupon>]
             end
-          end
+          #end
 
           if coupons_body.blank?
             @error_code = '5003'
@@ -496,12 +496,12 @@ class LudwinApiController < ApplicationController
             # Checkout gamer account
             request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/LhSpwtyN/#{paymoney_account_token}/#{amount}", followlocation: true, method: :get, headers: {'Content-Type'=> "application/xml"}, timeout: 30)
 
-            request.on_complete do |response|
-              if response.success?
-                response_body = response.body
+            #request.on_complete do |response|
+              #if response.success?
+                #response_body = response.body
 
-                if !response_body.include?("|")
-                  @bet.update_attribute(:paymoney_transaction_id, response_body)
+                #if !response_body.include?("|")
+                  #@bet.update_attribute(:paymoney_transaction_id, response_body)
                   request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "application/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
 
                   request.on_complete do |response|
@@ -515,7 +515,7 @@ class LudwinApiController < ApplicationController
                           @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
                           @bet.update_attributes(validated: true, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil))
                         else
-                          Bet.update_attributes(validated: false, validated_at: DateTime.now)
+                          @bet.update_attributes(validated: false, validated_at: DateTime.now)
                           @error_code = '4002'
                           @error_description = 'The bet could not be processed.'
                         end
@@ -530,22 +530,22 @@ class LudwinApiController < ApplicationController
                   end
 
                   request.run
-                else
-                  @error_code = '6001'
-                  @error_description = 'Payment error, could not checkout the account. Check the credit.'
-                end
-              else
-                @error_code = '6000'
-                @error_description = 'Cannot join paymoney wallet server.'
-              end
+                #else
+                  #@error_code = '6001'
+                  #@error_description = 'Payment error, could not checkout the account. Check the credit.'
+                #end
+              #else
+                #@error_code = '6000'
+                #@error_description = 'Cannot join paymoney wallet server.'
+              #end
 
-            end
+            #end
 
-            request.run
+            #request.run
 
             LudwinLog.create(operation: "Prise de pari", transaction_id: transaction_id, error_code: @error_code, sent_body: body, response_body: response_body, remote_ip_address: remote_ip_address)
           end
-        end
+        #end
       end
     else
       @error_code = '5000'
@@ -617,9 +617,11 @@ class LudwinApiController < ApplicationController
   def api_coupon_payment_notification
     @error_code = ''
     @error_description = ''
+    remote_ip_address = request.remote_ip
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
     url = 'https://sports4africa.com/testUSSD/paymentTicket'
     payment_notification_envelope = (Nokogiri::XML(request.body.read) rescue nil)
+    LudwinLog.create(operation: "Paiement de coupon", response_body: request.body.read, remote_ip_address: remote_ip_address)
 
     if payment_notification_envelope.blank?
       @error_code = '5000'
@@ -631,7 +633,7 @@ class LudwinApiController < ApplicationController
       bet_code = (payment_notification_envelope.xpath('//PaymentNotificationRequest/EventTicket').at('CodBet').content rescue nil)
       pn_transaction_id = (payment_notification_envelope.xpath('//PaymentNotificationRequest').at('TransactionID').content rescue nil)
 
-      @bet = Bet.where(ticket_id: ticket_id, pal_code: pal_code, event_code: event_code, bet_code: bet_code)
+      @bet = Bet.where(ticket_id: ticket_id, transaction_id: pn_transaction_id)
 
       if @bet.blank?
         @error_code = '5001'
@@ -660,9 +662,9 @@ class LudwinApiController < ApplicationController
               body = %Q[<?xml version="1.0" encoding="UTF-8"?>
                         <ServicesPSQF>
                           <PaymentRequest>
-                            <CodConc>1000</CodConc>
-		                        <CodDiritto>1000</CodDiritto>
-		                        <IdTerminal>0</IdTerminal>
+                            <CodConc>299</CodConc>
+		                        <CodDiritto>595</CodDiritto>
+		                        <IdTerminal>201</IdTerminal>
                             <TransactionID>#{transaction_id}</TransactionID>
                             <TicketID>#{ticket_id}</ TicketID >
 	                        </PaymentRequest>
@@ -716,6 +718,18 @@ class LudwinApiController < ApplicationController
               </ServicesPSQF>]
 
     render text: body
+  end
+
+  def api_coupon_status
+    @bet = Bet.find_by_transaction_id(params[:transaction_id])
+    remote_ip_address = request.remote_ip
+    @error_code = ''
+    @error_description = ''
+
+    if @bet.blank?
+      @error_code = '4000'
+      @error_description = 'Could not find the transaction ID.'
+    end
   end
 
   def check_account_number(account_number)

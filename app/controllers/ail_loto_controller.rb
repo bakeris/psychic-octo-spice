@@ -16,7 +16,9 @@ class AilLotoController < ApplicationController
   def api_get_draws
     set_credentials
     remote_ip_address = request.remote_ip
-    url = "http://office.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/draws/get"
+    #url = "http://office.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/draws/get"
+    url = "http://dev.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/draws/get"
+
     @error_code = ''
     @error_description = ''
     response_body = ''
@@ -74,7 +76,9 @@ class AilLotoController < ApplicationController
   def api_place_bet
     set_credentials
     remote_ip_address = request.remote_ip
-    url = "http://office.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/placebet"
+    #url = "http://office.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/placebet"
+    url = "http://dev.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/placebet"
+
     @error_code = ''
     @error_description = ''
     response_body = ''

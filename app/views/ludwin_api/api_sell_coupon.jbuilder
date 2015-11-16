@@ -5,5 +5,6 @@ else
     json.ticket_id bet.at('TicketSogei').content
     json.date_time bet.at('TimeStamp').content
     json.transaction_id bet.at('TransactionID').content
+    json.amount_win bet.at('AmountWin').content
   end
 end
