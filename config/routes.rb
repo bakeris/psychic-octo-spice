@@ -68,6 +68,9 @@ Rails.application.routes.draw do
   # List available draws
   get '/ail/pmu/api/d269f9c92e/draws' => 'ail_pmu#api_get_draws'
 
+  # Query a bet
+  post '/ail/pmu/api/3c9342cf06/bet/query' => 'ail_pmu#api_query_bet'
+
   # Place a bet
   post '/ail/pmu/api/dik749742e/bet/place' => 'ail_pmu#api_place_bet'
 
@@ -93,6 +96,9 @@ Rails.application.routes.draw do
   # List available draws
   get '/ail/loto/api/48e266c970/draws' => 'ail_loto#api_get_draws'
 
+  # Query a bet
+  post '/ail/loto/api/852142cf06/bet/query' => 'ail_loto#api_query_bet'
+
   # Place a bet
   post '/ail/loto/api/96455396dc/bet/place' => 'ail_loto#api_place_bet'
 
@@ -112,6 +118,12 @@ Rails.application.routes.draw do
   get '/ail/loto/api/7415f69c38/bet/refund/acknowledge/:transaction_id' => 'ail_loto#api_acknowledge_refund'
 
   #---------------------AIL Loto---------------------
+
+  #---------------------EPPL---------------------
+  get 'eppl/api/36e25e6bfd/bet/place/:paymoney_account_number/:transaction_amount' => 'eppl#api_place_bet'
+
+  get 'eppl/api/87eik741fd/earning/pay/:transaction_id' => 'eppl#api_pay_earning'
+  #---------------------EPPL---------------------
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

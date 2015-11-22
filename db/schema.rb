@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151109151714) do
+ActiveRecord::Schema.define(version: 20151122231920) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -180,6 +180,25 @@ ActiveRecord::Schema.define(version: 20151109151714) do
     t.string   "token"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "eppls", force: true do |t|
+    t.string   "transaction_id"
+    t.string   "paymoney_account"
+    t.string   "transaction_amount"
+    t.boolean  "bet_placed"
+    t.datetime "bet_placed_at"
+    t.boolean  "earning_paid"
+    t.datetime "earning_paid_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "paymoney_transaction_id"
+    t.string   "error_code"
+    t.text     "error_description"
+    t.string   "response_body"
+    t.string   "remote_ip"
+    t.string   "paymoney_account_token"
+    t.string   "earning_transaction_id"
   end
 
   create_table "ludwin_logs", force: true do |t|

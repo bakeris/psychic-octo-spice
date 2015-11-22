@@ -73,11 +73,138 @@ class AilLotoController < ApplicationController
     AilLotoLog.create(operation: 'Liste complète des tirages', transaction_id: @transaction_id, error_code: @error_code, sent_params: body, response_body: response_body, remote_ip_address: remote_ip_address)
   end
 
+  def api_query_bet
+    set_credentials
+    remote_ip_address = request.remote_ip
+    url = "http://office.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/​AVTBetV1.svc/bet/querybet"
+    @error_code = ''
+    @error_description = ''
+    response_body = ''
+    @request_body = request.body.read
+    filter_place_bet_incoming_request
+    body = %Q|{
+                "Bet":{
+                  "revision":"1",
+                  "header":{
+                    "userName":"#{@user_name}",
+                    "password":"#{@password}",
+                    "terminalID":#{@terminal_id},
+                    "operatorID":#{@operator_id},
+                    "operatorPIN":#{@operator_pin},
+                    "auditID":#{@audit_id},
+                    "messageID":#{@message_id},
+                    "userID":1,
+                    "dateTime":"#{@date_time}"
+                  },
+                  "content":{
+                    "betCode":#{@bet_code},
+                    "betModifier":#{@bet_modifier},
+                    "selector1":#{@selector1},
+                    "selector2":#{@selector2},
+                    "repeats":#{@repeats},
+                    "specialEntries":\[#{@special_entries}\],
+                    "normalEntries":\[#{@normal_entries}\]
+                  }
+                }
+              }|
+
+    request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "application/json"})
+
+    request.on_complete do |response|
+      if response.success?
+        response_body = response.body
+        json_response = (JSON.parse(response_body) rescue nil)
+
+        if !json_response.blank?
+          @error_code = (json_response["content"]["errorCode"] rescue nil)
+          @error_description = (json_response["content"]["errorMessage"] rescue nil)
+
+          if @error_code == 0 && (json_response["header"]["status"] == 'success' rescue nil)
+            @bet = (json_response["content"] rescue nil)
+
+            unless @bet.blank?
+              ticket_number = (json_response["content"]["ticketNumber"] rescue nil)
+              ref_number = (json_response["content"]["refNumber"] rescue nil)
+              bet_cost_amount = (json_response["content"]["betCostAmount"] rescue nil)
+              bet_payout_amount = (json_response["content"]["betPayoutAmount"] rescue nil)
+
+              #ail_pmu = AilPmu.create(transaction_id: @transaction_id, message_id: @message_id, audit_number: @audit_id, date_time: @date_time, bet_code: @bet_code, bet_modifier: @bet_modifier, selector1: @selector1, selector2: @selector2, repeats: @repeats, normal_entries: @normal_entries, special_entries: @special_entries, ticket_number: ticket_number, ref_number: ref_number, bet_cost_amount: bet_cost_amount, bet_payout_amount: bet_payout_amount)
+              # Bet acknowledgement
+              body = %Q|{
+                        "Ack":{
+                          "revision":"1",
+                          "header":{
+                            "userName":"#{@user_name}",
+                            "password":"#{@password}",
+                            "terminalID":#{@terminal_id},
+                            "operatorID":#{@operator_id},
+                            "operatorPIN":#{@operator_pin},
+                            "auditID":#{@audit_id},
+                            "messageID":#{@message_id},
+                            "userID":1,
+                            "dateTime":"#{@date_time}"
+                          },
+                          "content":{
+                            "ticketNumber":"#{bet.ticket_number}",
+                            "refNumber":"#{bet.ref_number}",
+                            "reqType":0
+                          }
+                        }
+                      }|
+
+              request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "application/json"})
+
+              request.on_complete do |response|
+                if response.success?
+                  response_body = response.body
+                  json_response = (JSON.parse(response_body) rescue nil)
+                  if !json_response.blank?
+                    @error_code = (json_response["content"]["errorCode"] rescue nil)
+                    @error_description = (json_response["content"]["errorMessage"] rescue nil)
+
+                    if @error_code == 0 && (json_response["header"]["status"] == 'success' rescue nil)
+                      #@bet.update_attributes(placement_acknowledge: true, placement_acknowledge_date_time: DateTime.now.to_s)
+                    else
+                      @error_code = '4005'
+                      @error_description = 'Could not acknowledge the query.'
+                    end
+                  else
+                    @error_code = '4004'
+                    @error_description = 'Error while parsing JSON query acknowlegement response.'
+                  end
+                else
+                  @error_code = '4003'
+                  @error_description = 'Could not acknowledge the query.'
+                end
+              end
+
+              request.run
+              # Bet acknowledgement
+            end
+          else
+            @error_code = '4002'
+            @error_description = 'Cannot query the bet.'
+          end
+        else
+          @error_code = '4001'
+          @error_description = 'Error while parsing JSON.'
+        end
+      else
+        @error_code = '4000'
+        @error_description = 'Unavailable resource.'
+      end
+    end
+
+    request.run
+
+    AilLotoLog.create(operation: 'Consultation de pari', transaction_id: @transaction_id, error_code: @error_code, sent_params: body, response_body: response_body, remote_ip_address: remote_ip_address)
+  end
+
   def api_place_bet
     set_credentials
     remote_ip_address = request.remote_ip
-    #url = "http://office.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/placebet"
-    url = "http://dev.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/placebet"
+    url = "http://office.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/placebet"
+    #url = "http://dev.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/placebet"
 
     @error_code = ''
     @error_description = ''
@@ -131,6 +258,8 @@ class AilLotoController < ApplicationController
               bet_payout_amount = (json_response["content"]["betPayoutAmount"] rescue nil)
 
               ail_loto = AilLoto.create(transaction_id: @transaction_id, message_id: @message_id, audit_number: @audit_id, date_time: @date_time, bet_code: @bet_code, bet_modifier: @bet_modifier, selector1: @selector1, selector2: @selector2, repeats: @repeats, normal_entries: @normal_entries, special_entries: @special_entries, ticket_number: ticket_number, ref_number: ref_number, bet_cost_amount: bet_cost_amount, bet_payout_amount: bet_payout_amount)
+
+              api_acknowledge_bet_old
             end
           else
             @error_code = '4002'
@@ -151,8 +280,9 @@ class AilLotoController < ApplicationController
     AilLotoLog.create(operation: 'Prise de pari', transaction_id: @transaction_id, error_code: @error_code, sent_params: body, response_body: response_body, remote_ip_address: remote_ip_address)
   end
 
-  def api_acknowledge_bet
+  def api_acknowledge_bet_old
     set_credentials
+    status = false
     remote_ip_address = request.remote_ip
     url = "http://office.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/ackbet"
     @error_code = ''
@@ -202,6 +332,7 @@ class AilLotoController < ApplicationController
 
               if @error_code == 0 && (json_response["header"]["status"] == 'success' rescue nil)
                 @bet.update_attributes(placement_acknowledge: true, placement_acknowledge_date_time: DateTime.now.to_s)
+                status = true
               else
                 @error_code = '4005'
                 @error_description = 'Could not acknowledge the bet.'
@@ -345,7 +476,7 @@ class AilLotoController < ApplicationController
     end
   end
 
-  def api_acknowledge_cancel
+  def api_acknowledge_cancel_old
     set_credentials
     remote_ip_address = request.remote_ip
     url = "http://office.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/ackcancel"
