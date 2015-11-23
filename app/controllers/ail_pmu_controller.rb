@@ -14,10 +14,15 @@ class AilPmuController < ApplicationController
     @date_time = DateTime.now.strftime("%Y-%m-%d %H:%M:%S")
   end
 
+  def set_minimal_credentials
+    @audit_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..8]
+    @message_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..7]
+  end
+
   def api_get_draws
     set_credentials
     remote_ip_address = request.remote_ip
-    url = "http://office.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/draws/get"
+    url = "http://office.rtsapps.co.za/RTS_AVTBet_ws_V1/AVTBetV1.svc/draws/get"
     @error_code = ''
     @error_description = ''
     response_body = ''
@@ -75,7 +80,7 @@ class AilPmuController < ApplicationController
   def api_query_bet
     set_credentials
     remote_ip_address = request.remote_ip
-    url = "http://office.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/​AVTBetV1.svc/bet/querybet"
+    url = "http://dev.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/querybet"
     @error_code = ''
     @error_description = ''
     response_body = ''
@@ -129,6 +134,7 @@ class AilPmuController < ApplicationController
 
               #ail_pmu = AilPmu.create(transaction_id: @transaction_id, message_id: @message_id, audit_number: @audit_id, date_time: @date_time, bet_code: @bet_code, bet_modifier: @bet_modifier, selector1: @selector1, selector2: @selector2, repeats: @repeats, normal_entries: @normal_entries, special_entries: @special_entries, ticket_number: ticket_number, ref_number: ref_number, bet_cost_amount: bet_cost_amount, bet_payout_amount: bet_payout_amount)
               # Bet acknowledgement
+              set_minimal_credentials
               body = %Q|{
                         "Ack":{
                           "revision":"1",
@@ -144,13 +150,13 @@ class AilPmuController < ApplicationController
                             "dateTime":"#{@date_time}"
                           },
                           "content":{
-                            "ticketNumber":"#{bet.ticket_number}",
-                            "refNumber":"#{bet.ref_number}",
+                            "ticketNumber":"#{ticket_number}",
+                            "refNumber":"#{ref_number}",
                             "reqType":0
                           }
                         }
                       }|
-
+              url = "http://dev.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/ackbet"
               request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "application/json"})
 
               request.on_complete do |response|
@@ -202,11 +208,13 @@ class AilPmuController < ApplicationController
   def api_place_bet
     set_credentials
     remote_ip_address = request.remote_ip
-    url = "http://office.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/placebet"
+    url = "http://office.rtsapps.co.za/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/placebet"
     @error_code = ''
     @error_description = ''
     response_body = ''
     @request_body = request.body.read
+    paymoney_account_number = params[:paymoney_account_number]
+    gamer_id = params[:gamer_id]
     filter_place_bet_incoming_request
     body = %Q|{
                 "Bet":{
@@ -254,9 +262,11 @@ class AilPmuController < ApplicationController
               bet_cost_amount = (json_response["content"]["betCostAmount"] rescue nil)
               bet_payout_amount = (json_response["content"]["betPayoutAmount"] rescue nil)
 
-              ail_pmu = AilPmu.create(transaction_id: @transaction_id, message_id: @message_id, audit_number: @audit_id, date_time: @date_time, bet_code: @bet_code, bet_modifier: @bet_modifier, selector1: @selector1, selector2: @selector2, repeats: @repeats, normal_entries: @normal_entries, special_entries: @special_entries, ticket_number: ticket_number, ref_number: ref_number, bet_cost_amount: bet_cost_amount, bet_payout_amount: bet_payout_amount)
+              @ail_pmu = AilPmu.create(transaction_id: @transaction_id, message_id: @message_id, audit_number: @audit_id, date_time: @date_time, bet_code: @bet_code, bet_modifier: @bet_modifier, selector1: @selector1, selector2: @selector2, repeats: @repeats, normal_entries: @normal_entries, special_entries: @special_entries, ticket_number: ticket_number, ref_number: ref_number, bet_cost_amount: bet_cost_amount, bet_payout_amount: bet_payout_amount, paymoney_account_number: paymoney_account_number, gamer_id: gamer_id)
 
-              api_acknowledge_bet_old
+              if debit_paymoney_account(paymoney_account_number, bet_cost_amount)
+                api_acknowledge_bet_old
+              end
 
             end
           else
@@ -279,15 +289,58 @@ class AilPmuController < ApplicationController
     AilPmuLog.create(operation: 'Prise de pari', transaction_id: @transaction_id, error_code: @error_code, sent_params: body, response_body: response_body, remote_ip_address: remote_ip_address)
   end
 
+  def debit_paymoney_account(paymoney_account_number, transaction_amount)
+    paymoney_account_token = check_account_number(paymoney_account_number)
+    paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
+    transaction_amount = transaction_amount.to_f.abs
+    status = false
+
+    if transaction_amount == 0
+     @error_code = '5000'
+     @error_description = "The transaction amount can't be 0."
+    else
+      if paymoney_account_token.blank?
+        @error_code = '5001'
+        @error_description = "The paymoney account have not been found."
+      else
+        #@eppl = Eppl.create(transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s, paymoney_account: params[:paymoney_account_number], transaction_amount: transaction_amount, remote_ip: remote_ip, paymoney_account_token: paymoney_account_token)
+        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/ApXTrliOp/#{paymoney_account_token}/#{transaction_amount}", followlocation: true, method: :get)
+
+        request.on_complete do |response|
+          if response.success?
+            response_body = response.body
+
+            if !response_body.include?("|")
+              @ail_pmu.update_attributes(paymoney_transaction_id: response_body, bet_placed: true, bet_placed_at: DateTime.now, paymoney_account_token: paymoney_account_token)
+              status = true
+            else
+              @error_code = '4001'
+              @error_description = 'Payment error, could not checkout the account. Check the credit.'
+              @ail_pmu.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body, paymoney_account_token: paymoney_account_token)
+            end
+          else
+            @error_code = '4000'
+            @error_description = 'Cannot join paymoney wallet server.'
+            @ail_pmu.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body, paymoney_account_token: paymoney_account_token)
+          end
+        end
+
+        request.run
+      end
+    end
+
+    return status
+  end
+
   def api_acknowledge_bet_old
-    set_credentials
+    set_minimal_credentials
     status = false
     remote_ip_address = request.remote_ip
-    url = "http://office.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/ackbet"
+    url = "http://office.rtsapps.co.za/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/ackbet"
     @error_code = ''
     @error_description = ''
     response_body = ''
-    @bet = (AilPmu.where("transaction_id = ?", params[:transaction_id]).first rescue nil)
+    @bet = (AilPmu.where("transaction_id = ?", @transaction_id).first rescue nil)
 
     if @bet.blank?
       @error_code = '4006'
@@ -358,7 +411,7 @@ class AilPmuController < ApplicationController
   def api_cancel_bet
     set_credentials
     remote_ip_address = request.remote_ip
-    url = "http://office.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/cancelbet"
+    url = "http://office.rtsapps.co.za/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/cancelbet"
     @error_code = ''
     @error_description = ''
     response_body = ''
@@ -407,7 +460,7 @@ class AilPmuController < ApplicationController
               if @error_code == 0 && (json_response["header"]["status"] == 'success' rescue nil)
                 @bet.update_attribute(:cancellation_acknowledge, false)
 
-                if api_acknowledge_cancel_old
+                if api_acknowledge_cancel_old(params[:transaction_id])
                   @bet = (json_response["content"] rescue nil)
                 end
 
@@ -432,15 +485,15 @@ class AilPmuController < ApplicationController
     end
   end
 
-  def api_acknowledge_cancel_old
-    set_credentials
+  def api_acknowledge_cancel_old(transaction_id)
+    set_minimal_credentials
     status = false
     remote_ip_address = request.remote_ip
-    url = "http://office.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/ackcancel"
+    url = "http://office.rtsapps.co.za/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/ackcancel"
     @error_code = ''
     @error_description = ''
     response_body = ''
-    @bet = (AilPmu.where("transaction_id = ? AND cancellation_acknowledge IS FALSE", params[:transaction_id]).first rescue nil)
+    @bet = (AilPmu.where("transaction_id = ? AND cancellation_acknowledge IS FALSE", transaction_id).first rescue nil)
 
     if @bet.blank?
       @error_code = '4006'
@@ -511,7 +564,7 @@ class AilPmuController < ApplicationController
   def api_refund_bet
     set_credentials
     remote_ip_address = request.remote_ip
-    url = "http://office.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/refundbet"
+    url = "http://office.rtsapps.co.za/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/refundbet"
     @error_code = ''
     @error_description = ''
     response_body = ''
@@ -558,7 +611,7 @@ class AilPmuController < ApplicationController
               @error_description = (json_response["content"]["errorMessage"] rescue nil)
 
               if @error_code == 0 && (json_response["header"]["status"] == 'success' rescue nil)
-                if api_acknowledge_refund_old
+                if api_acknowledge_refund_old(params[:transaction_id])
                   @bet = (json_response["content"] rescue nil)
                 end
               else
@@ -582,15 +635,15 @@ class AilPmuController < ApplicationController
     end
   end
 
-  def api_acknowledge_refund_old
-    set_credentials
+  def api_acknowledge_refund_old(transaction_id)
+    set_minimal_credentials
     status = false
     remote_ip_address = request.remote_ip
-    url = "http://office.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/ackrefund"
+    url = "http://office.rtsapps.co.za/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/ackrefund"
     @error_code = ''
     @error_description = ''
     response_body = ''
-    @bet = (AilPmu.where("transaction_id = ? AND transaction_acknowledge IS TRUE AND cancellation_acknowledge IS NULL FALSE", params[:transaction_id]).first rescue nil)
+    @bet = (AilPmu.where("transaction_id = ? AND transaction_acknowledge IS TRUE AND cancellation_acknowledge IS NULL FALSE", transaction_id).first rescue nil)
 
     if @bet.blank?
       @error_code = '4006'
@@ -653,7 +706,7 @@ class AilPmuController < ApplicationController
       end
     end
 
-    AilPmuLog.create(operation: "Confirmation d'annulation de remboursement", transaction_id: @transaction_id, error_code: @error_code, sent_params: body, response_body: response_body, remote_ip_address: remote_ip_address)
+    AilPmuLog.create(operation: "Confirmation d'annulation de remboursement", transaction_id: transaction_id, error_code: @error_code, sent_params: body, response_body: response_body, remote_ip_address: remote_ip_address)
 
     return status
   end
@@ -673,5 +726,12 @@ class AilPmuController < ApplicationController
       @special_entries = json_request["special_entries"]
       @normal_entries = json_request["normal_entries"]
     end
+  end
+
+  def check_account_number(account_number)
+    token = (RestClient.get "#{Parameter.first.paymoney_wallet_url}/PAYMONEY_WALLET/rest/check2_compte/#{account_number}" rescue "")
+    print token
+
+    return token
   end
 end

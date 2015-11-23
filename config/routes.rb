@@ -72,7 +72,7 @@ Rails.application.routes.draw do
   post '/ail/pmu/api/3c9342cf06/bet/query' => 'ail_pmu#api_query_bet'
 
   # Place a bet
-  post '/ail/pmu/api/dik749742e/bet/place' => 'ail_pmu#api_place_bet'
+  post '/ail/pmu/api/dik749742e/bet/place/:gamer_id/:paymoney_account_number' => 'ail_pmu#api_place_bet'
 
   # Acknowledge the placement of a bet
   get '/ail/pmu/api/4a66c58e95/bet/place/acknowledge/:transaction_id/:paymoney_account_number' => 'ail_pmu#api_acknowledge_bet'
@@ -97,10 +97,13 @@ Rails.application.routes.draw do
   get '/ail/loto/api/48e266c970/draws' => 'ail_loto#api_get_draws'
 
   # Query a bet
+  post '/ail/loto/api/74df15df06/bet/query' => 'ail_loto#api_query_bet'
+
+  # Query a bet
   post '/ail/loto/api/852142cf06/bet/query' => 'ail_loto#api_query_bet'
 
   # Place a bet
-  post '/ail/loto/api/96455396dc/bet/place' => 'ail_loto#api_place_bet'
+  post '/ail/loto/api/96455396dc/bet/place/:transaction_id/:paymoney_account_number' => 'ail_loto#api_place_bet'
 
   # Acknowledge the placement of a bet
   get '/ail/loto/api/ddfd5882ab/bet/place/acknowledge/:transaction_id/:paymoney_account_number' => 'ail_loto#api_acknowledge_bet'

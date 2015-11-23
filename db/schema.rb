@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151122231920) do
+ActiveRecord::Schema.define(version: 20151123195056) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,6 +68,13 @@ ActiveRecord::Schema.define(version: 20151122231920) do
     t.string   "cancellation_acknowledge_date_time"
     t.boolean  "placement_acknowledge"
     t.string   "placement_acknowledge_date_time"
+    t.string   "gamer_id"
+    t.string   "paymoney_account_number"
+    t.string   "paymoney_transaction_id"
+    t.boolean  "bet_placed"
+    t.datetime "bet_placed_at"
+    t.text     "error_description"
+    t.text     "response_body"
   end
 
   create_table "ail_pmu_logs", force: true do |t|
@@ -123,6 +130,13 @@ ActiveRecord::Schema.define(version: 20151122231920) do
     t.boolean  "placement_acknowledge"
     t.boolean  "cancellation_acknowledge"
     t.boolean  "refund_acknowledge"
+    t.string   "gamer_id"
+    t.string   "paymoney_account_number"
+    t.string   "paymoney_transaction_id"
+    t.boolean  "bet_placed"
+    t.datetime "bet_placed_at"
+    t.string   "error_description"
+    t.text     "response_body"
   end
 
   create_table "bet_coupons", force: true do |t|
