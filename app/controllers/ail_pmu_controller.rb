@@ -214,6 +214,7 @@ class AilPmuController < ApplicationController
     response_body = ''
     @request_body = request.body.read
     paymoney_account_number = params[:paymoney_account_number]
+    user = User.find_by_uuid(params[:gamer_id])
     gamer_id = params[:gamer_id]
     filter_place_bet_incoming_request
     body = %Q|{
@@ -241,50 +242,54 @@ class AilPmuController < ApplicationController
                   }
                 }
               }|
+    if user.blank?
+      @error_code = '3000'
+      @error_description = 'The gamer account does not exist.'
+    else
+      request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "application/json"})
 
-    request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "application/json"})
+      request.on_complete do |response|
+        if response.success?
+          response_body = response.body
+          json_response = (JSON.parse(response_body) rescue nil)
 
-    request.on_complete do |response|
-      if response.success?
-        response_body = response.body
-        json_response = (JSON.parse(response_body) rescue nil)
+          if !json_response.blank?
+            @error_code = (json_response["content"]["errorCode"] rescue nil)
+            @error_description = (json_response["content"]["errorMessage"] rescue nil)
 
-        if !json_response.blank?
-          @error_code = (json_response["content"]["errorCode"] rescue nil)
-          @error_description = (json_response["content"]["errorMessage"] rescue nil)
+            if @error_code == 0 && (json_response["header"]["status"] == 'success' rescue nil)
+              @bet = (json_response["content"] rescue nil)
 
-          if @error_code == 0 && (json_response["header"]["status"] == 'success' rescue nil)
-            @bet = (json_response["content"] rescue nil)
+              unless @bet.blank?
+                ticket_number = (json_response["content"]["ticketNumber"] rescue nil)
+                ref_number = (json_response["content"]["refNumber"] rescue nil)
+                bet_cost_amount = (json_response["content"]["betCostAmount"] rescue nil)
+                bet_payout_amount = (json_response["content"]["betPayoutAmount"] rescue nil)
 
-            unless @bet.blank?
-              ticket_number = (json_response["content"]["ticketNumber"] rescue nil)
-              ref_number = (json_response["content"]["refNumber"] rescue nil)
-              bet_cost_amount = (json_response["content"]["betCostAmount"] rescue nil)
-              bet_payout_amount = (json_response["content"]["betPayoutAmount"] rescue nil)
+                @ail_pmu = AilPmu.create(transaction_id: @transaction_id, message_id: @message_id, audit_number: @audit_id, date_time: @date_time, bet_code: @bet_code, bet_modifier: @bet_modifier, selector1: @selector1, selector2: @selector2, repeats: @repeats, normal_entries: @normal_entries, special_entries: @special_entries, ticket_number: ticket_number, ref_number: ref_number, bet_cost_amount: bet_cost_amount, bet_payout_amount: bet_payout_amount, paymoney_account_number: paymoney_account_number, gamer_id: gamer_id, user_id: user.id)
 
-              @ail_pmu = AilPmu.create(transaction_id: @transaction_id, message_id: @message_id, audit_number: @audit_id, date_time: @date_time, bet_code: @bet_code, bet_modifier: @bet_modifier, selector1: @selector1, selector2: @selector2, repeats: @repeats, normal_entries: @normal_entries, special_entries: @special_entries, ticket_number: ticket_number, ref_number: ref_number, bet_cost_amount: bet_cost_amount, bet_payout_amount: bet_payout_amount, paymoney_account_number: paymoney_account_number, gamer_id: gamer_id)
+                if debit_paymoney_account(paymoney_account_number, bet_cost_amount)
+                  api_acknowledge_bet_old
+                end
 
-              if debit_paymoney_account(paymoney_account_number, bet_cost_amount)
-                api_acknowledge_bet_old
               end
-
+            else
+              @error_code = '4002'
+              @error_description = 'Cannot place the bet.'
             end
+
           else
-            @error_code = '4002'
-            @error_description = 'Cannot place the bet.'
+            @error_code = '4001'
+            @error_description = 'Error while parsing JSON.'
           end
-
         else
-          @error_code = '4001'
-          @error_description = 'Error while parsing JSON.'
+          @error_code = '4000'
+          @error_description = 'Unavailable resource.'
         end
-      else
-        @error_code = '4000'
-        @error_description = 'Unavailable resource.'
       end
-    end
 
-    request.run
+      request.run
+    end
 
     AilPmuLog.create(operation: 'Prise de pari', transaction_id: @transaction_id, error_code: @error_code, sent_params: body, response_body: response_body, remote_ip_address: remote_ip_address)
   end
@@ -709,6 +714,31 @@ class AilPmuController < ApplicationController
     AilPmuLog.create(operation: "Confirmation d'annulation de remboursement", transaction_id: transaction_id, error_code: @error_code, sent_params: body, response_body: response_body, remote_ip_address: remote_ip_address)
 
     return status
+  end
+
+  def api_bet_details
+    @error_code = ''
+    @error_description = ''
+    @bet = AilPmu.find_by_transaction_id(params[:transaction_id])
+
+    if @bet.blank?
+      @error_code = '4000'
+      @error_description = 'The transaction id could not be found'
+    end
+  end
+
+  def api_gamer_bets
+    @error_code = ''
+    @error_description = ''
+
+    user = User.find_by_uuid(params[:gamer_id])
+
+    if user.blank?
+      @error_code = '4000'
+      @error_description = 'The gamer id could not be found'
+    else
+      @bets = user.ail_pmus
+    end
   end
 
   def filter_place_bet_incoming_request

@@ -89,6 +89,12 @@ Rails.application.routes.draw do
   # Acknowledge the refund of a bet
   get '/ail/pmu/api/8cedf69c38/bet/refund/acknowledge/:transaction_id' => 'ail_pmu#api_acknowledge_refund'
 
+  # Display a bet details
+  get '/ail/pmu/api/rfc4159c38/bet/details/:transaction_id' => 'ail_pmu#api_bet_details'
+
+  # Display the list of bets of a gamer
+  get '/ail/pmu/api/66307a2f93/gamer/bets/list/:gamer_id' => 'ail_pmu#api_gamer_bets'
+
   #---------------------AIL PMU---------------------
 
   #---------------------AIL Loto---------------------
@@ -119,6 +125,12 @@ Rails.application.routes.draw do
 
   # Acknowledge the refund of a bet
   get '/ail/loto/api/7415f69c38/bet/refund/acknowledge/:transaction_id' => 'ail_loto#api_acknowledge_refund'
+
+  # Display a bet details
+  get '/ail/loto/api/r74d1cfr38/bet/details/:transaction_id' => 'ail_loto#api_bet_details'
+
+  # Display the list of bets of a gamer
+  get '/ail/loto/api/068c592ec4/gamer/bets/list/:gamer_id' => 'ail_loto#api_gamer_bets'
 
   #---------------------AIL Loto---------------------
 

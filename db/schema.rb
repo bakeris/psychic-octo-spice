@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151123195056) do
+ActiveRecord::Schema.define(version: 20151125140450) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 20151123195056) do
     t.datetime "bet_placed_at"
     t.text     "error_description"
     t.text     "response_body"
+    t.integer  "user_id"
   end
 
   create_table "ail_pmu_logs", force: true do |t|
@@ -137,6 +138,7 @@ ActiveRecord::Schema.define(version: 20151123195056) do
     t.datetime "bet_placed_at"
     t.string   "error_description"
     t.text     "response_body"
+    t.integer  "user_id"
   end
 
   create_table "bet_coupons", force: true do |t|
@@ -181,6 +183,7 @@ ActiveRecord::Schema.define(version: 20151123195056) do
     t.boolean  "pr_status"
     t.string   "payment_status_datetime"
     t.string   "paymoney_transaction_id"
+    t.integer  "user_id"
   end
 
   create_table "civilities", force: true do |t|
@@ -213,6 +216,7 @@ ActiveRecord::Schema.define(version: 20151123195056) do
     t.string   "remote_ip"
     t.string   "paymoney_account_token"
     t.string   "earning_transaction_id"
+    t.integer  "user_id"
   end
 
   create_table "ludwin_logs", force: true do |t|
