@@ -80,7 +80,7 @@ class AilPmuController < ApplicationController
   def api_query_bet
     set_credentials
     remote_ip_address = request.remote_ip
-    url = "http://dev.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/querybet"
+    url = "http://office.rtsapps.co.za/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/querybet"
     @error_code = ''
     @error_description = ''
     response_body = ''
@@ -156,7 +156,7 @@ class AilPmuController < ApplicationController
                           }
                         }
                       }|
-              url = "http://dev.rtsapps.co.za:8126/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/ackbet"
+              url = "http://office.rtsapps.co.za/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/ackbet"
               request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "application/json"})
 
               request.on_complete do |response|
