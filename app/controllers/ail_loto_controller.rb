@@ -270,7 +270,7 @@ class AilLotoController < ApplicationController
 
                 @ail_loto = AilLoto.create(transaction_id: @transaction_id, message_id: @message_id, audit_number: @audit_id, date_time: @date_time, bet_code: @bet_code, bet_modifier: @bet_modifier, selector1: @selector1, selector2: @selector2, repeats: @repeats, normal_entries: @normal_entries, special_entries: @special_entries, ticket_number: ticket_number, ref_number: ref_number, bet_cost_amount: bet_cost_amount, bet_payout_amount: bet_payout_amount, paymoney_account_number: paymoney_account_number, gamer_id: gamer_id, user_id: user.id)
 
-                if true #debit_paymoney_account(paymoney_account_number, bet_cost_amount)
+                if place_bet(@ail_loto, "LVNbmiDN", paymoney_account_number, password, bet_cost_amount)
                   api_acknowledge_bet_old
                 end
 
@@ -467,8 +467,10 @@ class AilLotoController < ApplicationController
               if @error_code == 0 && (json_response["header"]["status"] == 'success' rescue nil)
                 @bet.update_attribute(:cancellation_acknowledge, false)
 
-                if api_acknowledge_cancel_old(params[:transaction_id])
-                  @bet = (json_response["content"] rescue nil)
+                if cancel_bet(transaction_id)
+                  if api_acknowledge_cancel_old(params[:transaction_id])
+                    @bet = (json_response["content"] rescue nil)
+                  end
                 end
 
               else
