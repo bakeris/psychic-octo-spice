@@ -4,6 +4,8 @@ class EpplController < ApplicationController
     paymoney_account_token = check_account_number(params[:paymoney_account_number])
     paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
     transaction_amount = params[:transaction_amount].to_f.abs
+    password = params[:password]
+    gamer_id = params[:gamer_id]
     remote_ip = request.remote_ip
 
     if transaction_amount == 0
@@ -14,8 +16,8 @@ class EpplController < ApplicationController
         @error_code = '5001'
         @error_description = "The paymoney account have not been found."
       else
-        @eppl = Eppl.create(transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s, paymoney_account: params[:paymoney_account_number], transaction_amount: transaction_amount, remote_ip: remote_ip, paymoney_account_token: paymoney_account_token)
-        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/PExxGeLY/#{paymoney_account_token}/#{transaction_amount}", followlocation: true, method: :get)
+        @eppl = Eppl.create(transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s, paymoney_account: params[:paymoney_account_number], transaction_amount: transaction_amount, remote_ip: remote_ip, paymoney_account_token: paymoney_account_token, gamer_id: gamer_id)
+        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/LVNbmiDN/#{paymoney_account_token}/#{password}/#{transaction_amount}", followlocation: true, method: :get)
 
         request.on_complete do |response|
           if response.success?
@@ -47,7 +49,7 @@ class EpplController < ApplicationController
       @error_code = '4000'
       @error_description = "The transaction can't be found."
     else
-      request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d1798bc43ed59e5207c68e864564/earnings/pay/PExxGeLY/#{@eppl.paymoney_account_token}/#{@eppl.transaction_amount}", followlocation: true, method: :get)
+      request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d1798bc43ed59e5207c68e864564/earnings/pay/LVNbmiDN/#{@eppl.paymoney_account_token}/#{@eppl.transaction_amount}", followlocation: true, method: :get)
 
       request.on_complete do |response|
         if response.success?
@@ -71,10 +73,4 @@ class EpplController < ApplicationController
     end
   end
 
-  def check_account_number(account_number)
-    token = (RestClient.get "#{Parameter.first.paymoney_wallet_url}/PAYMONEY_WALLET/rest/check2_compte/#{account_number}" rescue "")
-    print token
-
-    return token
-  end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151125140450) do
+ActiveRecord::Schema.define(version: 20151127180534) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -217,6 +217,7 @@ ActiveRecord::Schema.define(version: 20151125140450) do
     t.string   "paymoney_account_token"
     t.string   "earning_transaction_id"
     t.integer  "user_id"
+    t.string   "gamer_id"
   end
 
   create_table "ludwin_logs", force: true do |t|
