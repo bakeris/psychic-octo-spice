@@ -58,6 +58,9 @@ Rails.application.routes.draw do
   # Check coupon status
   get '/spc/api/e5c89f9add/coupon/status/:transaction_id' => 'ludwin_api#api_coupon_status'
 
+  # Display the list of bets of a gamer
+  get '/spc/api/47855ddf93/gamer/bets/list/:gamer_id' => 'ludwin_api#api_gamer_bets'
+
   # Sandbox
   get '/sandbox/patron' => 'sandbox#patron_client'
 

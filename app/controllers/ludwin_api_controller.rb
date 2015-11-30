@@ -739,6 +739,20 @@ class LudwinApiController < ApplicationController
     end
   end
 
+  def api_gamer_bets
+    @error_code = ''
+    @error_description = ''
+
+    user = User.find_by_uuid(params[:gamer_id])
+
+    if user.blank?
+      @error_code = '4000'
+      @error_description = 'The gamer id could not be found'
+    else
+      @bets = user.ail_lotos
+    end
+  end
+
   def check_account_number(account_number)
     token = (RestClient.get "#{Parameter.first.paymoney_wallet_url}/PAYMONEY_WALLET/rest/check2_compte/#{account_number}" rescue "")
     print token
