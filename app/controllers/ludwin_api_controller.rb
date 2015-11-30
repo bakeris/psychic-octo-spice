@@ -441,6 +441,9 @@ class LudwinApiController < ApplicationController
     coupons_details = ''
     paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
     paymoney_account_token = check_account_number(params[:paymoney_account_number])
+    user = User.find_by_uuid(params[:gamer_id])
+    gamer_id = params[:gamer_id]
+    password = params[:password]
 
     if !coupons.blank?
       amount = coupons["amount"]
@@ -512,8 +515,10 @@ class LudwinApiController < ApplicationController
                       if !nokogiri_response.blank?
                         response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
                         if response_code == '0' || response_code == '1024'
-                          @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
-                          @bet.update_attributes(validated: true, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil))
+                          if place_bet(@bet, "LVNbmiDN", paymoney_account_number, password, amount)
+                            @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
+                            @bet.update_attributes(validated: true, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil))
+                          end
                         else
                           @bet.update_attributes(validated: false, validated_at: DateTime.now)
                           @error_code = '4002'
@@ -591,8 +596,10 @@ class LudwinApiController < ApplicationController
           if !nokogiri_response.blank?
             response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
             if response_code == '0' || response_code == '1024'
-              @bet.first.update_attributes(cancelled: true, cancelled_at: DateTime.now)
-              @bet_cancellation_result = (nokogiri_response.xpath('//CancelResponse') rescue nil)
+              if cancel_bet(@bet.first)
+                @bet.first.update_attributes(cancelled: true, cancelled_at: DateTime.now)
+                @bet_cancellation_result = (nokogiri_response.xpath('//CancelResponse') rescue nil)
+              end
             else
               @bet.first.update_attributes(cancelled: false, cancelled_at: DateTime.now)
               @error_code = '4002'

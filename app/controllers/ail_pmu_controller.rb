@@ -424,7 +424,7 @@ class AilPmuController < ApplicationController
               if @error_code == 0 && (json_response["header"]["status"] == 'success' rescue nil)
                 @bet.update_attribute(:cancellation_acknowledge, false)
 
-                if cancel_bet(transaction_id)
+                if cancel_bet(@bet)
                   if api_acknowledge_cancel_old(params[:transaction_id])
                     @bet = (json_response["content"] rescue nil)
                   end

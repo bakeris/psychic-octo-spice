@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151127180534) do
+ActiveRecord::Schema.define(version: 20151130115712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,6 +76,8 @@ ActiveRecord::Schema.define(version: 20151127180534) do
     t.text     "error_description"
     t.text     "response_body"
     t.integer  "user_id"
+    t.boolean  "bet_cancelled"
+    t.datetime "bet_cancelled_at"
   end
 
   create_table "ail_pmu_logs", force: true do |t|
@@ -139,6 +141,8 @@ ActiveRecord::Schema.define(version: 20151127180534) do
     t.string   "error_description"
     t.text     "response_body"
     t.integer  "user_id"
+    t.boolean  "bet_cancelled"
+    t.datetime "bet_cancelled_at"
   end
 
   create_table "bet_coupons", force: true do |t|
@@ -184,6 +188,14 @@ ActiveRecord::Schema.define(version: 20151127180534) do
     t.string   "payment_status_datetime"
     t.string   "paymoney_transaction_id"
     t.integer  "user_id"
+    t.boolean  "bet_placed"
+    t.datetime "bet_placed_at"
+    t.string   "paymoney_account_token"
+    t.string   "error_code"
+    t.text     "error_description"
+    t.text     "response_body"
+    t.boolean  "bet_cancelled"
+    t.datetime "bet_cancelled_at"
   end
 
   create_table "civilities", force: true do |t|
@@ -218,6 +230,8 @@ ActiveRecord::Schema.define(version: 20151127180534) do
     t.string   "earning_transaction_id"
     t.integer  "user_id"
     t.string   "gamer_id"
+    t.boolean  "bet_cancelled"
+    t.datetime "bet_cancelled_at"
   end
 
   create_table "ludwin_logs", force: true do |t|

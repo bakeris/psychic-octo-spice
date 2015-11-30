@@ -76,28 +76,28 @@ class ApplicationController < ActionController::Base
     return status
   end
 
-  def cancel_bet(transaction_id)
+  def cancel_bet(bet)
     paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
     status = false
 
-    request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/35959d477b5ffc06dc673befbe5b4/bet/payback/#{transaction_id}", followlocation: true, method: :get)
+    request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/35959d477b5ffc06dc673befbe5b4/bet/payback/#{bet.transaction_id}", followlocation: true, method: :get)
 
     request.on_complete do |response|
       if response.success?
         response_body = response.body
 
         if !response_body.include?("|")
-          bet.update_attributes(paymoney_transaction_id: response_body, bet_placed: true, bet_placed_at: DateTime.now, paymoney_account_token: paymoney_account_token)
+          bet.update_attributes(paymoney_transaction_id: response_body, bet_cancelled: true, bet_cancelled_at: DateTime.now)
           status = true
         else
           @error_code = '4001'
-          @error_description = 'Payment error, could not cancel the account.'
-          bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body, paymoney_account_token: paymoney_account_token)
+          @error_description = 'Payment error, could not cancel the bet.'
+          bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
         end
       else
         @error_code = '4000'
         @error_description = 'Cannot join paymoney wallet server.'
-        bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body, paymoney_account_token: paymoney_account_token)
+        bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
       end
     end
 

@@ -215,6 +215,7 @@ class AilLotoController < ApplicationController
     response_body = ''
     @request_body = request.body.read
     paymoney_account_number = params[:paymoney_account_number]
+    password = params[:paymoney_account_number]
     gamer_id = params[:gamer_id]
     user = User.find_by_uuid(params[:gamer_id])
     filter_place_bet_incoming_request
@@ -467,7 +468,7 @@ class AilLotoController < ApplicationController
               if @error_code == 0 && (json_response["header"]["status"] == 'success' rescue nil)
                 @bet.update_attribute(:cancellation_acknowledge, false)
 
-                if cancel_bet(transaction_id)
+                if cancel_bet(@bet)
                   if api_acknowledge_cancel_old(params[:transaction_id])
                     @bet = (json_response["content"] rescue nil)
                   end
