@@ -47,7 +47,7 @@ Rails.application.routes.draw do
   get '/spc/api/156dfc6a3b/bet/:bet_code' => 'ludwin_api#api_show_bet'
 
   # Sell a coupon
-  post '/spc/api/6d3782c78d/coupon/sell/:paymoney_account_token' => 'ludwin_api#api_sell_coupon'
+  post '/spc/api/6d3782c78d/coupon/sell/:gamer_id/:paymoney_account_number/:password' => 'ludwin_api#api_sell_coupon'
 
   # Cancel a sold coupon
   get '/spc/api/6d3782c78d/coupon/cancel/:ticket_id' => 'ludwin_api#api_cancel_coupon'
@@ -109,7 +109,7 @@ Rails.application.routes.draw do
   post '/ail/loto/api/852142cf06/bet/query' => 'ail_loto#api_query_bet'
 
   # Place a bet
-  post '/ail/loto/api/96455396dc/bet/place/:transaction_id/:paymoney_account_number/:password' => 'ail_loto#api_place_bet'
+  post '/ail/loto/api/96455396dc/bet/place/:gamer_id/:paymoney_account_number/:password' => 'ail_loto#api_place_bet'
 
   # Acknowledge the placement of a bet
   get '/ail/loto/api/ddfd5882ab/bet/place/acknowledge/:transaction_id/:paymoney_account_number' => 'ail_loto#api_acknowledge_bet'
