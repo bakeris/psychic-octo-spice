@@ -754,7 +754,7 @@ class LudwinApiController < ApplicationController
       @error_code = '4000'
       @error_description = 'The gamer id could not be found'
     else
-      @bets = user.ail_lotos
+      @bets = user.bets
     end
   end
 =begin

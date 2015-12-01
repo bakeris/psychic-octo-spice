@@ -716,7 +716,7 @@ class AilPmuController < ApplicationController
         @error_code = '4000'
         @error_description = 'The transaction could not be found'
       else
-        @bet.update_attributes(bet_payout_amount: (notification_object["PayoutAmount"].to_s rescue "")).first rescue nil)
+        @bet.update_attributes(bet_payout_amount: (notification_object["PayoutAmount"].to_s rescue ""))
         pay_earnings(@bet, "LVNbmiDN", @bet.bet_payout_amount)
       end
     end
