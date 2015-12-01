@@ -760,7 +760,7 @@ class AilLotoController < ApplicationController
         @error_code = '4000'
         @error_description = 'The transaction could not be found'
       else
-        pay_earnings(@bet, "LVNbmiDN", bet.bet_payout_amount)
+        pay_earnings(@bet, "LVNbmiDN", @bet.bet_payout_amount)
       end
     end
   end
