@@ -463,7 +463,7 @@ class LudwinApiController < ApplicationController
             #@error_code = '5002'
             #@error_description = 'Coupons details must be an array.'
           #else
-            @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, amount: amount, win_amount: win_amount)
+            @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, amount: amount, win_amount: win_amount, gamer_id: gamer_id)
             #coupons_details.each do |coupon_details|
               pal_code = (coupons["pal_code"].to_s rescue nil)
               event_code = (coupons["event_code"].to_s rescue nil)
