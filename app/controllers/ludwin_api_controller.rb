@@ -754,7 +754,7 @@ class LudwinApiController < ApplicationController
       @error_code = '4000'
       @error_description = 'The gamer id could not be found'
     else
-      @bets = user.bets
+      @bets = Bet.where(gamer_id: params[:gamer_id])
     end
   end
 =begin
