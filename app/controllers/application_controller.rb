@@ -87,7 +87,7 @@ class ApplicationController < ActionController::Base
         response_body = response.body
 
         if !response_body.include?("|")
-          bet.update_attributes(paymoney_transaction_id: response_body, bet_cancelled: true, bet_cancelled_at: DateTime.now)
+          bet.update_attributes(cancellation_paymoney_id: response_body, bet_cancelled: true, bet_cancelled_at: DateTime.now)
           status = true
         else
           @error_code = '4001'
@@ -102,6 +102,48 @@ class ApplicationController < ActionController::Base
     end
 
     request.run
+
+    return status
+  end
+
+  def pay_earnings(bet, game_account_token, transaction_amount)
+    paymoney_account_token = check_account_number(bet.paymoney_account_number)
+    paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
+    status = false
+
+    if transaction_amount == 0
+     @error_code = '5000'
+     @error_description = "The transaction amount can't be 0."
+    else
+      if paymoney_account_token.blank?
+        @error_code = '5001'
+        @error_description = "The paymoney account have not been found."
+      else
+        #@eppl = Eppl.create(transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s, paymoney_account: params[:paymoney_account_number], transaction_amount: transaction_amount, remote_ip: remote_ip, paymoney_account_token: paymoney_account_token)
+        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d1798bc43ed59e5207c68e864564/earnings/pay/#{game_account_token}/#{paymoney_account_token}/#{transaction_amount}", followlocation: true, method: :get)
+
+        request.on_complete do |response|
+          if response.success?
+            response_body = response.body
+
+            if !response_body.include?("|")
+              bet.update_attributes(payment_paymoney_id: response_body, earning_paid: true, earning_paid_at: DateTime.now)
+              status = true
+            else
+              @error_code = '4001'
+              @error_description = 'Payment error, could not checkout the account. Check the credit.'
+              bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
+            end
+          else
+            @error_code = '4000'
+            @error_description = 'Cannot join paymoney wallet server.'
+            bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
+          end
+        end
+
+        request.run
+      end
+    end
 
     return status
   end

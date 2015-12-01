@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151130122321) do
+ActiveRecord::Schema.define(version: 20151201201047) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,6 +78,10 @@ ActiveRecord::Schema.define(version: 20151130122321) do
     t.integer  "user_id"
     t.boolean  "bet_cancelled"
     t.datetime "bet_cancelled_at"
+    t.boolean  "earning_paid"
+    t.datetime "earning_paid_at"
+    t.string   "cancellation_paymoney_id"
+    t.string   "payment_paymoney_id"
   end
 
   create_table "ail_pmu_logs", force: true do |t|
@@ -143,6 +147,10 @@ ActiveRecord::Schema.define(version: 20151130122321) do
     t.integer  "user_id"
     t.boolean  "bet_cancelled"
     t.datetime "bet_cancelled_at"
+    t.boolean  "earning_paid"
+    t.datetime "earning_paid_at"
+    t.string   "cancellation_paymoney_id"
+    t.string   "payment_paymoney_id"
   end
 
   create_table "bet_coupons", force: true do |t|
@@ -233,6 +241,8 @@ ActiveRecord::Schema.define(version: 20151130122321) do
     t.string   "gamer_id"
     t.boolean  "bet_cancelled"
     t.datetime "bet_cancelled_at"
+    t.string   "cancellation_paymoney_id"
+    t.string   "payment_paymoney_id"
   end
 
   create_table "ludwin_logs", force: true do |t|

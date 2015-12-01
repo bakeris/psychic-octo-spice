@@ -702,6 +702,25 @@ class AilPmuController < ApplicationController
     end
   end
 
+  def api_validate_transaction
+    @error_code = ''
+    @error_description = ''
+    notification_object = (JSON.parse(request.body.read) rescue nil)
+
+    if notification_object.blank?
+      @error_code = '5000'
+      @error_description = 'Invalid JSON data.'
+    else
+      @bet = (AilPmu.where(audit_number: (notification_object["AuditId"].to_s rescue ""), ref_number: (notification_object["RefNumber"].to_s rescue ""), ticket_number: (notification_object["TicketNumber"].to_s rescue ""), bet_payout_amount: (notification_object["PayoutAmount"].to_s rescue "")).first rescue nil)
+      if transaction.blank?
+        @error_code = '4000'
+        @error_description = 'The transaction could not be found'
+      else
+        pay_earnings(@bet, "LVNbmiDN", bet.bet_payout_amount)
+      end
+    end
+  end
+
   def filter_place_bet_incoming_request
     json_request = (JSON.parse(@request_body) rescue nil)
 
