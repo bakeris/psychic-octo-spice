@@ -757,12 +757,12 @@ class LudwinApiController < ApplicationController
       @bets = user.ail_lotos
     end
   end
-
+=begin
   def check_account_number(account_number)
     token = (RestClient.get "#{Parameter.first.paymoney_wallet_url}/PAYMONEY_WALLET/rest/check2_compte/#{account_number}" rescue "")
     print token
 
     return token
   end
-
+=end
 end
