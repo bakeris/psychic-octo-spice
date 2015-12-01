@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
 
   def place_bet(bet, game_account_token, paymoney_account_number, password, transaction_amount)
     paymoney_account_token = check_account_number(paymoney_account_number)
+
     paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
     transaction_amount = transaction_amount.to_f.abs
     status = false
@@ -149,6 +150,7 @@ class ApplicationController < ActionController::Base
   end
 
   def check_account_number(account_number)
+    print "fffffffffffffff" + account_number
     token = (RestClient.get "http://94.247.178.141:8080/PAYMONEY_WALLET/rest/check2_compte/#{account_number}" rescue "")
     print token
 
