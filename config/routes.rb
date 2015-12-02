@@ -101,6 +101,9 @@ Rails.application.routes.draw do
   # Validate winning transaction
   post '/ail/pmu/api/66378514493/transaction/validate' => 'ail_pmu#api_validate_transaction'
 
+  # Last request log
+  get '/ail/pmu/api/log/last_request' => 'ail_pmu#api_last_request_log'
+
   #---------------------AIL PMU---------------------
 
   #---------------------AIL Loto---------------------
@@ -140,6 +143,9 @@ Rails.application.routes.draw do
 
   # Validate winning transaction
   post '/ail/loto/api/66378dffrz3/transaction/validate' => 'ail_loto#api_validate_transaction'
+
+  # Last request log
+  get '/ail/loto/api/log/last_request' => 'ail_pmu#api_last_request_log'
 
   #---------------------AIL Loto---------------------
 

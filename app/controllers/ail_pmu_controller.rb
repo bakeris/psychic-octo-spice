@@ -739,4 +739,8 @@ class AilPmuController < ApplicationController
     end
   end
 
+  def api_last_request_log
+    render text: "---Operation: " + AilPmuLog.last.operation + "\n\n---Transaction ID: " + AilPmuLog.last.transaction_id  + "\n\n---Sent params: " + AilPmuLog.last.sent_params + "\n\n---Response: " + AilPmuLog.last.response_body
+  end
+
 end

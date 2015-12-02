@@ -765,6 +765,7 @@ class AilLotoController < ApplicationController
       end
     end
   end
+
   def filter_place_bet_incoming_request
     json_request = (JSON.parse(@request_body) rescue nil)
 
@@ -780,5 +781,9 @@ class AilLotoController < ApplicationController
       @special_entries = json_request["special_entries"]
       @normal_entries = json_request["normal_entries"]
     end
+  end
+
+  def api_last_request_log
+    render text: "---Operation: " + AilPmuLog.last.operation + "\n\n---Transaction ID: " + AilPmuLog.last.transaction_id  + "\n\n---Sent params: " + AilPmuLog.last.sent_params + "\n\n---Response: " + AilPmuLog.last.response_body
   end
 end
