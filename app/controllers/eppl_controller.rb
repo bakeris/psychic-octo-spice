@@ -16,8 +16,8 @@ class EpplController < ApplicationController
         @error_code = '5001'
         @error_description = "The paymoney account have not been found."
       else
-        @eppl = Eppl.create(transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s, paymoney_account: params[:paymoney_account_number], transaction_amount: transaction_amount, remote_ip: remote_ip, paymoney_account_token: paymoney_account_token, gamer_id: gamer_id)
-        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/LVNbmiDN/#{paymoney_account_token}/#{password}/#{transaction_amount}", followlocation: true, method: :get)
+        @eppl = Eppl.create(transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s, paymoney_account: params[:paymoney_account_number], transaction_amount: transaction_amount, remote_ip: remote_ip, paymoney_account_token: paymoney_account_token, gamer_id: gamer_id, game_account_token: "PExxGeLY")
+        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/PExxGeLY/#{paymoney_account_token}/#{password}/#{transaction_amount}", followlocation: true, method: :get)
 
         request.on_complete do |response|
           if response.success?

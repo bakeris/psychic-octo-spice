@@ -463,7 +463,7 @@ class LudwinApiController < ApplicationController
             @error_code = '5002'
             @error_description = 'Coupons details must be an array.'
           else
-            @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, amount: amount, win_amount: win_amount, gamer_id: gamer_id)
+            @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, amount: amount, win_amount: win_amount, gamer_id: gamer_id, game_account_token: "LhSpwtyN")
             coupons_details.each do |coupon_details|
               pal_code = (coupons["pal_code"].to_s rescue nil)
               event_code = (coupons["event_code"].to_s rescue nil)
@@ -519,7 +519,7 @@ class LudwinApiController < ApplicationController
                         if !nokogiri_response.blank?
                           response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
                           if response_code == '0' || response_code == '1024'
-                            if place_bet(@bet, "LVNbmiDN", params[:paymoney_account_number], password, amount)
+                            if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, amount)
                               @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
                               @bet.update_attributes(validated: true, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil))
                             end
