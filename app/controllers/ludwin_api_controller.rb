@@ -459,11 +459,11 @@ class LudwinApiController < ApplicationController
         else
           @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, amount: amount, win_amount: win_amount, gamer_id: gamer_id, game_account_token: "LhSpwtyN")
           #coupons_details.each do |coupon_details|
-            #pal_code = (coupons["pal_code"].to_s rescue nil)
-            #event_code = (coupons["event_code"].to_s rescue nil)
-            #bet_code = (coupons["bet_code"].to_s rescue nil)
-            #draw_code = (coupons["draw_code"].to_s rescue nil)
-            #odd = (coupons["odd"].to_s rescue nil)
+            pal_code = (coupons["pal_code"].to_s rescue nil)
+            event_code = (coupons["event_code"].to_s rescue nil)
+            bet_code = (coupons["bet_code"].to_s rescue nil)
+            draw_code = (coupons["draw_code"].to_s rescue nil)
+            odd = (coupons["odd"].to_s rescue nil)
 
             unless pal_code.blank? || event_code.blank? || bet_code.blank? || draw_code.blank? || odd.blank?
               @bet.bet_coupons.create(pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd)

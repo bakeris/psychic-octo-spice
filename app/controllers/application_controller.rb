@@ -194,9 +194,7 @@ class ApplicationController < ActionController::Base
   end
 
   def check_account_number(account_number)
-    print "fffffffffffffff" + account_number
     token = (RestClient.get "http://94.247.178.141:8080/PAYMONEY_WALLET/rest/check2_compte/#{account_number}" rescue "")
-    print token
 
     return token
   end
