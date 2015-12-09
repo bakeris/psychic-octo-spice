@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151208210652) do
+ActiveRecord::Schema.define(version: 20151209135024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,7 @@ ActiveRecord::Schema.define(version: 20151208210652) do
     t.string   "payment_paymoney_id"
     t.string   "error_code"
     t.string   "game_account_token"
+    t.string   "draw_id"
   end
 
   create_table "ail_pmu_logs", force: true do |t|
