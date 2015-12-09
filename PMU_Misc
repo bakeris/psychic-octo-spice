@@ -94,3 +94,25 @@ Lotto
 
 # Cancel a bet
 {"Bet":{"revision":"1","header":{"userName":"pmu@test.co.za","password":"dljghh$fdhfd@dj","terminalID":100000,"operatorID":1,"operatorPIN":1,"auditID":5,"messageID":4,"userID":1,"dateTime":"2015-09-29 12:12:13"},"content":{"ticketNumber":"","refNumber":""}}}
+
+
+
+
+Method: POST
+
+URL: 41.189.40.193:10000/ail/api/66378514493/transaction/validate
+
+Body: {"OperationType": "1|2", "Selector1": "the_selector1", "Selector2": "the_selector2", "bets" :[{"AuditId":"the_audit_id", "RefNumber":"the_ref_number", "TicketNumber":"the_ticket_number", "Amount":the_amount_to_be_paid}]}
+
+
+Success: {"OperationType": "1|2", "Selector1": "the_selector1", "Selector2": "the_selector2"}
+
+
+Error:
+
+{
+  "error": {
+    "code": "4000",
+    "description": "Transaction not found."
+  }
+}

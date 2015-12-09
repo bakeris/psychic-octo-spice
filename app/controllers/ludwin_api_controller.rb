@@ -457,30 +457,23 @@ class LudwinApiController < ApplicationController
           @error_code = '5001'
           @error_description = 'Cannot retrieve coupon amount or coupon win amount.'
         else
-          coupons_details = (coupons["coupons"].to_a rescue nil)
+          @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, amount: amount, win_amount: win_amount, gamer_id: gamer_id, game_account_token: "LhSpwtyN")
+          #coupons_details.each do |coupon_details|
+            #pal_code = (coupons["pal_code"].to_s rescue nil)
+            #event_code = (coupons["event_code"].to_s rescue nil)
+            #bet_code = (coupons["bet_code"].to_s rescue nil)
+            #draw_code = (coupons["draw_code"].to_s rescue nil)
+            #odd = (coupons["odd"].to_s rescue nil)
 
-          if coupons_details.blank?
-            @error_code = '5002'
-            @error_description = 'Coupons details must be an array.'
-          else
-            @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, amount: amount, win_amount: win_amount, gamer_id: gamer_id, game_account_token: "LhSpwtyN")
-            coupons_details.each do |coupon_details|
-              pal_code = (coupons["pal_code"].to_s rescue nil)
-              event_code = (coupons["event_code"].to_s rescue nil)
-              bet_code = (coupons["bet_code"].to_s rescue nil)
-              draw_code = (coupons["draw_code"].to_s rescue nil)
-              odd = (coupons["odd"].to_s rescue nil)
-
-              unless pal_code.blank? || event_code.blank? || bet_code.blank? || draw_code.blank? || odd.blank?
-                @bet.bet_coupons.create(pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd)
-                coupons_body << %Q[<BetCoupon>
-                                     <CodPal>#{pal_code}</CodPal>
-		                                 <CodEvent>#{event_code}</CodEvent>
-                                     <CodBet>#{bet_code}</CodBet>
-                                     <CodDraw>#{draw_code}</CodDraw>
-                                     <Odd>#{odd}</Odd>
-                                   </BetCoupon>]
-              end
+            unless pal_code.blank? || event_code.blank? || bet_code.blank? || draw_code.blank? || odd.blank?
+              @bet.bet_coupons.create(pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd)
+              coupons_body << %Q[<BetCoupon>
+                                   <CodPal>#{pal_code}</CodPal>
+	                                 <CodEvent>#{event_code}</CodEvent>
+                                   <CodBet>#{bet_code}</CodBet>
+                                   <CodDraw>#{draw_code}</CodDraw>
+                                   <Odd>#{odd}</Odd>
+                                 </BetCoupon>]
             end
 
             if coupons_body.blank?
@@ -500,57 +493,36 @@ class LudwinApiController < ApplicationController
 	                        </SellRequest>
                         </ServicesPSQF>]
 
-              # Checkout gamer account
-              request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/LhSpwtyN/#{paymoney_account_token}/#{amount}", followlocation: true, method: :get, headers: {'Content-Type'=> "application/xml"}, timeout: 30)
+              request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "application/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
 
-              #request.on_complete do |response|
-                #if response.success?
-                  #response_body = response.body
+              request.on_complete do |response|
+                if response.success?
+                  response_body = response.body
+                  nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
 
-                  #if !response_body.include?("|")
-                    #@bet.update_attribute(:paymoney_transaction_id, response_body)
-                    request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "application/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
-
-                    request.on_complete do |response|
-                      if response.success?
-                        response_body = response.body
-                        nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
-
-                        if !nokogiri_response.blank?
-                          response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
-                          if response_code == '0' || response_code == '1024'
-                            if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, amount)
-                              @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
-                              @bet.update_attributes(validated: true, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil))
-                            end
-                          else
-                            @bet.update_attributes(validated: false, validated_at: DateTime.now)
-                            @error_code = '4002'
-                            @error_description = 'The bet could not be processed.'
-                          end
-                        else
-                          @error_code = '4001'
-                          @error_description = 'Error while parsing XML.'
-                        end
-                      else
-                        @error_code = '4000'
-                        @error_description = 'Unavailable resource.'
+                  if !nokogiri_response.blank?
+                    response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
+                    if response_code == '0' || response_code == '1024'
+                      if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, amount)
+                        @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
+                        @bet.update_attributes(validated: true, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil))
                       end
+                    else
+                      @bet.update_attributes(validated: false, validated_at: DateTime.now)
+                      @error_code = '4002'
+                      @error_description = 'The bet could not be processed.'
                     end
+                  else
+                    @error_code = '4001'
+                    @error_description = 'Error while parsing XML.'
+                  end
+                else
+                  @error_code = '4000'
+                  @error_description = 'Unavailable resource.'
+                end
+              end
 
-                    request.run
-                  #else
-                    #@error_code = '6001'
-                    #@error_description = 'Payment error, could not checkout the account. Check the credit.'
-                  #end
-                #else
-                  #@error_code = '6000'
-                  #@error_description = 'Cannot join paymoney wallet server.'
-                #end
-
-              #end
-
-              #request.run
+              request.run
 
               LudwinLog.create(operation: "Prise de pari", transaction_id: transaction_id, error_code: @error_code, sent_body: body, response_body: response_body, remote_ip_address: remote_ip_address)
             end
