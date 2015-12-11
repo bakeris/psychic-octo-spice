@@ -155,6 +155,12 @@ Rails.application.routes.draw do
   get 'eppl/api/87eik741fd/earning/pay/:transaction_id' => 'eppl#api_pay_earning'
   #---------------------EPPL---------------------
 
+  #---------------------CM3---------------------
+
+  # Payment notification
+  #post '/cm3/api/dfg7fvb3191/payment/notification' => 'ludwin_api#api_coupon_payment_notification'
+  #---------------------CM3---------------------
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

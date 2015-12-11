@@ -1,0 +1,301 @@
+
+# Login #
+curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><loginRequest><username>ngser@lonaci</username><password>lemotdepasse<password><notificationUrl>https://142.11.15.18:11111/</notificationUrl></loginRequest>" http://office.cm3.work:27000/login --header "Content-Type:text/xml"
+
+
+
+# Logout #
+curl --request GET http://office.cm3.work:27000/logout --header "Content-Type:text/xml"
+
+
+
+# Current session #
+curl --request GET http://office.cm3.work:27000/getCurrentSession --header "Content-Type:text/xml"
+
+
+
+# Previous session # Unavailable
+curl --request GET http://office.cm3.work:27000/getPreviousSession --header "Content-Type:text/xml"
+
+
+
+# Get program #
+curl --request GET http://office.cm3.work:27000/getProgram --header "Content-Type:text/xml"
+
+-- Response --
+<?xml version="1.0" encoding="UTF-8" ?>
+<programResponse>
+	<program>
+		<programId>20153201</programId>
+		<type>ALR</type>
+		<name>LONACI MONTIGNAC CHARE SAINT MALO BRETIGNY</name>
+		<date>2015-11-16</date>
+		<programData>
+			<message></message>
+			<number></number>
+			<status>ON</status>
+			<raceIdList>
+				<raceId>2015320101</raceId>
+				<raceId>2015320102</raceId>
+				<raceId>2015320103</raceId>
+			</raceIdList>
+		</programData>
+	</program>
+</programResponse>
+
+
+
+# Get race #
+curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><raceRequest><connectionId>32850194855</connectionId><programId>20153201</programId><raceId>2015320101</raceId></raceRequest>" http://office.cm3.work:27000/getRace --header "Content-Type:text/xml"
+
+-- Response --
+<?xml version="1.0" encoding="UTF-8" ?>
+<raceResponse>
+	<race>
+		<programId>20153201</programId>
+		<raceId>2015320103</raceId>
+		<name>BRETIGNY</name>
+		<number>1</number>
+		<closeTime>2015-11-16 15:20</closeTime>
+		<status>ON</status>
+		<maxRunners>18</maxRunners>
+		<scratchedList />
+		<betIdList>
+			<betId status="PAYMENT">2</betId>
+			<betId status="PAYMENT">4</betId>
+			<betId status="PAYMENT">7</betId>
+			<betId status="PAYMENT">8</betId>
+			<betId status="OFF">13</betId>
+		</betIdList>
+	</race>
+</raceResponse>
+
+
+
+# Get bet #
+curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><betRequest><connectionId>32850194855</connectionId><betId>7</betId></betRequest>" http://office.cm3.work:27000/getBet --header "Content-Type:text/xml"
+
+-- Response --
+<?xml version="1.0" encoding="UTF-8" ?>
+<betResponse>
+	<bet>
+		<betId>7</betId>
+		<name>TIERCE</name>
+		<mnemonic>TE</mnemonic>
+		<unit>300</unit>
+		<maxNbUnits>20</maxNbUnits>
+		<fullBoxing>TRUE</fullBoxing>
+		<fullBoxName>COMPLET</fullBoxName>
+		<formula>
+			<name>UNITAIRE</name>
+			<minimum>3</minimum>
+			<maximum>3</maximum>
+			<allowFields>FALSE</allowFields>
+		</formula>
+		<formula>
+			<name>COMBINÉ</name>
+			<minimum>3</minimum>
+			<maximum>0</maximum>
+			<allowFields>FALSE</allowFields>
+		</formula>
+		<formula>
+			<name>CHAMP RÉDUIT</name>
+			<minimum>3</minimum>
+			<maximum>0</maximum>
+			<allowFields>TRUE</allowFields>
+			<maxFields>2</maxFields>
+		</formula>
+		<formula>
+			<name>CHAMP TOTAL</name>
+			<minimum>3</minimum>
+			<maximum>3</maximum>
+			<allowFields>TRUE</allowFields>
+			<maxFields>2</maxFields>
+		</formula>
+	</bet>
+</betResponse>
+
+
+
+# Get odds # Unavailable
+curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><oddsRequest><connectionId>32850194855</connectionId><programId>20153201</programId><raceId>2015320101</raceId></oddsRequest>" http://office.cm3.work:27000/getOdds --header "Content-Type:text/xml"
+
+
+
+# Get result #
+curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><resultRequest><connectionId>32850194855</connectionId><programId>20153201</programId><raceId>2015320101</raceId></resultRequest>" http://office.cm3.work:27000/getResult --header "Content-Type:text/xml"
+
+-- Response --
+<?xml version="1.0" encoding="UTF-8" ?>
+<resultResponse>
+	<result>
+		<rank number="1">
+			<horse>10</horse>
+		</rank>
+		<rank number="2">
+			<horse>7</horse>
+		</rank>
+		<rank number="3">
+			<horse>9</horse>
+		</rank>
+		<rank number="4">
+			<horse>3</horse>
+		</rank>
+		<rank number="5">
+			<horse>11</horse>
+		</rank>
+		<rank number="6">
+			<horse>8</horse>
+		</rank>
+	</result>
+</resultResponse>
+
+
+
+# Get dividend #
+curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><dividendsRequest><connectionId>32850194855</connectionId><programId>20153201</programId><raceId>2015320101</raceId></dividendsRequest>" http://office.cm3.work:27000/getDividends --header "Content-Type:text/xml"
+
+-- Response --
+<?xml version="1.0" encoding="UTF-8" ?>
+<dividendsResponse>
+	<dividend>
+		<betId>2</betId>
+		<option>NON_ORDERED</option>
+		<combination>
+			<horse>7</horse>
+			<horse>9</horse>
+		</combination>
+		<value type="GAIN">0</value>
+	</dividend>
+	<dividend>
+		<betId>2</betId>
+		<option>NON_ORDERED</option>
+		<combination>
+			<horse>7</horse>
+			<horse>3</horse>
+		</combination>
+		<value type="GAIN">0</value>
+	</dividend>
+	<dividend>
+		<betId>2</betId>
+		<option>NON_ORDERED</option>
+		<combination>
+			<horse>9</horse>
+			<horse>3</horse>
+		</combination>
+		<value type="GAIN">0</value>
+	</dividend>
+	<dividend>
+		<betId>4</betId>
+		<option>NON_ORDERED</option>
+		<combination>
+			<horse>7</horse>
+			<horse>9</horse>
+		</combination>
+		<value type="GAIN">0</value>
+	</dividend>
+	<dividend>
+		<betId>4</betId>
+		<option>NON_ORDERED</option>
+		<combination>
+			<horse>7</horse>
+			<horse>3</horse>
+		</combination>
+		<value type="GAIN">111600</value>
+	</dividend>
+	<dividend>
+		<betId>4</betId>
+		<option>NON_ORDERED</option>
+		<combination>
+			<horse>9</horse>
+			<horse>3</horse>
+		</combination>
+		<value type="GAIN">0</value>
+	</dividend>
+	<dividend>
+		<betId>7</betId>
+		<option>NON_ORDERED</option>
+		<combination>
+			<horse>7</horse>
+			<horse>9</horse>
+			<horse>3</horse>
+		</combination>
+		<value type="GAIN">0</value>
+	</dividend>
+	<dividend>
+		<betId>7</betId>
+		<option>ORDERED</option>
+		<combination>
+			<horse>7</horse>
+			<horse>9</horse>
+			<horse>3</horse>
+		</combination>
+		<value type="GAIN">0</value>
+	</dividend>
+	<dividend>
+		<betId>8</betId>
+		<option>NON_ORDERED</option>
+		<combination>
+			<horse>7</horse>
+			<horse>9</horse>
+			<horse>3</horse>
+			<horse>11</horse>
+		</combination>
+		<value type="GAIN">0</value>
+	</dividend>
+	<dividend>
+		<betId>8</betId>
+		<option>ORDERED</option>
+		<combination>
+			<horse>7</horse>
+			<horse>9</horse>
+			<horse>3</horse>
+			<horse>11</horse>
+		</combination>
+		<value type="GAIN">0</value>
+	</dividend>
+	<dividend>
+		<betId>13</betId>
+		<option>MULTI4</option>
+		<combination>
+			<horse>7</horse>
+			<horse>9</horse>
+			<horse>3</horse>
+			<horse>11</horse>
+		</combination>
+		<value type="GAIN">0</value>
+	</dividend>
+	<dividend>
+		<betId>13</betId>
+		<option>MULTI5</option>
+		<combination>
+			<horse>7</horse>
+			<horse>9</horse>
+			<horse>3</horse>
+			<horse>11</horse>
+		</combination>
+		<value type="GAIN">0</value>
+	</dividend>
+	<dividend>
+		<betId>13</betId>
+		<option>MULTI6</option>
+		<combination>
+			<horse>7</horse>
+			<horse>9</horse>
+			<horse>3</horse>
+			<horse>11</horse>
+		</combination>
+		<value type="GAIN">66600</value>
+	</dividend>
+	<dividend>
+		<betId>13</betId>
+		<option>MULTI7</option>
+		<combination>
+			<horse>7</horse>
+			<horse>9</horse>
+			<horse>3</horse>
+			<horse>11</horse>
+		</combination>
+		<value type="GAIN">28500</value>
+	</dividend>
+</dividendsResponse>

@@ -59,6 +59,13 @@ coupons={"coupons":[{"pal_code":"14693", "event_code":"9", "bet_code":"3", "draw
       <CodDraw>1</CodDraw>
       <Odd>245</Odd>
     </BetCoupon>
+    <BetCoupon>
+      <CodPal>14693</CodPal>
+      <CodEvent>9</CodEvent>
+      <CodBet>3</CodBet>
+      <CodDraw>1</CodDraw>
+      <Odd>245</Odd>
+    </BetCoupon>
   </SellRequest>
 </ServicesPSQF>
 
@@ -286,7 +293,7 @@ ID:203, port :7203
 
 curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>4158766627021584399</TransactionID><AmountCoupon>1000</AmountCoupon><AmountWin>5040</AmountWin><BetCoupon><CodPal>1546</CodPal><CodEvent>34</CodEvent><CodBet>3</CodBet><CodDraw>1</CodDraw><Odd>504</Odd></BetCoupon></SellRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/doBet --header "Content-Type:text/xml" --insecure
 
-curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>1111766627021444499</TransactionID><AmountCoupon>1000</AmountCoupon><AmountWin>1980</AmountWin><BetCoupon><CodPal>1546</CodPal><CodEvent>40</CodEvent><CodBet>3</CodBet><CodDraw>1</CodDraw><Odd>198</Odd></BetCoupon></SellRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/doBet --header "Content-Type:text/xml" --insecure
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>115814593378105913</TransactionID><AmountCoupon>400</AmountCoupon><AmountWin>1324</AmountWin><BetCoupon><CodPal>1549</CodPal><CodEvent>40</CodEvent><CodBet>3</CodBet><CodDraw>2</CodDraw><Odd>331</Odd></BetCoupon><BetCoupon><CodPal>1549</CodPal><CodEvent>40</CodEvent><CodBet>3</CodBet><CodDraw>2</CodDraw><Odd>331</Odd></BetCoupon></SellRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/doBet --header "Content-Type:text/xml" --insecure
 
 <?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><SellResponse><ReturnCode><Code>0</Code><Description>RESULTAT OK</Description><FlgRetry>false</FlgRetry></ReturnCode><TicketSogei>26A6080B27210FD1B0BE</TicketSogei><TimeStamp>20151113 08:52:11</TimeStamp><TransactionID>1111766627021444499</TransactionID><AmountWin>1980</AmountWin></SellResponse></ServicesPSQF>
 
@@ -295,5 +302,4 @@ curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF>
 curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>4158766627021584399</TransactionID><TicketSogei>26A6080B27210FD1B0BE</TicketSogei ></PaymentRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/paymentTicket --header "Content-Type:text/xml" --insecure
 
 
-4158766627021584399
-4158766627021444499
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><PaymentNotificationRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>20151209145339</TransactionID><TicketID>0F20081463D0BC3C31FC</TicketID></PaymentNotificationRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/PaymentServlet --header "Content-Type:text/xml" --insecure

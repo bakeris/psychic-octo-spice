@@ -447,6 +447,120 @@ class LudwinApiController < ApplicationController
 
     if user.blank?
       @error_code = '3000'
+      @error_description = "L'identifiant du parieur n'a pas été trouvé."
+    else
+      if !(coupons["bets"] rescue nil).blank?
+        @amount = coupons["amount"].to_i rescue nil
+
+        if @amount.blank?
+          @error_code = '5001'
+          @error_description = "Le montant des gains n'a pas pu être récupéré."
+        else
+          @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, gamer_id: gamer_id, game_account_token: "LhSpwtyN", amount: @amount)
+          coupons_body = format_coupouns(coupons["bets"])
+
+            if coupons_body.blank?
+              @error_code = '5003'
+              @error_description = 'Veuillez prendre au moins un pari.'
+            else
+              body = %Q[<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellRequest><CodConc>#{license_code}</CodConc><CodDiritto>#{point_of_sale_code}</CodDiritto><IdTerminal>#{terminal_id}</IdTerminal><TransactionID>#{transaction_id}</TransactionID><AmountCoupon>#{@amount}</AmountCoupon><AmountWin>#{@win_amount}</AmountWin>#{coupons_body}</SellRequest></ServicesPSQF>]
+
+              print body
+
+              @bet.update_attributes(win_amount: @win_amount)
+
+              request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
+
+              request.on_complete do |response|
+                if response.success? || response.code == 417
+                  response_body = response.body
+                  nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
+
+                  if !nokogiri_response.blank?
+                    response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
+                    if response_code == '0' || response_code == '1024'
+                      if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, amount)
+                        @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
+                        @bet.update_attributes(validated: true, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil))
+                        @coupons = @bet.bet_coupons
+                      end
+                    else
+                      @bet.update_attributes(validated: false, validated_at: DateTime.now)
+                      @error_code = nokogiri_response.xpath('//ReturnCode').at('Code').content rescue ""
+                      @error_description = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
+                    end
+                  else
+                    @error_code = '4001'
+                    @error_description = 'Erreur lors du parsing du XML.'
+                  end
+                else
+                  @error_code = '4000'
+                  @error_description = 'Plateforme non disponible.'
+                end
+              end
+
+              request.run
+
+              LudwinLog.create(operation: "Prise de pari", transaction_id: transaction_id, error_code: @error_code, sent_body: body, response_body: response_body, remote_ip_address: remote_ip_address)
+            end
+          #end
+        end
+      else
+        @error_code = '5000'
+        @error_description = 'Invalid JSON data.'
+      end
+    end
+  end
+
+  def format_coupouns(coupons)
+    tmp_coupons_body = ''
+    @win_amount = 0
+
+    coupons.each do |coupon|
+      pal_code = (coupon["pal_code"].to_s rescue "")
+      event_code = (coupon["event_code"].to_s rescue "")
+      bet_code = (coupon["bet_code"].to_s rescue "")
+      draw_code = (coupon["draw_code"].to_s rescue "")
+      odd = (coupon["odd"].to_s rescue "")
+      amount = (coupon["amount"] rescue "")
+      @win_amount =   ((@amount * (odd.to_f / 100)).to_i )
+
+      unless pal_code.blank? || event_code.blank? || bet_code.blank? || draw_code.blank? || odd.blank?
+        @bet.bet_coupons.create(pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd)
+        tmp_coupons_body << %Q[<BetCoupon><CodPal>#{pal_code}</CodPal><CodEvent>#{event_code}</CodEvent><CodBet>#{bet_code}</CodBet><CodDraw>#{draw_code}</CodDraw><Odd>#{odd}</Odd></BetCoupon>]
+      end
+    end
+
+    return tmp_coupons_body
+  end
+
+=begin
+  def api_sell_coupon
+    remote_ip_address = request.remote_ip
+    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
+    url = 'https://sports4africa.com/testUSSD/doBet'
+    license_code = '299'
+    point_of_sale_code = '595'
+    terminal_id = '201'
+    account_id = 'scommessina31'
+    account_type = '14'
+    coupons_body = ''
+    body = ''
+    @error_code = ''
+    @error_description = ''
+    response_body = ''
+    response_code = ''
+    coupons = (JSON.parse(request.body.read) rescue nil)
+    amount = ''
+    coupons_details = ''
+    paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
+    paymoney_account_token = check_account_number(params[:paymoney_account_number])
+    user = User.find_by_uuid(params[:gamer_id])
+    gamer_id = params[:gamer_id]
+    password = params[:password]
+
+    if user.blank?
+      @error_code = '3000'
       @error_description = 'The gamer account does not exist.'
     else
       if !coupons.blank?
@@ -534,6 +648,7 @@ class LudwinApiController < ApplicationController
       end
     end
   end
+=end
 
   def api_cancel_coupon
     remote_ip_address = request.remote_ip
