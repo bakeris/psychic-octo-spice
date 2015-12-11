@@ -49,6 +49,8 @@ Rails.application.routes.draw do
   # Sell a coupon
   post '/spc/api/6d3782c78d/coupon/sell/:gamer_id/:paymoney_account_number/:password' => 'ludwin_api#api_sell_coupon'
 
+  post '/spc/api/6d3782c78d/m_coupon/sell/:gamer_id/:paymoney_account_number/:password' => 'ludwin_api#api_m_sell_coupon'
+
   # Cancel a sold coupon
   get '/spc/api/6d3782c78d/coupon/cancel/:ticket_id' => 'ludwin_api#api_cancel_coupon'
 

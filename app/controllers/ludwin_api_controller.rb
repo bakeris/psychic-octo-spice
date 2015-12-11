@@ -534,8 +534,8 @@ class LudwinApiController < ApplicationController
     return tmp_coupons_body
   end
 
-=begin
-  def api_sell_coupon
+
+  def api_m_sell_coupon
     remote_ip_address = request.remote_ip
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
     url = 'https://sports4africa.com/testUSSD/doBet'
@@ -561,56 +561,32 @@ class LudwinApiController < ApplicationController
 
     if user.blank?
       @error_code = '3000'
-      @error_description = 'The gamer account does not exist.'
+      @error_description = "L'identifiant du parieur n'a pas été trouvé."
     else
-      if !coupons.blank?
-        amount = coupons["amount"]
-        win_amount = (((coupons["odd"].to_f / 100) * coupons["amount"].to_i).to_i rescue nil)
+      if !(coupons["bets"] rescue nil).blank?
+        @amount = coupons["amount"].to_i rescue nil
 
-        if amount.blank? || win_amount.blank?
+        if @amount.blank?
           @error_code = '5001'
-          @error_description = 'Cannot retrieve coupon amount or coupon win amount.'
+          @error_description = "Le montant des gains n'a pas pu être récupéré."
         else
-          @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, amount: amount, win_amount: win_amount, gamer_id: gamer_id, game_account_token: "LhSpwtyN")
-          #coupons_details.each do |coupon_details|
-            pal_code = (coupons["pal_code"].to_s rescue nil)
-            event_code = (coupons["event_code"].to_s rescue nil)
-            bet_code = (coupons["bet_code"].to_s rescue nil)
-            draw_code = (coupons["draw_code"].to_s rescue nil)
-            odd = (coupons["odd"].to_s rescue nil)
-
-            unless pal_code.blank? || event_code.blank? || bet_code.blank? || draw_code.blank? || odd.blank?
-              @bet.bet_coupons.create(pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd)
-              coupons_body << %Q[<BetCoupon>
-                                   <CodPal>#{pal_code}</CodPal>
-	                                 <CodEvent>#{event_code}</CodEvent>
-                                   <CodBet>#{bet_code}</CodBet>
-                                   <CodDraw>#{draw_code}</CodDraw>
-                                   <Odd>#{odd}</Odd>
-                                 </BetCoupon>]
-            end
+          @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, gamer_id: gamer_id, game_account_token: "LhSpwtyN", amount: @amount)
+          coupons_body = format_coupouns(coupons["bets"])
 
             if coupons_body.blank?
               @error_code = '5003'
-              @error_description = 'There must be at least one coupon to bet.'
+              @error_description = 'Veuillez prendre au moins un pari.'
             else
-              body = %Q[<?xml version="1.0" encoding="UTF-8"?>
-                        <ServicesPSQF>
-                          <SellRequest>
-                            <CodConc>#{license_code}</CodConc>
-		                        <CodDiritto>#{point_of_sale_code}</CodDiritto>
-		                        <IdTerminal>#{terminal_id}</IdTerminal>
-		                        <TransactionID>#{transaction_id}</TransactionID>
-		                        <AmountCoupon>#{amount}</AmountCoupon>
-		                        <AmountWin>#{win_amount}</AmountWin>
-                            #{coupons_body}
-	                        </SellRequest>
-                        </ServicesPSQF>]
+              body = %Q[<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellRequest><CodConc>#{license_code}</CodConc><CodDiritto>#{point_of_sale_code}</CodDiritto><IdTerminal>#{terminal_id}</IdTerminal><TransactionID>#{transaction_id}</TransactionID><AmountCoupon>#{@amount}</AmountCoupon><AmountWin>#{@win_amount}</AmountWin>#{coupons_body}</SellRequest></ServicesPSQF>]
 
-              request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "application/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
+              print body
+
+              @bet.update_attributes(win_amount: @win_amount)
+
+              request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
 
               request.on_complete do |response|
-                if response.success?
+                if response.success? || response.code == 417
                   response_body = response.body
                   nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
 
@@ -620,19 +596,20 @@ class LudwinApiController < ApplicationController
                       if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, amount)
                         @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
                         @bet.update_attributes(validated: true, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil))
+                        @coupons = @bet.bet_coupons
                       end
                     else
                       @bet.update_attributes(validated: false, validated_at: DateTime.now)
-                      @error_code = '4002'
-                      @error_description = 'The bet could not be processed.'
+                      @error_code = nokogiri_response.xpath('//ReturnCode').at('Code').content rescue ""
+                      @error_description = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
                     end
                   else
                     @error_code = '4001'
-                    @error_description = 'Error while parsing XML.'
+                    @error_description = 'Erreur lors du parsing du XML.'
                   end
                 else
                   @error_code = '4000'
-                  @error_description = 'Unavailable resource.'
+                  @error_description = 'Plateforme non disponible.'
                 end
               end
 
@@ -648,7 +625,7 @@ class LudwinApiController < ApplicationController
       end
     end
   end
-=end
+
 
   def api_cancel_coupon
     remote_ip_address = request.remote_ip
