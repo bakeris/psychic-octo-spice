@@ -808,6 +808,7 @@ class AilLotoController < ApplicationController
       end
     end
 
+
     render text: %Q[{
         "success":#{success_array},
         "error": #{error_array}
