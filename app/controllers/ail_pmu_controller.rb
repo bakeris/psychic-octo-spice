@@ -763,7 +763,7 @@ class AilPmuController < ApplicationController
 
         end
       end
-    end
+
 
     render text: %Q[{
         "success":#{success_array},
