@@ -704,9 +704,6 @@ class LudwinApiController < ApplicationController
       @error_description = 'Invalid XML data.'
     else
       ticket_id = (payment_notification_envelope.xpath('//PaymentNotificationRequest').at('TicketSogei').content rescue nil)
-      pal_code = (payment_notification_envelope.xpath('//PaymentNotificationRequest/EventTicket').at('CodPal').content rescue nil)
-      event_code = (payment_notification_envelope.xpath('//PaymentNotificationRequest/EventTicket').at('CodEvent').content rescue nil)
-      bet_code = (payment_notification_envelope.xpath('//PaymentNotificationRequest/EventTicket').at('CodBet').content rescue nil)
       pn_transaction_id = (payment_notification_envelope.xpath('//PaymentNotificationRequest').at('TransactionID').content rescue nil)
 
       @bet = Bet.where(ticket_id: ticket_id, transaction_id: pn_transaction_id)
@@ -722,61 +719,66 @@ class LudwinApiController < ApplicationController
           @error_description = 'This coupon have already been validated.'
         else
           pn_ticket_status = (payment_notification_envelope.xpath('//PaymentNotificationRequest').at('StatusTicket').content rescue nil)
-          pn_amount_win = (payment_notification_envelope.xpath('//PaymentNotificationRequest').at('AmountWin').content rescue nil)
           pn_timestamp = (payment_notification_envelope.xpath('//PaymentNotificationRequest').at('TimeStamp').content rescue nil)
-          pn_event_ticket_status = (payment_notification_envelope.xpath('//PaymentNotificationRequest/EventTicket').at('Status').content rescue nil)
-          pn_type_result = (payment_notification_envelope.xpath('//Result').at('TypeResult').content rescue nil)
-          pn_winning_value = (payment_notification_envelope.xpath('//Result/Winning').at('Value').content rescue nil)
-          pn_winning_position = (payment_notification_envelope.xpath('//Result/Winning').at('Position').content rescue nil)
+          pn_amount_win = (payment_notification_envelope.xpath('//PaymentNotificationRequest').at('AmountWin').content rescue nil)
+          #pn_type_result = (payment_notification_envelope.xpath('//Result').at('TypeResult').content rescue nil)
+          #pn_winning_value = (payment_notification_envelope.xpath('//Result/Winning').at('Value').content rescue nil)
+          #pn_winning_position = (payment_notification_envelope.xpath('//Result/Winning').at('Position').content rescue nil)
 
           if ['1', '2', '3'].include?(pn_ticket_status)
-            @bet.update_attributes(pn_ticket_status: pn_ticket_status, pn_amount_win: pn_amount_win, pn_timestamp: pn_timestamp, pn_transaction_id: pn_transaction_id, pn_event_ticket_status: pn_event_ticket_status, pn_type_result: pn_type_result, pn_winning_value: pn_winning_value, pn_winning_position: pn_winning_position)
+            @bet.update_attributes(pn_ticket_status: pn_ticket_status, pn_amount_win: pn_amount_win, pn_transaction_id: pn_transaction_id, pn_timestamp: pn_timestamp)
             @error_code = '0'
             @error_description = 'OK'
 
             if pn_ticket_status == '1'
-              body = %Q[<?xml version="1.0" encoding="UTF-8"?>
-                        <ServicesPSQF>
-                          <PaymentRequest>
-                            <CodConc>299</CodConc>
-		                        <CodDiritto>595</CodDiritto>
-		                        <IdTerminal>201</IdTerminal>
-                            <TransactionID>#{transaction_id}</TransactionID>
-                            <TicketID>#{ticket_id}</ TicketID >
-	                        </PaymentRequest>
-                        </ServicesPSQF>]
-              request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "application/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
+              body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>#{transaction_id}</TransactionID><TicketID>#{ticket_id}</TicketID ></PaymentRequest></ServicesPSQF>]
+              print body
+
+              request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
 
               request.on_complete do |response|
                 if response.success?
                   response_body = response.body
+                  response_body = %Q[<?xml version='1.0' encoding='UTF-8'?>
+<ServicesPSQF>
+  <PaymentRequest>
+    <ReturnCode><Code>0</Code></ReturnCode>
+    <Description>OK</Description>
+  </PaymentRequest>
+</ServicesPSQF>]
                   nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
 
                   if !nokogiri_response.blank?
                     response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
                     if response_code == '0' || response_code == '1024'
+                      # Paymoney payment
+                      pay_earnings(@bet, "LhSpwtyN", @bet.win_amount)
                       @bet.update_attributes(pr_status: true, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id)
                     else
                       @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id)
-                      #@error_code = '4002'
-                      #@error_description = 'The bet could not be processed.'
+                      @error_code = '4002'
+                      @error_description = 'The bet could not be processed.'
                     end
                   else
-                    #@error_code = '4001'
-                    #@error_description = 'Error while parsing XML.'
+                    @error_code = '4001'
+                    @error_description = 'Error while parsing XML.'
                   end
                 else
-                  #@error_code = '4000'
-                  #@error_description = 'Unavailable resource.'
+                  @error_code = '4000'
+                  @error_description = 'Unavailable resource.'
                 end
               end
 
               request.run
+
+              LudwinLog.create(operation: "Paiement de coupon", response_body: response_body, remote_ip_address: remote_ip_address)
             end
           else
             @error_code = '5003'
             @error_description = 'Invalid notification status.'
           end
+
+          @bet.update_attributes(error_code: @error_code, error_description: @error_description)
         end
       end
     end
@@ -789,7 +791,7 @@ class LudwinApiController < ApplicationController
 			              <Description>#{@error_description}</Description>
 			              <FlgRetry>false</FlgRetry>
 		              </ReturnCode>
-		              <TransactionID>#{pn_transaction_id rescue ''}</TransactionID>
+		              <TransactionID>#{transaction_id}</TransactionID>
 	              </PaymentNotificationResponse>
               </ServicesPSQF>]
 
@@ -821,12 +823,4 @@ class LudwinApiController < ApplicationController
       @bets = Bet.where(gamer_id: params[:gamer_id])
     end
   end
-=begin
-  def check_account_number(account_number)
-    token = (RestClient.get "#{Parameter.first.paymoney_wallet_url}/PAYMONEY_WALLET/rest/check2_compte/#{account_number}" rescue "")
-    print token
-
-    return token
-  end
-=end
 end

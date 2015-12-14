@@ -12,13 +12,12 @@ class ApplicationController < ActionController::Base
 
     if transaction_amount == 0
      @error_code = '5000'
-     @error_description = "The transaction amount can't be 0."
+     @error_description = "Le montant de transaction ne peut pas être nul."
     else
       if paymoney_account_token.blank?
         @error_code = '5001'
-        @error_description = "The paymoney account have not been found."
+        @error_description = "Le compte PAymoney n'a pas été trouvé."
       else
-        #@eppl = Eppl.create(transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s, paymoney_account: params[:paymoney_account_number], transaction_amount: transaction_amount, remote_ip: remote_ip, paymoney_account_token: paymoney_account_token)
         request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/#{bet.transaction_id}/#{game_account_token}/#{paymoney_account_token}/#{password}/#{transaction_amount}", followlocation: true, method: :get)
 
         request.on_complete do |response|
@@ -30,12 +29,12 @@ class ApplicationController < ActionController::Base
               status = true
             else
               @error_code = '4001'
-              @error_description = 'Payment error, could not checkout the account. Check the credit.'
+              @error_description = "Le compte Paymoney n'a pas pu être débité. Veuillez vérifier votre crédit."
               bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body, paymoney_account_token: paymoney_account_token)
             end
           else
             @error_code = '4000'
-            @error_description = 'Cannot join paymoney wallet server.'
+            @error_description = 'Le serveur de paiement est inaccessible.'
             bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body, paymoney_account_token: paymoney_account_token)
           end
         end
@@ -62,7 +61,6 @@ class ApplicationController < ActionController::Base
         @error_code = '5001'
         @error_description = "The paymoney account have not been found."
       else
-        #@eppl = Eppl.create(transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s, paymoney_account: params[:paymoney_account_number], transaction_amount: transaction_amount, remote_ip: remote_ip, paymoney_account_token: paymoney_account_token)
         request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/9b04e57f135f05bc05b5cf6d9b0d8/bet/get/#{bet.transaction_id}/#{game_account_token}/#{paymoney_account_token}/#{password}/#{transaction_amount}", followlocation: true, method: :get)
 
         request.on_complete do |response|
@@ -91,28 +89,60 @@ class ApplicationController < ActionController::Base
     return status
   end
 
-  def validate_bet(transaction_id)
+  def validate_bet(game_account_token, transaction_amount)
     paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
     status = false
 
-    request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/06331525768e6a95680c8bb0dcf55/bet/validate/#{transaction_id}", followlocation: true, method: :get)
+    request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/06331525768e6a95680c8bb0dcf55/bet/validate/#{game_account_token}/#{transaction_amount}", followlocation: true, method: :get)
 
     request.on_complete do |response|
       if response.success?
         response_body = response.body
 
         if !response_body.include?("|")
-          bet.update_attributes(paymoney_transaction_id: response_body, bet_placed: true, bet_placed_at: DateTime.now, paymoney_account_token: paymoney_account_token)
+          ActiveRecord::Base.connection.execute("UPDATE eppls SET paymoney_validation_id = '#{response_body}', bet_validated = TRUE, bet_validated_at = '#{DateTime.now}' WHERE game_account_token = '#{game_account_token}' AND bet_validated IS NULL")
+          #bet.update_attributes(paymoney_transaction_id: response_body, bet_placed: true, bet_placed_at: DateTime.now)
           status = true
         else
-          @error_code = '4001'
-          @error_description = 'Payment error, could not checkout the account. Check the credit.'
-          bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body, paymoney_account_token: paymoney_account_token)
+          @error_code = '5000'
+          ActiveRecord::Base.connection.execute("UPDATE eppls SET error_code = '#{@error_code}', error_description = '#{response_body}' WHERE game_account_token = '#{game_account_token}' AND bet_validated IS NULL")
+          #bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
         end
       else
         @error_code = '4000'
         @error_description = 'Cannot join paymoney wallet server.'
-        bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body, paymoney_account_token: paymoney_account_token)
+        ActiveRecord::Base.connection.execute("UPDATE eppls SET error_code = '#{@error_code}', error_description = '#{@error_description}' WHERE game_account_token = '#{game_account_token}' AND bet_validated IS NULL")
+      end
+    end
+
+    request.run
+
+    return status
+  end
+
+  def validate_bet_ail(game_account_token, transaction_amount, ail_object)
+    paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
+    status = false
+
+    request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/06331525768e6a95680c8bb0dcf55/bet/validate/#{game_account_token}/#{transaction_amount}", followlocation: true, method: :get)
+
+    request.on_complete do |response|
+      if response.success?
+        response_body = response.body
+
+        if !response_body.include?("|")
+          ActiveRecord::Base.connection.execute("UPDATE #{ail_object} SET paymoney_validation_id = '#{response_body}', bet_validated = TRUE, bet_validated_at = '#{DateTime.now}' WHERE game_account_token = '#{game_account_token}' AND bet_validated IS NULL")
+          #bet.update_attributes(paymoney_transaction_id: response_body, bet_placed: true, bet_placed_at: DateTime.now)
+          status = true
+        else
+          @error_code = '5000'
+          ActiveRecord::Base.connection.execute("UPDATE #{ail_object} SET error_code = '#{@error_code}', error_description = '#{response_body}' WHERE game_account_token = '#{game_account_token}' AND bet_validated IS NULL")
+          #bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
+        end
+      else
+        @error_code = '4000'
+        @error_description = 'Cannot join paymoney wallet server.'
+        ActiveRecord::Base.connection.execute("UPDATE #{ail_object} SET error_code = '#{@error_code}', error_description = '#{@error_description}' WHERE game_account_token = '#{game_account_token}' AND bet_validated IS NULL")
       end
     end
 
@@ -152,43 +182,61 @@ class ApplicationController < ActionController::Base
   end
 
   def pay_earnings(bet, game_account_token, transaction_amount)
-    paymoney_account_token = check_account_number(bet.paymoney_account_number)
     paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
     status = false
 
-    if transaction_amount == 0
-     @error_code = '5000'
-     @error_description = "The transaction amount can't be 0."
-    else
-      if paymoney_account_token.blank?
-        @error_code = '5001'
-        @error_description = "The paymoney account have not been found."
-      else
-        #@eppl = Eppl.create(transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s, paymoney_account: params[:paymoney_account_number], transaction_amount: transaction_amount, remote_ip: remote_ip, paymoney_account_token: paymoney_account_token)
-        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d1798bc43ed59e5207c68e864564/earnings/pay/#{game_account_token}/#{paymoney_account_token}/#{bet.transaction_id}/#{transaction_amount}", followlocation: true, method: :get)
+    request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d1798bc43ed59e5207c68e864564/earnings/pay/#{game_account_token}/#{bet.paymoney_account_token}/#{bet.transaction_id}/#{transaction_amount}", followlocation: true, method: :get)
 
-        request.on_complete do |response|
-          if response.success?
-            response_body = response.body
+    request.on_complete do |response|
+      if response.success?
+        response_body = response.body
 
-            if !response_body.include?("|")
-              bet.update_attributes(payment_paymoney_id: response_body, earning_paid: true, earning_paid_at: DateTime.now)
-              status = true
-            else
-              @error_code = '4001'
-              @error_description = 'Payment error, could not checkout the account. Check the credit.'
-              bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
-            end
-          else
-            @error_code = '4000'
-            @error_description = 'Cannot join paymoney wallet server.'
-            bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
-          end
+        if !response_body.include?("|")
+          bet.update_attributes(payment_paymoney_id: response_body, earning_paid: true, earning_paid_at: DateTime.now)
+          status = true
+        else
+          @error_code = '4001'
+          @error_description = 'Payment error, could not checkout the account. Check the credit.'
+          bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
         end
-
-        request.run
+      else
+        @error_code = '4000'
+        @error_description = 'Cannot join paymoney wallet server.'
+        bet.update_attributes(error_code: @error_code, error_description: @error_description)
       end
     end
+
+    request.run
+
+    return status
+  end
+
+  def pay_ail_earnings(bet, game_account_token, transaction_amount, payment_type)
+    paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
+    status = false
+
+    request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d1798bc43ed59e5207c68e864564/earnings/pay/#{game_account_token}/#{bet.paymoney_account_token}/#{bet.transaction_id}/#{transaction_amount}", followlocation: true, method: :get)
+
+    request.on_complete do |response|
+      if response.success?
+        response_body = response.body
+
+        if !response_body.include?("|")
+          bet.update_attributes(paymoney_earning_id: response_body, :"#{payment_type}_paid" => true, :"#{payment_type}_paid_at" => DateTime.now)
+          status = true
+        else
+          @error_code = '4001'
+          @error_description = 'Payment error, could not checkout the account. Check the credit.'
+          bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
+        end
+      else
+        @error_code = '4000'
+        @error_description = 'Cannot join paymoney wallet server.'
+        bet.update_attributes(error_code: @error_code, error_description: @error_description)
+      end
+    end
+
+    request.run
 
     return status
   end

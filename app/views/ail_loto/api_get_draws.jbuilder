@@ -1,7 +1,7 @@
 if @error_code != 0
   json.error code: @error_code, description: @error_description
 else
-  json.draws_type "Loto"
+  json.game "LOTO"
   json.draws @draws_list do |draw|
     json.id draw["drawID"] rescue nil
     json.state draw["drawState"] rescue nil

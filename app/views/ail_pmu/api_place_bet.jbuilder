@@ -1,6 +1,7 @@
 if @error_code != 0
   json.error code: @error_code, description: @error_description
 else
+  json.game "PMU PLR"
   json.bet do
     json.ticket_number @bet.ticket_number rescue nil
     json.ref_number @bet.ref_number rescue nil

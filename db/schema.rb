@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151209135024) do
+ActiveRecord::Schema.define(version: 20151214073247) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,20 @@ ActiveRecord::Schema.define(version: 20151209135024) do
     t.string   "error_code"
     t.string   "game_account_token"
     t.string   "draw_id"
+    t.string   "paymoney_validation_id"
+    t.string   "paymoney_account_token"
+    t.string   "earning_amount"
+    t.string   "refund_amount"
+    t.boolean  "refund_paid"
+    t.datetime "refund_paid_at"
+    t.string   "paymoney_earning_id"
+    t.string   "paymoney_refund_id"
+    t.boolean  "bet_validated"
+    t.datetime "bet_validated_at"
+    t.boolean  "earning_notification_received"
+    t.datetime "earning_notification_received_at"
+    t.boolean  "refund_notification_received"
+    t.datetime "refund_notification_received_at"
   end
 
   create_table "ail_pmu_logs", force: true do |t|
@@ -158,6 +172,20 @@ ActiveRecord::Schema.define(version: 20151209135024) do
     t.string   "race_id"
     t.string   "draw_id"
     t.string   "game_account_token"
+    t.string   "paymoney_validation_id"
+    t.string   "paymoney_account_token"
+    t.string   "earning_amount"
+    t.string   "refund_amount"
+    t.boolean  "refund_paid"
+    t.datetime "refund_paid_at"
+    t.string   "paymoney_earning_id"
+    t.string   "paymoney_refund_id"
+    t.boolean  "bet_validated"
+    t.datetime "bet_validated_at"
+    t.boolean  "earning_notification_received"
+    t.datetime "earning_notification_received_at"
+    t.boolean  "refund_notification_received"
+    t.datetime "refund_notification_received_at"
   end
 
   create_table "bet_coupons", force: true do |t|
@@ -213,6 +241,9 @@ ActiveRecord::Schema.define(version: 20151209135024) do
     t.datetime "bet_cancelled_at"
     t.string   "gamer_id"
     t.string   "game_account_token"
+    t.string   "payment_paymoney_id"
+    t.boolean  "earning_paid"
+    t.datetime "earning_paid_at"
   end
 
   create_table "civilities", force: true do |t|
@@ -252,6 +283,9 @@ ActiveRecord::Schema.define(version: 20151209135024) do
     t.string   "cancellation_paymoney_id"
     t.string   "payment_paymoney_id"
     t.string   "game_account_token"
+    t.boolean  "bet_validated"
+    t.datetime "bet_validated_at"
+    t.string   "paymoney_validation_id"
   end
 
   create_table "ludwin_logs", force: true do |t|

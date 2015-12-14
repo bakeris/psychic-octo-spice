@@ -154,6 +154,8 @@ Rails.application.routes.draw do
   #---------------------EPPL---------------------
   get '/eppl/api/36e25e6bfd/bet/place/:gamer_id/:paymoney_account_number/:password/:transaction_amount' => 'eppl#api_place_bet'
 
+  #get '/eppl/bet/validate' => 'eppl#periodically_validate_bet'
+
   get 'eppl/api/87eik741fd/earning/pay/:transaction_id' => 'eppl#api_pay_earning'
   #---------------------EPPL---------------------
 

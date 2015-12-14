@@ -303,3 +303,253 @@ curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF>
 
 
 curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><PaymentNotificationRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>20151209145339</TransactionID><TicketID>0F20081463D0BC3C31FC</TicketID></PaymentNotificationRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/PaymentServlet --header "Content-Type:text/xml" --insecure
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>136868862440342347</TransactionID><TicketID>C273081519B6DD30B203</TicketID></PaymentRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/PaymentServlet --header "Content-Type:text/xml" --insecure
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>136868862440342348</TransactionID><TicketSogei>C273081519B6DD30B203</TicketSogei></PaymentRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/paymentTicket --header "Content-Type:text/xml" --insecure
+
+
+yes
+De :
+Sam
+ now is ok
+De :
+Sam
+ dietrich
+De :
+Sam
+ so i just add the money now on your balance of your terminal
+De :
+Sam
+ this is on my point of view
+De :
+Sam
+ the integration is ok
+De :
+Sam
+ so
+De :
+Sam
+ now
+De :
+Sam
+ is important
+ ok
+De :
+Sam
+ that you understand
+De :
+Sam
+ that ahemd
+De :
+Sam
+ create a list of terminal id
+De :
+Sam
+ that you can use for sell and payment
+De :
+Sam
+ so
+De :
+Sam
+ image that create just 1 terminal
+De :
+Sam
+ with idTag 100
+De :
+Sam
+ so if you use the idTag 100 for sell
+De :
+Sam
+ this terminal 100 is block
+De :
+Sam
+ and you can't use for other messages
+De :
+Sam
+ so you must guarentee
+De :
+Sam
+ this
+De :
+Sam
+ and you must also for any message
+De :
+Sam
+ generate a unique transaction_id
+De :
+Sam
+ and if you not receive response for me
+De :
+Sam
+ so timeout or you have an excpetion on your side
+De :
+Sam
+ you must stay in rerty ( send the same message ) with me on the specific message that not receive response
+De :
+Sam
+ and when you stay in retry you don't change nothing on the xml so the same value
+De :
+Sam
+ until receive response
+De :
+Sam
+ so for example if you stay in retry with terminal 100
+De :
+Sam
+ this terminal is busy because stay in retry and you can't use it
+De :
+Sam
+ for others operations
+De :
+Sam
+ clear ?
+ ok but one question, can we use the same terminal for 2 sales? at the same time i mean
+De :
+Sam
+ no
+De :
+Sam
+ any terminal is 1:1 for any message
+ so if 100 customers try to place a bet a the same time
+ i must use 100 terminal id?
+De :
+Sam
+ no
+De :
+Sam
+ dietrich
+De :
+Sam
+ with 10 terminal we manage 500 tickets for minutes
+De :
+Sam
+ wihtout problem
+De :
+Sam
+ we response on sell in 60 ms
+De :
+Sam
+ so you create a pool of terminal on your side
+De :
+Sam
+ so Ahmed create
+De :
+Sam
+ 10/20 termianl and you use this
+De :
+Sam
+ for sell
+De :
+Sam
+ and you can manage this without problem
+De :
+Sam
+ on your side you must create a pool of terminal
+De :
+Sam
+ like a pool of connection with the database
+De :
+Sam
+ and when the pplayer place the bet
+De :
+Sam
+ you ask the first free termianl at the pool
+De :
+Sam
+ when receive response
+De :
+Sam
+ you put in status free again the terminal
+De :
+Sam
+ that you can use
+De :
+Sam
+ for next
+De :
+Sam
+ player
+De :
+Sam
+ .....
+De :
+Sam
+ is clear ?
+ yup
+De :
+Sam
+ ok
+De :
+Sam
+ good
+De :
+Sam
+ so
+De :
+Sam
+ you have the events
+De :
+Sam
+ you place the bet
+De :
+Sam
+ and you pay the ticket
+De :
+Sam
+ now
+De :
+Sam
+ ;)
+De :
+Sam
+ so
+De :
+Sam
+ on my system
+De :
+Sam
+ i don't see for events
+De :
+Sam
+ the getEvents
+De :
+Sam
+ on prematch and live
+De :
+Sam
+ any 5 seconds
+De :
+Sam
+ the call
+De :
+Sam
+ for delta
+De :
+Sam
+ is normal
+De :
+Sam
+ ?
+ Diana has to handle this
+ not completed yet
+ So Ahmed, could you please provide us 30 terminal id?
+ I guess it'll be on monday
+ Thank you Sam.
+Envoyé
+
+Nouveau message de Dietrich Mensah, Thank you Sam.
+
+
+Envoyer Des Fichiers Et Du Contenu Multimédia
+
+
+Émoticônes
+
+
+*/17 * * * * /bin/bash -l -c 'cd /home/dietrich/workshop/PaymoneyGateway && source /home/dietrich/.rvm/environments/ruby-2.0.0-p195@rails4.0.7 && RAILS_ENV=development /home/dietrich/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/bin/rake eppl:validate_bets --silent >> /home/dietrich/workshop/cron_log.log 2>&1'
+
+
+
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>136868862440342348</TransactionID><TicketSogei>C273081519B6DD30B203</TicketSogei></PaymentRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/paymentTicket --header "Content-Type:text/xml" --insecure
