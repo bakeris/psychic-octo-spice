@@ -4,11 +4,35 @@ Rails.application.configure do
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
+
   config.cache_classes = false
 
   # Do not eager load code on boot.
   config.eager_load = false
 
+  config.action_mailer.default_url_options = { host: '41.189.40.193:10000', from: 'Asministrateur - Parions Direct' }
+
+	ActionMailer::Base.smtp_settings = {
+  	:openssl_verify_mode => 'none',
+		:address => "smtp.gmail.com",
+		:enable_starttls_auto => true,
+		:port => 587,
+		:authentication => :plain,
+		:user_name => "mensah.dietrich@gmail.com",
+		:password => '20dianapopoulos12'
+	}
+=begin
+	config.action_mailer.default_url_options = { host: '41.189.40.193:10000', from: 'Asministrateur - Parions Direct' }
+  ActionMailer::Base.smtp_settings = {
+  	:openssl_verify_mode => 'none',
+		:address => "de2608.ispfr.net",
+		:enable_starttls_auto => true,
+		:port => 587,
+		:authentication => :plain,
+		:user_name => "serviceclients@de2608.ispfr.net",
+		:password => 'clients#2015'
+	}
+=end
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
@@ -34,5 +58,5 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
-  config.log_level = :fatal
+  #config.log_level = :fatal
 end

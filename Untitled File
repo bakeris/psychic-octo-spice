@@ -1,0 +1,8 @@
+# Full list of tournaments
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><TournamentRequest><CodSport>1</CodSport><TransactionID>1393843971185</TransactionID><Language>EN</Language></TournamentRequest>
+</ServicesPSQF>" https://sports4africa.com/testUSSD/getTournament --header "Content-Type:text/xml" --insecure
+
+# Full list of bets
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><BetsRequest><TransactionID>1393844324731</TransactionID><Language>EN</Language></BetsRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getBet --header "Content-Type:text/xml" --insecure
+
+"errorMessage":"The operation has timed out"

@@ -1,0 +1,555 @@
+CodConc:299
+CodDiritto:595
+IdTerminal: 201
+AccountId:
+
+point of sales name:PARIONSDIRECT
+password:ZN901feWzv34Y7
+Terminal :
+ID:201 port:7201
+ID:202 port:7202
+ID:203 port:7203
+
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SportRequest><TransactionID>8552214</TransactionID><Language>FR</Language></SportRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getSport --header "Content-Type:text/xml" --insecure
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><TournamentRequest><CodSport>1</CodSport><TransactionID>8514273</TransactionID><Language>FR</Language></TournamentRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getTournament --header "Content-Type:text/xml" --insecure
+
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>4158766627021584399</TransactionID><AmountCoupon>555</AmountCoupon><AmountWin>555</AmountWin><BetCoupon><CodPal>1545</CodPal><CodEvent>32</CodEvent><CodBet>3</CodBet><CodDraw>1</CodDraw><Odd>555</Odd></BetCoupon></SellRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/doBet --header "Content-Type:text/xml" --insecure
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>4158766627021584399</TransactionID><AmountCoupon>400</AmountCoupon><AmountWin>3263</AmountWin><BetCoupon><CodPal>14693</CodPal><CodEvent>9</CodEvent><CodBet>3</CodBet><CodDraw>1</CodDraw><Odd>245</Odd></BetCoupon></SellRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/doBet --header "Content-Type:text/xml" --insecure
+
+# Specific bet
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><BetsRequest><TransactionID>29387226285314391</TransactionID><Language>FR</Language></BetsRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getBet --header "Content-Type:text/xml" --insecure
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><BetsRequest><TransactionID>7788553232283</TransactionID><Language>FR</Language></BetsRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getBet --header "Content-Type:text/xml" --insecure
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><TournamentRequest><CodSport>1</CodSport><CodTournament>1</CodTournament><TransactionID>139384397781185</TransactionID><Language>EN</Language></TournamentRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getTournament --header "Content-Type:text/xml" --insecure
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><TournamentRequest><CodSport>1</CodSport><TransactionID>9326449349536720035</TransactionID><Language>EN</Language></TournamentRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getTournament --header "Content-Type:text/xml" --insecure
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><BetsRequest><TransactionID>778855327832283</TransactionID><Language>FR</Language></BetsRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getEvent --header "Content-Type:text/xml" --insecure
+
+curl --request POST --data "{"coupons":[{"pal_code":"14693", "event_code":"9", "bet_code":"3", "draw_code":"1", "odd":"245"}, {"pal_code":"14685", "event_code":"12", "bet_code":"3", "draw_code":"1", "odd":"185"}], "amount":"200", "win_amount":"3263"}" 0.0.0.0:3000/spc/api/6d3782c78d/coupon/sell
+
+{"coupons":[{"pal_code":"14693", "event_code":"9", "bet_code":"3", "draw_code":"1", "odd":"245"}, {"pal_code":"14685", "event_code":"12", "bet_code":"3", "draw_code":"1", "odd":"185"}], "amount":"200", "win_amount":"3263"}
+
+coupons={"coupons":[{"pal_code":"14693", "event_code":"9", "bet_code":"3", "draw_code":"1", "odd":"245"}, {"pal_code":"14685", "event_code":"12", "bet_code":"3", "draw_code":"1", "odd":"185"}, {"pal_code":"14709","event_code":"8","bet_code":"3","draw_code":"1","odd":"360"}],"amount":"200","win_amount":"3263"}
+
+
+<ServicesPSQF>
+  <SellRequest>
+    <CodConc>PARIONSDIRECT</CodConc>
+    <CodDiritto>ZN901feWzv34Y7</CodDiritto>
+    <IdTerminal>0</IdTerminal>
+    <Account>
+      <AccountId>scommessina31</AccountId>
+      <CodConc>PARIONSDIRECT</CodConc>
+      <CodDiritto>ZN901feWzv34Y7</CodDiritto>
+      <Type>14</Type>
+    </Account>
+    <TransactionID>4158766627021584399</TransactionID>
+    <AmountCoupon>200</AmountCoupon>
+    <AmountWin>3263</AmountWin>
+    <BetCoupon>
+      <CodPal>14693</CodPal>
+      <CodEvent>9</CodEvent>
+      <CodBet>3</CodBet>
+      <CodDraw>1</CodDraw>
+      <Odd>245</Odd>
+    </BetCoupon>
+    <BetCoupon>
+      <CodPal>14693</CodPal>
+      <CodEvent>9</CodEvent>
+      <CodBet>3</CodBet>
+      <CodDraw>1</CodDraw>
+      <Odd>245</Odd>
+    </BetCoupon>
+  </SellRequest>
+</ServicesPSQF>
+
+
+
+
+
+
+6.1 Service EventRequest
+
+<?xml version="1.0" encoding="UTF-8"?>
+<ServicesPSQF>
+  <Mobile>
+    <GetEventsResponse>
+      <SportMobile>
+        <CodeSport>2</CodeSport>
+        <DescSport>BASKET</DescSport>
+        <LanguageSport>
+          <Language>
+            <LanguageCode>IT</LanguageCode>
+            <Description>basketball</Description>
+          </Language>
+          <Language>
+            <LanguageCode>ES</LanguageCode>
+            <Description>baloncesto</Description>
+          </Language>
+          <Language>
+            <LanguageCode>EN</LanguageCode>
+            <Description>basketball</Description>
+          </Language>
+          <Language>
+            <LanguageCode>PT</LanguageCode>
+            <Description>basquetebol</Description>
+          </Language>
+          <Language>
+            <LanguageCode>FR</LanguageCode>
+            <Description>basketball</Description>
+          </Language>
+        </LanguageSport>
+        <TournamentMobile>
+          <CodeTournament>154</CodeTournament>
+          <DescTournament>BBL</DescTournament>
+          <LanguageTournament>
+            <Language>
+              <LanguageCode>IT</LanguageCode>
+              <Description>BBL</Description>
+            </Language>
+            <Language>
+              <LanguageCode>EN</LanguageCode>
+              <Description>Germany D1</Description>
+            </Language>
+            <Language>
+              <LanguageCode>ES</LanguageCode>
+              <Description>Alemania L1</Description>
+            </Language>
+            <Language>
+              <LanguageCode>PT</LanguageCode>
+              <Description>Alemanha L1</Description>
+            </Language>
+            <Language>
+              <LanguageCode>FR</LanguageCode>
+              <Description>Allemagne D1</Description>
+            </Language>
+          </LanguageTournament>
+          <EventMobile>
+            <CodePal>1543</CodePal>
+            <CodEvent>4</CodEvent>
+            <TimeStamp>20151019 18:00:00</TimeStamp>
+            <DescEvent>BAYERN MUNICH - MITTELDEUTSCHE</DescEvent>
+            <LanguageEvent>
+              <Language>
+                <LanguageCode>IT</LanguageCode>
+                <Description>BAYERN MUNICH - MITTELDEUTSCHE</Description>
+              </Language>
+              <Language>
+                <LanguageCode>EN</LanguageCode>
+                <Description>BAYERN MUNICH - MITTELDEUTSCHE</Description>
+              </Language>
+              <Language>
+                <LanguageCode>PT</LanguageCode>
+                <Description>BAYERN MUNICH - MITTELDEUTSCHE</Description>
+              </Language>
+              <Language>
+                <LanguageCode>ES</LanguageCode>
+                <Description>BAYERN MUNICH - MITTELDEUTSCHE</Description>
+              </Language>
+              <Language>
+                <LanguageCode>FR</LanguageCode>
+                <Description>BAYERN MUNICH - MITTELDEUTSCHE</Description>
+              </Language>
+            </LanguageEvent>
+            <idBetradar>7794332</idBetradar>
+            <Op>insert</Op>
+            <Status>open</Status>
+            <Market>
+              <CodeBet>110</CodeBet>
+              <DescBet>RÃ‰SULTAT FINAL 1-2</DescBet>
+              <LanguageBet>
+                <Language>
+                  <LanguageCode>IT</LanguageCode>
+                  <Description>testa a testa risultato</Description>
+                </Language>
+                <Language>
+                  <LanguageCode>ES</LanguageCode>
+                  <Description>ganador del partido</Description>
+                </Language>
+                <Language>
+                  <LanguageCode>EN</LanguageCode>
+                  <Description>2 way result</Description>
+                </Language>
+                <Language>
+                  <LanguageCode>PT</LanguageCode>
+                  <Description>vencedor do encontro</Description>
+                </Language>
+                <Language>
+                  <LanguageCode>FR</LanguageCode>
+                  <Description>rÃ©sultat final 1-2</Description>
+                </Language>
+              </LanguageBet>
+              <Handicap>0</Handicap>
+              <LegAAMS>1</LegAAMS>
+              <LegMax>20</LegMax>
+              <LegMin>1</LegMin>
+              <Live>false</Live>
+              <Status>open</Status>
+              <MarketDraw>
+                <CodeDraw>1</CodeDraw>
+                <DescDraw>1</DescDraw>
+                <Odd>101</Odd>
+                <StatusDraw>open</StatusDraw>
+                <LanguageDraw>
+                  <Language>
+                    <LanguageCode>EN</LanguageCode>
+                    <Description>1</Description>
+                  </Language>
+                  <Language>
+                    <LanguageCode>IT</LanguageCode>
+                    <Description>1</Description>
+                  </Language>
+                  <Language>
+                    <LanguageCode>ES</LanguageCode>
+                    <Description>1</Description>
+                  </Language>
+                  <Language>
+                    <LanguageCode>FR</LanguageCode>
+                    <Description>1</Description>
+                  </Language>
+                  <Language>
+                    <LanguageCode>PT</LanguageCode>
+                    <Description>1</Description>
+                  </Language>
+                </LanguageDraw>
+              </MarketDraw>
+              <MarketDraw>
+                <CodeDraw>2</CodeDraw>
+                <DescDraw>2</DescDraw>
+                <Odd>742</Odd>
+                <StatusDraw>open</StatusDraw>
+                <LanguageDraw>
+                  <Language>
+                    <LanguageCode>EN</LanguageCode>
+                    <Description>2</Description>
+                  </Language>
+                  <Language>
+                    <LanguageCode>IT</LanguageCode>
+                    <Description>2</Description>
+                  </Language>
+                  <Language>
+                    <LanguageCode>ES</LanguageCode>
+                    <Description>2</Description>
+                  </Language>
+                  <Language>
+                    <LanguageCode>FR</LanguageCode>
+                    <Description>2</Description>
+                  </Language>
+                  <Language>
+                    <LanguageCode>PT</LanguageCode>
+                    <Description>2</Description>
+                  </Language>
+                </LanguageDraw>
+              </MarketDraw>
+            </Market>
+          </EventMobile>
+        </TournamentMobile>
+      </SportMobile>
+    </GetEventsResponse>
+  </Mobile>
+<ServicesPSQF>
+
+Liste des sports
+{"sports":[{"code":"1","acronym":"CALCIO","description":"CALCIO"},{"code":"2","acronym":"BASKET","description":"BASKET"}]}
+
+Sport spécifique
+{"sport":[{"code":"2","acronym":"BASKET","description":"BASKET"}]}
+
+Affichage des tournois liés à un sport
+{"tournaments":[{"tournament_code":"177","sport_code":"2","acronym":"USANBA00177","description":"NBA"},{"tournament_code":"271","sport_code":"2","acronym":"ESPSPAGNOL00271","description":"Spagnola ACB"}]}
+
+Affichage d'un tournoi spécifique
+{"tournament":[{"tournament_code":"177","sport_code":"2","acronym":"USANBA00177","description":"NBA"}]}
+
+Liste des paris
+{"bets":[{"code":"4072","description":"mi-temps total 125.5","is_live":"true","is_handicap":"false","is_static":"true","kind_handicap":"0","num_draw":"2","draws":[]}]}
+
+
+
+
+Specific bet API not working
+
+Where do we find CodPal to place a bet
+
+In the bets, the draw node is missing however, it's a required field for placing a bet as we need CodDraw
+
+How do we determine the amountcoupon and amount win.
+
+Point of sales name : PARIONSDIRECT
+password :ZN901feWzv34Y7
+Terminal :
+ID:201, port:7201
+ID:202 , port :7202
+ID:203, port :7203
+
+{"pal_code":"1546","code":"34","datetime":"20151113 17:30:00","description":"QATAR - TURKEY","event_languages":[{"code":"IT","description":"QATAR - TURKEY"},{"code":"EN","description":"QATAR - TURQU?A"},{"code":"PT","description":"QATAR - TURKEY"},{"code":"ES","description":"QUATAR - TURQUIA"},{"code":"FR","description":"QATAR - TURQUIE"}],"id_bet_radar":"8281768","op":"insert","status":"open","market":[{"bet_code":"3","bet_descriptio
+
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>4158766627021584399</TransactionID><AmountCoupon>1000</AmountCoupon><AmountWin>5040</AmountWin><BetCoupon><CodPal>1546</CodPal><CodEvent>34</CodEvent><CodBet>3</CodBet><CodDraw>1</CodDraw><Odd>504</Odd></BetCoupon></SellRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/doBet --header "Content-Type:text/xml" --insecure
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>115814593378105913</TransactionID><AmountCoupon>400</AmountCoupon><AmountWin>1324</AmountWin><BetCoupon><CodPal>1549</CodPal><CodEvent>40</CodEvent><CodBet>3</CodBet><CodDraw>2</CodDraw><Odd>331</Odd></BetCoupon><BetCoupon><CodPal>1549</CodPal><CodEvent>40</CodEvent><CodBet>3</CodBet><CodDraw>2</CodDraw><Odd>331</Odd></BetCoupon></SellRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/doBet --header "Content-Type:text/xml" --insecure
+
+<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><SellResponse><ReturnCode><Code>0</Code><Description>RESULTAT OK</Description><FlgRetry>false</FlgRetry></ReturnCode><TicketSogei>26A6080B27210FD1B0BE</TicketSogei><TimeStamp>20151113 08:52:11</TimeStamp><TransactionID>1111766627021444499</TransactionID><AmountWin>1980</AmountWin></SellResponse></ServicesPSQF>
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>1411766627021444499</TransactionID><TicketSogei>26A6080B27210FD1B0BE</TicketSogei ></PaymentRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/paymentTicket --header "Content-Type:text/xml" --insecure
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>4158766627021584399</TransactionID><TicketSogei>26A6080B27210FD1B0BE</TicketSogei ></PaymentRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/paymentTicket --header "Content-Type:text/xml" --insecure
+
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><PaymentNotificationRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>20151209145339</TransactionID><TicketID>0F20081463D0BC3C31FC</TicketID></PaymentNotificationRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/PaymentServlet --header "Content-Type:text/xml" --insecure
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>136868862440342347</TransactionID><TicketID>C273081519B6DD30B203</TicketID></PaymentRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/PaymentServlet --header "Content-Type:text/xml" --insecure
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>136868862440342348</TransactionID><TicketSogei>C273081519B6DD30B203</TicketSogei></PaymentRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/paymentTicket --header "Content-Type:text/xml" --insecure
+
+
+yes
+De :
+Sam
+ now is ok
+De :
+Sam
+ dietrich
+De :
+Sam
+ so i just add the money now on your balance of your terminal
+De :
+Sam
+ this is on my point of view
+De :
+Sam
+ the integration is ok
+De :
+Sam
+ so
+De :
+Sam
+ now
+De :
+Sam
+ is important
+ ok
+De :
+Sam
+ that you understand
+De :
+Sam
+ that ahemd
+De :
+Sam
+ create a list of terminal id
+De :
+Sam
+ that you can use for sell and payment
+De :
+Sam
+ so
+De :
+Sam
+ image that create just 1 terminal
+De :
+Sam
+ with idTag 100
+De :
+Sam
+ so if you use the idTag 100 for sell
+De :
+Sam
+ this terminal 100 is block
+De :
+Sam
+ and you can't use for other messages
+De :
+Sam
+ so you must guarentee
+De :
+Sam
+ this
+De :
+Sam
+ and you must also for any message
+De :
+Sam
+ generate a unique transaction_id
+De :
+Sam
+ and if you not receive response for me
+De :
+Sam
+ so timeout or you have an excpetion on your side
+De :
+Sam
+ you must stay in rerty ( send the same message ) with me on the specific message that not receive response
+De :
+Sam
+ and when you stay in retry you don't change nothing on the xml so the same value
+De :
+Sam
+ until receive response
+De :
+Sam
+ so for example if you stay in retry with terminal 100
+De :
+Sam
+ this terminal is busy because stay in retry and you can't use it
+De :
+Sam
+ for others operations
+De :
+Sam
+ clear ?
+ ok but one question, can we use the same terminal for 2 sales? at the same time i mean
+De :
+Sam
+ no
+De :
+Sam
+ any terminal is 1:1 for any message
+ so if 100 customers try to place a bet a the same time
+ i must use 100 terminal id?
+De :
+Sam
+ no
+De :
+Sam
+ dietrich
+De :
+Sam
+ with 10 terminal we manage 500 tickets for minutes
+De :
+Sam
+ wihtout problem
+De :
+Sam
+ we response on sell in 60 ms
+De :
+Sam
+ so you create a pool of terminal on your side
+De :
+Sam
+ so Ahmed create
+De :
+Sam
+ 10/20 termianl and you use this
+De :
+Sam
+ for sell
+De :
+Sam
+ and you can manage this without problem
+De :
+Sam
+ on your side you must create a pool of terminal
+De :
+Sam
+ like a pool of connection with the database
+De :
+Sam
+ and when the pplayer place the bet
+De :
+Sam
+ you ask the first free termianl at the pool
+De :
+Sam
+ when receive response
+De :
+Sam
+ you put in status free again the terminal
+De :
+Sam
+ that you can use
+De :
+Sam
+ for next
+De :
+Sam
+ player
+De :
+Sam
+ .....
+De :
+Sam
+ is clear ?
+ yup
+De :
+Sam
+ ok
+De :
+Sam
+ good
+De :
+Sam
+ so
+De :
+Sam
+ you have the events
+De :
+Sam
+ you place the bet
+De :
+Sam
+ and you pay the ticket
+De :
+Sam
+ now
+De :
+Sam
+ ;)
+De :
+Sam
+ so
+De :
+Sam
+ on my system
+De :
+Sam
+ i don't see for events
+De :
+Sam
+ the getEvents
+De :
+Sam
+ on prematch and live
+De :
+Sam
+ any 5 seconds
+De :
+Sam
+ the call
+De :
+Sam
+ for delta
+De :
+Sam
+ is normal
+De :
+Sam
+ ?
+ Diana has to handle this
+ not completed yet
+ So Ahmed, could you please provide us 30 terminal id?
+ I guess it'll be on monday
+ Thank you Sam.
+Envoyé
+
+Nouveau message de Dietrich Mensah, Thank you Sam.
+
+
+Envoyer Des Fichiers Et Du Contenu Multimédia
+
+
+Émoticônes
+
+
+*/17 * * * * /bin/bash -l -c 'cd /var/www/html/PaymoneyGateway && source /home/ngser/.rvm/environments/ruby-2.0.0-p195@rails4.0.7 && RAILS_ENV=development /home/ngser/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/bin/rake eppl:validate_bets --silent >> /var/www/html/cron_log.log 2>&1'
+
+
+
+
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>136868862440342348</TransactionID><TicketSogei>C273081519B6DD30B203</TicketSogei></PaymentRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/paymentTicket --header "Content-Type:text/xml" --insecure

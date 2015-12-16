@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  bet_id: 1
+  pal_code: MyString
+  event_code: MyString
+  bet_code: MyString
+  draw_code: MyString
+  odd: MyString
+
+two:
+  bet_id: 1
+  pal_code: MyString
+  event_code: MyString
+  bet_code: MyString
+  draw_code: MyString
+  odd: MyString

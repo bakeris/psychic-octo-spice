@@ -3,16 +3,38 @@ class User < ActiveRecord::Base
   before_create :encrypt_password
 
   # Relationships
+  has_many :query_bets
+  has_many :ail_lotos
+  has_many :ail_pmus
+  has_many :eppls
+  has_many :bets
 
   # Set accessible fields
-  attr_accessible :civility_id, :sex_id, :pseudo, :firstname, :lastname, :email, :password, :msisdn, :birthdate, :creation_mode_id, :reset_pasword_token, :salt
+  attr_accessible :civility_id, :sex_id, :pseudo, :firstname, :lastname, :email, :password, :msisdn, :birthdate, :creation_mode_id, :reset_pasword_token, :salt, :confirmation_token, :confirmed_at, :reset_password_token, :password_reseted_at, :account_enabled, :uuid, :last_successful_message
+
+# Renaming attributes into more friendly text
+  HUMANIZED_ATTRIBUTES = {
+    firstname: 'Le nom',
+    lastname: "Le prénom",
+    email: "L'email",
+    password: 'Le mot de passe',
+    msisdn: "Le numéro de téléphone",
+    birthdate: "La date de naissance",
+    uuid: "UUID"
+  }
+
+  # Using friendly attribute name if it exists and default name otherwise
+  def self.human_attribute_name(attr, option = {})
+    HUMANIZED_ATTRIBUTES[attr.to_sym] || super
+  end
 
   # Validations
   validates :msisdn, presence: true
-  validates :msisdn, uniqueness: true
-  validates :pseudo, :firstname, :lastname, length: {minimum: 3, maximum: 255, allow_blank: true}
-  validates :pseudo, uniqueness: true
-  validates :email, uniqueness: {allow_blank: true}
+  validates :msisdn, uniqueness: {message: "est déjà inscrit"}
+  validates :pseudo, :firstname, :lastname, :password, length: {minimum: 3, maximum: 255}
+  #validates :pseudo, uniqueness: true
+  #validates :email, uniqueness: {allow_blank: true}
+  validates :password, numericality: true
   validates :email, format: {with: /^(|(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6})$/i, multiline: true, allow_blank: true}
   validate :msisdn_not_a_number?, :right_msisdn_length?, :right_birthdate?
 
@@ -20,7 +42,7 @@ class User < ActiveRecord::Base
     status = false
     user = User.find_by_email(email)
     if !user.blank?
-      if user.password = Digest::SHA2.hexdigest(user.salt + password)
+      if user.password == Digest::SHA2.hexdigest(user.salt + password)
         status = true
       end
     end
@@ -31,7 +53,7 @@ class User < ActiveRecord::Base
     status = false
     user = User.find_by_msisdn(msisdn)
     if !user.blank?
-      if user.password = Digest::SHA2.hexdigest(user.salt + password)
+      if user.password == Digest::SHA2.hexdigest(user.salt + password)
         status = true
       end
     end
@@ -47,6 +69,10 @@ class User < ActiveRecord::Base
       end
     end
     status
+  end
+
+  def self.full_name
+    return "#{lastname} #{firstname}"
   end
 
   private

@@ -1,0 +1,47 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  license_code: MyString
+  pos_code: MyString
+  terminal_id: MyString
+  account_id: MyString
+  account_type: MyString
+  transaction_id: MyString
+  amount: MyString
+  win_amount: MyString
+  pal_code: MyString
+  event_code: MyString
+  bet_code: MyString
+  draw_code: MyString
+  odd: MyString
+  validated: false
+  validated_at: 2015-10-18 13:35:28
+  ticket_id: MyString
+  ticket_timestamp: MyString
+  transaction_id: MyString
+  cancelled: false
+  cancelled_at: 2015-10-18 13:35:28
+  cancellation_timestamp: MyString
+
+two:
+  license_code: MyString
+  pos_code: MyString
+  terminal_id: MyString
+  account_id: MyString
+  account_type: MyString
+  transaction_id: MyString
+  amount: MyString
+  win_amount: MyString
+  pal_code: MyString
+  event_code: MyString
+  bet_code: MyString
+  draw_code: MyString
+  odd: MyString
+  validated: false
+  validated_at: 2015-10-18 13:35:28
+  ticket_id: MyString
+  ticket_timestamp: MyString
+  transaction_id: MyString
+  cancelled: false
+  cancelled_at: 2015-10-18 13:35:28
+  cancellation_timestamp: MyString

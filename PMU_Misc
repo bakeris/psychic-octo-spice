@@ -1,0 +1,118 @@
+PMU
+-----------------------------------------------------------------
+Query a bet -
+Get draws - Avoir la liste des courses ou des sessions de loto
+Place a bet
+Cancel a bet
+Refund a bet
+Acknowledge - for refund, cancel, place
+
+Lotto
+-----------------------------------------------------------------
+
+
+#Get draws
+{"DrawReq":{"revision":"1","header":{"userName":"pmu@test.co.za","password":"dljghh$fdhfd@dj","terminalID":100000,"operatorID":1,"operatorPIN":1,"auditID":2,"messageID":2,"userID":1,"dateTime":"2015-09-29 12:12:13"},"content":{"drawState":-1,"MaxRows":10}}}
+
+{"content":{"errorCode":0,"errorMessage":"","rows":[{"DrawType":"PLR                                                                                                 ","closingDate":"2015-10-27 09:59:00 PM","drawID":125513,"drawState":0,"numberOfEntries":14,"openingDate":"2015-10-26 10:00:00 PM","payoutsReleased":0,"selector1":15,"selector2":15,"systemName":"CÔTE-D'IVOIRE            ","useStakeBased":0},{"DrawType":"PLR                                                                                                 ","closingDate":"2015-10-27 09:59:00 PM","drawID":125513,"drawState":0,"numberOfEntries":14,"openingDate":"2015-10-26 10:00:00 PM","payoutsReleased":0,"selector1":15,"selector2":15,"systemName":"CÔTE-D'IVOIRE            ","useStakeBased":0},{"DrawType":"PLR                                                                                                 ","closingDate":"2015-10-27 09:59:00 PM","drawID":125513,"drawState":0,"numberOfEntries":14,"openingDate":"2015-10-26 10:00:00 PM","payoutsReleased":0,"selector1":15,"selector2":15,"systemName":"CÔTE-D'IVOIRE            ","useStakeBased":0}]},"header":{"auditID":1,"dataName":"dtDraws","dateTime":"2015-11-09 12:14:07 AM","messageID":1,"status":"success","terminalID":100000,"userID":1},"revision":"1.001"}
+
+# Place bet
+{"Bet":{"revision":"1","header":{"userName":"pmu@test.co.za","password":"dljghh$fdhfd@dj","terminalID":100000,"operatorID":1,"operatorPIN":1,"auditID":1303716857,"messageID":854786384,"userID":1,"dateTime":"2015-09-29 12:12:13"},"content":{"betCode":107,"betModifier":0,"selector1":15,"selector2":15,"repeats":1,"specialEntries":[],"normalEntries":[1,2]}}}
+
+{"bet_code":"107",
+"bet_modifier":"0",
+"selector1":"15",
+"selector2":"15",
+"repeats":"1",
+"special_entries":"",
+"normal_entries":"1,2"}
+
+@bet_code = json_request["bet_code"]
+      @bet_modifier = json_request["bet_modifier"]
+      @selector1 = json_request["selector1"]
+      @selector2 = json_request["selector2"]
+      @repeats = json_request["repeats"]
+      @special_entries = json_request["special_entries"]
+      @normal_entries = json_request["normal_entries"]
+
+{
+    "content": {
+        "auditNumber": 46564436,
+        "betCode": 107,
+        "betCostAmount": 500,
+        "betModifier": 0,
+        "betPayoutAmount": 0,
+        "errorCode": 0,
+        "errorMessage": "",
+        "normalEntries": [
+            1,
+            2
+        ],
+        "refNumber": 25183376,
+        "repeats": 1,
+        "selector1": 15,
+        "selector2": 15,
+        "specialEntries": [],
+        "ticketNumber": 488963
+    },
+    "header": {
+        "auditID": 1303716857,
+        "dataName": "dtBet",
+        "dateTime": "2015-11-09 01:09:58 AM",
+        "messageID": 854786384,
+        "status": "success",
+        "terminalID": 100000,
+        "userID": 1
+    },
+    "revision": "1.001"
+}
+
+{"content":{"auditNumber":46564454,"betCode":107,"betCostAmount":500,"betModifier":0,"betPayoutAmount":0,"errorCode":0,"errorMessage":"","normalEntries":[1,2],"refNumber":25183394,"repeats":1,"selector1":15,"selector2":15,"specialEntries":[],"ticketNumber":560740},"header":{"auditID":318490008,"dataName":"dtBet","dateTime":"2015-11-09 01:55:11 AM","messageID":24291938,"status":"success","terminalID":100000,"userID":1},"revision":"1.001"}
+
+#Acknowledge a bet
+{"Ack":{"revision":"1","header":{"userName":"pmu@test.co.za","password":"dljghh$fdhfd@dj","terminalID":100000,"operatorID":1,"operatorPIN":1,"auditID":966325,"messageID":85569,"userID":1,"dateTime":"2015-09-29 12:12:13"},"content":{"ticketNumber":"560740","refNumber":"25183394","reqType":0}}}
+
+{
+    "content": {
+        "auditNumber": 46564455,
+        "errorCode": 0,
+        "errorMessage": "",
+        "refNumber": 25183394,
+        "ticketNumber": 560740
+    },
+    "header": {
+        "auditID": 966325,
+        "dataName": "dtAck",
+        "dateTime": "2015-11-09 02:00:35 AM",
+        "messageID": 85569,
+        "status": "success",
+        "terminalID": 100000,
+        "userID": 1
+    },
+    "revision": "1.001"
+}
+
+# Cancel a bet
+{"Bet":{"revision":"1","header":{"userName":"pmu@test.co.za","password":"dljghh$fdhfd@dj","terminalID":100000,"operatorID":1,"operatorPIN":1,"auditID":5,"messageID":4,"userID":1,"dateTime":"2015-09-29 12:12:13"},"content":{"ticketNumber":"","refNumber":""}}}
+
+
+
+
+Method: POST
+
+URL: 41.189.40.193:10000/ail/api/66378514493/transaction/validate
+
+Body: {"OperationType": "1|2", "Selector1": "the_selector1", "Selector2": "the_selector2", "bets" :[{"AuditId":"the_audit_id", "RefNumber":"the_ref_number", "TicketNumber":"the_ticket_number", "Amount":the_amount_to_be_paid}]}
+
+
+Success: {"OperationType": "1|2", "Selector1": "the_selector1", "Selector2": "the_selector2"}
+
+
+Error:
+
+{
+  "error": {
+    "code": "4000",
+    "description": "Transaction not found."
+  }
+}

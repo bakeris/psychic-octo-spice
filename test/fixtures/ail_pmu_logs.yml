@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  operation: MyString
+  transaction_id: MyString
+  sent_params: MyText
+  response_body: MyText
+
+two:
+  operation: MyString
+  transaction_id: MyString
+  sent_params: MyText
+  response_body: MyText
