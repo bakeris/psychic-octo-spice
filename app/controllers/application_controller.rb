@@ -268,11 +268,8 @@ class ApplicationController < ActionController::Base
     @user = bet.user
     @msisdn = @user.msisdn
     @message_content = %Q[
-      Bravo #{@user.full_name}, vous avez gagné #{amount} en jouant #{amount} sur PARIONS DIRECT.\n
-      Numéro de ticket: #{ticket_number}.\n
-      Votre compte PAYMONEY LONACI vient d'être crédité du montant de votre gain.\n
-      CONTINUE DE JOUER SUR PARIONS DIRECT ET GAGNE DIRECT.
-    ]
+      Vous avez gagné #{amount} F en jouant #{amount} sur PARIONS DIRECT.
+      Num ticket: #{ticket_number}. Votre compte PAYMONEY LONACI vient d'être rechargé. CONTINUE DE JOUER ET GAGNE DIRECT.]
   end
 
   # Check if the parameter is not a number

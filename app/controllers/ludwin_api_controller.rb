@@ -754,8 +754,12 @@ class LudwinApiController < ApplicationController
                       # Paymoney payment
                       pay_earnings(@bet, "LhSpwtyN", @bet.win_amount)
                       @bet.update_attributes(pr_status: true, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id)
+                      # SMS notification
                       build_message(@bet, @bet.win_amount, "à SPORTCASH", @bet.ticket_id)
                       send_sms_notification(@bet, @msisdn, "SPORTCASH", @message_content)
+
+                      # Email notification
+                      WinningNotification.notification_email(@bet.user, @bet.win_amount, "à SPORTCASH", "SPORTCASH", @bet.ticket_id).deliver
                     else
                       @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id)
                       @error_code = '4002'
