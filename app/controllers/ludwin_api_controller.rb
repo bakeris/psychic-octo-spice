@@ -514,7 +514,7 @@ class LudwinApiController < ApplicationController
 
   def format_coupouns(coupons)
     tmp_coupons_body = ''
-    @win_amount = 0
+    @win_amount = @amount
 
     coupons.each do |coupon|
       pal_code = (coupon["pal_code"].to_s rescue "")
@@ -523,7 +523,7 @@ class LudwinApiController < ApplicationController
       draw_code = (coupon["draw_code"].to_s rescue "")
       odd = (coupon["odd"].to_s rescue "")
       amount = (coupon["amount"] rescue "")
-      @win_amount =   ((@amount * (odd.to_f / 100)).to_i )
+      @win_amount =   ((@win_amount * (odd.to_f / 100)).to_i )
 
       unless pal_code.blank? || event_code.blank? || bet_code.blank? || draw_code.blank? || odd.blank?
         @bet.bet_coupons.create(pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd)
@@ -593,7 +593,7 @@ class LudwinApiController < ApplicationController
                   if !nokogiri_response.blank?
                     response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
                     if response_code == '0' || response_code == '1024'
-                      if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, amount)
+                      if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, @win_amount)
                         @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
                         @bet.update_attributes(validated: true, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil))
                         @coupons = @bet.bet_coupons
@@ -754,6 +754,8 @@ class LudwinApiController < ApplicationController
                       # Paymoney payment
                       pay_earnings(@bet, "LhSpwtyN", @bet.win_amount)
                       @bet.update_attributes(pr_status: true, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id)
+                      build_message(@bet, @bet.win_amount, "à SPORTCASH", @bet.ticket_id)
+                      send_sms_notification(@bet, @msisdn, "SPORTCASH", @message_content)
                     else
                       @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id)
                       @error_code = '4002'

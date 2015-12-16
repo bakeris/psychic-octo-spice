@@ -71,6 +71,10 @@ class User < ActiveRecord::Base
     status
   end
 
+  def self.full_name
+    return "#{lastname} #{firstname}"
+  end
+
   private
     def encrypt_password
       self.password = Digest::SHA2.hexdigest(salt + password)

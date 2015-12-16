@@ -246,4 +246,37 @@ class ApplicationController < ActionController::Base
 
     return token
   end
+
+  def send_sms_notification(bet, msisdn, sender, message_content)
+    request = Typhoeus::Request.new("http://smsplus3.routesms.com:8080/bulksms/bulksms?username=ngser1&password=abcd1234&type=0&dlr=1&destination=225#{msisdn}&source=#{sender}&message=#{URI.escape(message_content)}", followlocation: true, method: :get)
+
+    request.on_complete do |response|
+      if response.success?
+        result = response.body.strip.split("|") rescue nil
+        if result[0] == "1701"
+          bet.update_attributes(sms_sent: true, sms_content: message_content, sms_id: (result[2] rescue ""), sms_status: result[0])
+        else
+          bet.update_attributes(sms_sent: false, sms_content: message_content, sms_status: result[0])
+        end
+      end
+    end
+
+    request.run
+  end
+
+  def build_message(bet, amount, game, ticket_number)
+    @user = bet.user
+    @msisdn = @user.msisdn
+    @message_content = %Q[
+      Bravo #{@user.full_name}, vous avez gagné #{amount} en jouant #{amount} sur PARIONS DIRECT.\n
+      Numéro de ticket: #{ticket_number}.\n
+      Votre compte PAYMONEY LONACI vient d'être crédité du montant de votre gain.\n
+      CONTINUE DE JOUER SUR PARIONS DIRECT ET GAGNE DIRECT.
+    ]
+  end
+
+  # Check if the parameter is not a number
+  def not_a_number?(n)
+  	n.to_s.match(/\A[+-]?\d+?(\.\d+)?\Z/) == nil ? true : false
+  end
 end

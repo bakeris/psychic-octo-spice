@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151214073247) do
+ActiveRecord::Schema.define(version: 20151216051211) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,6 +99,10 @@ ActiveRecord::Schema.define(version: 20151214073247) do
     t.datetime "earning_notification_received_at"
     t.boolean  "refund_notification_received"
     t.datetime "refund_notification_received_at"
+    t.boolean  "sms_sent"
+    t.text     "sms_content"
+    t.string   "sms_id"
+    t.string   "sms_status"
   end
 
   create_table "ail_pmu_logs", force: true do |t|
@@ -186,6 +190,10 @@ ActiveRecord::Schema.define(version: 20151214073247) do
     t.datetime "earning_notification_received_at"
     t.boolean  "refund_notification_received"
     t.datetime "refund_notification_received_at"
+    t.boolean  "sms_sent"
+    t.text     "sms_content"
+    t.string   "sms_id"
+    t.string   "sms_status"
   end
 
   create_table "bet_coupons", force: true do |t|
@@ -244,6 +252,10 @@ ActiveRecord::Schema.define(version: 20151214073247) do
     t.string   "payment_paymoney_id"
     t.boolean  "earning_paid"
     t.datetime "earning_paid_at"
+    t.boolean  "sms_sent"
+    t.text     "sms_content"
+    t.string   "sms_id"
+    t.string   "sms_status"
   end
 
   create_table "civilities", force: true do |t|
@@ -286,6 +298,10 @@ ActiveRecord::Schema.define(version: 20151214073247) do
     t.boolean  "bet_validated"
     t.datetime "bet_validated_at"
     t.string   "paymoney_validation_id"
+    t.boolean  "sms_sent"
+    t.text     "sms_content"
+    t.string   "sms_id"
+    t.string   "sms_status"
   end
 
   create_table "ludwin_logs", force: true do |t|
