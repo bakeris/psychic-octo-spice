@@ -252,13 +252,13 @@ class AilPmuController < ApplicationController
       request.on_complete do |response|
         if response.success?
           response_body = response.body
-          json_response = (JSON.parse(response_body) rescue nil)
+          json_response = (JSON.parse(response_body))
 
           if !json_response.blank?
-            @error_code = (json_response["content"]["errorCode"] rescue nil)
-            @error_description = (json_response["content"]["errorMessage"] rescue nil)
+            @error_code = (json_response["content"]["errorCode"])
+            @error_description = (json_response["content"]["errorMessage"])
 
-            if @error_code == 0 && (json_response["header"]["status"] == 'success' rescue nil)
+            if @error_code == 0 && (json_response["header"]["status"] == 'success')
               @bet = (json_response["content"] rescue nil)
 
               unless @bet.blank?

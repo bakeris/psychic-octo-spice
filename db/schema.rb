@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151216051211) do
+ActiveRecord::Schema.define(version: 20151217092758) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -262,6 +262,27 @@ ActiveRecord::Schema.define(version: 20151216051211) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "cm_logs", force: true do |t|
+    t.string   "operation"
+    t.string   "connection_id"
+    t.string   "current_session_id"
+    t.string   "current_session_date"
+    t.string   "current_session_status"
+    t.string   "surrent_session_currency"
+    t.string   "current_session_program_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "program_id"
+    t.string   "program_type"
+    t.string   "program_name"
+    t.string   "program_date"
+    t.string   "program_status"
+    t.string   "race_ids"
+    t.string   "gamer_id"
+    t.string   "login_error_code"
+    t.text     "login_error_description"
   end
 
   create_table "creation_modes", force: true do |t|
