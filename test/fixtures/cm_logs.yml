@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  operation: MyString
+  connection_id: MyString
+  current_session_id: MyString
+  current_session_date: MyString
+  current_session_status: MyString
+  surrent_session_currency: MyString
+  current_session_program_id: MyString
+
+two:
+  operation: MyString
+  connection_id: MyString
+  current_session_id: MyString
+  current_session_date: MyString
+  current_session_status: MyString
+  surrent_session_currency: MyString
+  current_session_program_id: MyString

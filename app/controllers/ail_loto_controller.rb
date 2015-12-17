@@ -215,7 +215,7 @@ class AilLotoController < ApplicationController
     response_body = ''
     @request_body = request.body.read
     paymoney_account_number = params[:paymoney_account_number]
-    password = params[:paymoney_account_number]
+    password = params[:password]
     gamer_id = params[:gamer_id]
     user = User.find_by_uuid(params[:gamer_id])
     filter_place_bet_incoming_request

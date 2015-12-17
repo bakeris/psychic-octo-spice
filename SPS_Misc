@@ -547,7 +547,7 @@ Envoyer Des Fichiers Et Du Contenu Multimédia
 Émoticônes
 
 
-*/17 * * * * /bin/bash -l -c 'cd /var/www/html/PaymoneyGateway && source /home/ngser/.rvm/environments/ruby-2.0.0-p195@rails4.0.7 && RAILS_ENV=development /home/ngser/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/bin/rake eppl:validate_bets --silent >> /var/www/html/cron_log.log 2>&1'
+*/17 * * * * /bin/bash -l -c 'cd /var/www/html/PaymoneyGateway && source /home/socitech/.rvm/environments/ruby-2.0.0-p195@rails4.0.7 && RAILS_ENV=development /home/ngser/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/bin/rake eppl:validate_bets --silent >> /var/www/html/cron_log.log 2>&1'
 
 
 
