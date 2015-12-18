@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151217092758) do
+ActiveRecord::Schema.define(version: 20151218114139) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -283,6 +283,15 @@ ActiveRecord::Schema.define(version: 20151217092758) do
     t.string   "gamer_id"
     t.string   "login_error_code"
     t.text     "login_error_description"
+    t.string   "current_session_error_code"
+    t.text     "current_session_error_description"
+    t.text     "login_response"
+    t.text     "login_request"
+    t.text     "current_session_request"
+    t.text     "current_session_response"
+    t.string   "get_program_error_code"
+    t.text     "get_program_error_description"
+    t.text     "get_program_error_response"
   end
 
   create_table "creation_modes", force: true do |t|

@@ -161,6 +161,10 @@ Rails.application.routes.draw do
 
   #---------------------CM3---------------------
 
+  get '/cm3/api/efc7e3eaee/current_session/get'  => 'cm#api_current_session'
+
+  get '/cm3/api/94be19034e/program/get'  => 'cm#api_get_program'
+
   # Payment notification
   #post '/cm3/api/dfg7fvb3191/payment/notification' => 'ludwin_api#api_coupon_payment_notification'
   #---------------------CM3---------------------

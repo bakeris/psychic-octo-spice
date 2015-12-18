@@ -69,7 +69,7 @@ class LudwinApiController < ApplicationController
 
     request.run
 
-    LudwinLog.create(operation: 'Liste complète des sports', transaction_id: transaction_id, language: language, error_code: @error_code, sent_body: body, response_body: response_body, remote_ip_address: remote_ip_address)
+    #LudwinLog.create(operation: 'Liste complète des sports', transaction_id: transaction_id, language: language, error_code: @error_code, sent_body: body, response_body: response_body, remote_ip_address: remote_ip_address)
   end
 
   def api_show_sport
