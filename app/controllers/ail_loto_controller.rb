@@ -793,6 +793,13 @@ class AilLotoController < ApplicationController
             unless bets_payout.blank?
               bets_payout.each do |bet_payout|
                 pay_ail_earnings(bet_payout, "AliXTtooY", bet_payout.earning_amount, "earning")
+
+                # SMS notification
+                build_message(bet_payout, bet_payout.earning_amount, "au PMU PLR", bet_payout.ticket_number)
+                send_sms_notification(bet_payout, @msisdn, "PMU PLR", @message_content)
+
+                # Email notification
+                WinningNotification.notification_email(bet_payout.user, bet_payout.earning_amount, "au PMU PLR", "PMU PLR", bet_payout.ticket_number).deliver
               end
             end
 
@@ -800,6 +807,13 @@ class AilLotoController < ApplicationController
             unless bets_refund.blank?
               bets_refund.each do |bet_refund|
                 pay_ail_earnings(bet_refund, "AliXTtooY", bet_refund.refund_amount, "refund")
+
+                # SMS notification
+                build_message(bet_refund, bet_refund.refund_amount, "au PMU PLR", bet_refund.ticket_number)
+                send_sms_notification(bet_refund, @msisdn, "PMU PLR", @message_content)
+
+                # Email notification
+                WinningNotification.notification_email(bet_refund.user, bet_refund.refund_amount, "au PMU PLR", "PMU PLR", bet_refund.ticket_number).deliver
               end
             end
           end
