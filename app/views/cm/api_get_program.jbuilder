@@ -8,5 +8,6 @@ else
     json.program_date @program_date
     json.program_message @program_message
     json.program_number @program_number
+    json.race_ids @race_ids[0..(@race_ids.length - 2)]
   end
 end

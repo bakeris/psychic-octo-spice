@@ -73,13 +73,20 @@ class CmController < ApplicationController
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
       if error_code == "0" || error_code.blank?
+        @race_ids = ""
         @program_id = (@request_result.xpath('//program').at('programId').content rescue nil)
         @type = (@request_result.xpath('//program').at('type').content rescue nil)
         @name = (@request_result.xpath('//program').at('name').content rescue nil)
         @program_date = (@request_result.xpath('//program').at('date').content rescue nil)
         @program_message = (@request_result.xpath('//programData').at('message').content rescue nil)
         @program_number = (@request_result.xpath('//programData').at('number').content rescue nil)
-        @program_race_ids = (@request_result.xpath('//raceIdList/raceId') rescue nil)
+        #@program_race_ids = (@request_result.xpath('//raceIdList/raceId') rescue nil)
+        race_ids = (@request_result.xpath('//raceIdList/raceId') rescue nil)
+        unless race_ids.blank?
+          race_ids.each do |race_id|
+            @race_ids << (race_id.content rescue '') + '-'
+          end
+        end
 
         CmLog.create(operation: "Get program", get_program_error_response: @response_body, connection_id: session[:connection_id])
       else
