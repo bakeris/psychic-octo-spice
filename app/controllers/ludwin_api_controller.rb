@@ -523,7 +523,7 @@ class LudwinApiController < ApplicationController
       draw_code = (coupon["draw_code"].to_s rescue "")
       odd = (coupon["odd"].to_s rescue "")
       amount = (coupon["amount"] rescue "")
-      @win_amount =   ((@win_amount * (odd / 100)).to_i )
+      @win_amount =   ((@win_amount * (odd.to_i / 100)).to_i ) rescue 0
 
       unless pal_code.blank? || event_code.blank? || bet_code.blank? || draw_code.blank? || odd.blank?
         @bet.bet_coupons.create(pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd)
