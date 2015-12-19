@@ -718,7 +718,7 @@ puts (odd.to_f / 100).to_s + "odd********************"
 
         if !@bet.pn_ticket_status.blank?
           @error_code = '5002'
-          @error_description = 'This coupon have already been validated.'
+          @error_description = 'Ce coupon a déja été validé.'
         else
           pn_ticket_status = (payment_notification_envelope.xpath('//PaymentNotificationRequest').at('StatusTicket').content rescue nil)
           pn_timestamp = (payment_notification_envelope.xpath('//PaymentNotificationRequest').at('TimeStamp').content rescue nil)
@@ -734,20 +734,13 @@ puts (odd.to_f / 100).to_s + "odd********************"
 
             if pn_ticket_status == '1'
               body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>#{transaction_id}</TransactionID><TicketID>#{ticket_id}</TicketID ></PaymentRequest></ServicesPSQF>]
-              print body
+              puts body
 
               request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
 
               request.on_complete do |response|
                 if response.success?
                   response_body = response.body
-                  response_body = %Q[<?xml version='1.0' encoding='UTF-8'?>
-<ServicesPSQF>
-  <PaymentRequest>
-    <ReturnCode><Code>0</Code></ReturnCode>
-    <Description>OK</Description>
-  </PaymentRequest>
-</ServicesPSQF>]
                   nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
 
                   if !nokogiri_response.blank?
@@ -775,11 +768,12 @@ puts (odd.to_f / 100).to_s + "odd********************"
                   @error_code = '4000'
                   @error_description = 'Unavailable resource.'
                 end
+                LudwinLog.create(operation: "Paiement de coupon", response_body: response_body, remote_ip_address: remote_ip_address)
               end
 
               request.run
 
-              LudwinLog.create(operation: "Paiement de coupon", response_body: response_body, remote_ip_address: remote_ip_address)
+
             end
           else
             @error_code = '5003'
