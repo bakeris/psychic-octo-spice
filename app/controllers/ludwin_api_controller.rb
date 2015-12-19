@@ -479,7 +479,7 @@ class LudwinApiController < ApplicationController
                   if !nokogiri_response.blank?
                     response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
                     if response_code == '0' || response_code == '1024'
-                      if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, amount)
+                      if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, @amount)
                         @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
                         @bet.update_attributes(validated: true, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil))
                         @coupons = @bet.bet_coupons
@@ -523,7 +523,7 @@ class LudwinApiController < ApplicationController
       draw_code = (coupon["draw_code"].to_s rescue "")
       odd = (coupon["odd"].to_s rescue "")
       amount = (coupon["amount"] rescue "")
-      @win_amount =   ((@win_amount * (odd.to_f / 100)).to_i )
+      @win_amount =   ((@win_amount * (odd / 100)).to_i )
 
       unless pal_code.blank? || event_code.blank? || bet_code.blank? || draw_code.blank? || odd.blank?
         @bet.bet_coupons.create(pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd)
@@ -593,7 +593,7 @@ class LudwinApiController < ApplicationController
                   if !nokogiri_response.blank?
                     response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
                     if response_code == '0' || response_code == '1024'
-                      if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, @win_amount)
+                      if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, @amount)
                         @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
                         @bet.update_attributes(validated: true, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil))
                         @coupons = @bet.bet_coupons
@@ -826,7 +826,7 @@ class LudwinApiController < ApplicationController
       @error_code = '4000'
       @error_description = 'The gamer id could not be found'
     else
-      @bets = Bet.where(gamer_id: params[:gamer_id])
+      @bets = Bet.where(gamer_id: params[:gamer_id]).order("created_at DESC")
     end
   end
 end
