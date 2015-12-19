@@ -515,7 +515,7 @@ class LudwinApiController < ApplicationController
   def format_coupouns(coupons)
     tmp_coupons_body = ''
     @win_amount = @amount
-
+puts @win_amount.to_s + "********************"
     coupons.each do |coupon|
       pal_code = (coupon["pal_code"].to_s rescue "")
       event_code = (coupon["event_code"].to_s rescue "")
@@ -523,7 +523,9 @@ class LudwinApiController < ApplicationController
       draw_code = (coupon["draw_code"].to_s rescue "")
       odd = (coupon["odd"].to_s rescue "")
       amount = (coupon["amount"] rescue "")
-      @win_amount =   ((@win_amount * (odd.to_i / 100)).to_i ) rescue 0
+      @win_amount =   (@win_amount * ((odd.to_f rescue 0) / 100)).to_i rescue 0
+puts (odd.to_f / 100).to_s + "odd********************"
+      puts @win_amount.to_s + "********************"
 
       unless pal_code.blank? || event_code.blank? || bet_code.blank? || draw_code.blank? || odd.blank?
         @bet.bet_coupons.create(pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd)
