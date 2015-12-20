@@ -756,7 +756,7 @@ puts (odd.to_f / 100).to_s + "odd********************"
                       send_sms_notification(@bet, @msisdn, "SPORTCASH", @message_content)
 
                       # Email notification
-                      WinningNotification.notification_email(@bet.user, @bet.win_amount, "à SPORTCASH", "SPORTCASH", @bet.ticket_id).deliver
+                      WinningNotification.notification_email(@user, @bet.win_amount, "à SPORTCASH", "SPORTCASH", @bet.ticket_id).deliver
                     else
                       @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id)
                       @error_code = '4002'
