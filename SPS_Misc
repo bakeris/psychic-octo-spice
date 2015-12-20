@@ -561,3 +561,5 @@ BF520817F14F6102B271
 DCF90817F14F6102B26E
 A0610817F14F6102B26D
 DF690817F14F6102B26C
+
+response_body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentResponse><ReturnCode><Code>0</Code><Description>OK</Description><FlgRetry>false</FlgRetry></ReturnCode></PaymentResponse></ServicesPSQF>]

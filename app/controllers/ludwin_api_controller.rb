@@ -692,6 +692,7 @@ puts (odd.to_f / 100).to_s + "odd********************"
     LudwinLog.create(operation: "Annulation de pari", transaction_id: transaction_id, error_code: @error_code, sent_body: body, response_body: response_body, remote_ip_address: remote_ip_address)
   end
 
+  # 102- Generic error
   def api_coupon_payment_notification
     @error_code = ''
     @error_description = ''
@@ -741,6 +742,7 @@ puts (odd.to_f / 100).to_s + "odd********************"
               request.on_complete do |response|
                 if response.success?
                   response_body = response.body
+                  response_body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentResponse><ReturnCode><Code>0</Code><Description>OK</Description><FlgRetry>false</FlgRetry></ReturnCode></PaymentResponse></ServicesPSQF>]
                   nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
 
                   if !nokogiri_response.blank?
@@ -758,7 +760,7 @@ puts (odd.to_f / 100).to_s + "odd********************"
                     else
                       @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id)
                       @error_code = '4002'
-                      @error_description = 'The bet could not be processed.'
+                      @error_description = "Le paiement n'a pas pu être traité."
                     end
                   else
                     @error_code = '4001'
