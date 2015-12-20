@@ -196,12 +196,12 @@ class ApplicationController < ActionController::Base
           status = true
         else
           @error_code = '4001'
-          @error_description = 'Payment error, could not checkout the account. Check the credit.'
+          @error_description = "Erreur de paiement, votre paiement n'a pas pu être effectué."
           bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
         end
       else
         @error_code = '4000'
-        @error_description = 'Cannot join paymoney wallet server.'
+        @error_description = "Le serveur de paiement n'est pas disponible."
         bet.update_attributes(error_code: @error_code, error_description: @error_description)
       end
     end

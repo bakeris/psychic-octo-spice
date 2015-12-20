@@ -742,7 +742,7 @@ puts (odd.to_f / 100).to_s + "odd********************"
               request.on_complete do |response|
                 if response.success?
                   response_body = response.body
-                  response_body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentResponse><ReturnCode><Code>0</Code><Description>OK</Description><FlgRetry>false</FlgRetry></ReturnCode></PaymentResponse></ServicesPSQF>]
+                  #response_body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentResponse><ReturnCode><Code>0</Code><Description>OK</Description><FlgRetry>false</FlgRetry></ReturnCode></PaymentResponse></ServicesPSQF>]
                   nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
 
                   if !nokogiri_response.blank?
