@@ -265,7 +265,7 @@ class ApplicationController < ActionController::Base
   end
 
   def build_message(bet, amount, game, ticket_number)
-    @user = User.find_by_gamer_id(bet.gamer_id)
+    @user = User.find_by_uuid(bet.gamer_id)
     @msisdn = @user.msisdn rescue ""
     @message_content = %Q[
       Vous avez gagné #{amount} F en jouant #{amount} sur PARIONS DIRECT.
