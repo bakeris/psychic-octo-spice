@@ -161,9 +161,23 @@ Rails.application.routes.draw do
 
   #---------------------CM3---------------------
 
-  get '/cm3/api/efc7e3eaee/current_session/get'  => 'cm#api_current_session'
+  # Get session
+  get "/cm3/api/efc7e3eaee/current_session/get" => 'cm#api_current_session'
 
-  get '/cm3/api/94be19034e/program/get'  => 'cm#api_get_program'
+  # Get program
+  get "/cm3/api/94be19034e/program/get" => 'cm#api_get_program'
+
+  # Get race
+  get "/cm3/api/ac031f75b1/get_race/:program_id/:race_id" => 'cm#api_get_race'
+
+  # Get bet
+  get "/cm3/api/ac031f75b1/bet/get/:bet_id" => 'cm#api_get_bet'
+
+  # Get results
+  get "/cm3/api/5abdc31c5e/results/get/:program_id/:race_id" => 'cm#api_get_results'
+
+  # Get dividends
+  get "/cm3/api/50801acbde/dividends/get/:program_id/:race_id" => 'cm#api_get_dividends'
 
   # Payment notification
   #post '/cm3/api/dfg7fvb3191/payment/notification' => 'ludwin_api#api_coupon_payment_notification'

@@ -112,7 +112,7 @@ curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><raceRequest><c
 curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><betRequest><connectionId>32850194855</connectionId><betId>7</betId></betRequest>" http://office.cm3.work:27000/getBet --header "Content-Type:text/xml"
 
 -- Response --
-<?xml version="1.0" encoding="UTF-8" ?>
+@request_result = %Q[<?xml version="1.0" encoding="UTF-8" ?>
 <betResponse>
 	<bet>
 		<betId>7</betId>
@@ -149,7 +149,7 @@ curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><betRequest><co
 			<maxFields>2</maxFields>
 		</formula>
 	</bet>
-</betResponse>
+</betResponse>]
 
 
 

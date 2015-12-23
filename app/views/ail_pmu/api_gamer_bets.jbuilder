@@ -22,5 +22,11 @@ else
     json.bet_cancelled_at bet.cancellation_acknowledge_date_time rescue nil
     json.bet_refunded bet.refund_acknowledge rescue nil
     json.bet_refunded_at bet.refund_acknowledge_date_time rescue nil
+    json.earning_paid bet.earning_paid ? "true" : "false"
+    json.earning_paid_at bet.earning_paid_at.to_s
+    json.paymoney_earning_id bet.paymoney_earning_id
+    json.refund_paid bet.refund_paid ? "true" : "false"
+    json.refund_paid_at bet.refund_paid_at.to_s
+    json.paymoney_refund_id bet.paymoney_refund_id
   end
 end

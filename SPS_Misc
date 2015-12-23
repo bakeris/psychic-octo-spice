@@ -552,7 +552,7 @@ Envoyer Des Fichiers Et Du Contenu Multimédia
 
 
 
-curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>135103290986460243</TransactionID><TicketSogei>99500817F14F6102B24D</TicketSogei></PaymentRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/paymentTicket --header "Content-Type:text/xml" --insecure
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>618356585079786385</TransactionID><TicketSogei>BF520817F14F6102B271</TicketSogei></PaymentRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/paymentTicket --header "Content-Type:text/xml" --insecure
 
 9CAA0817F14F6102B273
 BF520817F14F6102B271

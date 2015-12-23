@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151218114139) do
+ActiveRecord::Schema.define(version: 20151223115213) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -292,6 +292,18 @@ ActiveRecord::Schema.define(version: 20151218114139) do
     t.string   "get_program_error_code"
     t.text     "get_program_error_description"
     t.text     "get_program_error_response"
+    t.text     "get_race_request_body"
+    t.string   "get_race_code"
+    t.text     "get_race_response"
+    t.text     "get_bet_request_body"
+    t.text     "get_bet_response"
+    t.string   "get_bet_id"
+    t.text     "get_results_request_body"
+    t.text     "get_results_request_response"
+    t.string   "get_results_code"
+    t.text     "get_dividends_request_body"
+    t.text     "get_dividends_response"
+    t.string   "get_dividends_code"
   end
 
   create_table "creation_modes", force: true do |t|

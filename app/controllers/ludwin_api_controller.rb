@@ -770,7 +770,7 @@ puts (odd.to_f / 100).to_s + "odd********************"
                   @error_code = '4000'
                   @error_description = 'Unavailable resource.'
                 end
-                LudwinLog.create(operation: "Paiement de coupon", response_body: response_body, remote_ip_address: remote_ip_address)
+                LudwinLog.create(operation: "Paiement de coupon", response_body: response_body, remote_ip_address: remote_ip_address, sent_body: body)
               end
 
               request.run
