@@ -60,7 +60,7 @@ class AilPmuController < ApplicationController
             @draws_list = (json_response["content"]["rows"] rescue nil)
           else
             @error_code = '4002'
-            @error_description = 'Cannot retrieve the list of draws.'
+            @error_description = 'Impossible de récupérer la liste des paris.'
           end
         else
           @error_code = '4001'
@@ -68,7 +68,7 @@ class AilPmuController < ApplicationController
         end
       else
         @error_code = '4000'
-        @error_description = 'Unavailable resource.'
+        @error_description = 'Ressource non disponible.'
       end
     end
 
@@ -171,7 +171,7 @@ class AilPmuController < ApplicationController
                       #@bet.update_attributes(placement_acknowledge: true, placement_acknowledge_date_time: DateTime.now.to_s)
                     else
                       @error_code = '4005'
-                      @error_description = 'Could not acknowledge the query.'
+                      @error_description = "La requête n'a pas pu être validée."
                     end
                   else
                     @error_code = '4004'
@@ -188,7 +188,7 @@ class AilPmuController < ApplicationController
             end
           else
             @error_code = '4002'
-            @error_description = 'Cannot query the bet.'
+            @error_description = "Votre pari n'a pas pu être placé."
           end
         else
           @error_code = '4001'
@@ -196,7 +196,7 @@ class AilPmuController < ApplicationController
         end
       else
         @error_code = '4000'
-        @error_description = 'Unavailable resource.'
+        @error_description = 'Le PMU est momentanément indisponible, veuillez réessayer plus tard.'
       end
     end
 
@@ -245,7 +245,7 @@ class AilPmuController < ApplicationController
               }|
     if user.blank?
       @error_code = '3000'
-      @error_description = 'The gamer account does not exist.'
+      @error_description = "Le compte parieur n'existe pas."
     else
       request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "application/json"})
 
@@ -383,11 +383,11 @@ class AilPmuController < ApplicationController
 
     if @bet.blank?
       @error_code = '4006'
-      @error_description = 'Could not find the acknowledged transaction_id.'
+      @error_description = "L'id de transaction n'a pas pu être trouvé."
     else
       if @bet.cancellation_acknowledge == true
         @error_code = '4007'
-        @error_description = 'The bet have already been canceled.'
+        @error_description = 'Le pari a déjà été annulé.'
       else
         body = %Q[{
                     "Bet":{
@@ -432,7 +432,7 @@ class AilPmuController < ApplicationController
 
               else
                 @error_code = '4002'
-                @error_description = 'Cannot cancel the bet.'
+                @error_description = "Le pari n'a pas pu être annulé."
               end
             else
               @error_code = '4001'

@@ -278,7 +278,7 @@ class AilLotoController < ApplicationController
               end
             else
               @error_code = '4002'
-              @error_description = 'Cannot place the bet.'
+              @error_description = "Votre pari n'a pas pu être placé."
             end
 
           else
@@ -287,7 +287,7 @@ class AilLotoController < ApplicationController
           end
         else
           @error_code = '4000'
-          @error_description = 'Unavailable resource.'
+          @error_description = "Le loto est momentanément indisponible, veuillez réessayer plus tard."
         end
       end
 
