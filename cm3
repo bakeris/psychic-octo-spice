@@ -5,7 +5,7 @@ Méthode: GET
 URL: /cm3/api/efc7e3eaee/current_session/get
 
 Succès:
-{"current_session":{"session_id":"2015320","session_date":"2015-11-16","status":"ON","currency_name":"Franc CFA","currency_mnemonic":"FCFA","program_id":"20153201"}}
+{'current_session':{'session_id':'2015320','session_date':'2015-11-16','status':'ON','currency_name':'Franc CFA','currency_mnemonic':'FCFA','program_id':'20153201'}}
 
 Erreur:
 
@@ -16,21 +16,21 @@ Erreur:
 
 
 # Login #
-curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><loginRequest><username>ngser@lonaci</username><password>lemotdepasse<password><notificationUrl>https://142.11.15.18:11111/</notificationUrl></loginRequest>" http://office.cm3.work:27000/login --header "Content-Type:text/xml"
+curl --request GET --data '<?xml version='1.0' encoding='UTF-8'?><loginRequest><username>ngser@lonaci</username><password>lemotdepasse<password><notificationUrl>https://142.11.15.18:11111/</notificationUrl></loginRequest>' http://office.cm3.work:27000/login --header 'Content-Type:text/xml'
 
-<?xml version="1.0" encoding="UTF-8" ?><loginResponse><connectionId>32850194855</connectionId></loginResponse>
+<?xml version='1.0' encoding='UTF-8' ?><loginResponse><connectionId>32850194855</connectionId></loginResponse>
 
 
 
 # Logout #
-curl --request GET http://office.cm3.work:27000/logout --header "Content-Type:text/xml"
+curl --request GET http://office.cm3.work:27000/logout --header 'Content-Type:text/xml'
 
-<?xml version="1.0" encoding="UTF-8" ?><logoutResponse><return><error>0</error><message>OK</message></return></logoutResponse>
+<?xml version='1.0' encoding='UTF-8' ?><logoutResponse><return><error>0</error><message>OK</message></return></logoutResponse>
 
 # Current session #
-curl --request GET http://office.cm3.work:27000/getCurrentSession --header "Content-Type:text/xml"
+curl --request GET http://office.cm3.work:27000/getCurrentSession --header 'Content-Type:text/xml'
 
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version='1.0' encoding='UTF-8' ?>
 <sessionResponse>
 	<session>
 		<sessionId>2015320</sessionId>
@@ -51,15 +51,15 @@ curl --request GET http://office.cm3.work:27000/getCurrentSession --header "Cont
 
 
 # Previous session # Unavailable
-curl --request GET http://office.cm3.work:27000/getPreviousSession --header "Content-Type:text/xml"
+curl --request GET http://office.cm3.work:27000/getPreviousSession --header 'Content-Type:text/xml'
 
 
 
 # Get program #
-curl --request GET http://office.cm3.work:27000/getProgram --header "Content-Type:text/xml"
+curl --request GET http://office.cm3.work:27000/getProgram --header 'Content-Type:text/xml'
 
 -- Response --
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version='1.0' encoding='UTF-8' ?>
 <programResponse>
 	<program>
 		<programId>20153201</programId>
@@ -82,10 +82,10 @@ curl --request GET http://office.cm3.work:27000/getProgram --header "Content-Typ
 
 
 # Get race #
-curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><raceRequest><connectionId>32850194855</connectionId><programId>20153201</programId><raceId>2015320101</raceId></raceRequest>" http://office.cm3.work:27000/getRace --header "Content-Type:text/xml"
+curl --request GET --data '<?xml version='1.0' encoding='UTF-8'?><raceRequest><connectionId>32850194855</connectionId><programId>20153201</programId><raceId>2015320101</raceId></raceRequest>' http://office.cm3.work:27000/getRace --header 'Content-Type:text/xml'
 
 -- Response --
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version='1.0' encoding='UTF-8' ?>
 <raceResponse>
 	<race>
 		<programId>20153201</programId>
@@ -97,11 +97,11 @@ curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><raceRequest><c
 		<maxRunners>18</maxRunners>
 		<scratchedList />
 		<betIdList>
-			<betId status="PAYMENT">2</betId>
-			<betId status="PAYMENT">4</betId>
-			<betId status="PAYMENT">7</betId>
-			<betId status="PAYMENT">8</betId>
-			<betId status="OFF">13</betId>
+			<betId status='PAYMENT'>2</betId>
+			<betId status='PAYMENT'>4</betId>
+			<betId status='PAYMENT'>7</betId>
+			<betId status='PAYMENT'>8</betId>
+			<betId status='OFF'>13</betId>
 		</betIdList>
 	</race>
 </raceResponse>
@@ -109,10 +109,10 @@ curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><raceRequest><c
 
 
 # Get bet #
-curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><betRequest><connectionId>32850194855</connectionId><betId>7</betId></betRequest>" http://office.cm3.work:27000/getBet --header "Content-Type:text/xml"
+curl --request GET --data '<?xml version='1.0' encoding='UTF-8'?><betRequest><connectionId>32850194855</connectionId><betId>7</betId></betRequest>' http://office.cm3.work:27000/getBet --header 'Content-Type:text/xml'
 
 -- Response --
-@request_result = %Q[<?xml version="1.0" encoding="UTF-8" ?>
+@request_result = %Q[<?xml version='1.0' encoding='UTF-8' ?>
 <betResponse>
 	<bet>
 		<betId>7</betId>
@@ -154,33 +154,33 @@ curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><betRequest><co
 
 
 # Get odds # Unavailable
-curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><oddsRequest><connectionId>32850194855</connectionId><programId>20153201</programId><raceId>2015320101</raceId></oddsRequest>" http://office.cm3.work:27000/getOdds --header "Content-Type:text/xml"
+curl --request GET --data '<?xml version='1.0' encoding='UTF-8'?><oddsRequest><connectionId>32850194855</connectionId><programId>20153201</programId><raceId>2015320101</raceId></oddsRequest>' http://office.cm3.work:27000/getOdds --header 'Content-Type:text/xml'
 
 
 
 # Get result #
-curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><resultRequest><connectionId>32850194855</connectionId><programId>20153201</programId><raceId>2015320101</raceId></resultRequest>" http://office.cm3.work:27000/getResult --header "Content-Type:text/xml"
+curl --request GET --data '<?xml version='1.0' encoding='UTF-8'?><resultRequest><connectionId>32850194855</connectionId><programId>20153201</programId><raceId>2015320101</raceId></resultRequest>' http://office.cm3.work:27000/getResult --header 'Content-Type:text/xml'
 
 -- Response --
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version='1.0' encoding='UTF-8' ?>
 <resultResponse>
 	<result>
-		<rank number="1">
+		<rank number='1'>
 			<horse>10</horse>
 		</rank>
-		<rank number="2">
+		<rank number='2'>
 			<horse>7</horse>
 		</rank>
-		<rank number="3">
+		<rank number='3'>
 			<horse>9</horse>
 		</rank>
-		<rank number="4">
+		<rank number='4'>
 			<horse>3</horse>
 		</rank>
-		<rank number="5">
+		<rank number='5'>
 			<horse>11</horse>
 		</rank>
-		<rank number="6">
+		<rank number='6'>
 			<horse>8</horse>
 		</rank>
 	</result>
@@ -189,10 +189,10 @@ curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><resultRequest>
 
 
 # Get dividend #
-curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><dividendsRequest><connectionId>32850194855</connectionId><programId>20153201</programId><raceId>2015320101</raceId></dividendsRequest>" http://office.cm3.work:27000/getDividends --header "Content-Type:text/xml"
+curl --request GET --data '<?xml version='1.0' encoding='UTF-8'?><dividendsRequest><connectionId>32850194855</connectionId><programId>20153201</programId><raceId>2015320101</raceId></dividendsRequest>' http://office.cm3.work:27000/getDividends --header 'Content-Type:text/xml'
 
 -- Response --
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version='1.0' encoding='UTF-8' ?>
 <dividendsResponse>
 	<dividend>
 		<betId>2</betId>
@@ -201,7 +201,7 @@ curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><dividendsReque
 			<horse>7</horse>
 			<horse>9</horse>
 		</combination>
-		<value type="GAIN">0</value>
+		<value type='GAIN'>0</value>
 	</dividend>
 	<dividend>
 		<betId>2</betId>
@@ -210,7 +210,7 @@ curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><dividendsReque
 			<horse>7</horse>
 			<horse>3</horse>
 		</combination>
-		<value type="GAIN">0</value>
+		<value type='GAIN'>0</value>
 	</dividend>
 	<dividend>
 		<betId>2</betId>
@@ -219,7 +219,7 @@ curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><dividendsReque
 			<horse>9</horse>
 			<horse>3</horse>
 		</combination>
-		<value type="GAIN">0</value>
+		<value type='GAIN'>0</value>
 	</dividend>
 	<dividend>
 		<betId>4</betId>
@@ -228,7 +228,7 @@ curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><dividendsReque
 			<horse>7</horse>
 			<horse>9</horse>
 		</combination>
-		<value type="GAIN">0</value>
+		<value type='GAIN'>0</value>
 	</dividend>
 	<dividend>
 		<betId>4</betId>
@@ -237,7 +237,7 @@ curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><dividendsReque
 			<horse>7</horse>
 			<horse>3</horse>
 		</combination>
-		<value type="GAIN">111600</value>
+		<value type='GAIN'>111600</value>
 	</dividend>
 	<dividend>
 		<betId>4</betId>
@@ -246,7 +246,7 @@ curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><dividendsReque
 			<horse>9</horse>
 			<horse>3</horse>
 		</combination>
-		<value type="GAIN">0</value>
+		<value type='GAIN'>0</value>
 	</dividend>
 	<dividend>
 		<betId>7</betId>
@@ -256,7 +256,7 @@ curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><dividendsReque
 			<horse>9</horse>
 			<horse>3</horse>
 		</combination>
-		<value type="GAIN">0</value>
+		<value type='GAIN'>0</value>
 	</dividend>
 	<dividend>
 		<betId>7</betId>
@@ -266,7 +266,7 @@ curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><dividendsReque
 			<horse>9</horse>
 			<horse>3</horse>
 		</combination>
-		<value type="GAIN">0</value>
+		<value type='GAIN'>0</value>
 	</dividend>
 	<dividend>
 		<betId>8</betId>
@@ -277,7 +277,7 @@ curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><dividendsReque
 			<horse>3</horse>
 			<horse>11</horse>
 		</combination>
-		<value type="GAIN">0</value>
+		<value type='GAIN'>0</value>
 	</dividend>
 	<dividend>
 		<betId>8</betId>
@@ -288,7 +288,7 @@ curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><dividendsReque
 			<horse>3</horse>
 			<horse>11</horse>
 		</combination>
-		<value type="GAIN">0</value>
+		<value type='GAIN'>0</value>
 	</dividend>
 	<dividend>
 		<betId>13</betId>
@@ -299,7 +299,7 @@ curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><dividendsReque
 			<horse>3</horse>
 			<horse>11</horse>
 		</combination>
-		<value type="GAIN">0</value>
+		<value type='GAIN'>0</value>
 	</dividend>
 	<dividend>
 		<betId>13</betId>
@@ -310,7 +310,7 @@ curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><dividendsReque
 			<horse>3</horse>
 			<horse>11</horse>
 		</combination>
-		<value type="GAIN">0</value>
+		<value type='GAIN'>0</value>
 	</dividend>
 	<dividend>
 		<betId>13</betId>
@@ -321,7 +321,7 @@ curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><dividendsReque
 			<horse>3</horse>
 			<horse>11</horse>
 		</combination>
-		<value type="GAIN">66600</value>
+		<value type='GAIN'>66600</value>
 	</dividend>
 	<dividend>
 		<betId>13</betId>
@@ -332,6 +332,15 @@ curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><dividendsReque
 			<horse>3</horse>
 			<horse>11</horse>
 		</combination>
-		<value type="GAIN">28500</value>
+		<value type='GAIN'>28500</value>
 	</dividend>
 </dividendsResponse>
+
+
+
+Evaluate game
+{'games':[{'bet_id':'7', 'nb_units':'4', 'full_box':'FALSE', 'items':['4', '9', '13', 'X']}, {'bet_id':'7', 'nb_units':'4', 'full_box':'FALSE', 'items':['4', '9', '13', 'X']}]}
+
+
+
+curl --request GET --data "{'games':[{'game_id':'1', 'bet_id':'7', 'nb_units':'4', 'full_box':'FALSE', 'items':['4', '9', '13', 'X']}, {'game_id':'1', 'bet_id':'7', 'nb_units':'4', 'full_box':'FALSE', 'items':['4', '9', '13', 'X']}]}" http://0.0.0.0:3000/cm3/api/0cad36b144/game/evaluate/20153201/2015320103 --header 'Content-Type:text/json'

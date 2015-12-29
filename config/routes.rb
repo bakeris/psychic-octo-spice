@@ -179,6 +179,15 @@ Rails.application.routes.draw do
   # Get dividends
   get "/cm3/api/50801acbde/dividends/get/:program_id/:race_id" => 'cm#api_get_dividends'
 
+  # Evaluate game
+  post "/cm3/api/0cad36b144/game/evaluate/:program_id/:race_id" => 'cm#api_evaluate_game'
+
+  # Sell ticket
+  post "/cm3/api/98d24611fd/ticket/sell/:gamer_id/:paymoney_account_number/:password" => 'cm#api_sell_ticket'
+
+  # Cancel ticket
+  get "/cm3/api/90823b007f/ticket/cancel/:serial_number" => 'cm#api_cancel_ticket'
+
   # Payment notification
   #post '/cm3/api/dfg7fvb3191/payment/notification' => 'ludwin_api#api_coupon_payment_notification'
   #---------------------CM3---------------------

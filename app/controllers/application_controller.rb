@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
     else
       if paymoney_account_token.blank?
         @error_code = '5001'
-        @error_description = "Le compte PAymoney n'a pas été trouvé."
+        @error_description = "Le compte Paymoney n'a pas été trouvé."
       else
         request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/#{bet.transaction_id}/#{game_account_token}/#{paymoney_account_token}/#{password}/#{transaction_amount}", followlocation: true, method: :get)
 
@@ -36,6 +36,50 @@ class ApplicationController < ActionController::Base
             @error_code = '4000'
             @error_description = 'Le serveur de paiement est inaccessible.'
             bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body, paymoney_account_token: paymoney_account_token)
+          end
+        end
+
+        request.run
+      end
+    end
+
+    return status
+  end
+
+  def place_cm3_bet_with_cancellation(bet, game_account_token, paymoney_account_number, password, transaction_amount)
+    paymoney_account_token = check_account_number(paymoney_account_number)
+
+    paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
+    transaction_amount = transaction_amount.to_f.abs
+    status = false
+
+    if transaction_amount == 0
+     @error_code = '5000'
+     @error_description = "Le montant de transaction ne peut pas être nul."
+    else
+      if paymoney_account_token.blank?
+        @error_code = '5001'
+        @error_description = "Le compte Paymoney n'a pas été trouvé."
+      else
+        body = "#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/#{bet.sale_client_id}/#{game_account_token}/#{paymoney_account_token}/#{password}/#{transaction_amount}"
+        request = Typhoeus::Request.new(body, followlocation: true, method: :get)
+
+        request.on_complete do |response|
+          if response.success?
+            response_body = response.body
+
+            if !response_body.include?("|")
+              bet.update_attributes(p_payment_transaction_id: response_body, p_payment_request: body, paymoney_account_token: paymoney_account_token, p_payment_response: response_body)
+              status = true
+            else
+              @error_code = '4001'
+              @error_description = "Le compte Paymoney n'a pas pu être débité. Veuillez vérifier votre crédit."
+              bet.update_attributes(payment_error_code: @error_code, payment_error_description: @error_description, p_payment_request: body, paymoney_account_token: paymoney_account_token, p_payment_response: response_body)
+            end
+          else
+            @error_code = '4000'
+            @error_description = 'Le serveur de paiement est inaccessible.'
+            bet.update_attributes(payment_error_code: @error_code, payment_error_description: @error_description, p_payment_request: body, paymoney_account_token: paymoney_account_token)
           end
         end
 
