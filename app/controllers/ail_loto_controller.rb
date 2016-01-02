@@ -217,6 +217,8 @@ class AilLotoController < ApplicationController
     paymoney_account_number = params[:paymoney_account_number]
     password = params[:password]
     gamer_id = params[:gamer_id]
+    begin_date = params[:begin_date]
+    end_date = params[:end_date]
     user = User.find_by_uuid(params[:gamer_id])
     filter_place_bet_incoming_request
     if user.blank?
@@ -269,7 +271,7 @@ class AilLotoController < ApplicationController
                 bet_cost_amount = (json_response["content"]["betCostAmount"] rescue nil)
                 bet_payout_amount = (json_response["content"]["betPayoutAmount"] rescue nil)
 
-                @ail_loto = AilLoto.create(transaction_id: @transaction_id, message_id: @message_id, audit_number: @audit_id, date_time: @date_time, bet_code: @bet_code, bet_modifier: @bet_modifier, selector1: @selector1, selector2: @selector2, repeats: @repeats, normal_entries: @normal_entries, special_entries: @special_entries, ticket_number: ticket_number, ref_number: ref_number, bet_cost_amount: bet_cost_amount, bet_payout_amount: bet_payout_amount, paymoney_account_number: paymoney_account_number, gamer_id: gamer_id, user_id: user.id, game_account_token: "AliXTtooY", draw_id: "#{DateTime.now.to_i}-#{@selector1}-#{@selector2}")
+                @ail_loto = AilLoto.create(transaction_id: @transaction_id, message_id: @message_id, audit_number: @audit_id, date_time: @date_time, bet_code: @bet_code, bet_modifier: @bet_modifier, selector1: @selector1, selector2: @selector2, repeats: @repeats, normal_entries: @normal_entries, special_entries: @special_entries, ticket_number: ticket_number, ref_number: ref_number, bet_cost_amount: bet_cost_amount, bet_payout_amount: bet_payout_amount, paymoney_account_number: paymoney_account_number, gamer_id: gamer_id, user_id: user.id, game_account_token: "AliXTtooY", draw_id: "#{DateTime.now.to_i}-#{@selector1}-#{@selector2}", begin_date: begin_date, end_date: end_date)
 
                 if place_bet_with_cancellation(@ail_loto, "AliXTtooY", paymoney_account_number, password, bet_cost_amount)
                   api_acknowledge_bet_old

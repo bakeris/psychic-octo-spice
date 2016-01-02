@@ -51,6 +51,8 @@ Rails.application.routes.draw do
 
   post '/spc/api/6d3782c78d/m_coupon/sell/:gamer_id/:paymoney_account_number/:password' => 'ludwin_api#api_m_sell_coupon'
 
+  post '/spc/api/6d3782c78d/m_coupon/sell/:gamer_id/:paymoney_account_number/:password/:begin_date/:end_date' => 'ludwin_api#api_m_sell_coupon'
+
   # Cancel a sold coupon
   get '/spc/api/6d3782c78d/coupon/cancel/:ticket_id' => 'ludwin_api#api_cancel_coupon'
 
@@ -77,7 +79,7 @@ Rails.application.routes.draw do
   post '/ail/pmu/api/3c9342cf06/bet/query' => 'ail_pmu#api_query_bet'
 
   # Place a bet
-  post '/ail/pmu/api/dik749742e/bet/place/:gamer_id/:paymoney_account_number/:password' => 'ail_pmu#api_place_bet'
+  post '/ail/pmu/api/dik749742e/bet/place/:gamer_id/:paymoney_account_number/:password/:begin_date/:end_date' => 'ail_pmu#api_place_bet'
 
   # Acknowledge the placement of a bet
   get '/ail/pmu/api/4a66c58e95/bet/place/acknowledge/:transaction_id/:paymoney_account_number' => 'ail_pmu#api_acknowledge_bet'
@@ -120,7 +122,7 @@ Rails.application.routes.draw do
   post '/ail/loto/api/852142cf06/bet/query' => 'ail_loto#api_query_bet'
 
   # Place a bet
-  post '/ail/loto/api/96455396dc/bet/place/:gamer_id/:paymoney_account_number/:password' => 'ail_loto#api_place_bet'
+  post '/ail/loto/api/96455396dc/bet/place/:gamer_id/:paymoney_account_number/:password/:begin_date/:end_date' => 'ail_loto#api_place_bet'
 
   # Acknowledge the placement of a bet
   get '/ail/loto/api/ddfd5882ab/bet/place/acknowledge/:transaction_id/:paymoney_account_number' => 'ail_loto#api_acknowledge_bet'
@@ -152,7 +154,7 @@ Rails.application.routes.draw do
   #---------------------AIL Loto---------------------
 
   #---------------------EPPL---------------------
-  get '/eppl/api/36e25e6bfd/bet/place/:gamer_id/:paymoney_account_number/:password/:transaction_amount' => 'eppl#api_place_bet'
+  get '/eppl/api/36e25e6bfd/bet/place/:gamer_id/:paymoney_account_number/:password/:transaction_amount/:begin_date/:end_date' => 'eppl#api_place_bet'
 
   #get '/eppl/bet/validate' => 'eppl#periodically_validate_bet'
 
@@ -183,7 +185,7 @@ Rails.application.routes.draw do
   post "/cm3/api/0cad36b144/game/evaluate/:program_id/:race_id" => 'cm#api_evaluate_game'
 
   # Sell ticket
-  post "/cm3/api/98d24611fd/ticket/sell/:gamer_id/:paymoney_account_number/:password" => 'cm#api_sell_ticket'
+  post "/cm3/api/98d24611fd/ticket/sell/:gamer_id/:paymoney_account_number/:password/:begin_date/:end_date" => 'cm#api_sell_ticket'
 
   # Cancel ticket
   get "/cm3/api/90823b007f/ticket/cancel/:serial_number" => 'cm#api_cancel_ticket'

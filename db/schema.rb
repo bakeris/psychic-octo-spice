@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151229142424) do
+ActiveRecord::Schema.define(version: 20160102104951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,6 +103,8 @@ ActiveRecord::Schema.define(version: 20151229142424) do
     t.text     "sms_content"
     t.string   "sms_id"
     t.string   "sms_status"
+    t.string   "begin_date"
+    t.string   "end_date"
   end
 
   create_table "ail_pmu_logs", force: true do |t|
@@ -194,6 +196,8 @@ ActiveRecord::Schema.define(version: 20151229142424) do
     t.text     "sms_content"
     t.string   "sms_id"
     t.string   "sms_status"
+    t.string   "begin_date"
+    t.string   "end_date"
   end
 
   create_table "bet_coupons", force: true do |t|
@@ -256,6 +260,8 @@ ActiveRecord::Schema.define(version: 20151229142424) do
     t.text     "sms_content"
     t.string   "sms_id"
     t.string   "sms_status"
+    t.string   "begin_date"
+    t.string   "end_date"
   end
 
   create_table "civilities", force: true do |t|
@@ -369,6 +375,8 @@ ActiveRecord::Schema.define(version: 20151229142424) do
     t.string   "remote_ip"
     t.string   "transaction_id"
     t.string   "bet_identifier"
+    t.string   "begin_date"
+    t.string   "end_date"
   end
 
   create_table "creation_modes", force: true do |t|
@@ -409,6 +417,8 @@ ActiveRecord::Schema.define(version: 20151229142424) do
     t.text     "sms_content"
     t.string   "sms_id"
     t.string   "sms_status"
+    t.string   "begin_date"
+    t.string   "end_date"
   end
 
   create_table "ludwin_logs", force: true do |t|

@@ -17,5 +17,7 @@ else
     json.paymoney_account_token bet.paymoney_account_token rescue nil
     json.bet_cancelled bet.bet_cancelled rescue nil
     json.bet_cancelled_at bet.bet_cancelled_at rescue nil
+    json.begin_date bet.begin_date recue nil
+    json.end_date bet.end_date recue nil
   end
 end

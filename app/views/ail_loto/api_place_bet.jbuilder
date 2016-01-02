@@ -16,5 +16,7 @@ else
     json.repeats @bet.repeats rescue nil
     json.special_entries "[#{@bet.special_entries}]" rescue nil
     json.normal_entries "[#{@bet.normal_entries}]" rescue nil
+    json.begin_date @bet.begin_date recue nil
+    json.end_date @bet.end_date recue nil
   end
 end

@@ -330,6 +330,8 @@ class CmController < ApplicationController
     request_body = request.body.read
     paymoney_account_number = params[:paymoney_account_number]
     password = params[:password]
+    @begin_date = params[:begin_date]
+    @end_date = params[:end_date]
     @transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
 
     if @login_error
@@ -378,7 +380,7 @@ class CmController < ApplicationController
   end
 
   def create_bet
-    @bet = Cm.create(connection_id: @connection_id, program_id: @program_id, race_id: @race_id, sale_client_id: @transaction_id, punter_id: @gamer_id, game_account_token: @gamer_id, amount: @amount, scratched_list: (@scratched_list.join('-') rescue nil), remote_ip: @remote_ip)
+    @bet = Cm.create(connection_id: @connection_id, program_id: @program_id, race_id: @race_id, sale_client_id: @transaction_id, punter_id: @gamer_id, game_account_token: @gamer_id, amount: @amount, scratched_list: (@scratched_list.join('-') rescue nil), remote_ip: @remote_ip, begin_date: @begin_date, end_date: @end_date)
     @wagers.each do |wager|
       unless wager.blank?
         @bet.cm_wagers.create(bet_id: (wager["bet_id"] rescue nil), nb_units: (wager["nb_units"] rescue nil), nb_combinations: (wager["nb_combinations"] rescue nil), full_box: (wager["full_box"] rescue nil), selections_string: (wager["selection"].join("-") rescue nil))

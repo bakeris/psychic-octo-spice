@@ -560,6 +560,8 @@ puts (odd.to_f / 100).to_s + "odd********************"
     user = User.find_by_uuid(params[:gamer_id])
     gamer_id = params[:gamer_id]
     password = params[:password]
+    begin_date = params[:begin_date]
+    end_date = params[:end_date]
 
     if user.blank?
       @error_code = '3000'
@@ -572,7 +574,7 @@ puts (odd.to_f / 100).to_s + "odd********************"
           @error_code = '5001'
           @error_description = "Le montant des gains n'a pas pu être récupéré."
         else
-          @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, gamer_id: gamer_id, game_account_token: "LhSpwtyN", amount: @amount)
+          @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, gamer_id: gamer_id, game_account_token: "LhSpwtyN", amount: @amount, begin_date: begin_date, end_date: end_date)
           coupons_body = format_coupouns(coupons["bets"])
 
             if coupons_body.blank?
