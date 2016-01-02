@@ -28,7 +28,7 @@ else
     json.refund_paid bet.refund_paid ? "true" : "false"
     json.refund_paid_at bet.refund_paid_at.to_s
     json.paymoney_refund_id bet.paymoney_refund_id
-    json.begin_date bet.begin_date recue nil
-    json.end_date bet.end_date recue nil
+    json.begin_date bet.begin_date rescue nil
+    json.end_date bet.end_date rescue nil
   end
 end

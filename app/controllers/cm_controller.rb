@@ -463,11 +463,11 @@ class CmController < ApplicationController
           error_message = (@request_result.xpath('//return').at('message').content rescue nil)
 
           if error_code.blank? && @error != true
-            @bet.update_attributes(operation: "Cancel ticket", cancel_request: body, cancel_response: @response_body, cancelled: true, cancelled_at: DateTime.now)
+            cancel_cm3_bet(@bet)
           else
             @error_code = error_code
             @error_description = error_message
-            @bet.update_attributes(operation: "Cancel ticket", cancel_request: body, cancel_response: @response_body, cancelled: false, cancelled_at: DateTime.now)
+            @bet.update_attributes(cancel_request: body, cancel_response: @response_body, cancelled: false, cancelled_at: DateTime.now)
           end
         else
           @error_code = '3011'

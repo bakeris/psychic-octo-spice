@@ -18,8 +18,8 @@ else
     json.normal_entries "[#{@bet.normal_entries}]" rescue nil
     json.bet_placed @bet.placement_acknowledge rescue nil
     json.bet_placed_at @bet.placement_acknowledge_date_time rescue nil
-    json.begin_date @bet.begin_date recue nil
-    json.end_date @bet.end_date recue nil
+    json.begin_date @bet.begin_date rescue nil
+    json.end_date @bet.end_date rescue nil
     json.bet_cancelled @bet.cancellation_acknowledge rescue nil
     json.bet_cancelled_at @bet.cancellation_acknowledge_date_time rescue nil
     json.bet_refunded @bet.refund_acknowledge rescue nil

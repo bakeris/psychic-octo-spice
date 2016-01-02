@@ -236,17 +236,17 @@ class ApplicationController < ActionController::Base
         response_body = response.body
 
         if !response_body.include?("|")
-          bet.update_attributes(cancellation_paymoney_id: response_body, bet_cancelled: true, bet_cancelled_at: DateTime.now)
+          bet.update_attributes(cancel_request: request, p_cancellation_id: response_body, cancelled: true, cancelled_at: DateTime.now)
           status = true
         else
           @error_code = '4001'
-          @error_description = 'Payment error, could not cancel the bet.'
-          bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
+          @error_description = "Erreur de paiement, le pari n'a pas pu être annulé."
+          bet.update_attributes(cancel_request: request, cancel_response: response_body, cancel_response: response_body)
         end
       else
         @error_code = '4000'
-        @error_description = 'Cannot join paymoney wallet server.'
-        bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
+        @error_description = 'Le serveur de paiement est indisponible.'
+        bet.update_attributes(cancel_request: request)
       end
     end
 

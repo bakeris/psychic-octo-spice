@@ -523,12 +523,11 @@ puts @win_amount.to_s + "********************"
       draw_code = (coupon["draw_code"].to_s rescue "")
       odd = (coupon["odd"].to_s rescue "")
       amount = (coupon["amount"] rescue "")
+      begin_date = (coupon["begin_date"] rescue "")
       @win_amount =   (@win_amount * ((odd.to_f rescue 0) / 100)).to_i rescue 0
-puts (odd.to_f / 100).to_s + "odd********************"
-      puts @win_amount.to_s + "********************"
 
       unless pal_code.blank? || event_code.blank? || bet_code.blank? || draw_code.blank? || odd.blank?
-        @bet.bet_coupons.create(pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd)
+        @bet.bet_coupons.create(pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd, begin_date: begin_date)
         tmp_coupons_body << %Q[<BetCoupon><CodPal>#{pal_code}</CodPal><CodEvent>#{event_code}</CodEvent><CodBet>#{bet_code}</CodBet><CodDraw>#{draw_code}</CodDraw><Odd>#{odd}</Odd></BetCoupon>]
       end
     end
@@ -561,7 +560,6 @@ puts (odd.to_f / 100).to_s + "odd********************"
     gamer_id = params[:gamer_id]
     password = params[:password]
     begin_date = params[:begin_date]
-    end_date = params[:end_date]
 
     if user.blank?
       @error_code = '3000'
@@ -574,7 +572,7 @@ puts (odd.to_f / 100).to_s + "odd********************"
           @error_code = '5001'
           @error_description = "Le montant des gains n'a pas pu être récupéré."
         else
-          @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, gamer_id: gamer_id, game_account_token: "LhSpwtyN", amount: @amount, begin_date: begin_date, end_date: end_date)
+          @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, gamer_id: gamer_id, game_account_token: "LhSpwtyN", amount: @amount, begin_date: begin_date)
           coupons_body = format_coupouns(coupons["bets"])
 
             if coupons_body.blank?
