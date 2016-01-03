@@ -296,16 +296,16 @@ class ApplicationController < ActionController::Base
         response_body = response.body
 
         if !response_body.include?("|")
-          bet.update_attributes(paymoney_earning_id: response_body, :"#{payment_type}_paid" => true, :"#{payment_type}_paid_at" => DateTime.now)
+          bet.update_attributes(paymoney_earning_id: response_body, :"#{payment_type}_paid" => true, :"#{payment_type}_paid_at" => DateTime.now, bet_status: "Gagnant")
           status = true
         else
           @error_code = '4001'
-          @error_description = 'Payment error, could not checkout the account. Check the credit.'
+          @error_description = 'Erreur de paiement.'
           bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
         end
       else
         @error_code = '4000'
-        @error_description = 'Cannot join paymoney wallet server.'
+        @error_description = "Le serveur de paiement n'est pas disponible."
         bet.update_attributes(error_code: @error_code, error_description: @error_description)
       end
     end

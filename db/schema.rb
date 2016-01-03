@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160102115222) do
+ActiveRecord::Schema.define(version: 20160103234907) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,6 +105,9 @@ ActiveRecord::Schema.define(version: 20160102115222) do
     t.string   "sms_status"
     t.string   "begin_date"
     t.string   "end_date"
+    t.string   "draw_day"
+    t.string   "draw_number"
+    t.string   "bet_status"
   end
 
   create_table "ail_pmu_logs", force: true do |t|
@@ -198,6 +201,9 @@ ActiveRecord::Schema.define(version: 20160102115222) do
     t.string   "sms_status"
     t.string   "begin_date"
     t.string   "end_date"
+    t.string   "starter_horses"
+    t.text     "race_details"
+    t.string   "bet_status"
   end
 
   create_table "bet_coupons", force: true do |t|
@@ -210,6 +216,8 @@ ActiveRecord::Schema.define(version: 20160102115222) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "begin_date"
+    t.string   "teams"
+    t.string   "sport"
   end
 
   create_table "bets", force: true do |t|
@@ -263,6 +271,8 @@ ActiveRecord::Schema.define(version: 20160102115222) do
     t.string   "sms_status"
     t.string   "begin_date"
     t.string   "end_date"
+    t.string   "formula"
+    t.string   "bet_status"
   end
 
   create_table "civilities", force: true do |t|

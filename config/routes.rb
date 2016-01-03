@@ -79,7 +79,7 @@ Rails.application.routes.draw do
   post '/ail/pmu/api/3c9342cf06/bet/query' => 'ail_pmu#api_query_bet'
 
   # Place a bet
-  post '/ail/pmu/api/dik749742e/bet/place/:gamer_id/:paymoney_account_number/:password/:begin_date/:end_date' => 'ail_pmu#api_place_bet'
+  post '/ail/pmu/api/dik749742e/bet/place/:gamer_id/:paymoney_account_number/:password' => 'ail_pmu#api_place_bet'
 
   # Acknowledge the placement of a bet
   get '/ail/pmu/api/4a66c58e95/bet/place/acknowledge/:transaction_id/:paymoney_account_number' => 'ail_pmu#api_acknowledge_bet'

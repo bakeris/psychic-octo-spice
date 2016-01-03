@@ -269,7 +269,7 @@ class AilPmuController < ApplicationController
                 bet_cost_amount = (json_response["content"]["betCostAmount"] rescue nil)
                 bet_payout_amount = (json_response["content"]["betPayoutAmount"] rescue nil)
 
-                @ail_pmu = AilPmu.create(transaction_id: @transaction_id, message_id: @message_id, audit_number: @audit_id, date_time: @date_time, bet_code: @bet_code, bet_modifier: @bet_modifier, selector1: @selector1, selector2: @selector2, repeats: @repeats, normal_entries: @normal_entries, special_entries: @special_entries, ticket_number: ticket_number, ref_number: ref_number, bet_cost_amount: bet_cost_amount, bet_payout_amount: bet_payout_amount, paymoney_account_number: paymoney_account_number, gamer_id: gamer_id, user_id: user.id, game_account_token: "ApXTrliOp", draw_id: "#{DateTime.now.to_i}-#{@selector1}-#{@selector2}", begin_date: begin_date, end_date: end_date)
+                @ail_pmu = AilPmu.create(transaction_id: @transaction_id, message_id: @message_id, audit_number: @audit_id, date_time: @date_time, bet_code: @bet_code, bet_modifier: @bet_modifier, selector1: @selector1, selector2: @selector2, repeats: @repeats, normal_entries: @normal_entries, special_entries: @special_entries, ticket_number: ticket_number, ref_number: ref_number, bet_cost_amount: bet_cost_amount, bet_payout_amount: bet_payout_amount, paymoney_account_number: paymoney_account_number, gamer_id: gamer_id, user_id: user.id, game_account_token: "ApXTrliOp", draw_id: "#{DateTime.now.to_i}-#{@selector1}-#{@selector2}", starter_horses: @starter_horses, race_details: @race_details, begin_date: @begin_date, end_date: @end_date)
 
                 if place_bet_with_cancellation(@ail_pmu, "ApXTrliOp", paymoney_account_number, password, bet_cost_amount)
                   api_acknowledge_bet_old
@@ -348,7 +348,7 @@ class AilPmuController < ApplicationController
               @error_description = (json_response["content"]["errorMessage"] rescue nil)
 
               if @error_code == 0 && (json_response["header"]["status"] == 'success' rescue nil)
-                @bet.update_attributes(placement_acknowledge: true, placement_acknowledge_date_time: DateTime.now.to_s)
+                @bet.update_attributes(placement_acknowledge: true, placement_acknowledge_date_time: DateTime.now.to_s, bet_status: "En cours")
                 status = true
               else
                 @error_code = '4005'
@@ -504,7 +504,7 @@ class AilPmuController < ApplicationController
               @error_description = (json_response["content"]["errorMessage"] rescue nil)
 
               if @error_code == 0 && (json_response["header"]["status"] == 'success' rescue nil)
-                @bet.update_attributes(cancellation_acknowledge: true, cancellation_acknowledge_date_time: DateTime.now.to_s)
+                @bet.update_attributes(cancellation_acknowledge: true, cancellation_acknowledge_date_time: DateTime.now.to_s, bet_status: "Annulé")
                 status = true
               else
                 @error_code = '4005'
@@ -717,7 +717,6 @@ class AilPmuController < ApplicationController
       @error_code = '5000'
       @error_description = 'Invalid JSON data.'
     else
-      #audit_id = notification_objects["AuditId"] rescue ""
       notification_objects.each do |notification_object|
 
         ref_number = notification_object["RefNumber"] rescue ""
@@ -744,6 +743,7 @@ class AilPmuController < ApplicationController
 
       draw_id_array.each do |draw_id|
         bets = AilPmu.where(earning_paid: nil, refund_paid: nil, draw_id: draw_id, placement_acknowledge: true)
+
         unless bets.blank?
 
           bets_amount = bets.map{|bet| (bet.earning_amount.to_f rescue 0) + (bet.refund_amount.to_f rescue 0)}.sum rescue 0
@@ -778,6 +778,8 @@ class AilPmuController < ApplicationController
           end
 
         end
+
+        AilPmu.where("draw_id = '#{draw_id}' AND earning_paid IS NULL AND refun_paid IS NULL AND placement_acknowledge").map{|bet| bet.update_attributes(bet_satus: "Perdant")}
       end
     end
 
@@ -805,6 +807,10 @@ class AilPmuController < ApplicationController
       @repeats = json_request["repeats"]
       @special_entries = json_request["special_entries"]
       @normal_entries = json_request["normal_entries"]
+      @starter_horses = json_request["starter_horses"]
+      @race_details = json_request["race_details"]
+      @begin_date = json_request["begin_date"]
+      @end_date = json_request["end_date"]
     end
   end
 

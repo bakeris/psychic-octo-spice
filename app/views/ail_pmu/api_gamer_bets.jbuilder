@@ -30,5 +30,8 @@ else
     json.paymoney_refund_id bet.paymoney_refund_id
     json.begin_date bet.begin_date rescue nil
     json.end_date bet.end_date rescue nil
+    json.starter_horses bet.starter_horses rescue nil
+    json.race_details bet.race_details rescue nil
+    json.bet_status bet.bet_status rescue nil
   end
 end

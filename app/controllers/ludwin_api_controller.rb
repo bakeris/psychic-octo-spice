@@ -524,10 +524,12 @@ puts @win_amount.to_s + "********************"
       odd = (coupon["odd"].to_s rescue "")
       amount = (coupon["amount"] rescue "")
       begin_date = (coupon["begin_date"] rescue "")
+      teams = (coupon["teams"] rescue "")
+      sport = (coupon["sport"] rescue "")
       @win_amount =   (@win_amount * ((odd.to_f rescue 0) / 100)).to_i rescue 0
 
       unless pal_code.blank? || event_code.blank? || bet_code.blank? || draw_code.blank? || odd.blank?
-        @bet.bet_coupons.create(pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd, begin_date: begin_date)
+        @bet.bet_coupons.create(pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd, begin_date: begin_date, teams: teams, sport: "sport")
         tmp_coupons_body << %Q[<BetCoupon><CodPal>#{pal_code}</CodPal><CodEvent>#{event_code}</CodEvent><CodBet>#{bet_code}</CodBet><CodDraw>#{draw_code}</CodDraw><Odd>#{odd}</Odd></BetCoupon>]
       end
     end
@@ -559,7 +561,6 @@ puts @win_amount.to_s + "********************"
     user = User.find_by_uuid(params[:gamer_id])
     gamer_id = params[:gamer_id]
     password = params[:password]
-    begin_date = params[:begin_date]
 
     if user.blank?
       @error_code = '3000'
@@ -567,12 +568,13 @@ puts @win_amount.to_s + "********************"
     else
       if !(coupons["bets"] rescue nil).blank?
         @amount = coupons["amount"].to_i rescue nil
+        formula = coupons["formula"] rescue nil
 
         if @amount.blank?
           @error_code = '5001'
           @error_description = "Le montant des gains n'a pas pu être récupéré."
         else
-          @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, gamer_id: gamer_id, game_account_token: "LhSpwtyN", amount: @amount, begin_date: begin_date)
+          @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, gamer_id: gamer_id, game_account_token: "LhSpwtyN", amount: @amount, formula: formula)
           coupons_body = format_coupouns(coupons["bets"])
 
             if coupons_body.blank?
@@ -597,7 +599,7 @@ puts @win_amount.to_s + "********************"
                     if response_code == '0' || response_code == '1024'
                       if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, @amount)
                         @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
-                        @bet.update_attributes(validated: true, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil))
+                        @bet.update_attributes(validated: true, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil), bet_status: "En cours")
                         @coupons = @bet.bet_coupons
                       end
                     else
@@ -668,7 +670,7 @@ puts @win_amount.to_s + "********************"
             response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
             if response_code == '0' || response_code == '1024'
               if cancel_bet(@bet.first)
-                @bet.first.update_attributes(cancelled: true, cancelled_at: DateTime.now)
+                @bet.first.update_attributes(cancelled: true, cancelled_at: DateTime.now, bet_status: "Annulé")
                 @bet_cancellation_result = (nokogiri_response.xpath('//CancelResponse') rescue nil)
               end
             else
@@ -750,7 +752,7 @@ puts @win_amount.to_s + "********************"
                     if response_code == '0' || response_code == '1024'
                       # Paymoney payment
                       pay_earnings(@bet, "LhSpwtyN", @bet.win_amount)
-                      @bet.update_attributes(pr_status: true, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id)
+                      @bet.update_attributes(pr_status: true, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Gagnant")
                       # SMS notification
                       build_message(@bet, @bet.win_amount, "à SPORTCASH", @bet.ticket_id)
                       send_sms_notification(@bet, @msisdn, "SPORTCASH", @message_content)
@@ -758,7 +760,7 @@ puts @win_amount.to_s + "********************"
                       # Email notification
                       WinningNotification.notification_email(@user, @bet.win_amount, "à SPORTCASH", "SPORTCASH", @bet.ticket_id).deliver
                     else
-                      @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id)
+                      @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Perdant")
                       @error_code = '4002'
                       @error_description = "Le paiement n'a pas pu être traité."
                     end
