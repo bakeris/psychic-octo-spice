@@ -27,7 +27,11 @@ else
         json.draw_code coupon.draw_code
         json.odd coupon.odd
         json.begin_date coupon.begin_date
+        json.teams coupon.teams
+        json.sport coupon.sport
       end
     end
+    json.formula bet.formula rescue nil
+    json.bet_status bet.bet_status rescue nil
   end
 end
