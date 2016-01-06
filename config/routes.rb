@@ -190,6 +190,21 @@ Rails.application.routes.draw do
   # Cancel ticket
   get "/cm3/api/90823b007f/ticket/cancel/:serial_number" => 'cm#api_cancel_ticket'
 
+  # Get winnings
+  get "/cm3/api/8d9cc87b7b/race/winners/:program_id/:race_id" => 'cm#api_get_winners'
+
+  # Pos sale balance
+  get "/api/a1b43b7d1b/pos_balance/get/:game_token/:pos_id" => 'deposits#api_get_pos_sale_balance'
+  post "/api/a1b43b7d1b/pos_balance/get/:game_token/:pos_id" => 'deposits#api_get_pos_sale_balance'
+
+  # Vendor balance
+  get "/api/4839f1cb04/deposit/on_hold/:game_token/:pos_id" => 'deposits#api_get_daily_balance'
+  post "/api/4839f1cb04/deposit/on_hold/:game_token/:pos_id" => 'deposits#api_get_daily_balance'
+
+  # Make a deposit
+  get "/api/3ae7e2f1b1/deposit/:game_token/:pos_id/:paymoney_account_number/:agent/:sub_agent/:date/:amount" => 'deposits#api_proceed_deposit'
+  post "/api/3ae7e2f1b1/deposit/:game_token/:pos_id/:paymoney_account_number/:agent/:sub_agent/:date/:amount" => 'deposits#api_proceed_deposit'
+
   # Payment notification
   #post '/cm3/api/dfg7fvb3191/payment/notification' => 'ludwin_api#api_coupon_payment_notification'
   #---------------------CM3---------------------

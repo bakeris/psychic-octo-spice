@@ -5,7 +5,7 @@ class CmController < ApplicationController
   # 3003- La course n'a pas pu être récupérée
 
   #before_action :only => :guard do |s| s.get_service_by_token(params[:currency], params[:service_token], params[:operation_token], params[:order], params[:transaction_amount], params[:id]) end
-  before_action :ensure_login, only: [:api_current_session, :api_get_program, :api_get_race, :api_get_bet, :api_get_results, :api_get_dividends, :api_evaluate_game, :api_sell_ticket, :api_cancel_ticket]
+  before_action :ensure_login, only: [:api_current_session, :api_get_program, :api_get_race, :api_get_bet, :api_get_results, :api_get_dividends, :api_evaluate_game, :api_sell_ticket, :api_cancel_ticket, :api_get_winners]
 
   @@user_name = "ngser@lonaci"
   @@password = "lemotdepasse"
@@ -359,7 +359,7 @@ class CmController < ApplicationController
             @amount = (@request_result.xpath('//ticket').at('amount').content rescue nil)
             @bet.update_attributes(serial_number: @serial_number, placement_request: body, placement_response: @response_body, paymoney_account_number: paymoney_account_number, bet_identifier: "#{DateTime.now.to_i}-#{@program_id}-#{@race_id}")
 
-            place_cm3_bet_with_cancellation(@bet, "McoaDIET", paymoney_account_number, password, @amount)
+            place_cm3_bet_with_cancellation(@bet, "f84d880a", paymoney_account_number, password, @amount)
 
           else
             @error_code = error_code
@@ -500,6 +500,55 @@ class CmController < ApplicationController
     end
 
     return status
+  end
+
+  def api_get_winners
+    @error_code = ''
+    @error_description = ''
+    race_id = params[:race_id]
+    program_id = params[:program_id]
+
+    if @login_error
+      @error_code = '3000'
+      @error_description = "La connexion n'a pas pu être établie."
+    else
+      body = %Q[<?xml version='1.0' encoding='UTF-8'?><winningsRequest><connectionId>#{@connection_id}</connectionId><programId>#{program_id}</programId><raceId>#{race_id}</raceId></winningsRequest>]
+
+      send_request(body, "http://office.cm3.work:27000/getWinings")
+
+      error_code = (@request_result.xpath('//return').at('error').content rescue nil)
+      error_message = (@request_result.xpath('//return').at('message').content rescue nil)
+
+      if error_code.blank? && @error != true
+        update_winners_list
+      else
+        @error_code = error_code
+        @error_description = error_message
+      end
+    end
+  end
+
+  def update_winners_list
+    unless @request_result.blank?
+      winnings = (@request_result.xpath('//winnings/winning') rescue nil)
+      unless winnings.blank?
+        winnings.each do |winning|
+          bet = Cm.where("serial_number = '#{winning.at('serialNumber')}' AND game_account_token = '#{winning.at('clientId')}'").first rescue nil
+          unless bet.blank?
+            bet.update_attributes(win_reason: winning.at('reason'), win_amount: winning.at('amount'))
+            bet_ids = winning.xpath('betId') rescue nil
+            unless bet_ids.blank?
+              bet_ids.each do |bet_id|
+                bet.cm_wagers.where("bet_id = '#{bet_id}'").first.update_attribute(winner: true)
+                if validate_bet_cm3(game_account_token, transaction_amount, race_id)
+
+                end
+              end
+            end
+          end
+        end
+      end
+    end
   end
 
   def send_request(body, url)

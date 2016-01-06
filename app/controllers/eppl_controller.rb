@@ -35,7 +35,7 @@ class EpplController < ApplicationController
     @user = User.find_by_uuid(gamer_id)
     @transaction_amount = transaction_amount.to_f.abs
     # TRJ account
-    @game_account_token = "uXAXMDuW"
+    @game_account_token = "c33fa532"
   end
 
   def api_pay_earning

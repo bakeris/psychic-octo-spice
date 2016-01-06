@@ -195,6 +195,37 @@ class ApplicationController < ActionController::Base
     return status
   end
 
+  def validate_bet_cm3(game_account_token, transaction_amount, race_id)
+    paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
+    status = false
+
+    request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/06331525768e6a95680c8bb0dcf55/bet/validate/#{game_account_token}/#{transaction_amount}", followlocation: true, method: :get)
+
+    request.on_complete do |response|
+      if response.success?
+        response_body = response.body
+
+        if !response_body.include?("|")
+          ActiveRecord::Base.connection.execute("UPDATE cms SET p_validation_id = '#{response_body}', p_validated = TRUE, p_validated_at = '#{DateTime.now}' WHERE win_reason IS NOT NULL AND race_id = '#{race_id}' AND p_validated IS NULL")
+          #bet.update_attributes(paymoney_transaction_id: response_body, bet_placed: true, bet_placed_at: DateTime.now)
+          status = true
+        else
+          @error_code = '5000'
+          ActiveRecord::Base.connection.execute("UPDATE cms SET p_validation_response = '#{response_body}' WHERE win_reason IS NOT NULL AND race_id = '#{race_id}' AND p_validated IS NULL")
+          #bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
+        end
+      else
+        @error_code = '4000'
+        @error_description = "Le serveur de paiement n'est pas accessible."
+        ActiveRecord::Base.connection.execute("UPDATE cms SET p_validation_response = '#{response_body}' WHERE win_reason IS NOT NULL AND race_id = '#{race_id}' AND p_validated IS NULL")
+      end
+    end
+
+    request.run
+
+    return status
+  end
+
   def cancel_bet(bet)
     paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
     status = false

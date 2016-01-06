@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160103234907) do
+ActiveRecord::Schema.define(version: 20160106093440) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -338,6 +338,7 @@ ActiveRecord::Schema.define(version: 20160103234907) do
     t.string   "selections_string"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "winner"
   end
 
   create_table "cms", force: true do |t|
@@ -388,6 +389,8 @@ ActiveRecord::Schema.define(version: 20160103234907) do
     t.string   "bet_identifier"
     t.string   "begin_date"
     t.string   "end_date"
+    t.text     "win_request"
+    t.text     "win_response"
   end
 
   create_table "creation_modes", force: true do |t|
@@ -395,6 +398,35 @@ ActiveRecord::Schema.define(version: 20160103234907) do
     t.string   "token"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "deposit_logs", force: true do |t|
+    t.string   "game_token"
+    t.string   "pos_id"
+    t.text     "deposit_request"
+    t.text     "deposit_response"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "session_id"
+  end
+
+  create_table "deposits", force: true do |t|
+    t.string   "game_token"
+    t.string   "pos_id"
+    t.string   "agent"
+    t.string   "sub_agent"
+    t.string   "paymoney_account"
+    t.text     "deposit_request"
+    t.text     "deposit_response"
+    t.string   "deposit_day"
+    t.float    "deposit_amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "paymoney_request"
+    t.text     "paymoney_response"
+    t.string   "paymoney_transaction_id"
+    t.boolean  "deposit_made"
+    t.string   "transaction_id"
   end
 
   create_table "eppls", force: true do |t|
@@ -430,6 +462,13 @@ ActiveRecord::Schema.define(version: 20160103234907) do
     t.string   "sms_status"
     t.string   "begin_date"
     t.string   "end_date"
+  end
+
+  create_table "game_tokens", force: true do |t|
+    t.string   "description"
+    t.string   "code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "ludwin_logs", force: true do |t|
