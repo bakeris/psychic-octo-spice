@@ -251,7 +251,7 @@ class DepositsController < ApplicationController
             response_body = response.body
 
             if !response_body.include?("|")
-              @deposit.update_attributes(paymoney_transaction_id: response_body, paymoney_request: request, paymoney_response: response_body)
+              @deposit.update_attributes(paymoney_transaction_id: response_body, paymoney_request: "#{paymoney_wallet_url}/api/86d13843ed59e5207c68e864564/deposit/#{@paymoney_account_number}/#{@transaction_amount}", paymoney_response: response_body)
               status = true
             else
               @error_code = '4001'
