@@ -194,8 +194,8 @@ Rails.application.routes.draw do
   get "/cm3/api/8d9cc87b7b/race/winners/:program_id/:race_id" => 'cm#api_get_winners'
 
   # Pos sale balance
-  get "/api/a1b43b7d1b/pos_balance/get/:game_token/:pos_id" => 'deposits#api_get_pos_sale_balance'
-  post "/api/a1b43b7d1b/pos_balance/get/:game_token/:pos_id" => 'deposits#api_get_pos_sale_balance'
+  get "/api/a1b43b7d1b/pos_balance/get/:game_token/:pos_id/:session_id" => 'deposits#api_get_pos_sale_balance'
+  post "/api/a1b43b7d1b/pos_balance/get/:game_token/:pos_id/:session_id" => 'deposits#api_get_pos_sale_balance'
 
   # Vendor balance
   get "/api/4839f1cb04/deposit/on_hold/:game_token/:pos_id" => 'deposits#api_get_daily_balance'
