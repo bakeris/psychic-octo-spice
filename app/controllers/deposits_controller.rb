@@ -23,6 +23,7 @@ class DepositsController < ApplicationController
       if @game_token.code == '04f50a4961'
         spc_get_session_balance
       end
+      DepositLog.create(game_token: @game_token, pos_id: @pos_id, deposit_request: @body, deposit_response: @response_body)
     else
       @error_code = '4000'
       @error_description = "Ce jeu n'a pas été trouvé."
@@ -35,9 +36,9 @@ class DepositsController < ApplicationController
       @error_code = '3000'
       @error_description = "La connexion n'a pas pu être établie."
     else
-      body = "<balanceRequest><connectionId>#{@connection_id}</connectionId><sessionId>#{@session_id}</sessionId></balanceRequest>"
+      @body = "<balanceRequest><connectionId>#{@connection_id}</connectionId><sessionId>#{@session_id}</sessionId></balanceRequest>"
 
-      send_request(body, "http://office.cm3.work:27000/getSessionBalance")
+      send_request(@body, "http://office.cm3.work:27000/getSessionBalance")
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
       if error_code.blank? && @error != true
         @number_of_sales = (@request_result.xpath('//balance').at('nbSales').content rescue nil)
@@ -54,9 +55,9 @@ class DepositsController < ApplicationController
   end
 
   def ail_pmu_get_session_balance
-    body = ""
+    @body = ""
 
-    send_request(body, "")
+    send_request(@body, "")
     error_code = (@request_result.xpath('//return').at('error').content rescue nil)
     if error_code.blank? && @error != true
 
@@ -67,9 +68,9 @@ class DepositsController < ApplicationController
   end
 
   def ail_loto_get_session_balance
-    body = ""
+    @body = ""
 
-    send_request(body, "")
+    send_request(@body, "")
     error_code = (@request_result.xpath('//return').at('error').content rescue nil)
     if error_code.blank? && @error != true
 
@@ -80,9 +81,9 @@ class DepositsController < ApplicationController
   end
 
   def spc_get_session_balance
-    body = ""
+    @body = ""
 
-    send_request(body, "")
+    send_request(@body, "")
     error_code = (@request_result.xpath('//return').at('error').content rescue nil)
     if error_code.blank? && @error != true
 
@@ -269,6 +270,58 @@ class DepositsController < ApplicationController
     end
 
     return status
+  end
+
+  def ail_pmu_proceed_deposit
+
+    body = ""
+
+    #@deposit = Deposit.create(game_token: @token, pos_id: @pos_id, agent: @agent, sub_agent: @sub_agent, paymoney_account: @paymoney_account_number, deposit_day: @date, deposit_amount: @transaction_amount, deposit_request: body, transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s)
+
+    send_request(body, "")
+    #@deposit.update_attributes(deposit_response: @response_body)
+    error_code = (@request_result.xpath('//return').at('error').content rescue nil)
+    if error_code.to_s == "0" && @error != true
+      #@deposit.update_attributes(deposit_made: true)
+      #cm3_paymoney_deposit
+    else
+      @error_code = (@request_result.xpath('//return').at('error').content rescue nil)
+      @error_description = (@request_result.xpath('//message').at('error').content rescue nil)
+    end
+  end
+
+  def ail_loto_proceed_deposit
+    body = ""
+
+    #@deposit = Deposit.create(game_token: @token, pos_id: @pos_id, agent: @agent, sub_agent: @sub_agent, paymoney_account: @paymoney_account_number, deposit_day: @date, deposit_amount: @transaction_amount, deposit_request: body, transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s)
+
+    send_request(body, "")
+    #@deposit.update_attributes(deposit_response: @response_body)
+    error_code = (@request_result.xpath('//return').at('error').content rescue nil)
+    if error_code.to_s == "0" && @error != true
+      #@deposit.update_attributes(deposit_made: true)
+      #cm3_paymoney_deposit
+    else
+      @error_code = (@request_result.xpath('//return').at('error').content rescue nil)
+      @error_description = (@request_result.xpath('//message').at('error').content rescue nil)
+    end
+  end
+
+  def spc_proceed_deposit
+    body = ""
+
+    #@deposit = Deposit.create(game_token: @token, pos_id: @pos_id, agent: @agent, sub_agent: @sub_agent, paymoney_account: @paymoney_account_number, deposit_day: @date, deposit_amount: @transaction_amount, deposit_request: body, transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s)
+
+    send_request(body, "")
+    #@deposit.update_attributes(deposit_response: @response_body)
+    error_code = (@request_result.xpath('//return').at('error').content rescue nil)
+    if error_code.to_s == "0" && @error != true
+      #@deposit.update_attributes(deposit_made: true)
+      #cm3_paymoney_deposit
+    else
+      @error_code = (@request_result.xpath('//return').at('error').content rescue nil)
+      @error_description = (@request_result.xpath('//message').at('error').content rescue nil)
+    end
   end
 
   def game_token_exists

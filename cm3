@@ -16,7 +16,7 @@ Erreur:
 
 
 # Login #
-curl --request GET --data '<?xml version='1.0' encoding='UTF-8'?><loginRequest><username>ngser@lonaci</username><password>lemotdepasse<password><notificationUrl>https://142.11.15.18:11111/</notificationUrl></loginRequest>' http://office.cm3.work:27000/login --header 'Content-Type:text/xml'
+curl --request GET --data '<balanceRequest><connectionId>32850194855</connectionId><sessionId>2015285</sessionId></balanceRequest>' http://office.cm3.work:27000/getSessionBalance --header 'Content-Type:text/xml'
 
 <?xml version='1.0' encoding='UTF-8' ?><loginResponse><connectionId>32850194855</connectionId></loginResponse>
 
