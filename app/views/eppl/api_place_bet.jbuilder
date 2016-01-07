@@ -5,7 +5,7 @@ else
   json.bet do
     json.transaction_id @eppl.transaction_id
     json.transaction_amount @eppl.transaction_amount
-    json.begin_date @eppl.begin_date recue nil
-    json.end_date @eppl.end_date recue nil
+    json.begin_date @eppl.begin_date rescue nil
+    json.end_date @eppl.end_date rescue nil
   end
 end
