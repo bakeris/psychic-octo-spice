@@ -555,7 +555,7 @@ Envoyer Des Fichiers Et Du Contenu Multimédia
 
 
 
-curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>6183565588881115</TransactionID><TicketSogei>DCDD08201D25DBFE72E4</TicketSogei></PaymentRequest></ServicesPSQF>" https://test.sports4africa.com/testUSSD/paymentTicket --header "Content-Type:text/xml" --insecure
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>66665565588881115</TransactionID><TicketSogei>0EEA08207818EC78B30A</TicketSogei></PaymentRequest></ServicesPSQF>" https://test.sports4africa.com/testUSSD/paymentTicket --header "Content-Type:text/xml" --insecure
 
 <Code>-5021</Code><Description>SOLDE INSUFFISANT</Description>
 

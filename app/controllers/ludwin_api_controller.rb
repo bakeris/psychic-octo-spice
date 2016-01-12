@@ -749,7 +749,7 @@ puts @win_amount.to_s + "********************"
 
                   if !nokogiri_response.blank?
                     response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
-                    if response_code == '0' || response_code == '1024'
+                    if response_code == '0' || response_code == '1024' || response_code == '5174'
                       # Paymoney payment
                       pay_earnings(@bet, "LhSpwtyN", @bet.win_amount)
                       @bet.update_attributes(pr_status: true, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Gagnant")
