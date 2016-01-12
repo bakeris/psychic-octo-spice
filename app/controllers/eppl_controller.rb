@@ -40,32 +40,40 @@ class EpplController < ApplicationController
 
   def api_pay_earning
     @eppl = (Eppl.where(transaction_id: params[:transaction_id], bet_placed: true).first rescue nil)
+    paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
 
     if @eppl.blank?
       @error_code = '4000'
       @error_description = "The transaction can't be found."
     else
-      request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d1798bc43ed59e5207c68e864564/earnings/pay/LVNbmiDN/#{@eppl.paymoney_account_token}/#{@eppl.transaction_amount}", followlocation: true, method: :get)
+      if @eppl.earning_transaction_id.blank?
+        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d1798bc43ed59e5207c68e864564/earnings/pay/LVNbmiDN/#{@eppl.paymoney_account_token}/#{params[:transaction_id]}/#{@eppl.transaction_amount}", followlocation: true, method: :get)
 
-      request.on_complete do |response|
-        if response.success?
-          response_body = response.body
+        request.on_complete do |response|
+          if response.success?
+            response_body = response.body
 
-          if !response_body.include?("|")
-            @eppl.update_attributes(earning_transaction_id: response_body, earning_paid: true, earning_paid_at: DateTime.now)
+            if !response_body.include?("|")
+              @eppl.update_attributes(earning_transaction_id: response_body, earning_paid: true, earning_paid_at: DateTime.now)
+              @error_code = ""
+              @error_description = ""
+            else
+              @error_code = '4001'
+              @error_description = 'Payment error, could not checkout the account. Check the credit.'
+              @eppl.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
+            end
           else
-            @error_code = '4001'
-            @error_description = 'Payment error, could not checkout the account. Check the credit.'
+            @error_code = '4000'
+            @error_description = 'Cannot join paymoney wallet server.'
             @eppl.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
           end
-        else
-          @error_code = '4000'
-          @error_description = 'Cannot join paymoney wallet server.'
-          @eppl.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
         end
-      end
 
-      request.run
+        request.run
+      else
+        @error_code = '4002'
+        @error_description = "Cette transaction a déjà été payée."
+      end
     end
   end
 
