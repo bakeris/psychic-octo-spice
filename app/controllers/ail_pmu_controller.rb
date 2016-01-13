@@ -267,7 +267,7 @@ class AilPmuController < ApplicationController
                 bet_cost_amount = (json_response["content"]["betCostAmount"] rescue nil)
                 bet_payout_amount = (json_response["content"]["betPayoutAmount"] rescue nil)
 
-                @ail_pmu = AilPmu.create(transaction_id: @transaction_id, message_id: @message_id, audit_number: @audit_id, date_time: @date_time, bet_code: @bet_code, bet_modifier: @bet_modifier, selector1: @selector1, selector2: @selector2, repeats: @repeats, normal_entries: @normal_entries, special_entries: @special_entries, ticket_number: ticket_number, ref_number: ref_number, bet_cost_amount: bet_cost_amount, bet_payout_amount: bet_payout_amount, paymoney_account_number: paymoney_account_number, gamer_id: gamer_id, user_id: user.id, game_account_token: "ApXTrliOp", race_id: "#{DateTime.now.to_i}-#{@selector1}-#{@selector2}")
+                @ail_pmu = AilPmu.create(transaction_id: @transaction_id, message_id: @message_id, audit_number: @audit_id, date_time: @date_time, bet_code: @bet_code, bet_modifier: @bet_modifier, selector1: @selector1, selector2: @selector2, repeats: @repeats, normal_entries: @normal_entries, special_entries: @special_entries, ticket_number: ticket_number, ref_number: ref_number, bet_cost_amount: bet_cost_amount, bet_payout_amount: bet_payout_amount, paymoney_account_number: paymoney_account_number, gamer_id: gamer_id, user_id: user.id, game_account_token: "ApXTrliOp", draw_id: "#{DateTime.now.to_i}-#{@selector1}-#{@selector2}")
 
                 if place_bet_with_cancellation(@ail_pmu, "uXAXMDuW", paymoney_account_number, password, bet_cost_amount)
                   api_acknowledge_bet_old
@@ -709,7 +709,7 @@ class AilPmuController < ApplicationController
     notification_objects = notification_objects["bets"]
     error_array = []
     success_array = []
-    race_id_array = []
+    draw_id_array = []
 
     if notification_objects.blank? || (notification_objects.class.to_s rescue nil) != "Array"
       @error_code = '5000'
@@ -729,8 +729,8 @@ class AilPmuController < ApplicationController
           error_array << notification_object.to_s
         else
           success_array << notification_object.to_s
-          unless race_id_array.include?(@bet.race_id)
-            race_id_array << @bet.race_id
+          unless draw_id_array.include?(@bet.draw_id)
+            draw_id_array << @bet.draw_id
           end
           if amount_type == "1"
             @bet.update_attributes(earning_notification_received: true, earning_amount: amount, earning_notification_received_at: DateTime.now)
@@ -740,23 +740,37 @@ class AilPmuController < ApplicationController
         end
       end
 
-      race_id_array.each do |race_id|
-        bets = AilPmu.where(earning_paid: nil, refund_paid: nil, race_id: race_id, placement_acknowledge: true)
+      draw_id_array.each do |draw_id|
+        bets = AilPmu.where(earning_paid: nil, refund_paid: nil, draw_id: draw_id, placement_acknowledge: true)
         unless bets.blank?
 
           bets_amount = bets.map{|bet| (bet.earning_amount.to_f rescue 0) + (bet.refund_amount.to_f rescue 0)}.sum rescue 0
           if validate_bet_ail("ApXTrliOp", bets_amount, "ail_pmus")
-            bets_payout = AilPmu.where("earning_notification_received IS TRUE AND race_id = '#{race_id}' AND paymoney_earning_id IS NULL")
+            bets_payout = AilPmu.where("earning_notification_received IS TRUE AND draw_id = '#{draw_id}' AND paymoney_earning_id IS NULL")
             unless bets_payout.blank?
               bets_payout.each do |bet_payout|
                 pay_ail_earnings(bet_payout, "ApXTrliOp", bet_payout.earning_amount, "earning")
+
+                # SMS notification
+                build_message(bet_payout, bet_payout.earning_amount, "au PMU PLR", bet_payout.ticket_number)
+                send_sms_notification(bet_payout, @msisdn, "PMU PLR", @message_content)
+
+                # Email notification
+                WinningNotification.notification_email(bet_payout.user, bet_payout.earning_amount, "au PMU PLR", "PMU PLR", bet_payout.ticket_number).deliver
               end
             end
 
-            bets_refund = AilPmu.where("refund_notification_received IS TRUE AND race_id = '#{race_id}' AND paymoney_refund_id IS NULL")
+            bets_refund = AilPmu.where("refund_notification_received IS TRUE AND draw_id = '#{draw_id}' AND paymoney_refund_id IS NULL")
             unless bets_refund.blank?
               bets_refund.each do |bet_refund|
                 pay_ail_earnings(bet_refund, "ApXTrliOp", bet_refund.refund_amount, "refund")
+
+                # SMS notification
+                build_message(bet_refund, bet_refund.refund_amount, "au PMU PLR", bet_refund.ticket_number)
+                send_sms_notification(bet_refund, @msisdn, "PMU PLR", @message_content)
+
+                # Email notification
+                WinningNotification.notification_email(bet_refund.user, bet_refund.refund_amount, "au PMU PLR", "PMU PLR", bet_refund.ticket_number).deliver
               end
             end
           end
