@@ -479,7 +479,7 @@ class LudwinApiController < ApplicationController
                   if !nokogiri_response.blank?
                     response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
                     if response_code == '0' || response_code == '1024'
-                      if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, amount)
+                      if place_bet_without_cancellation(@bet, "a46fb247", params[:paymoney_account_number], password, @amount)
                         @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
                         @bet.update_attributes(validated: true, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil))
                         @coupons = @bet.bet_coupons
@@ -515,7 +515,7 @@ class LudwinApiController < ApplicationController
   def format_coupouns(coupons)
     tmp_coupons_body = ''
     @win_amount = @amount
-
+puts @win_amount.to_s + "********************"
     coupons.each do |coupon|
       pal_code = (coupon["pal_code"].to_s rescue "")
       event_code = (coupon["event_code"].to_s rescue "")
@@ -523,10 +523,13 @@ class LudwinApiController < ApplicationController
       draw_code = (coupon["draw_code"].to_s rescue "")
       odd = (coupon["odd"].to_s rescue "")
       amount = (coupon["amount"] rescue "")
-      @win_amount =   ((@win_amount * (odd.to_f / 100)).to_i )
+      begin_date = (coupon["begin_date"] rescue "")
+      teams = (coupon["teams"] rescue "")
+      sport = (coupon["sport"] rescue "")
+      @win_amount =   (@win_amount * ((odd.to_f rescue 0) / 100)).to_i rescue 0
 
       unless pal_code.blank? || event_code.blank? || bet_code.blank? || draw_code.blank? || odd.blank?
-        @bet.bet_coupons.create(pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd)
+        @bet.bet_coupons.create(pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd, begin_date: begin_date, teams: teams, sport: "sport")
         tmp_coupons_body << %Q[<BetCoupon><CodPal>#{pal_code}</CodPal><CodEvent>#{event_code}</CodEvent><CodBet>#{bet_code}</CodBet><CodDraw>#{draw_code}</CodDraw><Odd>#{odd}</Odd></BetCoupon>]
       end
     end
@@ -565,12 +568,13 @@ class LudwinApiController < ApplicationController
     else
       if !(coupons["bets"] rescue nil).blank?
         @amount = coupons["amount"].to_i rescue nil
+        formula = coupons["formula"] rescue nil
 
         if @amount.blank?
           @error_code = '5001'
           @error_description = "Le montant des gains n'a pas pu être récupéré."
         else
-          @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, gamer_id: gamer_id, game_account_token: "LhSpwtyN", amount: @amount)
+          @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, gamer_id: gamer_id, game_account_token: "LhSpwtyN", amount: @amount, formula: formula)
           coupons_body = format_coupouns(coupons["bets"])
 
             if coupons_body.blank?
@@ -593,9 +597,9 @@ class LudwinApiController < ApplicationController
                   if !nokogiri_response.blank?
                     response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
                     if response_code == '0' || response_code == '1024'
-                      if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, @win_amount)
+                      if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, @amount)
                         @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
-                        @bet.update_attributes(validated: true, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil))
+                        @bet.update_attributes(validated: true, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil), bet_status: "En cours")
                         @coupons = @bet.bet_coupons
                       end
                     else
@@ -666,7 +670,7 @@ class LudwinApiController < ApplicationController
             response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
             if response_code == '0' || response_code == '1024'
               if cancel_bet(@bet.first)
-                @bet.first.update_attributes(cancelled: true, cancelled_at: DateTime.now)
+                @bet.first.update_attributes(cancelled: true, cancelled_at: DateTime.now, bet_status: "Annulé")
                 @bet_cancellation_result = (nokogiri_response.xpath('//CancelResponse') rescue nil)
               end
             else
@@ -690,6 +694,7 @@ class LudwinApiController < ApplicationController
     LudwinLog.create(operation: "Annulation de pari", transaction_id: transaction_id, error_code: @error_code, sent_body: body, response_body: response_body, remote_ip_address: remote_ip_address)
   end
 
+  # 102- Generic error
   def api_coupon_payment_notification
     @error_code = ''
     @error_description = ''
@@ -716,7 +721,7 @@ class LudwinApiController < ApplicationController
 
         if !@bet.pn_ticket_status.blank?
           @error_code = '5002'
-          @error_description = 'This coupon have already been validated.'
+          @error_description = 'Ce coupon a déja été validé.'
         else
           pn_ticket_status = (payment_notification_envelope.xpath('//PaymentNotificationRequest').at('StatusTicket').content rescue nil)
           pn_timestamp = (payment_notification_envelope.xpath('//PaymentNotificationRequest').at('TimeStamp').content rescue nil)
@@ -732,38 +737,32 @@ class LudwinApiController < ApplicationController
 
             if pn_ticket_status == '1'
               body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>#{transaction_id}</TransactionID><TicketID>#{ticket_id}</TicketID ></PaymentRequest></ServicesPSQF>]
-              print body
+              puts body
 
               request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
 
               request.on_complete do |response|
                 if response.success?
                   response_body = response.body
-                  response_body = %Q[<?xml version='1.0' encoding='UTF-8'?>
-<ServicesPSQF>
-  <PaymentRequest>
-    <ReturnCode><Code>0</Code></ReturnCode>
-    <Description>OK</Description>
-  </PaymentRequest>
-</ServicesPSQF>]
+                  #response_body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentResponse><ReturnCode><Code>0</Code><Description>OK</Description><FlgRetry>false</FlgRetry></ReturnCode></PaymentResponse></ServicesPSQF>]
                   nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
 
                   if !nokogiri_response.blank?
                     response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
-                    if response_code == '0' || response_code == '1024'
+                    if response_code == '0' || response_code == '1024' || response_code == '5174'
                       # Paymoney payment
                       pay_earnings(@bet, "LhSpwtyN", @bet.win_amount)
-                      @bet.update_attributes(pr_status: true, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id)
+                      @bet.update_attributes(pr_status: true, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Gagnant")
                       # SMS notification
                       build_message(@bet, @bet.win_amount, "à SPORTCASH", @bet.ticket_id)
                       send_sms_notification(@bet, @msisdn, "SPORTCASH", @message_content)
 
                       # Email notification
-                      WinningNotification.notification_email(@bet.user, @bet.win_amount, "à SPORTCASH", "SPORTCASH", @bet.ticket_id).deliver
+                      WinningNotification.notification_email(@user, @bet.win_amount, "à SPORTCASH", "SPORTCASH", @bet.ticket_id).deliver
                     else
-                      @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id)
+                      @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Perdant")
                       @error_code = '4002'
-                      @error_description = 'The bet could not be processed.'
+                      @error_description = "Le paiement n'a pas pu être traité."
                     end
                   else
                     @error_code = '4001'
@@ -773,11 +772,12 @@ class LudwinApiController < ApplicationController
                   @error_code = '4000'
                   @error_description = 'Unavailable resource.'
                 end
+                LudwinLog.create(operation: "Paiement de coupon", response_body: response_body, remote_ip_address: remote_ip_address, sent_body: body)
               end
 
               request.run
 
-              LudwinLog.create(operation: "Paiement de coupon", response_body: response_body, remote_ip_address: remote_ip_address)
+
             end
           else
             @error_code = '5003'
@@ -826,7 +826,7 @@ class LudwinApiController < ApplicationController
       @error_code = '4000'
       @error_description = 'The gamer id could not be found'
     else
-      @bets = Bet.where(gamer_id: params[:gamer_id])
+      @bets = Bet.where(gamer_id: params[:gamer_id]).order("created_at DESC")
     end
   end
 end

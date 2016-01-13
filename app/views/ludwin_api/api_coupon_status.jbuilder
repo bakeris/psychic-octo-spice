@@ -17,5 +17,8 @@ else
     json.cancelled_at @bet.cancelled_at
     json.paid @bet.pr_status ? "true" : "false"
     json.paid_at @bet.payment_status_datetime
+    json.paymoney_earning_paid @bet.earning_paid ? "true" : "false"
+    json.paymoney_payment_id @bet.payment_paymoney_id
+    json.paymoney_earning_paid_at @bet.earning_paid_at
   end
 end

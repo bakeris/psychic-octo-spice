@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151218114139) do
+ActiveRecord::Schema.define(version: 20160106093440) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,6 +103,11 @@ ActiveRecord::Schema.define(version: 20151218114139) do
     t.text     "sms_content"
     t.string   "sms_id"
     t.string   "sms_status"
+    t.string   "begin_date"
+    t.string   "end_date"
+    t.string   "draw_day"
+    t.string   "draw_number"
+    t.string   "bet_status"
   end
 
   create_table "ail_pmu_logs", force: true do |t|
@@ -194,6 +199,11 @@ ActiveRecord::Schema.define(version: 20151218114139) do
     t.text     "sms_content"
     t.string   "sms_id"
     t.string   "sms_status"
+    t.string   "begin_date"
+    t.string   "end_date"
+    t.string   "starter_horses"
+    t.text     "race_details"
+    t.string   "bet_status"
   end
 
   create_table "bet_coupons", force: true do |t|
@@ -205,6 +215,9 @@ ActiveRecord::Schema.define(version: 20151218114139) do
     t.string   "odd"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "begin_date"
+    t.string   "teams"
+    t.string   "sport"
   end
 
   create_table "bets", force: true do |t|
@@ -256,6 +269,10 @@ ActiveRecord::Schema.define(version: 20151218114139) do
     t.text     "sms_content"
     t.string   "sms_id"
     t.string   "sms_status"
+    t.string   "begin_date"
+    t.string   "end_date"
+    t.string   "formula"
+    t.string   "bet_status"
   end
 
   create_table "civilities", force: true do |t|
@@ -292,6 +309,88 @@ ActiveRecord::Schema.define(version: 20151218114139) do
     t.string   "get_program_error_code"
     t.text     "get_program_error_description"
     t.text     "get_program_error_response"
+    t.text     "get_race_request_body"
+    t.string   "get_race_code"
+    t.text     "get_race_response"
+    t.text     "get_bet_request_body"
+    t.text     "get_bet_response"
+    t.string   "get_bet_id"
+    t.text     "get_results_request_body"
+    t.text     "get_results_request_response"
+    t.string   "get_results_code"
+    t.text     "get_dividends_request_body"
+    t.text     "get_dividends_response"
+    t.string   "get_dividends_code"
+    t.text     "get_eval_request"
+    t.text     "get_eval_response"
+    t.string   "get_eval_code"
+    t.text     "sell_ticket_request"
+    t.text     "sell_ticket_response"
+    t.string   "sell_ticket_code"
+  end
+
+  create_table "cm_wagers", force: true do |t|
+    t.integer  "cm_id"
+    t.string   "bet_id"
+    t.string   "nb_units"
+    t.string   "nb_combinations"
+    t.string   "full_box"
+    t.string   "selections_string"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "winner"
+  end
+
+  create_table "cms", force: true do |t|
+    t.string   "connection_id"
+    t.string   "program_id"
+    t.string   "race_id"
+    t.string   "sale_client_id"
+    t.string   "punter_id"
+    t.integer  "amount"
+    t.string   "scratched_list"
+    t.string   "serial_number"
+    t.datetime "bet_placed_at"
+    t.text     "placement_request"
+    t.text     "placement_response"
+    t.string   "game_account_token"
+    t.string   "paymoney_account_number"
+    t.string   "paymoney_account_token"
+    t.string   "p_payment_transaction_id"
+    t.text     "p_payment_request"
+    t.text     "p_payment_response"
+    t.string   "payment_error_code"
+    t.text     "payment_error_description"
+    t.text     "cancel_request"
+    t.text     "cancel_response"
+    t.boolean  "cancelled"
+    t.datetime "cancelled_at"
+    t.string   "p_cancellation_id"
+    t.string   "suid"
+    t.integer  "win_amount"
+    t.string   "win_reason"
+    t.string   "win_bet_ids"
+    t.string   "win_checksum"
+    t.text     "p_validation_request"
+    t.text     "p_validation_response"
+    t.string   "p_validation_id"
+    t.boolean  "p_validated"
+    t.datetime "p_validated_at"
+    t.text     "pay_earning_request"
+    t.text     "pay_earning_response"
+    t.string   "p_earning_id"
+    t.text     "pay_refund_request"
+    t.text     "pay_refund_response"
+    t.string   "p_refund_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "remote_ip"
+    t.string   "transaction_id"
+    t.string   "bet_identifier"
+    t.string   "begin_date"
+    t.string   "end_date"
+    t.text     "win_request"
+    t.text     "win_response"
   end
 
   create_table "creation_modes", force: true do |t|
@@ -299,6 +398,35 @@ ActiveRecord::Schema.define(version: 20151218114139) do
     t.string   "token"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "deposit_logs", force: true do |t|
+    t.string   "game_token"
+    t.string   "pos_id"
+    t.text     "deposit_request"
+    t.text     "deposit_response"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "session_id"
+  end
+
+  create_table "deposits", force: true do |t|
+    t.string   "game_token"
+    t.string   "pos_id"
+    t.string   "agent"
+    t.string   "sub_agent"
+    t.string   "paymoney_account"
+    t.text     "deposit_request"
+    t.text     "deposit_response"
+    t.string   "deposit_day"
+    t.float    "deposit_amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "paymoney_request"
+    t.text     "paymoney_response"
+    t.string   "paymoney_transaction_id"
+    t.boolean  "deposit_made"
+    t.string   "transaction_id"
   end
 
   create_table "eppls", force: true do |t|
@@ -332,6 +460,15 @@ ActiveRecord::Schema.define(version: 20151218114139) do
     t.text     "sms_content"
     t.string   "sms_id"
     t.string   "sms_status"
+    t.string   "begin_date"
+    t.string   "end_date"
+  end
+
+  create_table "game_tokens", force: true do |t|
+    t.string   "description"
+    t.string   "code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "ludwin_logs", force: true do |t|

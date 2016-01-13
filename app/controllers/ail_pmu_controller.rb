@@ -60,7 +60,7 @@ class AilPmuController < ApplicationController
             @draws_list = (json_response["content"]["rows"] rescue nil)
           else
             @error_code = '4002'
-            @error_description = 'Cannot retrieve the list of draws.'
+            @error_description = 'Impossible de récupérer la liste des paris.'
           end
         else
           @error_code = '4001'
@@ -68,7 +68,7 @@ class AilPmuController < ApplicationController
         end
       else
         @error_code = '4000'
-        @error_description = 'Unavailable resource.'
+        @error_description = 'Ressource non disponible.'
       end
     end
 
@@ -171,7 +171,7 @@ class AilPmuController < ApplicationController
                       #@bet.update_attributes(placement_acknowledge: true, placement_acknowledge_date_time: DateTime.now.to_s)
                     else
                       @error_code = '4005'
-                      @error_description = 'Could not acknowledge the query.'
+                      @error_description = "La requête n'a pas pu être validée."
                     end
                   else
                     @error_code = '4004'
@@ -188,7 +188,7 @@ class AilPmuController < ApplicationController
             end
           else
             @error_code = '4002'
-            @error_description = 'Cannot query the bet.'
+            @error_description = "Votre pari n'a pas pu être placé."
           end
         else
           @error_code = '4001'
@@ -196,7 +196,7 @@ class AilPmuController < ApplicationController
         end
       else
         @error_code = '4000'
-        @error_description = 'Unavailable resource.'
+        @error_description = 'Le PMU est momentanément indisponible, veuillez réessayer plus tard.'
       end
     end
 
@@ -217,6 +217,8 @@ class AilPmuController < ApplicationController
     user = User.find_by_uuid(params[:gamer_id])
     gamer_id = params[:gamer_id]
     password = params[:password]
+    begin_date = params[:begin_date]
+    end_date = params[:end_date]
     filter_place_bet_incoming_request
     body = %Q|{
                 "Bet":{
@@ -245,7 +247,7 @@ class AilPmuController < ApplicationController
               }|
     if user.blank?
       @error_code = '3000'
-      @error_description = 'The gamer account does not exist.'
+      @error_description = "Le compte parieur n'existe pas."
     else
       request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "application/json"})
 
@@ -267,9 +269,9 @@ class AilPmuController < ApplicationController
                 bet_cost_amount = (json_response["content"]["betCostAmount"] rescue nil)
                 bet_payout_amount = (json_response["content"]["betPayoutAmount"] rescue nil)
 
-                @ail_pmu = AilPmu.create(transaction_id: @transaction_id, message_id: @message_id, audit_number: @audit_id, date_time: @date_time, bet_code: @bet_code, bet_modifier: @bet_modifier, selector1: @selector1, selector2: @selector2, repeats: @repeats, normal_entries: @normal_entries, special_entries: @special_entries, ticket_number: ticket_number, ref_number: ref_number, bet_cost_amount: bet_cost_amount, bet_payout_amount: bet_payout_amount, paymoney_account_number: paymoney_account_number, gamer_id: gamer_id, user_id: user.id, game_account_token: "ApXTrliOp", draw_id: "#{DateTime.now.to_i}-#{@selector1}-#{@selector2}")
+                @ail_pmu = AilPmu.create(transaction_id: @transaction_id, message_id: @message_id, audit_number: @audit_id, date_time: @date_time, bet_code: @bet_code, bet_modifier: @bet_modifier, selector1: @selector1, selector2: @selector2, repeats: @repeats, normal_entries: @normal_entries, special_entries: @special_entries, ticket_number: ticket_number, ref_number: ref_number, bet_cost_amount: bet_cost_amount, bet_payout_amount: bet_payout_amount, paymoney_account_number: paymoney_account_number, gamer_id: gamer_id, user_id: user.id, game_account_token: "ApXTrliOp", draw_id: "#{DateTime.now.to_i}-#{@selector1}-#{@selector2}", starter_horses: @starter_horses, race_details: @race_details, begin_date: @begin_date, end_date: @end_date)
 
-                if place_bet_with_cancellation(@ail_pmu, "uXAXMDuW", paymoney_account_number, password, bet_cost_amount)
+                if place_bet_with_cancellation(@ail_pmu, "1c28caab", paymoney_account_number, password, bet_cost_amount)
                   api_acknowledge_bet_old
                 end
 
@@ -346,7 +348,7 @@ class AilPmuController < ApplicationController
               @error_description = (json_response["content"]["errorMessage"] rescue nil)
 
               if @error_code == 0 && (json_response["header"]["status"] == 'success' rescue nil)
-                @bet.update_attributes(placement_acknowledge: true, placement_acknowledge_date_time: DateTime.now.to_s)
+                @bet.update_attributes(placement_acknowledge: true, placement_acknowledge_date_time: DateTime.now.to_s, bet_status: "En cours")
                 status = true
               else
                 @error_code = '4005'
@@ -383,11 +385,11 @@ class AilPmuController < ApplicationController
 
     if @bet.blank?
       @error_code = '4006'
-      @error_description = 'Could not find the acknowledged transaction_id.'
+      @error_description = "L'id de transaction n'a pas pu être trouvé."
     else
       if @bet.cancellation_acknowledge == true
         @error_code = '4007'
-        @error_description = 'The bet have already been canceled.'
+        @error_description = 'Le pari a déjà été annulé.'
       else
         body = %Q[{
                     "Bet":{
@@ -432,7 +434,7 @@ class AilPmuController < ApplicationController
 
               else
                 @error_code = '4002'
-                @error_description = 'Cannot cancel the bet.'
+                @error_description = "Le pari n'a pas pu être annulé."
               end
             else
               @error_code = '4001'
@@ -502,7 +504,7 @@ class AilPmuController < ApplicationController
               @error_description = (json_response["content"]["errorMessage"] rescue nil)
 
               if @error_code == 0 && (json_response["header"]["status"] == 'success' rescue nil)
-                @bet.update_attributes(cancellation_acknowledge: true, cancellation_acknowledge_date_time: DateTime.now.to_s)
+                @bet.update_attributes(cancellation_acknowledge: true, cancellation_acknowledge_date_time: DateTime.now.to_s, bet_status: "Annulé")
                 status = true
               else
                 @error_code = '4005'
@@ -698,7 +700,7 @@ class AilPmuController < ApplicationController
       @error_code = '4000'
       @error_description = 'The gamer id could not be found'
     else
-      @bets = user.ail_pmus
+      @bets = user.ail_pmus.order("created_at DESC") rescue nil
     end
   end
 
@@ -715,7 +717,6 @@ class AilPmuController < ApplicationController
       @error_code = '5000'
       @error_description = 'Invalid JSON data.'
     else
-      #audit_id = notification_objects["AuditId"] rescue ""
       notification_objects.each do |notification_object|
 
         ref_number = notification_object["RefNumber"] rescue ""
@@ -742,6 +743,7 @@ class AilPmuController < ApplicationController
 
       draw_id_array.each do |draw_id|
         bets = AilPmu.where(earning_paid: nil, refund_paid: nil, draw_id: draw_id, placement_acknowledge: true)
+
         unless bets.blank?
 
           bets_amount = bets.map{|bet| (bet.earning_amount.to_f rescue 0) + (bet.refund_amount.to_f rescue 0)}.sum rescue 0
@@ -776,6 +778,8 @@ class AilPmuController < ApplicationController
           end
 
         end
+
+        AilPmu.where("draw_id = '#{draw_id}' AND earning_paid IS NULL AND refun_paid IS NULL AND placement_acknowledge").map{|bet| bet.update_attributes(bet_satus: "Perdant")}
       end
     end
 
@@ -803,6 +807,10 @@ class AilPmuController < ApplicationController
       @repeats = json_request["repeats"]
       @special_entries = json_request["special_entries"]
       @normal_entries = json_request["normal_entries"]
+      @starter_horses = json_request["starter_horses"]
+      @race_details = json_request["race_details"]
+      @begin_date = json_request["begin_date"]
+      @end_date = json_request["end_date"]
     end
   end
 

@@ -51,6 +51,8 @@ Rails.application.routes.draw do
 
   post '/spc/api/6d3782c78d/m_coupon/sell/:gamer_id/:paymoney_account_number/:password' => 'ludwin_api#api_m_sell_coupon'
 
+  post '/spc/api/6d3782c78d/m_coupon/sell/:gamer_id/:paymoney_account_number/:password/:begin_date' => 'ludwin_api#api_m_sell_coupon'
+
   # Cancel a sold coupon
   get '/spc/api/6d3782c78d/coupon/cancel/:ticket_id' => 'ludwin_api#api_cancel_coupon'
 
@@ -152,7 +154,7 @@ Rails.application.routes.draw do
   #---------------------AIL Loto---------------------
 
   #---------------------EPPL---------------------
-  get '/eppl/api/36e25e6bfd/bet/place/:gamer_id/:paymoney_account_number/:password/:transaction_amount' => 'eppl#api_place_bet'
+  get '/eppl/api/36e25e6bfd/bet/place/:gamer_id/:paymoney_account_number/:password/:transaction_amount/:begin_date/:end_date' => 'eppl#api_place_bet'
 
   #get '/eppl/bet/validate' => 'eppl#periodically_validate_bet'
 
@@ -161,9 +163,47 @@ Rails.application.routes.draw do
 
   #---------------------CM3---------------------
 
-  get '/cm3/api/efc7e3eaee/current_session/get'  => 'cm#api_current_session'
+  # Get session
+  get "/cm3/api/efc7e3eaee/current_session/get" => 'cm#api_current_session'
 
-  get '/cm3/api/94be19034e/program/get'  => 'cm#api_get_program'
+  # Get program
+  get "/cm3/api/94be19034e/program/get" => 'cm#api_get_program'
+
+  # Get race
+  get "/cm3/api/ac031f75b1/get_race/:program_id/:race_id" => 'cm#api_get_race'
+
+  # Get bet
+  get "/cm3/api/ac031f75b1/bet/get/:bet_id" => 'cm#api_get_bet'
+
+  # Get results
+  get "/cm3/api/5abdc31c5e/results/get/:program_id/:race_id" => 'cm#api_get_results'
+
+  # Get dividends
+  get "/cm3/api/50801acbde/dividends/get/:program_id/:race_id" => 'cm#api_get_dividends'
+
+  # Evaluate game
+  post "/cm3/api/0cad36b144/game/evaluate/:program_id/:race_id" => 'cm#api_evaluate_game'
+
+  # Sell ticket
+  post "/cm3/api/98d24611fd/ticket/sell/:gamer_id/:paymoney_account_number/:password/:begin_date/:end_date" => 'cm#api_sell_ticket'
+
+  # Cancel ticket
+  get "/cm3/api/90823b007f/ticket/cancel/:serial_number" => 'cm#api_cancel_ticket'
+
+  # Get winnings
+  get "/cm3/api/8d9cc87b7b/race/winners/:program_id/:race_id" => 'cm#api_get_winners'
+
+  # Pos sale balance
+  get "/api/a1b43b7d1b/pos_balance/get/:game_token/:pos_id/:session_id" => 'deposits#api_get_pos_sale_balance'
+  post "/api/a1b43b7d1b/pos_balance/get/:game_token/:pos_id/:session_id" => 'deposits#api_get_pos_sale_balance'
+
+  # Vendor balance
+  get "/api/4839f1cb04/deposit/on_hold/:game_token/:pos_id" => 'deposits#api_get_daily_balance'
+  post "/api/4839f1cb04/deposit/on_hold/:game_token/:pos_id" => 'deposits#api_get_daily_balance'
+
+  # Make a deposit
+  get "/api/3ae7e2f1b1/deposit/:game_token/:pos_id/:paymoney_account_number/:agent/:sub_agent/:date/:amount" => 'deposits#api_proceed_deposit'
+  post "/api/3ae7e2f1b1/deposit/:game_token/:pos_id/:paymoney_account_number/:agent/:sub_agent/:date/:amount" => 'deposits#api_proceed_deposit'
 
   # Payment notification
   #post '/cm3/api/dfg7fvb3191/payment/notification' => 'ludwin_api#api_coupon_payment_notification'

@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  cm_id: 1
+  bet_id: MyString
+  nb_units: MyString
+  nb_combinations: MyString
+  full_box: MyString
+  selections_string: MyString
+
+two:
+  cm_id: 1
+  bet_id: MyString
+  nb_units: MyString
+  nb_combinations: MyString
+  full_box: MyString
+  selections_string: MyString

@@ -1,0 +1,85 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  connection_id: MyString
+  program_id: MyString
+  race_id: MyString
+  sale_client_id: MyString
+  punter_id: MyString
+  amount: 1
+  scratched_list: MyString
+  serial_number: MyString
+  bet_placed_at: 2015-12-27 12:49:51
+  placement_request: MyText
+  placement_response: MyText
+  game_account_token: MyString
+  paymoney_account_number: MyString
+  paymoney_account_token: MyString
+  p_payment_transaction_id: MyString
+  p_payment_request: MyText
+  p_payment_response: MyText
+  payment_error_code: MyString
+  payment_error_description: MyText
+  cancel_request: MyText
+  cancel_response: MyText
+  cancelled: false
+  cancelled_at: 2015-12-27 12:49:51
+  p_cancellation_id: MyString
+  suid: MyString
+  win_amount: 1
+  win_reason: MyString
+  win_bet_ids: MyString
+  win_checksum: MyString
+  p_validation_request: MyText
+  p_validation_response: MyText
+  p_validation_id: MyString
+  p_validated: false
+  p_validated_at: 2015-12-27 12:49:51
+  pay_earning_request: MyText
+  pay_earning_response: MyText
+  p_earning_id: MyString
+  pay_refund_request: MyText
+  pay_refund_response: MyText
+  p_refund_id: MyString
+
+two:
+  connection_id: MyString
+  program_id: MyString
+  race_id: MyString
+  sale_client_id: MyString
+  punter_id: MyString
+  amount: 1
+  scratched_list: MyString
+  serial_number: MyString
+  bet_placed_at: 2015-12-27 12:49:51
+  placement_request: MyText
+  placement_response: MyText
+  game_account_token: MyString
+  paymoney_account_number: MyString
+  paymoney_account_token: MyString
+  p_payment_transaction_id: MyString
+  p_payment_request: MyText
+  p_payment_response: MyText
+  payment_error_code: MyString
+  payment_error_description: MyText
+  cancel_request: MyText
+  cancel_response: MyText
+  cancelled: false
+  cancelled_at: 2015-12-27 12:49:51
+  p_cancellation_id: MyString
+  suid: MyString
+  win_amount: 1
+  win_reason: MyString
+  win_bet_ids: MyString
+  win_checksum: MyString
+  p_validation_request: MyText
+  p_validation_response: MyText
+  p_validation_id: MyString
+  p_validated: false
+  p_validated_at: 2015-12-27 12:49:51
+  pay_earning_request: MyText
+  pay_earning_response: MyText
+  p_earning_id: MyString
+  pay_refund_request: MyText
+  pay_refund_response: MyText
+  p_refund_id: MyString

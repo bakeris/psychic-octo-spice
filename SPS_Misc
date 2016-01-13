@@ -1,3 +1,6 @@
+https://test.sports4africa.com/testUSSD/getEvent?system_code=PD&type=DELTA&isLive=1&len=FR
+
+
 CodConc:299
 CodDiritto:595
 IdTerminal: 201
@@ -552,4 +555,18 @@ Envoyer Des Fichiers Et Du Contenu Multimédia
 
 
 
-curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>136868862440342348</TransactionID><TicketSogei>C273081519B6DD30B203</TicketSogei></PaymentRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/paymentTicket --header "Content-Type:text/xml" --insecure
+curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>66665565588881115</TransactionID><TicketSogei>0EEA08207818EC78B30A</TicketSogei></PaymentRequest></ServicesPSQF>" https://test.sports4africa.com/testUSSD/paymentTicket --header "Content-Type:text/xml" --insecure
+
+<Code>-5021</Code><Description>SOLDE INSUFFISANT</Description>
+
+9CAA0817F14F6102B273
+BF520817F14F6102B271
+87DE0817F14F6102B270
+351A0817F14F6102B26F
+DCF90817F14F6102B26E
+A0610817F14F6102B26D
+DF690817F14F6102B26C
+
+response_body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentResponse><ReturnCode><Code>0</Code><Description>OK</Description><FlgRetry>false</FlgRetry></ReturnCode></PaymentResponse></ServicesPSQF>]
+
+<Code>-5172</Code><Description>TICKET NON PAYABLE - RESULTATS INDISPONIBLES</Description>

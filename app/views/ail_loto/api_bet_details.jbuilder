@@ -18,9 +18,22 @@ else
     json.normal_entries "[#{@bet.normal_entries}]" rescue nil
     json.bet_placed @bet.placement_acknowledge rescue nil
     json.bet_placed_at @bet.placement_acknowledge_date_time rescue nil
+    json.begin_date @bet.begin_date rescue nil
+    json.end_date @bet.end_date rescue nil
     json.bet_cancelled @bet.cancellation_acknowledge rescue nil
     json.bet_cancelled_at @bet.cancellation_acknowledge_date_time rescue nil
     json.bet_refunded @bet.refund_acknowledge rescue nil
     json.bet_refunded_at @bet.refund_acknowledge_date_time rescue nil
+    json.earning_paid @bet.earning_paid ? "true" : "false"
+    json.earning_paid_at @bet.earning_paid_at.to_s
+    json.paymoney_earning_id @bet.paymoney_earning_id
+    json.refund_paid @bet.refund_paid ? "true" : "false"
+    json.refund_paid_at @bet.refund_paid_at.to_s
+    json.paymoney_refund_id @bet.paymoney_refund_id
+    json.begin_date @bet.begin_date rescue nil
+    json.end_date @bet.end_date rescue nil
+    json.draw_date @bet.draw_date rescue nil
+    json.draw_number @bet.draw_number rescue nil
+    json.bet_status @bet.bet_status rescue nil
   end
 end

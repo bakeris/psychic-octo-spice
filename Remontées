@@ -1,0 +1,148 @@
+URL: 195.14.0.128:9587
+
+########----- Bilan des ventes du POS particulier -----########
+
+# URL: /api/a1b43b7d1b/pos_balance/get/:pos_id
+
+# Méthode: POST
+
+# Paramètres:
+:pos_id - Id du sous agent agréé
+
+# Succès:
+{
+    "balance": {
+        "pos_id": "xxxxxxxxxxxxx",
+        "number_of_sales": 52,
+        "sales_amount": 15050011,
+        "number_of_deposits": 152,
+        "deposits_amount": 1500052
+    }
+}
+
+Description:
+pos_id: Id de l'agent agréé
+number_of_sales: nombre de transactions
+sales_amount: montant des transactions
+number_of_deposits: nombre de versements
+deposits_amount: montant des versements
+
+# Erreur:
+{
+    "error": {
+        "code": "4000",
+        "description": "Le sous agent agréé n'a pas été trouvé."
+    }
+}
+
+########----- Liste des journées non soldées -----########
+
+# URL: /api/4839f1cb04/deposit/on_hold/:pos_id
+
+# Méthode: POST
+
+# Paramètres:
+:pos_id - Id du sous agent agréé
+
+# Succès:
+{
+    "deposits_on_hold": [{
+        "date": "15-12-2015",
+        "number_of_sales": 12,
+        "sales_amount": 50011,
+        "fee": 1500,
+        "number_of_deposits": 15,
+        "deposits_amount": 10052,
+        "balance": 39959
+    },
+    {
+        "date": "17-12-2015",
+        "number_of_sales": 10,
+        "sales_amount": 40011,
+        "number_of_deposits": 5,
+        "deposits_amount": 20052,
+        "balance": 19959
+    }]
+}
+
+Description:
+date: date de la session journalière
+number_of_sales: nombre de transactions
+sales_amount: montant des transactions
+fee: montant des frais journaliers
+number_of_deposits: nombre de versements
+deposits_amount: montant des versements
+balance: montant restant à verser
+
+# Erreur:
+{
+    "error": {
+        "code": "4000",
+        "description": "Le sous agent agréé n'a pas été trouvé."
+    }
+}
+
+########----- Opération de dépôt -----########
+
+# URL: /api/3ae7e2f1b1/deposit/:pos_id/:paymoney_account_number/:amount
+
+# Méthode: POST
+
+# Paramètres:
+:pos_id - Id du sous agent agréé
+:paymoney_account_number - Numéro de compte paymoney du pos particulier
+:amount - Montant du dépôt
+
+# Corps de la requête:
+{
+    "deposits": [{
+        "date": "17-12-2015",
+        "amount": 10959
+    },
+    {
+        "date": "15-12-2015",
+        "amount": 959
+    }]
+}
+
+
+# Succès:
+{
+    "deposits": [{
+        "date": "17-12-2015",
+        "amount": 10959,
+        "balance": 15000
+    },
+    {
+        "date": "15-12-2015",
+        "amount": 959,
+        "balance": 25000
+    }]
+}
+
+Description:
+date: date de la session journalière
+amount: montant à verser
+balance: montant restant à payer sur la journée
+
+# Erreur:
+{
+    "error": {
+        "code": "4000",
+        "description": "Le sous agent agréé n'a pas été trouvé."
+    }
+}
+
+{
+    "error": {
+        "code": "4001",
+        "description": "Le compte paymoney n'a pas été trouvé."
+    }
+}
+
+{
+    "error": {
+        "code": "4002",
+        "description": "Le montant versé n'est pas valide."
+    }
+}
