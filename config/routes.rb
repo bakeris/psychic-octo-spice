@@ -158,7 +158,10 @@ Rails.application.routes.draw do
 
   #get '/eppl/bet/validate' => 'eppl#periodically_validate_bet'
 
-  get 'eppl/api/87eik741fd/earning/pay/:transaction_id' => 'eppl#api_pay_earning'
+  #get 'eppl/api/87eik741fd/earning/pay/:transaction_id' => 'eppl#api_pay_earning'
+
+  # Transfer
+  get '/eppl/api/87eik741fd/earning/transfer/:paymoney_account_number/:transaction_amount' => 'eppl#api_transfer_earning'
   #---------------------EPPL---------------------
 
   #---------------------CM3---------------------
