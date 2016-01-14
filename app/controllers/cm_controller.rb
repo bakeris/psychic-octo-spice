@@ -19,7 +19,7 @@ class CmController < ApplicationController
                   <password>#{@@password}<password>
                   <notificationUrl>#{@@notification_url}</notificationUrl>
                 </loginRequest>]
-      send_request(body, "http://office.cm3.work:27000/login")
+      send_request(body, "http://192.168.1.44:29000/login")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
 
@@ -41,7 +41,7 @@ class CmController < ApplicationController
       @error_code = '3000'
       @error_description = "La connexion n'a pas pu être établie."
     else
-      send_request("", "http://office.cm3.work:27000/getCurrentSession")
+      send_request("", "http://192.168.1.44:29000/getCurrentSession")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
       if error_code.blank? && @error != true
@@ -69,7 +69,7 @@ class CmController < ApplicationController
       @error_code = '3000'
       @error_description = "La connexion n'a pas pu être établie."
     else
-      send_request("", "http://office.cm3.work:27000/getProgram")
+      send_request("", "http://192.168.1.44:29000/getProgram")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
       if error_code.blank? && @error != true
@@ -107,7 +107,7 @@ class CmController < ApplicationController
       @error_description = "La connexion n'a pas pu être établie."
     else
       body = %Q[<?xml version='1.0' encoding='UTF-8'?><raceRequest><connectionId>#{@connection_id}</connectionId><programId>#{params[:program_id]}</programId><raceId>#{params[:race_id]}</raceId></raceRequest>]
-      send_request(body, "http://office.cm3.work:27000/getRace")
+      send_request(body, "http://192.168.1.44:29000/getRace")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
       if error_code.blank? && @error != true
@@ -144,7 +144,7 @@ class CmController < ApplicationController
       @error_description = "La connexion n'a pas pu être établie."
     else
       body = %Q[<?xml version='1.0' encoding='UTF-8'?><betRequest><connectionId>#{@connection_id}</connectionId><betId>#{params[:bet_id]}</betId></betRequest>]
-      send_request(body, "http://office.cm3.work:27000/getBet")
+      send_request(body, "http://192.168.1.44:29000/getBet")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
 
@@ -188,7 +188,7 @@ class CmController < ApplicationController
       @error_description = "La connexion n'a pas pu être établie."
     else
       body = %Q[<?xml version='1.0' encoding='UTF-8'?><resultResponse><connectionId>#{@connection_id}</connectionId><programId>#{params[:program_id]}</programId><raceId>#{params[:race_id]}</raceId></resultResponse>]
-      send_request(body, "http://office.cm3.work:27000/getResult")
+      send_request(body, "http://192.168.1.44:29000/getResult")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
       if error_code.blank? && @error != true
@@ -218,7 +218,7 @@ class CmController < ApplicationController
       @error_description = "La connexion n'a pas pu être établie."
     else
       body = %Q[<?xml version='1.0' encoding='UTF-8'?><dividendsRequest><connectionId>#{@connection_id}</connectionId><programId>#{params[:program_id]}</programId><raceId>#{params[:race_id]}</raceId></dividendsRequest>]
-      send_request(body, "http://office.cm3.work:27000/getDividends")
+      send_request(body, "http://192.168.1.44:29000/getDividends")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
       if error_code.blank? && @error != true
@@ -267,7 +267,7 @@ class CmController < ApplicationController
         format_eval_games
         body = %Q[<?xml version='1.0' encoding='UTF-8'?><evaluationRequest><connectionId>#{@connection_id}</connectionId><programId>#{params[:program_id]}</programId><raceId>#{params[:race_id]}</raceId>#{@games_body}</evaluationRequest>]
 
-        send_request(body, "http://office.cm3.work:27000/evaluateGames")
+        send_request(body, "http://192.168.1.44:29000/evaluateGames")
 
         error_code = (@request_result.xpath('//return').at('error').content rescue nil)
 
@@ -349,7 +349,7 @@ class CmController < ApplicationController
 
           create_bet
 
-          send_request(body, "http://office.cm3.work:27000/sellTicket")
+          send_request(body, "http://192.168.1.44:29000/sellTicket")
 
           error_code = (@request_result.xpath('//return').at('error').content rescue nil)
           error_message = (@request_result.xpath('//return').at('message').content rescue nil)
@@ -457,7 +457,7 @@ class CmController < ApplicationController
         if bet_cancellable
           body = %Q[<?xml version='1.0' encoding='UTF-8'?><cancelRequest><connectionId>#{@connection_id}</connectionId><serialNumber>#{@serial_number}</serialNumber></cancelRequest>]
 
-          send_request(body, "http://office.cm3.work:27000/cancelTicket")
+          send_request(body, "http://192.168.1.44:29000/cancelTicket")
 
           error_code = (@request_result.xpath('//return').at('error').content rescue nil)
           error_message = (@request_result.xpath('//return').at('message').content rescue nil)
@@ -514,7 +514,7 @@ class CmController < ApplicationController
     else
       body = %Q[<?xml version='1.0' encoding='UTF-8'?><winningsRequest><connectionId>#{@connection_id}</connectionId><programId>#{program_id}</programId><raceId>#{race_id}</raceId></winningsRequest>]
 
-      send_request(body, "http://office.cm3.work:27000/getWinings")
+      send_request(body, "http://192.168.1.44:29000/getWinings")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
       error_message = (@request_result.xpath('//return').at('message').content rescue nil)
