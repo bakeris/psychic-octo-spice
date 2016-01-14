@@ -77,4 +77,46 @@ class EpplController < ApplicationController
     end
   end
 
+  def api_transfer_earning
+    #@eppl = (Eppl.where(transaction_id: params[:transaction_id], bet_placed: true).first rescue nil)
+    paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
+    paymoney_account_token = check_account_number(params[:paymoney_account_number])
+    transaction_amount = params[:transaction_amount]
+
+    if paymoney_account_token.blank?
+      @error_code = '4000'
+      @error_description = "Le compte Paymoney n'a pas été trouvé."
+    else
+      #if @eppl.earning_transaction_id.blank?
+        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c68e864/account/transfer/uXAXMDuW/#{paymoney_account_token}/#{transaction_amount}", followlocation: true, method: :get)
+
+        request.on_complete do |response|
+          if response.success?
+            response_body = response.body
+
+            if !response_body.include?("|")
+              #@eppl.update_attributes(earning_transaction_id: response_body, earning_paid: true, earning_paid_at: DateTime.now)
+              @response_body = response_body
+              @error_code = ""
+              @error_description = ""
+            else
+              @error_code = '4001'
+              @error_description = "Erreur de paiement, le transfert n'a pas pu être effectué."
+              #@eppl.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
+            end
+          else
+            @error_code = '4000'
+            @error_description = "Le serveur Paymoney n'est pas accessible."
+            #@eppl.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
+          end
+        end
+
+        request.run
+      #else
+        #@error_code = '4002'
+        #@error_description = "Cette transaction a déjà été payée."
+      #end
+    end
+  end
+
 end
