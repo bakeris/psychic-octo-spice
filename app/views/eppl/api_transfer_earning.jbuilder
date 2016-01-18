@@ -3,5 +3,6 @@ if @error_code != ""
 else
   json.bet do
     json.transaction_id @response_body
+    json.transaction_amount @transaction_amount
   end
 end
