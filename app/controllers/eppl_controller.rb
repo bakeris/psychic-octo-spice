@@ -179,15 +179,10 @@ class EpplController < ApplicationController
   def api_recharge_eppl_account
     #@eppl = (Eppl.where(transaction_id: params[:transaction_id], bet_placed: true).first rescue nil)
     paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
-    paymoney_account_token = check_account_number(params[:paymoney_account_number])
     @transaction_amount = params[:transaction_amount]
 
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
 
-    if paymoney_account_token.blank?
-      @error_code = '4000'
-      @error_description = "Le compte Paymoney n'a pas été trouvé."
-    else
       #if @eppl.earning_transaction_id.blank?
         request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d1798bc43ed59e5207c68e864564/earnings/pay/TRJ/PExxGeLY/#{transaction_id}/#{@transaction_amount}", followlocation: true, method: :get)
 
@@ -217,7 +212,6 @@ class EpplController < ApplicationController
         #@error_code = '4002'
         #@error_description = "Cette transaction a déjà été payée."
       #end
-    end
   end
 
 end
