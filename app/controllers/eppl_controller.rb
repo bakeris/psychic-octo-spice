@@ -32,7 +32,7 @@ class EpplController < ApplicationController
         @error_code = '5001'
         @error_description = "Le compte Paymoney n'a pas été trouvé."
       else
-        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/#{transaction_id}/#{game_account_token}/#{paymoney_account_token}/#{password}/#{transaction_amount}", followlocation: true, method: :get)
+        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/c33fa532/#{game_account_token}/#{paymoney_account_token}/#{password}/#{transaction_amount}", followlocation: true, method: :get)
 
         request.on_complete do |response|
           if response.success?
