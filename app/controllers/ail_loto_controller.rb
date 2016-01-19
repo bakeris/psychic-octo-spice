@@ -750,7 +750,7 @@ class AilLotoController < ApplicationController
     @error_code = ''
     @error_description = ''
     notification_objects = (JSON.parse(request.body.read) rescue nil)
-    notification_objects = notification_objects["bets"]
+    notification_objects = notification_objects["bets"] rescue ""
     error_array = []
     success_array = []
     draw_id_array = []
@@ -820,7 +820,7 @@ class AilLotoController < ApplicationController
 
         end
 
-        AilLoto.where("draw_id = '#{draw_id}' AND earning_paid IS NULL AND refun_paid IS NULL AND placement_acknowledge").map{|bet| bet.update_attributes(bet_satus: "Perdant")}
+        AilLoto.where("draw_id = '#{draw_id}' AND earning_paid IS NULL AND refund_paid IS NULL AND placement_acknowledge").map{|bet| bet.update_attributes(bet_satus: "Perdant")}
       end
     end
 
