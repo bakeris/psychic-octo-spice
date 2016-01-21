@@ -184,7 +184,7 @@ class EpplController < ApplicationController
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
 
       #if @eppl.earning_transaction_id.blank?
-        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d1798bc43ed59e5207c68e864564/earnings/pay/TRJ/PExxGeLY/#{transaction_id}/#{@transaction_amount}", followlocation: true, method: :get)
+        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/#{transaction_id}/PExxGeLY/TRJ/TRJ_pass/#{@transaction_amount}", followlocation: true, method: :get)
 
         request.on_complete do |response|
           if response.success?
