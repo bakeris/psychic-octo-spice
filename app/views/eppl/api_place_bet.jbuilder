@@ -6,6 +6,6 @@ else
     json.transaction_id @eppl.transaction_id
     json.transaction_amount @eppl.transaction_amount
     json.begin_date @eppl.begin_date rescue nil
-    json.end_date @eppl.end_date rescue nil
+    json.game_id @eppl.game_id rescue nil
   end
 end
