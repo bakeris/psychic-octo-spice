@@ -32,7 +32,7 @@ class EpplController < ApplicationController
         @error_code = '5001'
         @error_description = "Le compte Paymoney n'a pas été trouvé."
       else
-        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/c33fa532/#{game_account_token}/#{paymoney_account_token}/#{password}/#{transaction_amount}", followlocation: true, method: :get)
+        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/#{transaction_id}/#{game_account_token}/#{paymoney_account_token}/#{password}/#{transaction_amount}", followlocation: true, method: :get)
 
         request.on_complete do |response|
           if response.success?
@@ -64,11 +64,11 @@ class EpplController < ApplicationController
       @error_code = '3000'
       @error_description = "L'identifiant du parieur n'a pas été trouvé."
     else
-      @eppl = Eppl.create(transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s, paymoney_account: params[:paymoney_account_number], transaction_amount: @transaction_amount, remote_ip: @remote_ip, gamer_id: params[:gamer_id], game_account_token: @game_account_token, begin_date: begin_date, end_date: end_date)
+      @eppl = Eppl.create(transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s, paymoney_account: params[:paymoney_account_number], transaction_amount: @transaction_amount, remote_ip: @remote_ip, game_id: params[:game_id], game_account_token: @game_account_token, begin_date: begin_date, bet_placed: true, bet_placed_at: DateTime.now, paymoney_transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s)
 
-      if !place_bet_with_cancellation(@eppl, @game_account_token, params[:paymoney_account_number], params[:password], @transaction_amount)
-        @eppl.update_attributes(error_code: @error_code, error_description: @error_description)
-      end
+      #if !place_bet_with_cancellation(@eppl, @game_account_token, params[:paymoney_account_number], params[:password], @transaction_amount)
+        #@eppl.update_attributes(error_code: @error_code, error_description: @error_description)
+      #end
     end
   end
 
@@ -184,7 +184,7 @@ class EpplController < ApplicationController
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
 
       #if @eppl.earning_transaction_id.blank?
-        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d1798bc43ed59e5207c68e864564/earnings/pay/TRJ/PExxGeLY/#{transaction_id}/#{@transaction_amount}", followlocation: true, method: :get)
+        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/#{transaction_id}/PExxGeLY/TRJ/TRJ_pass/#{@transaction_amount}", followlocation: true, method: :get)
 
         request.on_complete do |response|
           if response.success?
