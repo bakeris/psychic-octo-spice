@@ -33,5 +33,6 @@ else
     json.draw_date bet.draw_date rescue nil
     json.draw_number bet.draw_number rescue nil
     json.bet_status bet.bet_status rescue nil
+    json.basis_amount bet.basis_amount rescue nil
   end
 end
