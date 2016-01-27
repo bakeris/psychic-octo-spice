@@ -16,7 +16,7 @@ class CmController < ApplicationController
       body = %Q[<?xml version='1.0' encoding='UTF-8'?>
                 <loginRequest>
                   <username>#{@@user_name}</username>
-                  <password>#{@@password}<password>
+                  <password>#{@@password}</password>
                   <notificationUrl>#{@@notification_url}</notificationUrl>
                 </loginRequest>]
       send_request(body, "http://192.168.1.44:29000/login")
