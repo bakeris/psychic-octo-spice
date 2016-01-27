@@ -174,10 +174,10 @@ Rails.application.routes.draw do
   #---------------------CM3---------------------
 
   # Get session
-  get "/cm3/api/efc7e3eaee/current_session/get" => 'cm#api_current_session'
+  get "/cm3/api/efc7e3eaee/current_session/get/:session_id" => 'cm#api_current_session'
 
   # Get program
-  get "/cm3/api/94be19034e/program/get" => 'cm#api_get_program'
+  get "/cm3/api/94be19034e/program/get/:program_id" => 'cm#api_get_program'
 
   # Get race
   get "/cm3/api/ac031f75b1/get_race/:program_id/:race_id" => 'cm#api_get_race'

@@ -41,7 +41,7 @@ class CmController < ApplicationController
       @error_code = '3000'
       @error_description = "La connexion n'a pas pu être établie."
     else
-      send_request("", "http://192.168.1.44:29000/getCurrentSession")
+      send_request("<sessionRequest><connectionId>#{@connection_id}</connectionId></sessionRequest>", "http://192.168.1.44:29000/getCurrentSession")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
       if error_code.blank? && @error != true
@@ -69,7 +69,7 @@ class CmController < ApplicationController
       @error_code = '3000'
       @error_description = "La connexion n'a pas pu être établie."
     else
-      send_request("", "http://192.168.1.44:29000/getProgram")
+      send_request("<programRequest><connectionId>#{@connection_id}</connectionId><programId>#{params[:program_id]}</programId></programRequest>", "http://192.168.1.44:29000/getProgram")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
       if error_code.blank? && @error != true
