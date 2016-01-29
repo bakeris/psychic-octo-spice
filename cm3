@@ -8,7 +8,9 @@ Succès:
 {'current_session':{'session_id':'2015320','session_date':'2015-11-16','status':'ON','currency_name':'Franc CFA','currency_mnemonic':'FCFA','program_id':'20153201'}}
 
 Erreur:
+7284cc39bb/8901
 
+curl --request GET --data "<?xml version='1.0' encoding='UTF-8' ?><vendorBalanceRequest><connectionId>123456789</connectionId><vendorId>8901</vendorId></vendorBalanceRequest>" http://192.168.1.44:29000/getVendorBalance --header 'Content-Type:text/xml'
 
 
 <loginRequest>
@@ -18,11 +20,11 @@ Erreur:
 </loginRequest>
 
 # Login #
-curl --request GET --data "<?xml version='1.0' encoding='UTF-8' ?><loginRequest><username>lutilisateur</username><password>lemotdepasse</password><notificationUrl>https://142.11.15.18:11111/</notificationUrl></loginRequest>" http://192.168.1.44:29000/login --header 'Content-Type:text/xml'
+curl --request GET --data "<?xml version='1.0' encoding='UTF-8' ?><loginRequest><username>lutilisateur</username><password>lemotdepasse</password><notificationUrl>https://142.11.15.18:11111/</notificationUrl></loginRequest>" http://office.cm3.work:27000/login --header 'Content-Type:text/xml'
 
 
 # Login #
-curl --request GET --data '<balanceRequest><connectionId>32850194855</connectionId><sessionId>2015285</sessionId></balanceRequest>' http://192.168.1.44:29000/getSessionBalance --header 'Content-Type:text/xml'
+curl --request GET --data '<loginRequest><username>ngser@lonaci</username><password>lemotdepasse</password><notificationUrl>https://142.11.15.18:11111</notificationUrl></loginRequest>' http://office.cm3.work:27000/login --header 'Content-Type:text/xml'
 
 <?xml version='1.0' encoding='UTF-8' ?><loginResponse><connectionId>32850194855</connectionId></loginResponse>
 

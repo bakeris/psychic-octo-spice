@@ -215,6 +215,19 @@ Rails.application.routes.draw do
   get "/api/3ae7e2f1b1/deposit/:game_token/:pos_id/:paymoney_account_number/:agent/:sub_agent/:date/:amount" => 'deposits#api_proceed_deposit'
   post "/api/3ae7e2f1b1/deposit/:game_token/:pos_id/:paymoney_account_number/:agent/:sub_agent/:date/:amount" => 'deposits#api_proceed_deposit'
 
+  # Notify session
+  get "/api/dc4741d1b1/notifySession" => 'cm#api_notify_session'
+  post "/api/dc4741d1b1/notifySession" => 'cm#api_notify_session'
+
+  # Notify program
+  get "/api/dc4741d1b1/notifyProgram" => 'cm#api_notify_program'
+  post "/api/dc4741d1b1/notifyProgram" => 'cm#api_notify_program'
+
+  # Notify race
+  get "/api/dc4741d1b1/notifyRace" => 'cm#api_notify_race'
+  post "/api/dc4741d1b1/notifyRace" => 'cm#api_notify_race'
+
+
   # Payment notification
   #post '/cm3/api/dfg7fvb3191/payment/notification' => 'ludwin_api#api_coupon_payment_notification'
   #---------------------CM3---------------------
