@@ -9,7 +9,7 @@ class CmController < ApplicationController
 
   @@user_name = "ngser@lonaci"
   @@password = "lemotdepasse"
-  @@notification_url = "http://41.189.40.193:10000"
+  @@notification_url = "http://172.18.1.244:10000"
   @@hub_notification_url = "" # URL vers la plateforme de Moïse
 
   def ensure_login
@@ -629,6 +629,7 @@ class CmController < ApplicationController
   end
 
   def api_notify_race
+    render nothing: true, status: 200
     request_body = request.body.read
     notification = (Nokogiri::XML(request_body) rescue nil)
     status = nil
@@ -644,7 +645,12 @@ class CmController < ApplicationController
           RestClient.get "#{@@hub_notification_url}/api/cm3/race_notification/#{@program_id}/#{@race_id}/#{@reason}" rescue nil
           status = "200"
         else
-          status = "412"
+          if @reason == "winnings"
+            redirect_to controller: 'cm', action: 'api_get_winners', program_id: @program_id, race_id: @race_id
+            status = "200"
+          else
+            status = "412"
+          end
         end
       else
         status = "412"
@@ -653,7 +659,7 @@ class CmController < ApplicationController
      status = "422"
     end
 
-    CmLog.create(operation: "Notify race", notify_race_connection_id: @connection_id, notify_race_program_id: @program_id, notify_race_race_id: @race_id, notify_race_reason: @reason, notify_race_request_body: request_body, notify_race_response: )
+    CmLog.create(operation: "Notify race", notify_race_connection_id: @connection_id, notify_race_program_id: @program_id, notify_race_race_id: @race_id, notify_race_reason: @reason, notify_race_request_body: request_body)
 
     render text: status
   end
