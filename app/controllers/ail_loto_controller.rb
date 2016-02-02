@@ -755,18 +755,23 @@ class AilLotoController < ApplicationController
     @error_code = ''
     @error_description = ''
     notification_objects = (JSON.parse(request.body.read) rescue nil)
-    notification_objects = notification_objects["bets"] rescue ""
+    bets = notification_objects["bets"] rescue ""
     error_array = []
     success_array = []
     draw_id_array = []
+    remote_ip_address = request.remote_ip
+
     AilLotoLog.create(operation: "Notification", sent_params: request.body.read, remote_ip_address: remote_ip_address)
 
-    if notification_objects.blank? || (notification_objects.class.to_s rescue nil) != "Array"
+    if notification_objects.blank? || (bets.class.to_s rescue nil) != "Array"
       @error_code = '5000'
       @error_description = 'Invalid JSON data.'
     else
-      #audit_id = notification_objects["AuditId"] rescue ""
-      notification_objects.each do |notification_object|
+      audit_id = notification_objects["AuditId"] rescue ""
+      message_id = notification_objects["messageID"] rescue ""
+      message_type = notification_objects["messageID"] rescue ""
+
+      bets.each do |notification_object|
 
         ref_number = notification_object["RefNumber"] rescue ""
         ticket_number = notification_object["TicketNumber"] rescue ""
