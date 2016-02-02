@@ -10,7 +10,7 @@ class CmController < ApplicationController
   @@user_name = "ngser@lonaci"
   @@password = "lemotdepasse"
   @@notification_url = "http://172.18.1.244:10000"
-  @@hub_notification_url = "" # URL vers la plateforme de Moïse
+  @@hub_notification_url = "http://parionsdirect.ci/test/api/cm3" # URL vers la plateforme de Moïse
 
   def ensure_login
     #if @connection_id.blank?
