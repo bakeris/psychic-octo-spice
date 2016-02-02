@@ -708,7 +708,7 @@ class AilPmuController < ApplicationController
     @error_code = ''
     @error_description = ''
     notification_objects = (JSON.parse(request.body.read) rescue nil)
-    notification_objects = notification_objects["bets"] rescue ""
+    bets = notification_objects["bets"] rescue ""
     error_array = []
     success_array = []
     draw_id_array = []
@@ -716,19 +716,22 @@ class AilPmuController < ApplicationController
 
     AilPmuLog.create(operation: "Notification", sent_params: request.body.read, remote_ip_address: remote_ip_address)
 
-    if notification_objects.blank? || (notification_objects.class.to_s rescue nil) != "Array"
+    if notification_objects.blank? || (bets.class.to_s rescue nil) != "Array"
       @error_code = '5000'
       @error_description = 'Invalid JSON data.'
     else
-      notification_objects.each do |notification_object|
+      audit_id = notification_objects["AuditId"] rescue ""
+      message_id = notification_objects["messageID"] rescue ""
+
+      bets.each do |notification_object|
 
         ref_number = notification_object["RefNumber"] rescue ""
         ticket_number = notification_object["TicketNumber"] rescue ""
         amount = notification_object["Amount"] rescue ""
-        amount_type = notification_object["AmountType"].to_s rescue ""
+        amount_type = notification_object["OperationType"].to_s rescue ""
 
         @bet = AilPmu.where(ref_number: ref_number, ticket_number: ticket_number, earning_paid: nil, refund_paid: nil).first rescue nil
-        print @bet.blank?.to_s + "**********************"
+
         if @bet.blank? || !["1", "2"].include?(amount_type)
           error_array << notification_object.to_s
         else

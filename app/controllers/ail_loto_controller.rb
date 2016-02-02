@@ -769,14 +769,14 @@ class AilLotoController < ApplicationController
     else
       audit_id = notification_objects["AuditId"] rescue ""
       message_id = notification_objects["messageID"] rescue ""
-      message_type = notification_objects["messageID"] rescue ""
+      #message_type = notification_objects["messageID"] rescue ""
 
       bets.each do |notification_object|
 
         ref_number = notification_object["RefNumber"] rescue ""
         ticket_number = notification_object["TicketNumber"] rescue ""
         amount = notification_object["Amount"] rescue ""
-        amount_type = notification_object["AmountType"].to_s rescue ""
+        amount_type = notification_object["OperationType"].to_s rescue ""
 
         @bet = AilLoto.where(ref_number: ref_number, ticket_number: ticket_number, earning_paid: nil, refund_paid: nil).first rescue nil
         if @bet.blank? || !["1", "2"].include?(amount_type)
