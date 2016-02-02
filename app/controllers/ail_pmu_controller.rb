@@ -712,6 +712,7 @@ class AilPmuController < ApplicationController
     error_array = []
     success_array = []
     draw_id_array = []
+    AilPmuLog.create(operation: "Notification", sent_params: request.body.read, remote_ip_address: remote_ip_address)
 
     if notification_objects.blank? || (notification_objects.class.to_s rescue nil) != "Array"
       @error_code = '5000'
