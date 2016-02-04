@@ -673,6 +673,20 @@ class CmController < ApplicationController
     return status
   end
 
+  def api_gamer_bets
+    @error_code = ''
+    @error_description = ''
+
+    user = User.find_by_uuid(params[:gamer_id])
+
+    if user.blank?
+      @error_code = '4000'
+      @error_description = "Ce parieur n'a pas été trouvé."
+    else
+      @bets = Cm.where(punter_id: params[:gamer_id]).order("created_at DESC")
+    end
+  end
+
 
   def send_request(body, url)
     @request_result = nil

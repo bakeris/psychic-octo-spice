@@ -227,6 +227,9 @@ Rails.application.routes.draw do
   get "/api/dc4741d1b1/notifyRace" => 'cm#api_notify_race'
   post "/api/dc4741d1b1/notifyRace" => 'cm#api_notify_race'
 
+  # Display the list of bets of a gamer
+  get '/cm3/api/yhf74493/gamer/bets/list/:gamer_id' => 'cm#api_gamer_bets'
+
 
   # Payment notification
   #post '/cm3/api/dfg7fvb3191/payment/notification' => 'ludwin_api#api_coupon_payment_notification'
