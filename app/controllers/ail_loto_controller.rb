@@ -846,7 +846,7 @@ class AilLotoController < ApplicationController
   end
 
   def validate_payment_notifications
-    bets = AilLoto.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En attente de validation' AND placement_acknowledge IS TRUE AND (earning_notification_received_at  < '#{DateTime.now - 10.minutes}' OR refund_notification_received_at  < '#{DateTime.now - 10.minutes}') AND earning_paid IS NULL AND refund_paid IS NULL")
+    bets = AilLoto.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En attente de validation' AND placement_acknowledge IS TRUE AND (earning_notification_received_at  < '#{DateTime.now - 16.minutes}' OR refund_notification_received_at  < '#{DateTime.now - 16.minutes}') AND earning_paid IS NULL AND refund_paid IS NULL")
     draw_ids = bets.pluck(:draw_id) rescue nil
 
     unless draw_ids.blank?
