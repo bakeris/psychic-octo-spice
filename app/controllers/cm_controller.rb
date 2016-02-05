@@ -9,14 +9,15 @@ class CmController < ApplicationController
 
   @@user_name = "ngser@lonaci"
   @@password = "lemotdepasse"
-  @@notification_url = "https://142.11.15.18:11111"
+  @@notification_url = "http://172.18.1.244:10000"
+  @@hub_notification_url = "http://parionsdirect.ci/test/api/cm3" # URL vers la plateforme de Moïse
 
   def ensure_login
     #if @connection_id.blank?
       body = %Q[<?xml version='1.0' encoding='UTF-8'?>
                 <loginRequest>
                   <username>#{@@user_name}</username>
-                  <password>#{@@password}<password>
+                  <password>#{@@password}</password>
                   <notificationUrl>#{@@notification_url}</notificationUrl>
                 </loginRequest>]
       send_request(body, "http://192.168.1.44:29000/login")
@@ -41,7 +42,7 @@ class CmController < ApplicationController
       @error_code = '3000'
       @error_description = "La connexion n'a pas pu être établie."
     else
-      send_request("", "http://192.168.1.44:29000/getCurrentSession")
+      send_request("<sessionRequest><connectionId>#{@connection_id}</connectionId></sessionRequest>", "http://192.168.1.44:29000/getCurrentSession")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
       if error_code.blank? && @error != true
@@ -69,7 +70,7 @@ class CmController < ApplicationController
       @error_code = '3000'
       @error_description = "La connexion n'a pas pu être établie."
     else
-      send_request("", "http://192.168.1.44:29000/getProgram")
+      send_request("<programRequest><connectionId>#{@connection_id}</connectionId><programId>#{params[:program_id]}</programId></programRequest>", "http://192.168.1.44:29000/getProgram")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
       if error_code.blank? && @error != true
@@ -550,6 +551,142 @@ class CmController < ApplicationController
       end
     end
   end
+
+  def api_notify_session
+    request_body = request.body.read
+    notification = (Nokogiri::XML(request_body) rescue nil)
+    status = nil
+
+    if !notification.blank?
+      @connection_id =  (notification.xpath('//sessionNotification').at('connectionId').content rescue nil)
+      @session_id =  (notification.xpath('//sessionNotification').at('sessionId').content rescue nil)
+      @reason =  (notification.xpath('//sessionNotification').at('reason').content rescue nil)
+
+      if valid_notify_session_parameters?
+        if @reason.downcase != "balance" && (@reason.downcase == "new" || @reason.downcase == "program_added")
+          RestClient.get "#{@@hub_notification_url}/api/cm3/session_notification/#{@session_id}/#{@reason}" rescue nil
+          status = "200"
+        else
+          status = "412"
+        end
+      else
+        status = "412"
+      end
+    else
+     status = "422"
+    end
+
+    CmLog.create(operation: "Notify session", session_notification_connection_id: @connection_id, session_notification_session_id: @session_id, session_notification_reason: @reason, notify_session_request_body: request_body)
+
+    render text: status
+  end
+
+  def valid_notify_session_parameters?
+    status = true
+    if @connection_id.blank? || @session_id.blank? || @reason.blank?
+      status = false
+    end
+
+    return status
+  end
+
+  def api_notify_program
+    request_body = request.body.read
+    notification = (Nokogiri::XML(request_body) rescue nil)
+    status = nil
+
+    if !notification.blank?
+      @connection_id =  (notification.xpath('//programNotification').at('connectionId').content rescue nil)
+      @program_id =  (notification.xpath('//programNotification').at('programId').content rescue nil)
+      @reason =  (notification.xpath('//programNotification').at('reason').content rescue nil)
+
+      if valid_notify_program_parameters?
+        if @reason.downcase == "state"
+          RestClient.get "#{@@hub_notification_url}/api/cm3/program_notification/#{@program_id}/#{@reason}" rescue nil
+          status = "200"
+        else
+          status = "412"
+        end
+      else
+        status = "412"
+      end
+    else
+     status = "422"
+    end
+
+    CmLog.create(operation: "Notify session", session_program_connection_id: @connection_id, program_notification_program_id: @program_id, session_notification_reason: @reason, notify_session_request_body: request_body)
+
+    render text: status
+  end
+
+  def valid_notify_program_parameters?
+    status = true
+    if @connection_id.blank? || @program_id.blank? || @reason.blank?
+      status = false
+    end
+
+    return status
+  end
+
+  def api_notify_race
+    render nothing: true, status: 200
+    request_body = request.body.read
+    notification = (Nokogiri::XML(request_body) rescue nil)
+    status = nil
+
+    if !notification.blank?
+      @connection_id =  (notification.xpath('//raceNotification').at('connectionId').content rescue nil)
+      @program_id =  (notification.xpath('//raceNotification').at('programId').content rescue nil)
+      @race_id =  (notification.xpath('//raceNotification').at('raceId').content rescue nil)
+      @reason =  (notification.xpath('//raceNotification').at('reason').content.downcase rescue nil)
+
+      if valid_notify_race_parameters?
+        if @reason == "max_runners" || @reason == "scratched" || @reason == "couple" || @reason == "state" || @reason == "bet_state"
+          RestClient.get "#{@@hub_notification_url}/api/cm3/race_notification/#{@program_id}/#{@race_id}/#{@reason}" rescue nil
+          status = "200"
+        else
+          if @reason == "winnings"
+            redirect_to controller: 'cm', action: 'api_get_winners', program_id: @program_id, race_id: @race_id
+            status = "200"
+          else
+            status = "412"
+          end
+        end
+      else
+        status = "412"
+      end
+    else
+     status = "422"
+    end
+
+    CmLog.create(operation: "Notify race", notify_race_connection_id: @connection_id, notify_race_program_id: @program_id, notify_race_race_id: @race_id, notify_race_reason: @reason, notify_race_request_body: request_body)
+
+    render text: status
+  end
+
+  def valid_notify_race_parameters?
+    status = true
+    if @connection_id.blank? || @program_id.blank? || @race_id.blank? || @reason.blank?
+      status = false
+    end
+
+    return status
+  end
+
+  def api_gamer_bets
+    @error_code = ''
+    @error_description = ''
+
+    user = User.find_by_uuid(params[:gamer_id])
+
+    if user.blank?
+      @error_code = '4000'
+      @error_description = "Ce parieur n'a pas été trouvé."
+    else
+      @bets = Cm.where(punter_id: params[:gamer_id]).order("created_at DESC")
+    end
+  end
+
 
   def send_request(body, url)
     @request_result = nil

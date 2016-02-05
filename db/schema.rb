@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160126174841) do
+ActiveRecord::Schema.define(version: 20160129094059) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -328,6 +328,20 @@ ActiveRecord::Schema.define(version: 20160126174841) do
     t.text     "sell_ticket_request"
     t.text     "sell_ticket_response"
     t.string   "sell_ticket_code"
+    t.text     "notify_session_request_body"
+    t.text     "notify_session_request_result"
+    t.string   "session_notification_connection_id"
+    t.string   "session_notification_session_id"
+    t.string   "session_notification_reason"
+    t.string   "program_notification_connection_id"
+    t.string   "program_notification_program_id"
+    t.string   "program_notification_reason"
+    t.string   "notify_race_connection_id"
+    t.string   "notify_race_program_id"
+    t.string   "notify_race_race_id"
+    t.string   "notify_race_reason"
+    t.text     "notify_race_request_body"
+    t.text     "notify_race_response"
   end
 
   create_table "cm_wagers", force: true do |t|
@@ -392,6 +406,8 @@ ActiveRecord::Schema.define(version: 20160126174841) do
     t.string   "end_date"
     t.text     "win_request"
     t.text     "win_response"
+    t.text     "notify_session_request_body"
+    t.text     "notify_session_request_result"
   end
 
   create_table "creation_modes", force: true do |t|

@@ -148,8 +148,10 @@ Rails.application.routes.draw do
   # Validate winning transaction
   post '/ail/loto/api/66378dffrz3/transaction/validate' => 'ail_loto#api_validate_transaction'
 
+  #get '/ail/loto/api/66378dffrz3/transaction/validate_payment_notifications' => 'ail_loto#validate_payment_notifications'
+
   # Last request log
-  get '/ail/loto/api/log/last_request' => 'ail_pmu#api_last_request_log'
+  get '/ail/loto/api/log/last_request' => 'ail_loto#api_last_request_log'
 
   #---------------------AIL Loto---------------------
 
@@ -177,7 +179,7 @@ Rails.application.routes.draw do
   get "/cm3/api/efc7e3eaee/current_session/get" => 'cm#api_current_session'
 
   # Get program
-  get "/cm3/api/94be19034e/program/get" => 'cm#api_get_program'
+  get "/cm3/api/94be19034e/program/get/:program_id" => 'cm#api_get_program'
 
   # Get race
   get "/cm3/api/ac031f75b1/get_race/:program_id/:race_id" => 'cm#api_get_race'
@@ -214,6 +216,22 @@ Rails.application.routes.draw do
   # Make a deposit
   get "/api/3ae7e2f1b1/deposit/:game_token/:pos_id/:paymoney_account_number/:agent/:sub_agent/:date/:amount" => 'deposits#api_proceed_deposit'
   post "/api/3ae7e2f1b1/deposit/:game_token/:pos_id/:paymoney_account_number/:agent/:sub_agent/:date/:amount" => 'deposits#api_proceed_deposit'
+
+  # Notify session
+  get "/api/dc4741d1b1/notifySession" => 'cm#api_notify_session'
+  post "/api/dc4741d1b1/notifySession" => 'cm#api_notify_session'
+
+  # Notify program
+  get "/api/dc4741d1b1/notifyProgram" => 'cm#api_notify_program'
+  post "/api/dc4741d1b1/notifyProgram" => 'cm#api_notify_program'
+
+  # Notify race
+  get "/api/dc4741d1b1/notifyRace" => 'cm#api_notify_race'
+  post "/api/dc4741d1b1/notifyRace" => 'cm#api_notify_race'
+
+  # Display the list of bets of a gamer
+  get '/cm3/api/yhf74493/gamer/bets/list/:gamer_id' => 'cm#api_gamer_bets'
+
 
   # Payment notification
   #post '/cm3/api/dfg7fvb3191/payment/notification' => 'ludwin_api#api_coupon_payment_notification'
