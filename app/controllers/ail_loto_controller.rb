@@ -755,7 +755,8 @@ class AilLotoController < ApplicationController
   def api_validate_transaction
     @error_code = ''
     @error_description = ''
-    notification_objects = (JSON.parse(request.body.read) rescue nil)
+    raw_data = request.body.read
+    notification_objects = (JSON.parse(raw_data) rescue nil)
     bets = notification_objects["bets"] rescue ""
     error_array = []
     success_array = []
@@ -768,33 +769,59 @@ class AilLotoController < ApplicationController
     else
       audit_id = notification_objects["AuditId"] rescue ""
       message_id = notification_objects["messageID"] rescue ""
-      message_type = notification_objects["messageType"] rescue ""
+      message_type = set_message_type(notification_objects["messageType"])
 
-      AilLotoLog.create(operation: (message_type == "Correction" ? "Correction" : "Notification"), sent_params: request.body.read, remote_ip_address: remote_ip_address)
+      AilLotoLog.create(operation: message_type, sent_params: raw_data, remote_ip_address: remote_ip_address)
 
-      bets.each do |notification_object|
-        ref_number = notification_object["RefNumber"] rescue ""
-        ticket_number = notification_object["TicketNumber"] rescue ""
-        amount = notification_object["Amount"] rescue ""
-        amount_type = notification_object["OperationType"].to_s rescue ""
+      if message_type == "Notification"
+        bets.each do |notification_object|
+          ref_number = notification_object["RefNumber"] rescue ""
+          ticket_number = notification_object["TicketNumber"] rescue ""
+          amount = notification_object["Amount"] rescue ""
+          amount_type = notification_object["OperationType"].to_s rescue ""
 
-        @bet = AilLoto.where(ref_number: ref_number, ticket_number: ticket_number, earning_paid: nil, refund_paid: nil).first rescue nil
-        if @bet.blank? || !["1", "2"].include?(amount_type)
-          error_array << notification_object.to_s
-        else
-
-          success_array << notification_object.to_s
-          unless draw_id_array.include?(@bet.draw_id)
-            draw_id_array << @bet.draw_id
-          end
-
-          if amount_type == "1"
-            notification_field = "earning"
+          @bet = AilLoto.where(ref_number: ref_number, ticket_number: ticket_number, earning_paid: nil, refund_paid: nil, earning_notification_received: nil, refund_notification_received: nil).first rescue nil
+          if @bet.blank? || !["1", "2"].include?(amount_type)
+            error_array << notification_object.to_s
           else
-            notification_field = "refund"
-          end
+            success_array << notification_object.to_s
 
-          @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => amount, :"#{notification_field}_notification_received_at" => DateTime.now, bet_status: "En attente de validation")
+            if amount_type == "1"
+              notification_field = "earning"
+            else
+              notification_field = "refund"
+            end
+
+            @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => amount, :"#{notification_field}_notification_received_at" => DateTime.now, bet_status: "En attente de validation")
+          end
+        end
+      end
+
+      if message_type == "Correction"
+        bets.each do |notification_object|
+          ref_number = notification_object["RefNumber"] rescue ""
+          ticket_number = notification_object["TicketNumber"] rescue ""
+          amount = notification_object["NewAmount"] rescue ""
+          amount_type = notification_object["NewOperationType"].to_s rescue ""
+
+          @bet = AilLoto.where("ticket_number = '#{ticket_number}' AND earning_paid IS NULL AND refund_paid IS NULL AND (earning_notification_received IS TRUE OR refund_notification_received IS TRUE)").first rescue nil
+          if @bet.blank? || !["1", "2"].include?(amount_type)
+            error_array << notification_object.to_s
+          else
+            success_array << notification_object.to_s
+
+            if amount_type == "1"
+              notification_field = "earning"
+            else
+              notification_field = "refund"
+            end
+
+            if ref_number == "4"
+              @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => 0, :"#{notification_field}_notification_received_at" => DateTime.now, bet_status: "En attente de validation")
+            else
+              @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => amount, :"#{notification_field}_notification_received_at" => DateTime.now, bet_status: "En attente de validation")
+            end
+          end
         end
       end
 
@@ -806,6 +833,16 @@ class AilLotoController < ApplicationController
       }
     ]
 
+  end
+
+  def set_message_type(message_type)
+    result = message_type
+
+    if message_type != "Correction"
+      result = "Notification"
+    end
+
+    return result
   end
 
   def validate_payment_notifications
