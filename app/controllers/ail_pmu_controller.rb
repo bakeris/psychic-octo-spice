@@ -841,7 +841,7 @@ class AilPmuController < ApplicationController
       end
     end
 
-    render text: "0"
+    #render text: "0"
   end
 
   def backup_api_validate_transaction

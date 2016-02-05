@@ -6,3 +6,7 @@ curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF>
 curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><BetsRequest><TransactionID>1393844324731</TransactionID><Language>EN</Language></BetsRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getBet --header "Content-Type:text/xml" --insecure
 
 "errorMessage":"The operation has timed out"
+
+*/16 * * * * /bin/bash -l -c 'cd /var/www/html/PaymoneyGateway && source /home/ngser/.rvm/environments/ruby-2.0.0-p195@rails4.0.7 && RAILS_ENV=development /home/ngser/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/bin/rake ail_loto:validate_ail_loto_bets --silent >> /var/www/html/cron_log.log 2>&1'
+
+*/16 * * * * /bin/bash -l -c 'cd /var/www/html/PaymoneyGateway && source /home/ngser/.rvm/environments/ruby-2.0.0-p195@rails4.0.7 && RAILS_ENV=development /home/ngser/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/bin/rake ail_pmu:validate_ail_pmu_bets --silent >> /var/www/html/cron_log.log 2>&1'
