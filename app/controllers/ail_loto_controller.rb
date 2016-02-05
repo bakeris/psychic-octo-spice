@@ -762,8 +762,6 @@ class AilLotoController < ApplicationController
     draw_id_array = []
     remote_ip_address = request.remote_ip
 
-
-
     if notification_objects.blank? || (bets.class.to_s rescue nil) != "Array"
       @error_code = '5000'
       @error_description = 'Invalid JSON data.'
@@ -796,7 +794,7 @@ class AilLotoController < ApplicationController
             notification_field = "refund"
           end
 
-          @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => amount, :"#{notification_field}_notification_received_at" => DateTime.now, bet_status: "En attente")
+          @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => amount, :"#{notification_field}_notification_received_at" => DateTime.now, bet_status: "En attente de validation")
         end
       end
 
@@ -811,43 +809,49 @@ class AilLotoController < ApplicationController
   end
 
   def validate_payment_notifications
-    bets = AilLoto.where("earning_paid IS NULL AND refund_paid IS NULL AND bet_status = 'En attente' AND placement_acknowledge IS TRUE AND #{DateTime.now - earning_notification_received_at} > #{30.minute}")
-    unless bets.blank?
+    bets = AilLoto.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En attente de validation' AND placement_acknowledge IS TRUE AND (earning_notification_received_at  < '#{DateTime.now - 10.minutes}' OR refund_notification_received_at  < '#{DateTime.now - 10.minutes}') AND earning_paid IS NULL AND refund_paid IS NULL")
+    draw_ids = bets.pluck(:draw_id) rescue nil
 
-      bets_amount = bets.map{|bet| (bet.earning_amount.to_f rescue 0) + (bet.refund_amount.to_f rescue 0)}.sum rescue 0
-      if validate_bet_ail("ApXTrliOp", bets_amount, "ail_pmus")
-        bets_payout = AilLoto.where("earning_notification_received IS TRUE AND draw_id = '#{draw_id}' AND paymoney_earning_id IS NULL")
-        unless bets_payout.blank?
-          bets_payout.each do |bet_payout|
-            pay_ail_earnings(bet_payout, "AliXTtooY", bet_payout.earning_amount, "earning")
+    unless draw_ids.blank?
 
-            # SMS notification
-            build_message(bet_payout, bet_payout.earning_amount, "au PMU PLR", bet_payout.ticket_number)
-            send_sms_notification(bet_payout, @msisdn, "PMU PLR", @message_content)
+      draw_ids.each do |draw_id|
+        bets = AilLoto.where(earning_paid: nil, refund_paid: nil, draw_id: draw_id, placement_acknowledge: true)
+        bets_amount = bets.map{|bet| (bet.earning_amount.to_f rescue 0) + (bet.refund_amount.to_f rescue 0)}.sum rescue 0
+        if validate_bet_ail("ApXTrliOp", bets_amount, "ail_lotos")
+          bets_payout = AilLoto.where("earning_notification_received IS TRUE AND draw_id = '#{draw_id}' AND paymoney_earning_id IS NULL")
+          unless bets_payout.blank?
+            bets_payout.each do |bet_payout|
+              pay_ail_earnings(bet_payout, "AliXTtooY", bet_payout.earning_amount, "earning")
 
-            # Email notification
-            WinningNotification.notification_email(bet_payout.user, bet_payout.earning_amount, "au PMU PLR", "PMU PLR", bet_payout.ticket_number).deliver
+              # SMS notification
+              build_message(bet_payout, bet_payout.earning_amount, "au LOTO", bet_payout.ticket_number)
+              send_sms_notification(bet_payout, @msisdn, "LOTO", @message_content)
+
+              # Email notification
+              WinningNotification.notification_email(bet_payout.user, bet_payout.earning_amount, "au LOTO", "LOTO", bet_payout.ticket_number).deliver
+            end
           end
-        end
 
-        bets_refund = AilLoto.where("refund_notification_received IS TRUE AND draw_id = '#{draw_id}' AND paymoney_refund_id IS NULL")
-        unless bets_refund.blank?
-          bets_refund.each do |bet_refund|
-            pay_ail_earnings(bet_refund, "AliXTtooY", bet_refund.refund_amount, "refund")
+          bets_refund = AilLoto.where("refund_notification_received IS TRUE AND draw_id = '#{draw_id}' AND paymoney_refund_id IS NULL")
+          unless bets_refund.blank?
+            bets_refund.each do |bet_refund|
+              pay_ail_earnings(bet_refund, "AliXTtooY", bet_refund.refund_amount, "refund")
 
-            # SMS notification
-            build_message(bet_refund, bet_refund.refund_amount, "au PMU PLR", bet_refund.ticket_number)
-            send_sms_notification(bet_refund, @msisdn, "PMU PLR", @message_content)
+              # SMS notification
+              build_message(bet_refund, bet_refund.refund_amount, "au LOTO", bet_refund.ticket_number)
+              send_sms_notification(bet_refund, @msisdn, "LOTO", @message_content)
 
-            # Email notification
-            WinningNotification.notification_email(bet_refund.user, bet_refund.refund_amount, "au PMU PLR", "PMU PLR", bet_refund.ticket_number).deliver
+              # Email notification
+              WinningNotification.notification_email(bet_refund.user, bet_refund.refund_amount, "au LOTO", "LOTO", bet_refund.ticket_number).deliver
+            end
           end
+
+          AilLoto.where("draw_id = '#{draw_id}' AND earning_paid IS NULL AND refund_paid IS NULL AND placement_acknowledge").map{|bet| bet.update_attributes(bet_satus: "Perdant")}
         end
       end
-
     end
 
-    AilLoto.where("draw_id = '#{draw_id}' AND earning_paid IS NULL AND refund_paid IS NULL AND placement_acknowledge").map{|bet| bet.update_attributes(bet_satus: "Perdant")}
+    render text: "0"
   end
 
   def backup_api_validate_transaction
@@ -907,11 +911,11 @@ class AilLotoController < ApplicationController
                 pay_ail_earnings(bet_payout, "AliXTtooY", bet_payout.earning_amount, "earning")
 
                 # SMS notification
-                build_message(bet_payout, bet_payout.earning_amount, "au PMU PLR", bet_payout.ticket_number)
-                send_sms_notification(bet_payout, @msisdn, "PMU PLR", @message_content)
+                build_message(bet_payout, bet_payout.earning_amount, "au LOTO", bet_payout.ticket_number)
+                send_sms_notification(bet_payout, @msisdn, "LOTO", @message_content)
 
                 # Email notification
-                WinningNotification.notification_email(bet_payout.user, bet_payout.earning_amount, "au PMU PLR", "PMU PLR", bet_payout.ticket_number).deliver
+                WinningNotification.notification_email(bet_payout.user, bet_payout.earning_amount, "au LOTO", "LOTO", bet_payout.ticket_number).deliver
               end
             end
 
@@ -921,11 +925,11 @@ class AilLotoController < ApplicationController
                 pay_ail_earnings(bet_refund, "AliXTtooY", bet_refund.refund_amount, "refund")
 
                 # SMS notification
-                build_message(bet_refund, bet_refund.refund_amount, "au PMU PLR", bet_refund.ticket_number)
-                send_sms_notification(bet_refund, @msisdn, "PMU PLR", @message_content)
+                build_message(bet_refund, bet_refund.refund_amount, "au LOTO", bet_refund.ticket_number)
+                send_sms_notification(bet_refund, @msisdn, "LOTO", @message_content)
 
                 # Email notification
-                WinningNotification.notification_email(bet_refund.user, bet_refund.refund_amount, "au PMU PLR", "PMU PLR", bet_refund.ticket_number).deliver
+                WinningNotification.notification_email(bet_refund.user, bet_refund.refund_amount, "au LOTO", "LOTO", bet_refund.ticket_number).deliver
               end
             end
           end
@@ -968,6 +972,9 @@ class AilLotoController < ApplicationController
   end
 
   def api_last_request_log
-    render text: "---Operation: " + AilPmuLog.last.operation + "\n\n---Transaction ID: " + AilPmuLog.last.transaction_id  + "\n\n---Sent params: " + AilPmuLog.last.sent_params + "\n\n---Response: " + AilPmuLog.last.response_body
+    @previous_operation = AilLotoLog.find(AilLotoLog.last.id - 1)
+    @last_operation = AilLotoLog.last
+
+    render text: "---Operation: " + (@previous_operation.operation || "") + "\n\n---Transaction ID: " +  (@previous_operation.transaction_id || "") + "\n\n---Sent params: " +  (@previous_operation.sent_params || "") + "\n\n---Response: " +  (@previous_operation.response_body || "") + "\n\n\n\n---Operation: " + (@last_operation.operation || "") + "\n\n---Transaction ID: " + (@last_operation.transaction_id || "") + "\n\n---Sent params: " + (@last_operation.sent_params || "") + "\n\n---Response: " + (@last_operation.response_body || "")
   end
 end

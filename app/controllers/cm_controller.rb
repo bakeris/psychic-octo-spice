@@ -564,7 +564,7 @@ class CmController < ApplicationController
 
       if valid_notify_session_parameters?
         if @reason.downcase != "balance" && (@reason.downcase == "new" || @reason.downcase == "program_added")
-          RestClient.get "#{@@hub_notification_url}/api/cm3/session_notification/#{@session_id}" rescue nil
+          RestClient.get "#{@@hub_notification_url}/api/cm3/session_notification/#{@session_id}/#{@reason}" rescue nil
           status = "200"
         else
           status = "412"
@@ -602,7 +602,7 @@ class CmController < ApplicationController
 
       if valid_notify_program_parameters?
         if @reason.downcase == "state"
-          RestClient.get "#{@@hub_notification_url}/api/cm3/program_notification/#{@program_id}" rescue nil
+          RestClient.get "#{@@hub_notification_url}/api/cm3/program_notification/#{@program_id}/#{@reason}" rescue nil
           status = "200"
         else
           status = "412"
