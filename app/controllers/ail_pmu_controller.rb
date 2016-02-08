@@ -963,7 +963,7 @@ class AilPmuController < ApplicationController
   end
 
   def api_last_request_log
-    @previous_operation = AilPmuLog.find(AilLotoLog.last.id - 1) rescue ""
+    @previous_operation = AilPmuLog.find(AilPmuLog.last.id - 1) rescue ""
     @last_operation = AilPmuLog.last rescue ""
 
     render text: "---Operation: " + (@previous_operation.operation || "") + "\n\n---Transaction ID: " +  (@previous_operation.transaction_id || "") + "\n\n---Sent params: " +  (@previous_operation.sent_params || "") + "\n\n---Response: " +  (@previous_operation.response_body || "") + "\n\n\n\n---Operation: " + (@last_operation.operation || "") + "\n\n---Transaction ID: " + (@last_operation.transaction_id || "") + "\n\n---Sent params: " + (@last_operation.sent_params || "") + "\n\n---Response: " + (@last_operation.response_body || "")
