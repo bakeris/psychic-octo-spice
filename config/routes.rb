@@ -108,6 +108,8 @@ Rails.application.routes.draw do
   # Last request log
   get '/ail/pmu/api/log/last_request' => 'ail_pmu#api_last_request_log'
 
+  #get '/ail/pmu/api/ddf8dffrz3/transaction/validate_payment_notifications' => 'ail_pmu#validate_payment_notifications'
+
   #---------------------AIL PMU---------------------
 
   #---------------------AIL Loto---------------------
