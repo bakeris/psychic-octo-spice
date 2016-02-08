@@ -346,7 +346,7 @@ class CmController < ApplicationController
           set_scratched_list
           set_wagers
 
-          body = %Q[<?xml version='1.0' encoding='UTF-8'?><sellRequest><connectionId>#{@connection_id}</connectionId><sale><programId>#{@program_id}</programId><raceId>#{@race_id}</raceId><saleClientId>#{@transaction_id}</saleClientId><punterId>#{@gamer_id}</punterId><amount>#{@amount}</amount>#{@scratched_body}#{@wagers}</sale></sellRequest>]
+          body = %Q[<?xml version='1.0' encoding='UTF-8'?><sellRequest><connectionId>#{@connection_id}</connectionId><sale><programId>#{@program_id}</programId><raceId>#{@race_id}</raceId><saleClientId>#{@transaction_id}</saleClientId><punterId>#{@gamer_id}</punterId><amount>#{@amount}</amount>#{@scratched_body}#{@wagers_body}</sale></sellRequest>]
 
           create_bet
 
