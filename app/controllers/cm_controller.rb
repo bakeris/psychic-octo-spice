@@ -81,6 +81,7 @@ class CmController < ApplicationController
         @program_date = (@request_result.xpath('//program').at('date').content rescue nil)
         @program_message = (@request_result.xpath('//programData').at('message').content rescue nil)
         @program_number = (@request_result.xpath('//programData').at('number').content rescue nil)
+        @status = (@request_result.xpath('//programData').at('status').content rescue nil)
         race_ids = (@request_result.xpath('//raceIdList/raceId') rescue nil)
         unless race_ids.blank?
           race_ids.each do |race_id|
@@ -113,6 +114,7 @@ class CmController < ApplicationController
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
       if error_code.blank? && @error != true
         @bet_ids = ""
+        @scrached_list = ""
         @program_id = (@request_result.xpath('//race').at('programId').content rescue nil)
         @race_id = (@request_result.xpath('//race').at('raceId').content rescue nil)
         @name = (@request_result.xpath('//race').at('name').content rescue nil)
@@ -120,12 +122,29 @@ class CmController < ApplicationController
         @close_time = (@request_result.xpath('//race').at('close_time').content rescue nil)
         @status = (@request_result.xpath('//race').at('status').content rescue nil)
         @max_runners = (@request_result.xpath('//race').at('maxRunners').content rescue nil)
+
+        scratched_list = (@request_result.xpath('//scratchedList/horse') rescue nil)
+        unless scratched_list.blank?
+          scratched_list.each do |horse|
+            @scrached_list << (horse.content rescue '') + '-'
+          end
+        end
+
+        bet_ids = (@request_result.xpath('//betIdList/betId') rescue nil)
+        unless bet_ids.blank?
+          bet_ids.each do |bet_id|
+            @bet_ids << (bet_id.content rescue '') + '-' + (bet_id["status"] rescue '') + ','
+          end
+        end
+
+=begin
         bet_ids = (@request_result.xpath('//betIdList/betId[@status="PAYMENT"]') rescue nil)
         unless bet_ids.blank?
           bet_ids.each do |bet_id|
             @bet_ids << (bet_id.content rescue '') + '-'
           end
         end
+=end
 
         CmLog.create(operation: "Get Race", get_race_request_body: body, get_race_response: @response_body, connection_id: @connection_id)
       else
@@ -324,6 +343,7 @@ class CmController < ApplicationController
   end
 
   def api_sell_ticket
+    @request_body = request.body.read
     @error_code = ''
     @error_description = ''
     @gamer_id = params[:gamer_id]
