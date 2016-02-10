@@ -259,8 +259,9 @@ class ApplicationController < ActionController::Base
   def cancel_cm3_bet(bet)
     paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
     status = false
+    request_body = "#{paymoney_wallet_url}/api/35959d477b5ffc06dc673befbe5b4/bet/payback/#{bet.transaction_id}"
 
-    request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/35959d477b5ffc06dc673befbe5b4/bet/payback/#{bet.transaction_id}", followlocation: true, method: :get)
+    request = Typhoeus::Request.new(request_body, followlocation: true, method: :get)
 
     request.on_complete do |response|
       if response.success?
@@ -277,7 +278,7 @@ class ApplicationController < ActionController::Base
       else
         @error_code = '4000'
         @error_description = 'Le serveur de paiement est indisponible.'
-        bet.update_attributes(cancel_request: request)
+        bet.update_attributes(cancel_request: request_body)
       end
     end
 

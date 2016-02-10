@@ -5,6 +5,7 @@ else
     json.program_id bet.program_id rescue nil
     json.race_id bet.race_id rescue nil
     json.transaction_id bet.sale_client_id rescue nil
+    json.serial_number bet.serial_number rescue nil
     json.amount bet.amount rescue nil
     json.scratched_list bet.scratched_list rescue nil
     json.bet_placed_at bet.bet_placed_at rescue nil
