@@ -11,8 +11,8 @@ class CmController < ApplicationController
   @@password = "lemotdepasse"
   @@notification_url = "http://172.18.1.244:10000"
   @@hub_notification_url = "http://parionsdirect.ci/test/api/cm3" # URL vers la plateforme de Moïse
-  #@@cm3_server_url = "http://office.cm3.work:27000"
-  @@cm3_server_url = "http://192.168.1.44:29000"
+  @@cm3_server_url = "http://office.cm3.work:27000"
+  #@@cm3_server_url = "http://192.168.1.44:29000"
 
   def ensure_login
     #if @connection_id.blank?
@@ -345,12 +345,11 @@ class CmController < ApplicationController
   end
 
   def api_sell_ticket
-    @request_body = request.body.read
+    request_body = request.body.read
     @error_code = ''
     @error_description = ''
     @gamer_id = params[:gamer_id]
     @remote_ip = request.remote_ip
-    request_body = request.body.read
     paymoney_account_number = params[:paymoney_account_number]
     password = params[:password]
     @begin_date = params[:begin_date]
@@ -364,11 +363,16 @@ class CmController < ApplicationController
       if gamer_account_exists
         @bet = JSON.parse(request_body) rescue ""
 
+
+
         if valid_bet_params
+          puts "wagers------------------------" + @wagers.to_s
           set_scratched_list
           set_wagers
 
-          body = %Q[<?xml version='1.0' encoding='UTF-8'?><sellRequest><connectionId>#{@connection_id}</connectionId><sale><programId>#{@program_id}</programId><raceId>#{@race_id}</raceId><saleClientId>#{@transaction_id}</saleClientId><punterId>#{@gamer_id}</punterId><amount>#{@amount}</amount>#{@scratched_body}#{@wagers_body}</sale></sellRequest>]
+          puts "wag body----------------------" + @wagers_body
+
+          body = %Q[<?xml version='1.0' encoding='UTF-8'?><sellRequest><connectionId>#{@connection_id}</connectionId><sale><programId>#{@program_id}</programId><raceId>#{@race_id}</raceId><transactionId>#{@transaction_id}</transactionId><amount>#{@amount}</amount>#{@scratched_body}#{@wagers_body}</sale></sellRequest>]
 
           create_bet
 
@@ -448,7 +452,8 @@ class CmController < ApplicationController
   def set_wagers
     @wagers_body = ""
     @wagers.each do |wager|
-      wager = JSON.parse(wager) rescue nil
+      #wager = JSON.parse(wager) rescue nil
+      puts "wager---------------------------" + wager.to_s
       unless wager.blank?
         @wagers_body << "<wager>"
         @wagers_body << "<betId>#{wager["bet_id"]}</betId>"
