@@ -392,12 +392,12 @@ class CmController < ApplicationController
         else
           @error_code = '3008'
           @error_description = "Les paramètres du pari ne sont pas valides."
-          CmLog.create(operation: "Prise de pari", sell_ticket_request: request_body, sell_ticket_response: @error_description, sell_ticket_code: @error_code, connection_id: @connection_id)
+          CmLog.create(operation: "Prise de pari", sell_ticket_request: body, sell_ticket_response: @error_description, sell_ticket_code: @error_code, connection_id: @connection_id)
         end
       else
         @error_code = '3009'
         @error_description = "Le compte parieur n'a pas été trouvé."
-        CmLog.create(operation: "Prise de pari", sell_ticket_request: request_body, sell_ticket_response: @error_description, sell_ticket_code: @error_code, connection_id: @connection_id)
+        CmLog.create(operation: "Prise de pari", sell_ticket_request: body, sell_ticket_response: @error_description, sell_ticket_code: @error_code, connection_id: @connection_id)
       end
     end
   end
