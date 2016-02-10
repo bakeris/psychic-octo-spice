@@ -12,7 +12,7 @@ class CmController < ApplicationController
   @@notification_url = "http://172.18.1.244:10000"
   @@hub_notification_url = "http://parionsdirect.ci/test/api/cm3" # URL vers la plateforme de Moïse
   #@@cm3_server_url = "http://office.cm3.work:27000"
-  @@cm3_url_server = "http://192.168.1.44:29000"
+  @@cm3_server_url = "http://192.168.1.44:29000"
 
   def ensure_login
     #if @connection_id.blank?
