@@ -11,6 +11,8 @@ class CmController < ApplicationController
   @@password = "lemotdepasse"
   @@notification_url = "http://172.18.1.244:10000"
   @@hub_notification_url = "http://parionsdirect.ci/test/api/cm3" # URL vers la plateforme de Moïse
+  @@cm3_server_url = "http://office.cm3.work:27000"
+  #@@cm3_server_url = "http://192.168.1.44:29000"
 
   def ensure_login
     #if @connection_id.blank?
@@ -20,7 +22,7 @@ class CmController < ApplicationController
                   <password>#{@@password}</password>
                   <notificationUrl>#{@@notification_url}</notificationUrl>
                 </loginRequest>]
-      send_request(body, "http://192.168.1.44:29000/login")
+      send_request(body, "#{@@cm3_server_url}/login")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
 
@@ -42,7 +44,7 @@ class CmController < ApplicationController
       @error_code = '3000'
       @error_description = "La connexion n'a pas pu être établie."
     else
-      send_request("<sessionRequest><connectionId>#{@connection_id}</connectionId></sessionRequest>", "http://192.168.1.44:29000/getCurrentSession")
+      send_request("<sessionRequest><connectionId>#{@connection_id}</connectionId></sessionRequest>", "#{@@cm3_server_url}/getCurrentSession")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
       if error_code.blank? && @error != true
@@ -70,7 +72,7 @@ class CmController < ApplicationController
       @error_code = '3000'
       @error_description = "La connexion n'a pas pu être établie."
     else
-      send_request("<programRequest><connectionId>#{@connection_id}</connectionId><programId>#{params[:program_id]}</programId></programRequest>", "http://192.168.1.44:29000/getProgram")
+      send_request("<programRequest><connectionId>#{@connection_id}</connectionId><programId>#{params[:program_id]}</programId></programRequest>", "#{@@cm3_server_url}/getProgram")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
       if error_code.blank? && @error != true
@@ -109,7 +111,7 @@ class CmController < ApplicationController
       @error_description = "La connexion n'a pas pu être établie."
     else
       body = %Q[<?xml version='1.0' encoding='UTF-8'?><raceRequest><connectionId>#{@connection_id}</connectionId><programId>#{params[:program_id]}</programId><raceId>#{params[:race_id]}</raceId></raceRequest>]
-      send_request(body, "http://192.168.1.44:29000/getRace")
+      send_request(body, "#{@@cm3_server_url}/getRace")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
       if error_code.blank? && @error != true
@@ -164,7 +166,7 @@ class CmController < ApplicationController
       @error_description = "La connexion n'a pas pu être établie."
     else
       body = %Q[<?xml version='1.0' encoding='UTF-8'?><betRequest><connectionId>#{@connection_id}</connectionId><betId>#{params[:bet_id]}</betId></betRequest>]
-      send_request(body, "http://192.168.1.44:29000/getBet")
+      send_request(body, "#{@@cm3_server_url}/getBet")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
 
@@ -208,7 +210,7 @@ class CmController < ApplicationController
       @error_description = "La connexion n'a pas pu être établie."
     else
       body = %Q[<?xml version='1.0' encoding='UTF-8'?><resultResponse><connectionId>#{@connection_id}</connectionId><programId>#{params[:program_id]}</programId><raceId>#{params[:race_id]}</raceId></resultResponse>]
-      send_request(body, "http://192.168.1.44:29000/getResult")
+      send_request(body, "#{@@cm3_server_url}/getResult")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
       if error_code.blank? && @error != true
@@ -238,7 +240,7 @@ class CmController < ApplicationController
       @error_description = "La connexion n'a pas pu être établie."
     else
       body = %Q[<?xml version='1.0' encoding='UTF-8'?><dividendsRequest><connectionId>#{@connection_id}</connectionId><programId>#{params[:program_id]}</programId><raceId>#{params[:race_id]}</raceId></dividendsRequest>]
-      send_request(body, "http://192.168.1.44:29000/getDividends")
+      send_request(body, "#{@@cm3_server_url}/getDividends")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
       if error_code.blank? && @error != true
@@ -287,7 +289,7 @@ class CmController < ApplicationController
         format_eval_games
         body = %Q[<?xml version='1.0' encoding='UTF-8'?><evaluationRequest><connectionId>#{@connection_id}</connectionId><programId>#{params[:program_id]}</programId><raceId>#{params[:race_id]}</raceId>#{@games_body}</evaluationRequest>]
 
-        send_request(body, "http://192.168.1.44:29000/evaluateGames")
+        send_request(body, "#{@@cm3_server_url}/evaluateGames")
 
         error_code = (@request_result.xpath('//return').at('error').content rescue nil)
 
@@ -343,12 +345,11 @@ class CmController < ApplicationController
   end
 
   def api_sell_ticket
-    @request_body = request.body.read
+    request_body = request.body.read
     @error_code = ''
     @error_description = ''
     @gamer_id = params[:gamer_id]
     @remote_ip = request.remote_ip
-    request_body = request.body.read
     paymoney_account_number = params[:paymoney_account_number]
     password = params[:password]
     @begin_date = params[:begin_date]
@@ -362,15 +363,20 @@ class CmController < ApplicationController
       if gamer_account_exists
         @bet = JSON.parse(request_body) rescue ""
 
+
+
         if valid_bet_params
+          puts "wagers------------------------" + @wagers.to_s
           set_scratched_list
           set_wagers
 
-          body = %Q[<?xml version='1.0' encoding='UTF-8'?><sellRequest><connectionId>#{@connection_id}</connectionId><sale><programId>#{@program_id}</programId><raceId>#{@race_id}</raceId><saleClientId>#{@transaction_id}</saleClientId><punterId>#{@gamer_id}</punterId><amount>#{@amount}</amount>#{@scratched_body}#{@wagers_body}</sale></sellRequest>]
+          puts "wag body----------------------" + @wagers_body
+
+          body = %Q[<?xml version='1.0' encoding='UTF-8'?><sellRequest><connectionId>#{@connection_id}</connectionId><sale><programId>#{@program_id}</programId><raceId>#{@race_id}</raceId><transactionId>#{@transaction_id}</transactionId><amount>#{@amount}</amount>#{@scratched_body}#{@wagers_body}</sale></sellRequest>]
 
           create_bet
 
-          send_request(body, "http://192.168.1.44:29000/sellTicket")
+          send_request(body, "#{@@cm3_server_url}/sellTicket")
 
           error_code = (@request_result.xpath('//return').at('error').content rescue nil)
           error_message = (@request_result.xpath('//return').at('message').content rescue nil)
@@ -390,12 +396,12 @@ class CmController < ApplicationController
         else
           @error_code = '3008'
           @error_description = "Les paramètres du pari ne sont pas valides."
-          CmLog.create(operation: "Prise de pari", sell_ticket_request: request_body, sell_ticket_response: @error_description, sell_ticket_code: @error_code, connection_id: @connection_id)
+          CmLog.create(operation: "Prise de pari", sell_ticket_request: body, sell_ticket_response: @error_description, sell_ticket_code: @error_code, connection_id: @connection_id)
         end
       else
         @error_code = '3009'
         @error_description = "Le compte parieur n'a pas été trouvé."
-        CmLog.create(operation: "Prise de pari", sell_ticket_request: request_body, sell_ticket_response: @error_description, sell_ticket_code: @error_code, connection_id: @connection_id)
+        CmLog.create(operation: "Prise de pari", sell_ticket_request: body, sell_ticket_response: @error_description, sell_ticket_code: @error_code, connection_id: @connection_id)
       end
     end
   end
@@ -446,7 +452,8 @@ class CmController < ApplicationController
   def set_wagers
     @wagers_body = ""
     @wagers.each do |wager|
-      wager = JSON.parse(wager) rescue nil
+      #wager = JSON.parse(wager) rescue nil
+      puts "wager---------------------------" + wager.to_s
       unless wager.blank?
         @wagers_body << "<wager>"
         @wagers_body << "<betId>#{wager["bet_id"]}</betId>"
@@ -478,7 +485,7 @@ class CmController < ApplicationController
         if bet_cancellable
           body = %Q[<?xml version='1.0' encoding='UTF-8'?><cancelRequest><connectionId>#{@connection_id}</connectionId><serialNumber>#{@serial_number}</serialNumber></cancelRequest>]
 
-          send_request(body, "http://192.168.1.44:29000/cancelTicket")
+          send_request(body, "#{@@cm3_server_url}/cancelTicket")
 
           error_code = (@request_result.xpath('//return').at('error').content rescue nil)
           error_message = (@request_result.xpath('//return').at('message').content rescue nil)
@@ -535,7 +542,7 @@ class CmController < ApplicationController
     else
       body = %Q[<?xml version='1.0' encoding='UTF-8'?><winningsRequest><connectionId>#{@connection_id}</connectionId><programId>#{program_id}</programId><raceId>#{race_id}</raceId></winningsRequest>]
 
-      send_request(body, "http://192.168.1.44:29000/getWinings")
+      send_request(body, "#{@@cm3_server_url}/getWinings")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
       error_message = (@request_result.xpath('//return').at('message').content rescue nil)
