@@ -259,7 +259,7 @@ class ApplicationController < ActionController::Base
   def cancel_cm3_bet(bet)
     paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
     status = false
-    request_body = "#{paymoney_wallet_url}/api/35959d477b5ffc06dc673befbe5b4/bet/payback/#{bet.transaction_id}"
+    request_body = "#{paymoney_wallet_url}/api/35959d477b5ffc06dc673befbe5b4/bet/payback/#{bet.sale_client_id}"
 
     request = Typhoeus::Request.new(request_body, followlocation: true, method: :get)
 
