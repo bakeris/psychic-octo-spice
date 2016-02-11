@@ -15,7 +15,7 @@ class CmController < ApplicationController
   #@@cm3_server_url = "http://192.168.1.44:29000"
 
   def ensure_login
-    #if @connection_id.blank?
+    if @connection_id.blank?
       body = %Q[<?xml version='1.0' encoding='UTF-8'?>
                 <loginRequest>
                   <username>#{@@user_name}</username>
@@ -33,7 +33,7 @@ class CmController < ApplicationController
         @login_error = true
         CmLog.create(login_error_code: error_code, login_error_description: (@request_result.xpath('//return').at('message').content rescue nil), login_request: body, login_response: @response_body, login_error_code: @response_code)
       end
-    #end
+    end
   end
 
   def api_current_session
