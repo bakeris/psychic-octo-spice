@@ -10,7 +10,7 @@ Succès:
 Erreur:
 7284cc39bb/8901
 
-curl --request GET --data "<?xml version='1.0' encoding='UTF-8' ?><vendorBalanceRequest><connectionId>123456789</connectionId><vendorId>8901</vendorId></vendorBalanceRequest>" http://192.168.1.44:29000/getVendorBalance --header 'Content-Type:text/xml'
+curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><resultResponse><connectionId>1463197783</connectionId><programId>20160301</programId><raceId>2016030101</raceId></resultResponse>" http://office.cm3.work:27000/getResult --header 'Content-Type:text/xml'
 
 
 <loginRequest>

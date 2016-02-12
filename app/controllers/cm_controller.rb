@@ -15,7 +15,7 @@ class CmController < ApplicationController
   #@@cm3_server_url = "http://192.168.1.44:29000"
 
   def ensure_login
-    #if @connection_id.blank?
+    if @connection_id.blank?
       body = %Q[<?xml version='1.0' encoding='UTF-8'?>
                 <loginRequest>
                   <username>#{@@user_name}</username>
@@ -33,7 +33,7 @@ class CmController < ApplicationController
         @login_error = true
         CmLog.create(login_error_code: error_code, login_error_description: (@request_result.xpath('//return').at('message').content rescue nil), login_request: body, login_response: @response_body, login_error_code: @response_code)
       end
-    #end
+    end
   end
 
   def api_current_session
@@ -209,7 +209,7 @@ class CmController < ApplicationController
       @error_code = '3000'
       @error_description = "La connexion n'a pas pu être établie."
     else
-      body = %Q[<?xml version='1.0' encoding='UTF-8'?><resultResponse><connectionId>#{@connection_id}</connectionId><programId>#{params[:program_id]}</programId><raceId>#{params[:race_id]}</raceId></resultResponse>]
+      body = %Q[<?xml version='1.0' encoding='UTF-8'?><resultRequest><connectionId>#{@connection_id}</connectionId><programId>#{params[:program_id]}</programId><raceId>#{params[:race_id]}</raceId></resultRequest>]
       send_request(body, "#{@@cm3_server_url}/getResult")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
@@ -226,7 +226,7 @@ class CmController < ApplicationController
       else
         @error_code = '3005'
         @error_description = "Les résultats n'ont pas pu être récupérés."
-        CmLog.create(operation: "Get Race", get_results_request_body: body, get_results_response: @response_body, get_results_code: @response_code, connection_id: @connection_id)
+        CmLog.create(operation: "Get Results", get_results_request_body: body, get_results_response: @response_body, get_results_code: @response_code, connection_id: @connection_id)
       end
     end
   end
@@ -366,11 +366,8 @@ class CmController < ApplicationController
 
 
         if valid_bet_params
-          puts "wagers------------------------" + @wagers.to_s
           set_scratched_list
           set_wagers
-
-          puts "wag body----------------------" + @wagers_body
 
           body = %Q[<?xml version='1.0' encoding='UTF-8'?><sellRequest><connectionId>#{@connection_id}</connectionId><sale><programId>#{@program_id}</programId><raceId>#{@race_id}</raceId><transactionId>#{@transaction_id}</transactionId><amount>#{@amount}</amount>#{@scratched_body}#{@wagers_body}</sale></sellRequest>]
 

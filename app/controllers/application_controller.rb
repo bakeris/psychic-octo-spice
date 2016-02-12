@@ -259,25 +259,26 @@ class ApplicationController < ActionController::Base
   def cancel_cm3_bet(bet)
     paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
     status = false
+    request_body = "#{paymoney_wallet_url}/api/35959d477b5ffc06dc673befbe5b4/bet/payback/#{bet.sale_client_id}"
 
-    request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/35959d477b5ffc06dc673befbe5b4/bet/payback/#{bet.transaction_id}", followlocation: true, method: :get)
+    request = Typhoeus::Request.new(request_body, followlocation: true, method: :get)
 
     request.on_complete do |response|
       if response.success?
         response_body = response.body
 
         if !response_body.include?("|")
-          bet.update_attributes(cancel_request: request, p_cancellation_id: response_body, cancelled: true, cancelled_at: DateTime.now)
+          bet.update_attributes(cancel_request: request_body, p_cancellation_id: response_body, cancelled: true, cancelled_at: DateTime.now)
           status = true
         else
           @error_code = '4001'
           @error_description = "Erreur de paiement, le pari n'a pas pu être annulé."
-          bet.update_attributes(cancel_request: request, cancel_response: response_body, cancel_response: response_body)
+          bet.update_attributes(cancel_request: request_body, cancel_response: response_body, cancel_response: response_body)
         end
       else
         @error_code = '4000'
         @error_description = 'Le serveur de paiement est indisponible.'
-        bet.update_attributes(cancel_request: request)
+        bet.update_attributes(cancel_request: request_body)
       end
     end
 
