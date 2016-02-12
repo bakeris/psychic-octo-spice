@@ -209,7 +209,7 @@ class CmController < ApplicationController
       @error_code = '3000'
       @error_description = "La connexion n'a pas pu être établie."
     else
-      body = %Q[<?xml version='1.0' encoding='UTF-8'?><resultResponse><connectionId>#{@connection_id}</connectionId><programId>#{params[:program_id]}</programId><raceId>#{params[:race_id]}</raceId></resultResponse>]
+      body = %Q[<?xml version='1.0' encoding='UTF-8'?><resultRequest><connectionId>#{@connection_id}</connectionId><programId>#{params[:program_id]}</programId><raceId>#{params[:race_id]}</raceId></resultRequest>]
       send_request(body, "#{@@cm3_server_url}/getResult")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
@@ -226,7 +226,7 @@ class CmController < ApplicationController
       else
         @error_code = '3005'
         @error_description = "Les résultats n'ont pas pu être récupérés."
-        CmLog.create(operation: "Get Race", get_results_request_body: body, get_results_response: @response_body, get_results_code: @response_code, connection_id: @connection_id)
+        CmLog.create(operation: "Get Results", get_results_request_body: body, get_results_response: @response_body, get_results_code: @response_code, connection_id: @connection_id)
       end
     end
   end
