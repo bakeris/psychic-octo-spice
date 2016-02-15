@@ -771,19 +771,13 @@ class AilPmuController < ApplicationController
               payment_notification_refund
             end
 
-=begin
-            if ref_number == "4"
-              @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => 0, bet_status: "En attente de validation")
-            else
-              @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => amount, bet_status: "En attente de validation")
-            end
-=end
-
           end
         end
       end
 
     end
+
+    validate_payment_notifications
 
     render text: %Q[{
         "success":#{success_array},
@@ -869,7 +863,7 @@ class AilPmuController < ApplicationController
       end
     end
 
-    render text: "0"
+    #render text: "0"
   end
 
   def backup_api_validate_transaction
