@@ -722,11 +722,11 @@ class AilPmuController < ApplicationController
     else
       audit_id = notification_objects["AuditId"] rescue ""
       message_id = notification_objects["messageID"] rescue ""
-      message_type = set_message_type(notification_objects["messageType"])
+      message_type = set_message_type(notification_objects["messageType"]) rescue ""
 
       AilPmuLog.create(operation: message_type, sent_params: raw_data, remote_ip_address: remote_ip_address)
 
-      if message_type == "Notification"
+      if message_type == "Notification" || message_type == ""
         bets.each do |notification_object|
           ref_number = notification_object["RefNumber"] rescue ""
           ticket_number = notification_object["TicketNumber"] rescue ""
@@ -799,13 +799,14 @@ class AilPmuController < ApplicationController
   end
 
   def validate_payment_notifications
-    bets = AilPmu.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En attente de validation' AND placement_acknowledge IS TRUE AND (earning_notification_received_at  < '#{DateTime.now - 16.minutes}' OR refund_notification_received_at  < '#{DateTime.now - 16.minutes}') AND earning_paid IS NULL AND refund_paid IS NULL")
+    #{DateTime.now - 16.minutes}
+    bets = AilPmu.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En attente de validation' AND placement_acknowledge IS TRUE AND (earning_notification_received_at  < '#{DateTime.now}' OR refund_notification_received_at  < '#{DateTime.now}') AND earning_paid IS NULL AND refund_paid IS NULL")
     draw_ids = bets.pluck(:draw_id) rescue nil
 
     unless draw_ids.blank?
 
       draw_ids.each do |draw_id|
-        bets = AilPmu.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En attente de validation' AND placement_acknowledge IS TRUE AND (earning_notification_received_at  < '#{DateTime.now - 16.minutes}' OR refund_notification_received_at  < '#{DateTime.now - 16.minutes}') AND earning_paid IS NULL AND refund_paid IS NULL AND draw_id = '#{draw_id}'")
+        bets = AilPmu.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En attente de validation' AND placement_acknowledge IS TRUE AND (earning_notification_received_at  < '#{DateTime.now}' OR refund_notification_received_at  < '#{DateTime.now}') AND earning_paid IS NULL AND refund_paid IS NULL AND draw_id = '#{draw_id}'")
         bets_amount = bets.map{|bet| (bet.earning_amount.to_f rescue 0) + (bet.refund_amount.to_f rescue 0)}.sum rescue 0
         if validate_bet_ail("ApXTrliOp", bets_amount, "ail_pmus")
           bets_payout = AilPmu.where("earning_notification_received IS TRUE AND draw_id = '#{draw_id}' AND paymoney_earning_id IS NULL")
