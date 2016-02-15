@@ -757,23 +757,28 @@ class AilPmuController < ApplicationController
           amount = notification_object["NewAmount"] rescue ""
           amount_type = notification_object["NewOperationType"].to_s rescue ""
 
-          @bet = AilPmu.where("ticket_number = '#{ticket_number}' AND earning_paid IS NULL AND refund_paid IS NULL AND (earning_notification_received IS TRUE OR refund_notification_received IS TRUE)").first rescue nil
+          @bet = AilPmu.where("ticket_number = '#{ticket_number}' AND (earning_paid IS NOT NULL OR refund_paid IS NOT NULL) AND (earning_notification_received IS TRUE OR refund_notification_received IS TRUE)").first rescue nil
           if @bet.blank? || !["1", "2"].include?(amount_type)
             error_array << notification_object.to_s
           else
             success_array << notification_object.to_s
 
             if amount_type == "1"
-              notification_field = "earning"
+              @bet.update_attributes(earning_notification_received: true, earning_amount: amount, refund_amount: 0)
+              payment_notification_earning
             else
-              notification_field = "refund"
+              @bet.update_attributes(refund_notification_received: true, refund_amount: amount, earning_amount: 0)
+              payment_notification_refund
             end
 
+=begin
             if ref_number == "4"
               @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => 0, bet_status: "En attente de validation")
             else
               @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => amount, bet_status: "En attente de validation")
             end
+=end
+
           end
         end
       end
@@ -786,6 +791,28 @@ class AilPmuController < ApplicationController
       }
     ]
 
+  end
+
+  def payment_notification_earning
+    pay_ail_earnings(@bet, "AliXTtooY", @bet.earning_amount, "earning")
+
+    # SMS notification
+    build_message(@bet, @bet.earning_amount, "au PMU-PLR", @bet.ticket_number)
+    send_sms_notification(@bet, @msisdn, "PMU-PLR", @message_content)
+
+    # Email notification
+    WinningNotification.notification_email(@bet.user, @bet.earning_amount, "au PMU-PLR", "PMU-PLR", @bet.ticket_number).deliver
+  end
+
+  def payment_notification_refund
+    pay_ail_earnings(@bet, "AliXTtooY", @bet.refund_amount, "refund")
+
+    # SMS notification
+    build_message(@bet, @bet.refund_amount, "au PMU-PLR", @bet.ticket_number)
+    send_sms_notification(@bet, @msisdn, "PMU-PLR", @message_content)
+
+    # Email notification
+    WinningNotification.notification_email(@bet.user, @bet.refund_amount, "au PMU-PLR", "PMU-PLR", @bet.ticket_number).deliver
   end
 
   def set_message_type(message_type)
@@ -815,11 +842,11 @@ class AilPmuController < ApplicationController
               pay_ail_earnings(bet_payout, "AliXTtooY", bet_payout.earning_amount, "earning")
 
               # SMS notification
-              build_message(bet_payout, bet_payout.earning_amount, "au PMU PLR", bet_payout.ticket_number)
-              send_sms_notification(bet_payout, @msisdn, "PMU PLR", @message_content)
+              build_message(bet_payout, bet_payout.earning_amount, "au PMU-PLR", bet_payout.ticket_number)
+              send_sms_notification(bet_payout, @msisdn, "PMU-PLR", @message_content)
 
               # Email notification
-              WinningNotification.notification_email(bet_payout.user, bet_payout.earning_amount, "au PMU PLR", "PMU PLR", bet_payout.ticket_number).deliver
+              WinningNotification.notification_email(bet_payout.user, bet_payout.earning_amount, "au PMU-PLR", "PMU-PLR", bet_payout.ticket_number).deliver
             end
           end
 
@@ -829,15 +856,15 @@ class AilPmuController < ApplicationController
               pay_ail_earnings(bet_refund, "AliXTtooY", bet_refund.refund_amount, "refund")
 
               # SMS notification
-              build_message(bet_refund, bet_refund.refund_amount, "au PMU PLR", bet_refund.ticket_number)
-              send_sms_notification(bet_refund, @msisdn, "PMU PLR", @message_content)
+              build_message(bet_refund, bet_refund.refund_amount, "au PMU-PLR", bet_refund.ticket_number)
+              send_sms_notification(bet_refund, @msisdn, "PMU-PLR", @message_content)
 
               # Email notification
-              WinningNotification.notification_email(bet_refund.user, bet_refund.refund_amount, "au PMU PLR", "PMU PLR", bet_refund.ticket_number).deliver
+              WinningNotification.notification_email(bet_refund.user, bet_refund.refund_amount, "au PMU-PLR", "PMU-PLR", bet_refund.ticket_number).deliver
             end
           end
 
-          AilPmu.where("draw_id = '#{draw_id}' AND earning_paid IS NULL AND refund_paid IS NULL AND placement_acknowledge").map{|bet| bet.update_attributes(bet_satus: "Perdant")}
+          #AilPmu.where("draw_id = '#{draw_id}' AND earning_paid IS NULL AND refund_paid IS NULL AND placement_acknowledge").map{|bet| bet.update_attributes(bet_satus: "Perdant")}
         end
       end
     end
