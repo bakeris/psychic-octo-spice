@@ -828,7 +828,7 @@ class AilPmuController < ApplicationController
 
       draw_ids.each do |draw_id|
         bets = AilPmu.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En attente de validation' AND placement_acknowledge IS TRUE AND (earning_notification_received_at  < '#{DateTime.now + 5.minutes}' OR refund_notification_received_at  < '#{DateTime.now + 5.minutes}') AND earning_paid IS NULL AND refund_paid IS NULL AND draw_id = '#{draw_id}'")
-        bets_amount = bets.map{|bet| (bet.earning_amount.to_f rescue 0) + (bet.refund_amount.to_f rescue 0)}.sum rescue 0
+        bets_amount = bets.map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0
         if validate_bet_ail("ApXTrliOp", bets_amount, "ail_pmus")
           bets_payout = AilPmu.where("earning_notification_received IS TRUE AND draw_id = '#{draw_id}' AND paymoney_earning_id IS NULL")
           unless bets_payout.blank?
