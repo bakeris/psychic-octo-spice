@@ -75,8 +75,15 @@ class UsersController < ApplicationController
   def api_email_login
     if User.authenticate_with_email(params[:email], params[:password]) == true
       @user = User.find_by_email(params[:email])
+
       if @user.confirmed_at.blank?
         render text: %Q({"errors":[{"message":"Le compte n'a pas encore été activé"}]})
+      else
+        if @user.login_status == "1"
+          render text: %Q({"errors":[{"message":"Ce compte est déjà connecté"}]})
+        else
+          @user.update_attributes(login_status: "1")
+        end
       end
     else
       render text: %Q({"errors":[{"message":"Veuillez vérifier le login et le mot de passe"}]})
@@ -86,11 +93,28 @@ class UsersController < ApplicationController
   def api_msisdn_login
     if User.authenticate_with_msisdn(params[:msisdn], params[:password]) == true
       @user = User.find_by_msisdn(params[:msisdn])
+
       if @user.confirmed_at.blank?
         render text: %Q({"errors":[{"message":"Le compte n'a pas encore été activé"}]})
+      else
+        if @user.login_status == "1"
+          render text: %Q({"errors":[{"message":"Ce compte est déjà connecté"}]})
+        else
+          @user.update_attributes(login_status: "1")
+        end
       end
     else
       render text: %Q({"errors":[{"message":"Veuillez vérifier le numéro de téléphone et le mot de passe"}]})
+    end
+  end
+
+  def api_logout
+    @user = User.where("email = '#{params[connection_id]}' or msisdn = '#{params[connection_id]}'").first rescue nil
+
+    if @user.blank?
+      render text: %Q({"errors":[{"message":"Cet utilisateur n'existe pas"}]})
+    else
+      @user.update_attributes(login_status: "0")
     end
   end
 
