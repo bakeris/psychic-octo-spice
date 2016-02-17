@@ -754,15 +754,64 @@ class AilPmuController < ApplicationController
         bets.each do |notification_object|
           ref_number = notification_object["RefNumber"] rescue ""
           ticket_number = notification_object["TicketNumber"] rescue ""
+          original_operation_type = notification_object["OriginalOperationType"] rescue ""
+          new_operation_type = notification_object["NewOperationType"].to_s rescue ""
           amount = notification_object["NewAmount"] rescue ""
-          amount_type = notification_object["NewOperationType"].to_s rescue ""
+          @adjustment_amount = notification_object["AdjustmentAmount"].to_i rescue ""
 
           @bet = AilPmu.where("ticket_number = '#{ticket_number}' AND (earning_paid IS NOT NULL OR refund_paid IS NOT NULL) AND (earning_notification_received IS TRUE OR refund_notification_received IS TRUE)").first rescue nil
-          if @bet.blank? || !["1", "2"].include?(amount_type)
+          if @bet.blank? || !["0", "1", "2"].include?(original_operation_type) || !["0", "1", "2"].include?(new_operation_type)
             error_array << notification_object.to_s
           else
             success_array << notification_object.to_s
 
+            if original_operation_type == "1" && new_operation_type == "0"
+              @bet.update_attributes(earning_amount: (@bet.earning_amount.to_i + @adjustment_amount))
+              #Client vers trj
+              client_to_trj
+            end
+
+            if original_operation_type == "1" && new_operation_type == "1"
+              @bet.update_attributes(earning_amount: (@bet.earning_amount.to_i + @adjustment_amount))
+              if adjustment_amount < 0
+                #Client vers trj
+                client_to_trj
+              else
+                #Paiement de gain
+                payment_notification_earning
+              end
+            end
+
+            if original_operation_type == "0" && new_operation_type == "1"
+              @bet.update_attributes(earning_amount: (@bet.earning_amount.to_i + @adjustment_amount))
+              #Paiement de gain
+              payment_notification_earning
+            end
+
+            if original_operation_type == "0" && new_operation_type == "2"
+              @bet.update_attributes(refund_amount: (@bet.refund_amount.to_i + @adjustment_amount))
+              #Paiement de gain
+              payment_notification_earning
+            end
+
+            if original_operation_type == "2" && new_operation_type == "2"
+              @bet.update_attributes(refund_amount: (@bet.refund_amount.to_i + @adjustment_amount))
+              if adjustment_amount < 0
+                #Client vers trj
+                client_to_trj
+              else
+                #Paiement de gain
+                payment_notification_earning
+              end
+            end
+
+            if original_operation_type == "2" && new_operation_type == "0"
+              @bet.update_attributes(refund_amount: (@bet.refund_amount.to_i + @adjustment_amount))
+              #Client vers trj
+              client_to_trj
+            end
+
+=begin
             if amount_type == "1"
               @bet.update_attributes(earning_notification_received: true, earning_amount: amount, refund_amount: 0)
               payment_notification_earning
@@ -770,6 +819,7 @@ class AilPmuController < ApplicationController
               @bet.update_attributes(refund_notification_received: true, refund_amount: amount, earning_amount: 0)
               payment_notification_refund
             end
+=end
 
           end
         end
@@ -785,6 +835,22 @@ class AilPmuController < ApplicationController
       }
     ]
 
+  end
+
+  def client_to_trj
+    paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
+    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
+    status = false
+
+    request = Typhoeus::Request.new("#{paymoney_wallet_url}/rest/client_vers_TRJ/f4d0a8ab/TRJ/#{@bet.paymoney_account_token}/#{@adjustment_amount.abs}/0/0/#{transaction_id}", followlocation: true, method: :get)
+
+    request.on_complete do |response|
+      if response.success?
+        status = true
+      end
+    end
+
+    request.run
   end
 
   def payment_notification_earning
