@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
 
   # Validations
   validates :msisdn, presence: true
-  validates :msisdn, uniqueness: {message: "est déjà inscrit"}
+  #validates :msisdn, uniqueness: {message: "est déjà inscrit"}
   validates :pseudo, :firstname, :lastname, :password, length: {minimum: 3, maximum: 255}
   #validates :pseudo, uniqueness: true
   #validates :email, uniqueness: {allow_blank: true}
