@@ -278,7 +278,7 @@ class AilLotoController < ApplicationController
               end
             else
               @error_code = '4002'
-              @error_description = "Votre pari n'a pas pu être placé."
+              @error_description = "Paris non autorisé."
             end
 
           else
