@@ -47,14 +47,16 @@ class UsersController < ApplicationController
 
   def api_reset_password_activation
     @user = User.find_by_reset_password_token(params[:reset_password_token])
+    password = params[:password]
+    password_confirmation = params[:password_confirmation]
 
     if @user.blank?
       render text: %Q({"errors":[{"message":"Cet utilisateur n'a pas été trouvé"}]})
     else
-      if params[:password] != params[:password_confirmation]
+      if password != password_confirmation
         render text: %Q({"errors":[{"message":"Le mot de passe et sa confirmation ne concordent pas"}]})
       else
-        @user.update_attributes(reset_password_token: nil, password_reseted_at: DateTime.now, password: Digest::SHA2.hexdigest(@user.salt + @user.password))
+        @user.update_attributes(reset_password_token: nil, password_reseted_at: DateTime.now, password: Digest::SHA2.hexdigest(@user.salt + password))
       end
     end
   end

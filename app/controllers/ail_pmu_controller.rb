@@ -278,7 +278,7 @@ class AilPmuController < ApplicationController
               end
             else
               @error_code = '4002'
-              @error_description = "Le pari n'a pas pu être pris."
+              @error_description = "Paris non autorisé."
             end
 
           else
