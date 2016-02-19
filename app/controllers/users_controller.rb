@@ -111,7 +111,7 @@ class UsersController < ApplicationController
   end
 
   def api_logout
-    @user = User.where("email = '#{params[connection_id]}' or msisdn = '#{params[connection_id]}'").first rescue nil
+    @user = User.where("email = '#{params[:connection_id]}' or msisdn = '#{params[:connection_id]}'").first rescue nil
 
     if @user.blank?
       render text: %Q({"errors":[{"message":"Cet utilisateur n'existe pas"}]})
