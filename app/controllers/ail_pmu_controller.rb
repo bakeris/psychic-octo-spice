@@ -854,7 +854,7 @@ class AilPmuController < ApplicationController
   end
 
   def payment_notification_earning
-    pay_ail_earnings(@bet, "AliXTtooY", @bet.earning_amount, "earning")
+    pay_ail_earnings(@bet, "ApXTrliOp", @bet.earning_amount, "earning")
 
     # SMS notification
     build_message(@bet, @bet.earning_amount, "au PMU-PLR", @bet.ticket_number)
@@ -865,7 +865,7 @@ class AilPmuController < ApplicationController
   end
 
   def payment_notification_refund
-    pay_ail_earnings(@bet, "AliXTtooY", @bet.refund_amount, "refund")
+    pay_ail_earnings(@bet, "ApXTrliOp", @bet.refund_amount, "refund")
 
     # SMS notification
     build_message(@bet, @bet.refund_amount, "au PMU-PLR", @bet.ticket_number)
@@ -899,7 +899,7 @@ class AilPmuController < ApplicationController
           bets_payout = AilPmu.where("earning_notification_received IS TRUE AND draw_id = '#{draw_id}' AND paymoney_earning_id IS NULL")
           unless bets_payout.blank?
             bets_payout.each do |bet_payout|
-              pay_ail_earnings(bet_payout, "AliXTtooY", bet_payout.earning_amount, "earning")
+              pay_ail_earnings(bet_payout, "ApXTrliOp", bet_payout.earning_amount, "earning")
 
               # SMS notification
               build_message(bet_payout, bet_payout.earning_amount, "au PMU-PLR", bet_payout.ticket_number)
@@ -913,7 +913,7 @@ class AilPmuController < ApplicationController
           bets_refund = AilPmu.where("refund_notification_received IS TRUE AND draw_id = '#{draw_id}' AND paymoney_refund_id IS NULL")
           unless bets_refund.blank?
             bets_refund.each do |bet_refund|
-              pay_ail_earnings(bet_refund, "AliXTtooY", bet_refund.refund_amount, "refund")
+              pay_ail_earnings(bet_refund, "ApXTrliOp", bet_refund.refund_amount, "refund")
 
               # SMS notification
               build_message(bet_refund, bet_refund.refund_amount, "au PMU-PLR", bet_refund.ticket_number)
