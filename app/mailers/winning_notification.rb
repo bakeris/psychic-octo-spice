@@ -1,5 +1,5 @@
 class WinningNotification < ActionMailer::Base
-  default from: "LONACI"
+  default from: "serviceclients@parionsdirect.net"
 
   def notification_email(user, amount, game_object, game_message, ticket_id)
     @user_name = (user.firstname rescue "") + " " + (user.lastname rescue "")

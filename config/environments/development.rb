@@ -17,7 +17,7 @@ config.action_mailer.default_url_options = { :host => '154.68.45.82:1180' }
                 :enable_starttls_auto => true,
                 :port => 587,
                 :authentication => :plain,
-                :user_name => "serviceclients@de2608.ispfr.net",
+                :user_name => "serviceclients@parionsdirect.net",
                 :password => "clients#2015"
         }
 

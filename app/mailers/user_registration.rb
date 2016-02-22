@@ -1,5 +1,5 @@
 class UserRegistration < ActionMailer::Base
-  default from: "LONACI"
+  default from: "serviceclients@parionsdirect.net"
 
   def confirmation_email(firstname, lastname, confirmation_url, email)
     @firstname = firstname
