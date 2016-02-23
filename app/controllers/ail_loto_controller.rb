@@ -957,7 +957,7 @@ class AilLotoController < ApplicationController
             end
           end
 
-          bets_refund = AliXTtooY.where("refund_notification_received IS TRUE AND draw_id = '#{draw_id}' AND paymoney_refund_id IS NULL")
+          bets_refund = AilLoto.where("refund_notification_received IS TRUE AND draw_id = '#{draw_id}' AND paymoney_refund_id IS NULL")
           unless bets_refund.blank?
             bets_refund.each do |bet_refund|
               pay_ail_earnings(bet_refund, "AliXTtooY", bet_refund.refund_amount, "refund")
