@@ -105,7 +105,11 @@ class ApplicationController < ActionController::Base
         @error_code = '5001'
         @error_description = "The paymoney account have not been found."
       else
-        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/9b04e57f135f05bc05b5cf6d9b0d8/bet/get/#{bet.transaction_id}/#{game_account_token}/#{paymoney_account_token}/#{password}/#{transaction_amount}", followlocation: true, method: :get)
+        @url = "#{paymoney_wallet_url}/api/9b04e57f135f05bc05b5cf6d9b0d8/bet/get/#{bet.transaction_id}/#{game_account_token}/#{paymoney_account_token}/#{password}/#{transaction_amount}"
+
+        LogRequest.create(description: "Placement de pari sans annulation", request: @url)
+
+        request = Typhoeus::Request.new(@url, followlocation: true, method: :get)
 
         request.on_complete do |response|
           if response.success?
@@ -137,7 +141,10 @@ class ApplicationController < ActionController::Base
     paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
     status = false
 
-    request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/06331525768e6a95680c8bb0dcf55/bet/validate/#{game_account_token}/#{transaction_amount}", followlocation: true, method: :get)
+    @url = "#{paymoney_wallet_url}/api/06331525768e6a95680c8bb0dcf55/bet/validate/#{game_account_token}/#{transaction_amount}"
+    LogRequest.create(description: "Validation de pari", request: @url)
+
+    request = Typhoeus::Request.new(@url, followlocation: true, method: :get)
 
     request.on_complete do |response|
       if response.success?
@@ -168,7 +175,11 @@ class ApplicationController < ActionController::Base
     paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
     status = false
 
-    request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/06331525768e6a95680c8bb0dcf55/bet/validate/#{game_account_token}/#{transaction_amount}", followlocation: true, method: :get)
+    @url = "#{paymoney_wallet_url}/api/06331525768e6a95680c8bb0dcf55/bet/validate/#{game_account_token}/#{transaction_amount}"
+
+    LogRequest.create(description: "Validation de pari AIL", request: @url)
+
+    request = Typhoeus::Request.new(@url, followlocation: true, method: :get)
 
     request.on_complete do |response|
       if response.success?

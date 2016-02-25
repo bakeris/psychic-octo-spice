@@ -557,7 +557,8 @@ puts @win_amount.to_s + "********************"
     amount = ''
     coupons_details = ''
     paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
-    paymoney_account_token = check_account_number(params[:paymoney_account_number])
+    paymoney_account_number = params[:paymoney_account_number]
+    paymoney_account_token = check_account_number(paymoney_account_number)
     user = User.find_by_uuid(params[:gamer_id])
     gamer_id = params[:gamer_id]
     password = params[:password]
@@ -574,7 +575,7 @@ puts @win_amount.to_s + "********************"
           @error_code = '5001'
           @error_description = "Le montant des gains n'a pas pu être récupéré."
         else
-          @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, gamer_id: gamer_id, game_account_token: "LhSpwtyN", amount: @amount, formula: formula)
+          @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, gamer_id: gamer_id, game_account_token: "LhSpwtyN", amount: @amount, formula: formula, paymoney_account_number: paymoney_account_number)
           coupons_body = format_coupouns(coupons["bets"])
 
             if coupons_body.blank?
