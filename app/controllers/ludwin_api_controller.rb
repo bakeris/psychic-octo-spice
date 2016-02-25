@@ -54,8 +54,8 @@ class LudwinApiController < ApplicationController
           if response_code == '0' || response_code == '1024'
             @sports_list = (nokogiri_response.xpath('//Sport') rescue nil)
           else
-            @error_code = '4002'
-            @error_description = 'Cannot retrieve the list of sports.'
+            @error_code = response_code
+            @error_description = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
           end
         else
           @error_code = '4001'
@@ -126,8 +126,8 @@ class LudwinApiController < ApplicationController
           if response_code == '0' || response_code == '1024'
             @sports_list = (nokogiri_response.xpath('//Sport') rescue nil)
           else
-            @error_code = '4002'
-            @error_description = 'Cannot retrieve the list of sports.'
+            @error_code = response_code
+            @error_description = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
           end
         else
           @error_code = '4001'
@@ -199,8 +199,8 @@ class LudwinApiController < ApplicationController
           if response_code == '0' || response_code == '1024'
             @tournaments_list = (nokogiri_response.xpath('//Tournament') rescue nil)
           else
-            @error_code = '4002'
-            @error_description = 'Cannot retrieve the list of tournaments.'
+            @error_code = response_code
+            @error_description = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
           end
         else
           @error_code = '4001'
@@ -275,8 +275,8 @@ class LudwinApiController < ApplicationController
           if response_code == '0' || response_code == '1024'
             @tournaments_list = (nokogiri_response.xpath('//Tournament') rescue nil)
           else
-            @error_code = '4002'
-            @error_description = 'Cannot retrieve the list of tournaments.'
+            @error_code = response_code
+            @error_description = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
           end
         else
           @error_code = '4001'
@@ -354,8 +354,8 @@ class LudwinApiController < ApplicationController
           if response_code == '0' || response_code == '1024'
             @bets_list = (nokogiri_response.xpath('//Bet') rescue nil)
           else
-            @error_code = '4002'
-            @error_description = 'Cannot retrieve the list of bets.'
+            @error_code = response_code
+            @error_description = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
           end
         else
           @error_code = '4001'
@@ -403,8 +403,8 @@ class LudwinApiController < ApplicationController
           if response_code == '0' || response_code == '1024'
             @bets_list = (nokogiri_response.xpath('//Bet') rescue nil)
           else
-            @error_code = '4002'
-            @error_description = 'Cannot retrieve the list of bets.'
+            @error_code = response_code
+            @error_description = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
           end
         else
           @error_code = '4001'
@@ -675,8 +675,8 @@ puts @win_amount.to_s + "********************"
               end
             else
               @bet.first.update_attributes(cancelled: false, cancelled_at: DateTime.now)
-              @error_code = '4002'
-              @error_description = 'Could not cancel the coupon.'
+              @error_code = response_code
+              @error_description = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
             end
           else
             @error_code = '4001'
@@ -761,8 +761,8 @@ puts @win_amount.to_s + "********************"
                       WinningNotification.notification_email(@user, @bet.win_amount, "à SPORTCASH", "SPORTCASH", @bet.ticket_id).deliver
                     else
                       @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Perdant")
-                      @error_code = '4002'
-                      @error_description = "Le paiement n'a pas pu être traité."
+                      @error_code = response_code
+                      @error_description = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
                     end
                   else
                     @error_code = '4001'
