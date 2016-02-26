@@ -60,7 +60,7 @@ class EpplController < ApplicationController
     @error_description = ""
     @remote_ip = request.remote_ip
     #@user = User.find_by_uuid(gamer_id)
-    @transaction_amount = transaction_amount.to_f.abs
+    @transaction_amount = params[:transaction_amount]
     # TRJ account
     @game_account_token = "PExxGeLY"
 
