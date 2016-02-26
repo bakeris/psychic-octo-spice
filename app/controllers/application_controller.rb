@@ -120,7 +120,7 @@ class ApplicationController < ActionController::Base
               status = true
             else
               @error_code = '4001'
-              @error_description = 'Payment error, could not checkout the account. Check the credit.'
+              @error_description = 'Votre solde disponible sur le compte PAYMONEY est insuffisant. Veuillez recharger votre compte dans un point de rechargement. Merci!'
               bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body, paymoney_account_token: paymoney_account_token)
             end
           else
