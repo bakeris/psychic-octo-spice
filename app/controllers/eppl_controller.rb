@@ -56,20 +56,27 @@ class EpplController < ApplicationController
   end
 
   def api_place_bet
-    set_place_bet_params(params[:gamer_id], params[:transaction_amount])
+    @error_code = ""
+    @error_description = ""
+    @remote_ip = request.remote_ip
+    #@user = User.find_by_uuid(gamer_id)
+    @transaction_amount = transaction_amount.to_f.abs
+    # TRJ account
+    @game_account_token = "PExxGeLY"
+
     begin_date = params[:begin_date]
     end_date = params[:end_date]
 
-    if @user.blank?
-      @error_code = '3000'
-      @error_description = "L'identifiant du parieur n'a pas été trouvé."
-    else
+    #if @user.blank?
+      #@error_code = '3000'
+      #@error_description = "L'identifiant du parieur n'a pas été trouvé."
+    #else
       @eppl = Eppl.create(transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s, paymoney_account_number: params[:paymoney_account_number], transaction_amount: @transaction_amount, remote_ip: @remote_ip, game_id: params[:game_id], game_account_token: @game_account_token, begin_date: begin_date, bet_placed: true, bet_placed_at: DateTime.now, paymoney_transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s)
 
       #if !place_bet_with_cancellation(@eppl, @game_account_token, params[:paymoney_account_number], params[:password], @transaction_amount)
         #@eppl.update_attributes(error_code: @error_code, error_description: @error_description)
       #end
-    end
+    #end
   end
 
   def periodically_validate_bet
