@@ -5,6 +5,10 @@ class GamersController < ApplicationController
   def index
     @class_gamers = "active"
     @gamers = User.all.order("created_at DESC")
+
+    @total_gamers = @gamers.count
+    @confirmed_accounts = @gamers.where("confirmed_at IS NULL").count
+    @unconfirmed_accounts = @gamers.where("confirmed_at IS NULL").count
   end
 
 end

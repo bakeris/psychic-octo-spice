@@ -12,7 +12,7 @@
 
 <div class="line"></div>
 
-<%#= render "admin_blog_themes/shared/sub_menu" %>
+<%= render "gamers/index_stats" %>
 
 <div class="line"></div>
 
@@ -52,6 +52,9 @@
                 </span>
                 <span>
                   <strong>Créé le </strong> <%= gamer.created_at.strftime("%d-%m-%Y") + " à " + gamer.created_at.strftime("%Hh %Mmn") %>
+                </span>
+                <span>
+                  <strong>Activé le </strong> <%= gamer.confirmed_at.strftime("%d-%m-%Y") rescue "" + " à " + gamer.confirmed_at.strftime("%Hh %Mmn") rescue "" %>
                 </span>
               </td>
               <td>
