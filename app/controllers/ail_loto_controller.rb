@@ -189,7 +189,7 @@ class AilLotoController < ApplicationController
             end
           else
             @error_code = '4002'
-            @error_description = 'Cannot query the bet.'
+            @error_description = 'Pari non autorisé.'
           end
         else
           @error_code = '4001'
@@ -197,7 +197,7 @@ class AilLotoController < ApplicationController
         end
       else
         @error_code = '4000'
-        @error_description = 'Unavailable resource.'
+        @error_description = 'Le loto est momentanément indisponible, veuillez réessayer plus tard.'
       end
     end
 

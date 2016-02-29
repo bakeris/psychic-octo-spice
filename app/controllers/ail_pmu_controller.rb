@@ -188,7 +188,7 @@ class AilPmuController < ApplicationController
             end
           else
             @error_code = '4002'
-            @error_description = "Votre pari n'a pas pu être placé."
+            @error_description = "Pari non autorisé."
           end
         else
           @error_code = '4001'
@@ -287,7 +287,7 @@ class AilPmuController < ApplicationController
           end
         else
           @error_code = '4000'
-          @error_description = 'Ressource non disponible.'
+          @error_description = 'Le PMU est momentanément indisponible, veuillez réessayer plus tard.'
         end
       end
 
