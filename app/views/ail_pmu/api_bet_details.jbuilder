@@ -17,7 +17,7 @@ else
     json.special_entries "[#{@bet.special_entries}]" rescue nil
     json.normal_entries "[#{@bet.normal_entries}]" rescue nil
     json.bet_placed @bet.placement_acknowledge rescue nil
-    json.bet_placed_at @bet.placement_acknowledge_date_time rescue nil
+    json.bet_placed_at @bet.bet_date rescue nil
     json.bet_cancelled @bet.cancellation_acknowledge rescue nil
     json.bet_cancelled_at @bet.cancellation_acknowledge_date_time rescue nil
     json.bet_refunded @bet.refund_acknowledge rescue nil

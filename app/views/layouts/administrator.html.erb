@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+  <title>LONACI::Administration</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+
+<body>
+
+<!-- Left side content -->
+<div id="leftSide">
+    <div class="logo"><a href="index.html"><img src="<%#= asset_path 'front/logo_cocofci-02.png' %>" alt="" width = "134px" /></a></div>
+
+    <div class="sidebarSep"></div>
+
+    <!-- Left navigation -->
+    <ul id="menu" class="nav">
+        <li class="dash"><%= link_to "<span>Parieurs</span>".html_safe, gamers_path, class: "#{@class_gamers}" %></li>
+
+        <li class="tables"><a href="#" title="" class="exp" id = "<%#= @website_blog_menu_style %>"><span>Blog</span><strong>3</strong></a>
+          <ul class="sub">
+            <li class = "<%#= @blogger_menu_style %>"><a href="<%#= admin_blogger_path %>" title="">Bloggeurs</a></li>
+            <li class = "<%#= @blog_categories_menu_style %>"><a href="<%#= admin_blog_category_path %>" title="">Catégories de blogs</a></li>
+            <li class = "<%#= @blog_themes_menu_style %>"><a href="<%#= admin_blog_theme_path %>" title="">Thèmes de blogs</a></li>
+          </ul>
+        </li>
+    </ul>
+</div>
+
+
+<!-- Right side -->
+<div id="rightSide">
+
+    <!-- Top fixed navigation -->
+    <div class="topNav">
+        <div class="wrapper">
+            <div class="welcome"><%#= image_tag(current_user.avatar.url(:small), width: "18px") rescue "" %><span><%#= current_user.full_name rescue "" %></span></div>
+            <div class="userNav">
+                <ul>
+                  <li><a href="/<%#= I18n.locale %>/users/edit.<%= current_user.id %>" title=""><img src="<%= asset_path 'icons/topnav/profile.png' %>" alt="" /><span>Profil</span></a></li>
+                  <li>
+                    <a data-method="delete" href="/<%#= I18n.locale %>/users/sign_out" rel="nofollow"><img src="<%= asset_path 'icons/topnav/logout.png' %>" alt="" /><span>Se déconnecter</span></a>
+                  </li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <!-- Responsive header -->
+    <div class="resp">
+        <div class="respHead">
+            <a href="index.html" title=""><img src="<%= asset_path 'loginLogo.png' %>" alt="" /></a>
+        </div>
+
+        <div class="cLine"></div>
+        <div class="smalldd">
+            <span class="goTo"><img src="<%= asset_path 'icons/light/home.png' %>" alt="" />Dashboard</span>
+            <ul class="smallDropdown">
+                <li><a href="index.html" title=""><img src="<%= asset_path 'icons/light/home.png' %>" alt="" />Dashboard</a></li>
+                <li><a href="charts.html" title=""><img src="<%= asset_path 'icons/light/stats.png' %>" alt="" />Statistics and charts</a></li>
+                <li><a href="#" title="" class="exp"><img src="<%= asset_path 'icons/light/pencil.png' %>" alt="" />Forms stuff<strong>4</strong></a>
+                    <ul>
+                        <li><a href="forms.html" title="">Form elements</a></li>
+                        <li><a href="form_validation.html" title="">Validation</a></li>
+                        <li><a href="form_editor.html" title="">WYSIWYG and file uploader</a></li>
+                        <li class="last"><a href="form_wizards.html" title="">Wizards</a></li>
+                    </ul>
+                </li>
+                <li><a href="ui_elements.html" title=""><img src="<%= asset_path 'icons/light/users.png' %>" alt="" />Interface elements</a></li>
+                <li><a href="tables.html" title="" class="exp"><img src="<%= asset_path 'icons/light/frames.png' %>" alt="" />Tables<strong>3</strong></a>
+                    <ul>
+                        <li><a href="table_static.html" title="">Static tables</a></li>
+                        <li><a href="table_dynamic.html" title="">Dynamic table</a></li>
+                        <li class="last"><a href="table_sortable_resizable.html" title="">Sortable &amp; resizable tables</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" title="" class="exp"><img src="<%= asset_path 'icons/light/fullscreen.png' %>" alt="" />Widgets and grid<strong>2</strong></a>
+                    <ul>
+                        <li><a href="widgets.html" title="">Widgets</a></li>
+                        <li class="last"><a href="grid.html" title="">Grid</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" title="" class="exp"><img src="<%= asset_path 'icons/light/alert.png' %>" alt="" />Error pages<strong>6</strong></a>
+                    <ul class="sub">
+                        <li><a href="403.html" title="">403 page</a></li>
+                        <li><a href="404.html" title="">404 page</a></li>
+                        <li><a href="405.html" title="">405 page</a></li>
+                        <li><a href="500.html" title="">500 page</a></li>
+                        <li><a href="503.html" title="">503 page</a></li>
+                        <li class="last"><a href="offline.html" title="">Website is offline</a></li>
+                    </ul>
+                </li>
+                <li><a href="file_manager.html" title=""><img src="<%= asset_path 'icons/light/files.png' %>" alt="" />File manager</a></li>
+                <li><a href="#" title="" class="exp"><img src="<%= asset_path 'icons/light/create.png' %>" alt="" />Other pages<strong>3</strong></a>
+                    <ul>
+                        <li><a href="typography.html" title="">Typography</a></li>
+                        <li><a href="calendar.html" title="">Calendar</a></li>
+                        <li class="last"><a href="gallery.html" title="">Gallery</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="cLine"></div>
+    </div>
+
+    <%= yield %>
+
+</div>
+
+<div class="clear"></div>
+
+</body>
+</html>

@@ -261,6 +261,7 @@ class AilPmuController < ApplicationController
             @error_description = (json_response["content"]["errorMessage"])
 
             if @error_code == 0 && (json_response["header"]["status"] == 'success')
+              bet_date = json_response["header"]["dateTime"] rescue nil
               @bet = (json_response["content"] rescue nil)
 
               unless @bet.blank?
@@ -269,7 +270,7 @@ class AilPmuController < ApplicationController
                 bet_cost_amount = (json_response["content"]["betCostAmount"] rescue nil)
                 bet_payout_amount = (json_response["content"]["betPayoutAmount"] rescue nil)
 
-                @ail_pmu = AilPmu.create(transaction_id: @transaction_id, message_id: @message_id, audit_number: @audit_id, date_time: @date_time, bet_code: @bet_code, bet_modifier: @bet_modifier, selector1: @selector1, selector2: @selector2, repeats: @repeats, normal_entries: @normal_entries, special_entries: @special_entries, ticket_number: ticket_number, ref_number: ref_number, bet_cost_amount: bet_cost_amount, bet_payout_amount: bet_payout_amount, paymoney_account_number: paymoney_account_number, gamer_id: gamer_id, user_id: user.id, game_account_token: "ApXTrliOp", draw_id: "#{DateTime.now.to_i}-#{@selector1}-#{@selector2}", starter_horses: @starter_horses, race_details: @race_details, begin_date: @begin_date, end_date: @end_date)
+                @ail_pmu = AilPmu.create(transaction_id: @transaction_id, message_id: @message_id, audit_number: @audit_id, date_time: @date_time, bet_code: @bet_code, bet_modifier: @bet_modifier, selector1: @selector1, selector2: @selector2, repeats: @repeats, normal_entries: @normal_entries, special_entries: @special_entries, ticket_number: ticket_number, ref_number: ref_number, bet_cost_amount: bet_cost_amount, bet_payout_amount: bet_payout_amount, paymoney_account_number: paymoney_account_number, gamer_id: gamer_id, user_id: user.id, game_account_token: "ApXTrliOp", draw_id: "#{DateTime.now.to_i}-#{@selector1}-#{@selector2}", starter_horses: @starter_horses, race_details: @race_details, begin_date: @begin_date, end_date: @end_date, bet_date: bet_date)
 
                 if place_bet_with_cancellation(@ail_pmu, "ApXTrliOp", paymoney_account_number, password, bet_cost_amount)
                   api_acknowledge_bet_old
