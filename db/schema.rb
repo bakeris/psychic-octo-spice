@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160225171035) do
+ActiveRecord::Schema.define(version: 20160229134546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -109,6 +109,7 @@ ActiveRecord::Schema.define(version: 20160225171035) do
     t.string   "draw_number"
     t.string   "bet_status"
     t.string   "basis_amount"
+    t.string   "bet_date"
   end
 
   create_table "ail_pmu_logs", force: true do |t|
@@ -205,6 +206,7 @@ ActiveRecord::Schema.define(version: 20160225171035) do
     t.string   "starter_horses"
     t.text     "race_details"
     t.string   "bet_status"
+    t.string   "bet_date"
   end
 
   create_table "bet_coupons", force: true do |t|

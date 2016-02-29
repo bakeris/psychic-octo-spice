@@ -16,5 +16,6 @@ else
     json.repeats @bet.repeats rescue nil
     json.special_entries "[#{@bet.special_entries}]" rescue nil
     json.normal_entries "[#{@bet.normal_entries}]" rescue nil
+    json.bet_date @ail_pmu.bet_date rescue nil
   end
 end

@@ -17,5 +17,6 @@ else
     json.special_entries "[#{@bet.special_entries}]" rescue nil
     json.normal_entries "[#{@bet.normal_entries}]" rescue nil
     json.basis_amount "#{@bet.basis_amount}" rescue nil
+    json.bet_date @ail_loto.bet_date rescue nil
   end
 end
