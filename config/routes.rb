@@ -235,6 +235,8 @@ Rails.application.routes.draw do
   # Display the list of bets of a gamer
   get '/cm3/api/yhf74493/gamer/bets/list/:gamer_id' => 'cm#api_gamer_bets'
 
+  # Administration
+
 
   # Payment notification
   #post '/cm3/api/dfg7fvb3191/payment/notification' => 'ludwin_api#api_coupon_payment_notification'
