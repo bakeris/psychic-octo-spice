@@ -236,7 +236,7 @@ Rails.application.routes.draw do
   get '/cm3/api/yhf74493/gamer/bets/list/:gamer_id' => 'cm#api_gamer_bets'
 
   # Administration
-
+  get '/administrator/gamers' => 'gamers#index', as: :gamers
 
   # Payment notification
   #post '/cm3/api/dfg7fvb3191/payment/notification' => 'ludwin_api#api_coupon_payment_notification'
