@@ -41,10 +41,7 @@
             <div class="welcome"><%#= image_tag(current_user.avatar.url(:small), width: "18px") rescue "" %><span><%#= current_user.full_name rescue "" %></span></div>
             <div class="userNav">
                 <ul>
-                  <li><a href="/<%#= I18n.locale %>/users/edit.<%= current_user.id %>" title=""><img src="<%= asset_path 'icons/topnav/profile.png' %>" alt="" /><span>Profil</span></a></li>
-                  <li>
-                    <a data-method="delete" href="/<%#= I18n.locale %>/users/sign_out" rel="nofollow"><img src="<%= asset_path 'icons/topnav/logout.png' %>" alt="" /><span>Se déconnecter</span></a>
-                  </li>
+
                 </ul>
             </div>
             <div class="clear"></div>

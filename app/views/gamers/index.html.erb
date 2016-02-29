@@ -1,0 +1,77 @@
+<!-- Title area -->
+<div class="titleArea">
+    <div class="wrapper">
+        <div class="pageTitle">
+            <h5>Liste des parieurs</h5>
+            <span>Prise en charge des actions liées aux parieurs.</span>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="line"></div>
+
+<%#= render "admin_blog_themes/shared/sub_menu" %>
+
+<div class="line"></div>
+
+<!-- Main content wrapper -->
+<div class="wrapper">
+  <%#= flash_messages! %>
+<!-- Widgets -->
+  <div class="widget">
+    <div class="title"><img src="<%= asset_path 'icons/dark/full2.png' %>" alt="" class="titleIcon" /><h6>Liste des parieurs</h6></div>
+    <table cellpadding="0" cellspacing="0" border="0" class="display dTable taskWidget">
+      <thead>
+        <tr>
+          <th>Identifiant</th>
+          <th>Identité</th>
+          <th>Téléphone</th>
+          <th>Dernière connexion</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% unless @gamers.blank? %>
+          <% @gamers.each do |gamer| %>
+            <tr class="gradeA">
+              <% css_class = (gamer.confirmed_at.blank? ? 'taskD' : 'taskPr') %>
+              <td class = "<%= css_class %>">
+                <%= gamer.uuid %>
+              </td>
+              <td class = "customInfo">
+                <span>
+                  <strong>Nom </strong> <%= gamer.firstname %>
+                </span>
+                <span>
+                  <strong>Prénom </strong> <%= gamer.lastname %>
+                </span>
+                <span>
+                  <strong>Email </strong> <%= gamer.email %>
+                </span>
+                <span>
+                  <strong>Créé le </strong> <%= gamer.created_at.strftime("%d-%m-%Y") + " à " + gamer.created_at.strftime("%Hh %Mmn") %>
+                </span>
+              </td>
+              <td>
+                <%= gamer.msisdn %>
+              </td>
+              <td class = "customInfo">
+                <span>
+                  <strong>Le </strong> <%= gamer.updated_at.strftime("%d-%m-%Y") + " à " + gamer.updated_at.strftime("%Hh %Mmn") %>
+                </span>
+              </td>
+              <td class = "actBtns">
+                <a href="<%#= edit_blog_theme_path(blog_theme.id) %>" class="tipS" original-title="Modifier"><%= image_tag('icons/color/pencil.png', alt: '') %></a>
+
+                <a href="<%#= admin_blog_theme_comments_path(blog_theme.id) %>" class="tipS" original-title="Commentaires"><%= image_tag('icons/color/edit-column.png', alt: '') %></a>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- End Main content wrapper -->
