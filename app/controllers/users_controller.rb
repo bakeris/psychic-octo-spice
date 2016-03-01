@@ -83,11 +83,11 @@ class UsersController < ApplicationController
       if @user.confirmed_at.blank?
         render text: %Q({"errors":[{"message":"Le compte n'a pas encore été activé"}]})
       else
-        if @user.login_status == "1"
-          render text: %Q({"errors":[{"message":"Ce compte est déjà connecté"}]})
-        else
-          @user.update_attributes(login_status: "1")
-        end
+        #if @user.login_status == "1"
+          #render text: %Q({"errors":[{"message":"Ce compte est déjà connecté"}]})
+        #else
+          #@user.update_attributes(login_status: "1")
+        #end
       end
     else
       render text: %Q({"errors":[{"message":"Veuillez vérifier le login et le mot de passe"}]})
@@ -101,11 +101,11 @@ class UsersController < ApplicationController
       if @user.confirmed_at.blank?
         render text: %Q({"errors":[{"message":"Le compte n'a pas encore été activé"}]})
       else
-        if @user.login_status == "1"
-          render text: %Q({"errors":[{"message":"Ce compte est déjà connecté"}]})
-        else
-          @user.update_attributes(login_status: "1")
-        end
+        #if @user.login_status == "1"
+          #render text: %Q({"errors":[{"message":"Ce compte est déjà connecté"}]})
+        #else
+          #@user.update_attributes(login_status: "1")
+        #end
       end
     else
       render text: %Q({"errors":[{"message":"Veuillez vérifier le numéro de téléphone et le mot de passe"}]})
