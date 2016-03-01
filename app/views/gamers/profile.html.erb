@@ -1,0 +1,142 @@
+<!-- Title area -->
+<div class="titleArea">
+    <div class="wrapper">
+        <div class="pageTitle">
+            <h5>Profil du parieur</h5>
+            <span><%= @gamer.firstname %> <%= @gamer.lastname %></span>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="line mt30"></div>
+
+<div class="statsRow">
+    <div class="wrapper">
+
+    	<div class="horControlB">
+      	<ul>
+        	<li><a href="javascript:history.go(-1);" title=""><img src="<%= asset_path 'icons/control/16/archives.png' %>" alt=""><span>Retour</span></a></li>
+          </ul>
+        </div>
+
+    </div>
+</div>
+
+<div class="line"></div>
+
+<!-- Main content wrapper -->
+<div class="wrapper">
+  <%= flash_messages! %>
+  <form class = 'form'>
+
+    <fieldset>
+      <div class="widget">
+        <div class="title">
+          <img src="<%= asset_path 'icons/dark/users.png' %>" alt="" class="titleIcon" />
+          <h6>Informations</h6>
+        </div>
+
+        <div class="formRow">
+          <label>Nom</label>
+          <div class="formRight">
+            <b><%= @gamer.firstname %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Prénom</label>
+          <div class="formRight">
+            <b><%= @gamer.lastname %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Email</label>
+          <div class="formRight">
+            <b><%= @gamer.email %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Identifiant</label>
+          <div class="formRight">
+            <b><%= @gamer.uuid %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Téléphone</label>
+          <div class="formRight">
+            <b><%= @gamer.msisdn %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Pseudonyme</label>
+          <div class="formRight">
+            <b><%= @gamer.pseudo %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Civilité</label>
+          <div class="formRight">
+            <b><%= @gamer.civility.name rescue "" %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Sexe</label>
+          <div class="formRight">
+            <b><%= @gamer.sex.name rescue "" %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Date de naissance</label>
+          <div class="formRight">
+            <b><%= @gamer.birthdate %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Date de création</label>
+          <div class="formRight">
+            <%= @gamer.created_at.strftime("%d-%m-%Y") + " à " + @gamer.created_at.strftime("%Hh %Mmn") %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Date d'activation</label>
+          <div class="formRight">
+            <%= @gamer.confirmed_at.strftime("%d-%m-%Y") rescue "" + " à " + @gamer.confirmed_at.strftime("%Hh %Mmn") rescue "" %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Dernière connexion</label>
+          <div class="formRight">
+            <%= @gamer.updated_at.strftime("%d-%m-%Y") + " à " + @gamer.updated_at.strftime("%Hh %Mmn") %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+      </div>
+    </fieldset>
+  </form>
+
+</div>
+<!-- End Main content wrapper -->
