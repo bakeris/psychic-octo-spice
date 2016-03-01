@@ -858,7 +858,7 @@ class AilPmuController < ApplicationController
     pay_ail_earnings(@bet, "ApXTrliOp", @bet.earning_amount, "earning")
 
     # SMS notification
-    build_message(@bet, @bet.earning_amount, "au PMU-PLR", @bet.ticket_number)
+    build_ail_message(@bet, @bet.earning_amount, "au PMU-PLR", @bet.ticket_number, @bet.ref_number)
     send_sms_notification(@bet, @msisdn, "PMU-PLR", @message_content)
 
     # Email notification
@@ -869,7 +869,7 @@ class AilPmuController < ApplicationController
     pay_ail_earnings(@bet, "ApXTrliOp", @bet.refund_amount, "refund")
 
     # SMS notification
-    build_message(@bet, @bet.refund_amount, "au PMU-PLR", @bet.ticket_number)
+    build_ail_message(@bet, @bet.refund_amount, "au PMU-PLR", @bet.ticket_number, @bet.ref_number)
     send_sms_notification(@bet, @msisdn, "PMU-PLR", @message_content)
 
     # Email notification
@@ -903,7 +903,7 @@ class AilPmuController < ApplicationController
               pay_ail_earnings(bet_payout, "ApXTrliOp", bet_payout.earning_amount, "earning")
 
               # SMS notification
-              build_message(bet_payout, bet_payout.earning_amount, "au PMU-PLR", bet_payout.ticket_number)
+              build_ail_message(bet_payout, bet_payout.earning_amount, "au PMU-PLR", bet_payout.ticket_number, bet_payout.ref_number)
               send_sms_notification(bet_payout, @msisdn, "PMU-PLR", @message_content)
 
               # Email notification
@@ -917,7 +917,7 @@ class AilPmuController < ApplicationController
               pay_ail_earnings(bet_refund, "ApXTrliOp", bet_refund.refund_amount, "refund")
 
               # SMS notification
-              build_message(bet_refund, bet_refund.refund_amount, "au PMU-PLR", bet_refund.ticket_number)
+              build_ail_message(bet_refund, bet_refund.refund_amount, "au PMU-PLR", bet_refund.ticket_number, bet_refund.ref_number)
               send_sms_notification(bet_refund, @msisdn, "PMU-PLR", @message_content)
 
               # Email notification

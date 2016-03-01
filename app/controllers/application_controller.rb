@@ -381,12 +381,20 @@ class ApplicationController < ActionController::Base
     request.run
   end
 
-  def build_message(bet, amount, game, ticket_number)
+  def build_message(bet, amount, game, ticket_number, ref_number)
     @user = User.find_by_uuid(bet.gamer_id)
     @msisdn = @user.msisdn rescue ""
     @message_content = %Q[
       Vous avez gagné #{amount} F en jouant #{game} sur PARIONS DIRECT.
       Num ticket: #{ticket_number}. Votre compte PAYMONEY: #{bet.paymoney_account_number} vient d'être rechargé. CONTINUEZ DE JOUER ET GAGNEZ DIRECT.]
+  end
+
+  def build_ail_message(bet, amount, game, ticket_number, ref_number)
+    @user = User.find_by_uuid(bet.gamer_id)
+    @msisdn = @user.msisdn rescue ""
+    @message_content = %Q[
+      Vous avez gagné #{amount} F en jouant #{game} sur PARIONS DIRECT.
+      Num ticket: #{ticket_number}. Numéro de Ref.: #{ref_number}. Votre compte PAYMONEY: #{bet.paymoney_account_number} vient d'être rechargé. CONTINUEZ DE JOUER ET GAGNEZ DIRECT.]
   end
 
   # Check if the parameter is not a number
