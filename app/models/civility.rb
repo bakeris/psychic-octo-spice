@@ -1,6 +1,6 @@
 class Civility < ActiveRecord::Base
   # Relationships
-  has_one :user
+  has_many :user
 
   # Set accessible fields
   attr_accessible :name

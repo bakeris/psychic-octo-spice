@@ -18,7 +18,7 @@
 
 <!-- Main content wrapper -->
 <div class="wrapper">
-  <%#= flash_messages! %>
+  <%= flash_messages! %>
 <!-- Widgets -->
   <div class="widget">
     <div class="title"><img src="<%= asset_path 'icons/dark/full2.png' %>" alt="" class="titleIcon" /><h6>Liste des parieurs</h6></div>
@@ -62,11 +62,11 @@
               </td>
               <td class = "customInfo">
                 <span>
-                  <strong>Le </strong> <%= gamer.updated_at.strftime("%d-%m-%Y") + " à " + gamer.updated_at.strftime("%Hh %Mmn") %>
+                  <%= gamer.updated_at.strftime("%d-%m-%Y") + " à " + gamer.updated_at.strftime("%Hh %Mmn") %>
                 </span>
               </td>
               <td class = "actBtns">
-                <a href="<%#= edit_blog_theme_path(blog_theme.id) %>" class="tipS" original-title="Modifier"><%= image_tag('icons/color/pencil.png', alt: '') %></a>
+                <a href="<%= gamer_profile_path(gamer.id) %>" class="tipS" original-title="Profil"><%= image_tag('icons/color/user-black.png', alt: '') %></a>
 
                 <a href="<%#= admin_blog_theme_comments_path(blog_theme.id) %>" class="tipS" original-title="Commentaires"><%= image_tag('icons/color/edit-column.png', alt: '') %></a>
               </td>
