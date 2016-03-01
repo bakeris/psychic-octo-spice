@@ -737,7 +737,7 @@ puts @win_amount.to_s + "********************"
             @error_description = 'OK'
 
             if pn_ticket_status == '1'
-              body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>#{transaction_id}</TransactionID><TicketID>#{ticket_id}</TicketID ></PaymentRequest></ServicesPSQF>]
+              body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>#{transaction_id}</TransactionID><TicketSogei>#{ticket_id}</TicketSogei></PaymentRequest></ServicesPSQF>]
               puts body
 
               request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)

@@ -238,6 +238,7 @@ Rails.application.routes.draw do
   # Administration
   get '/administrator/gamers' => 'gamers#index', as: :gamers
   get '/administrator/gamer/profile/:gamer_id' => 'gamers#profile', as: :gamer_profile
+  get '/administrator/gamer/loto/:gamer_id' => 'gamers#loto_bets', as: :gamer_loto_bets
 
   # Payment notification
   #post '/cm3/api/dfg7fvb3191/payment/notification' => 'ludwin_api#api_coupon_payment_notification'
