@@ -261,7 +261,7 @@ class AilPmuController < ApplicationController
             @error_description = (json_response["content"]["errorMessage"])
 
             if @error_code == 0 && (json_response["header"]["status"] == 'success')
-              bet_date = DateTime.parse(json_response["header"]["dateTime"]).strftime("%d-%m-%Y %H:%M") rescue nil
+              bet_date = DateTime.parse(json_response["header"]["dateTime"]).strftime("%d-%m-%Y %H:%M:%S") rescue nil
               @bet = (json_response["content"] rescue nil)
 
               unless @bet.blank?
