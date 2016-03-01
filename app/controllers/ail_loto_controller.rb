@@ -905,22 +905,22 @@ class AilLotoController < ApplicationController
     pay_ail_earnings(@bet, "AliXTtooY", @bet.earning_amount, "earning")
 
     # SMS notification
-    build_message(@bet, @bet.earning_amount, "au LOTO", @bet.ticket_number)
+    build_ail_message(@bet, @bet.earning_amount, "au LOTO", @bet.ticket_number, @bet.ref_number)
     send_sms_notification(@bet, @msisdn, "LOTO", @message_content)
 
     # Email notification
-    WinningNotification.notification_email(@bet.user, @bet.earning_amount, "au LOTO", "LOTO", @bet.ticket_number).deliver
+    WinningNotification.notification_email(@bet.user, @bet.earning_amount, "au LOTO", "LOTO", @bet.ticket_number, @bet.ref_number).deliver
   end
 
   def payment_notification_refund
     pay_ail_earnings(@bet, "AliXTtooY", @bet.refund_amount, "refund")
 
     # SMS notification
-    build_message(@bet, @bet.refund_amount, "au LOTO", @bet.ticket_number)
+    build_ail_message(@bet, @bet.refund_amount, "au LOTO", @bet.ticket_number, @bet.ref_number)
     send_sms_notification(@bet, @msisdn, "LOTO", @message_content)
 
     # Email notification
-    WinningNotification.notification_email(@bet.user, @bet.refund_amount, "au LOTO", "LOTO", @bet.ticket_number).deliver
+    WinningNotification.notification_email(@bet.user, @bet.refund_amount, "au LOTO", "LOTO", @bet.ticket_number, @bet.ref_number).deliver
   end
 
   def set_message_type(message_type)
@@ -950,7 +950,7 @@ class AilLotoController < ApplicationController
               pay_ail_earnings(bet_payout, "AliXTtooY", bet_payout.earning_amount, "earning")
 
               # SMS notification
-              build_message(bet_payout, bet_payout.earning_amount, "au LOTO", bet_payout.ticket_number)
+              build_ail_message(bet_payout, bet_payout.earning_amount, "au LOTO", bet_payout.ticket_number, bet_payout.ref_number)
               send_sms_notification(bet_payout, @msisdn, "LOTO", @message_content)
 
               # Email notification
@@ -964,7 +964,7 @@ class AilLotoController < ApplicationController
               pay_ail_earnings(bet_refund, "AliXTtooY", bet_refund.refund_amount, "refund")
 
               # SMS notification
-              build_message(bet_refund, bet_refund.refund_amount, "au LOTO", bet_refund.ticket_number)
+              build_ail_message(bet_refund, bet_refund.refund_amount, "au LOTO", bet_refund.ticket_number, bet_refund.ref_number)
               send_sms_notification(bet_refund, @msisdn, "LOTO", @message_content)
 
               # Email notification
