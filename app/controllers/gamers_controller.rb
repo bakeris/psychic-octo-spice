@@ -32,7 +32,17 @@ class GamersController < ApplicationController
       flash[:error] = "Cet utilisateur n'existe pas"
       redirect_to gamers_path
     else
-      @loto_bets = AilLoto.where("gamer_id = '#{@gamer.uuid}' AND placement_acknowledged IS TRUE").order_created_at desc
+      @loto_bets = AilLoto.where("gamer_id = '#{@gamer.uuid}' AND placement_acknowledge IS TRUE").order("created_at DESC")
+    end
+  end
+
+  def loto_bet_details
+    @bet = AilLoto.find_by_id(params[:bet_id])
+    if @bet.blank?
+      flash[:error] = "Ce pari n'existe pas"
+      redirect_to gamers_path
+    else
+      @gamer = User.find_by_uuid(@bet.gamer_id)
     end
   end
 
