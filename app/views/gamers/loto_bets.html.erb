@@ -5,14 +5,17 @@
             <h5>Liste des paris LOTO</h5>
             <span><%= @gamer.firstname %> <%= @gamer.lastname %> | <%= @gamer.uuid %> | <%= @gamer.email %></span>
         </div>
-
         <div class="clear"></div>
     </div>
 </div>
 
 <div class="line"></div>
 
-<%#= render "gamers/index_stats" %>
+  <div class="horControlB">
+    <ul>
+    	<li><a href="javascript:history.go(-1);" title=""><img src="<%= asset_path 'icons/control/16/archives.png' %>" alt=""><span>Retour</span></a></li>
+      </ul>
+  </div>
 
 <div class="line"></div>
 
@@ -25,50 +28,58 @@
     <table cellpadding="0" cellspacing="0" border="0" class="display dTable taskWidget">
       <thead>
         <tr>
-          <th>Identifiant</th>
-          <th>Identité</th>
-          <th>Téléphone</th>
-          <th>Dernière connexion</th>
+          <th>Statut</th>
+          <th>N° de Réf.</th>
+          <th>N° de Tick.</th>
+          <th>N° de Trans.</th>
+          <th>Montant</th>
+          <th>Mise</th>
+          <th>Détails</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        <% unless @gamers.blank? %>
-          <% @gamers.each do |gamer| %>
+        <% unless @loto_bets.blank? %>
+          <% @loto_bets.each do |bet| %>
             <tr class="gradeA">
-              <% css_class = (gamer.confirmed_at.blank? ? 'taskD' : 'taskPr') %>
+              <% css_class = (bet.bet_status == 'En cours' ? 'taskP' : (bet.bet_status == 'Gagnant' ? 'taskPr' : 'taskD')) %>
               <td class = "<%= css_class %>">
-                <%= gamer.uuid %>
-              </td>
-              <td class = "customInfo">
-                <span>
-                  <strong>Nom </strong> <%= gamer.firstname %>
-                </span>
-                <span>
-                  <strong>Prénom </strong> <%= gamer.lastname %>
-                </span>
-                <span>
-                  <strong>Email </strong> <%= gamer.email %>
-                </span>
-                <span>
-                  <strong>Créé le </strong> <%= gamer.created_at.strftime("%d-%m-%Y") + " à " + gamer.created_at.strftime("%Hh %Mmn") %>
-                </span>
-                <span>
-                  <strong>Activé le </strong> <%= gamer.confirmed_at.strftime("%d-%m-%Y") rescue "" + " à " + gamer.confirmed_at.strftime("%Hh %Mmn") rescue "" %>
-                </span>
+                <%= bet.bet_status %>
               </td>
               <td>
-                <%= gamer.msisdn %>
+                <%= bet.ref_number %>
+              </td>
+              <td>
+                <%= bet.ticket_number %>
+              </td>
+              <td>
+                <%= bet.transaction_id %>
+              </td>
+              <td>
+                <%= bet.bet_cost_amount %>
+              </td>
+              <td>
+                <%= bet.basis_amount %>
               </td>
               <td class = "customInfo">
                 <span>
-                  <%= gamer.updated_at.strftime("%d-%m-%Y") + " à " + gamer.updated_at.strftime("%Hh %Mmn") %>
+                  <strong>Créé le </strong> <%= bet.bet_date %>
+                </span>
+                <% if bet.bet_cancelled %>
+                  <span>
+                    <strong>Annulé le </strong> <%= bet.bet_cancelled_at.strftime("%d-%m-%Y") rescue "" + " à " + bet.bet_cancelled_at.strftime("%Hh %Mmn") rescue "" %>
+                  </span>
+                <% end %>
+                <span>
+                  <strong>Date de début </strong> <%= bet.begin_date %>
+                </span>
+                <span>
+                  <strong>Date de fin </strong> <%= bet.end_date %>
                 </span>
               </td>
-              <td class = "actBtns">
-                <a href="<%= gamer_profile_path(gamer.id) %>" class="tipS" original-title="Profil"><%= image_tag('icons/color/user-black.png', alt: '') %></a>
 
-                <a href="<%#= admin_blog_theme_comments_path(blog_theme.id) %>" class="tipS" original-title="Commentaires"><%= image_tag('icons/color/edit-column.png', alt: '') %></a>
+              <td class = "actBtns">
+                <a href="<%#= gamer_loto_bet_details_path(bet.id) %>" class="tipS" original-title="Détails"><%= image_tag('icons/color/user-black.png', alt: '') %></a>
               </td>
             </tr>
           <% end %>
