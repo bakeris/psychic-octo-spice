@@ -381,7 +381,7 @@ class ApplicationController < ActionController::Base
     request.run
   end
 
-  def build_message(bet, amount, game, ticket_number, ref_number)
+  def build_message(bet, amount, game, ticket_number)
     @user = User.find_by_uuid(bet.gamer_id)
     @msisdn = @user.msisdn rescue ""
     @message_content = %Q[
