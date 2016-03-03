@@ -240,6 +240,8 @@ Rails.application.routes.draw do
   get '/administrator/gamer/profile/:gamer_id' => 'gamers#profile', as: :gamer_profile
   get '/administrator/gamer/loto/:gamer_id' => 'gamers#loto_bets', as: :gamer_loto_bets
   get '/administrator/gamer/loto/bet_details/:bet_id' => 'gamers#loto_bet_details', as: :gamer_loto_bet_details
+  post '/administrator/gamer/loto/bet/search' => 'gamers#loto_bet_search', as: :gamer_loto_bet_search
+  get '/administrator/gamer/loto/bet/search' => 'gamers#index'
 
   # Payment notification
   #post '/cm3/api/dfg7fvb3191/payment/notification' => 'ludwin_api#api_coupon_payment_notification'

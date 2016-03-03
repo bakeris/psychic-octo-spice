@@ -13,7 +13,7 @@
 
   <div class="horControlB">
     <ul>
-    	<li><a href="javascript:history.go(-1);" title=""><img src="<%= asset_path 'icons/control/16/archives.png' %>" alt=""><span>Retour</span></a></li>
+    	<li><a href="<%=gamer_profile_path(@gamer.id) %>" title=""><img src="<%= asset_path 'icons/control/16/archives.png' %>" alt=""><span>Retour</span></a></li>
       </ul>
   </div>
 
@@ -23,6 +23,65 @@
 <div class="wrapper">
   <%= flash_messages! %>
 <!-- Widgets -->
+  <%= form_tag(gamer_loto_bet_search_path, method: :post, :class => 'form') do %>
+
+    <%= hidden_field_tag :uuid, @gamer.uuid %>
+
+    <fieldset>
+      <div class="widget">
+        <div class="title">
+          <img src="<%= asset_path 'icons/dark/full2.png' %>" alt="" class="titleIcon" />
+          <h6>Formulaire de recherche</h6>
+        </div>
+
+        <div class="formRow">
+          <label>Date de début</label>
+          <div class="formRight">
+            <%= date_field_tag :begin_date, params[:begin_date], start_year: (Date.today.year - 10), end_year: Date.today.year, class: "form-control" %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Date de fin</label>
+          <div class="formRight">
+            <%= date_field_tag :end_date, params[:end_date], start_year: (Date.today.year - 10), end_year: Date.today.year, class: "form-control" %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Statut</label>
+          <div class="formRight">
+            <%= select_tag "status_id", options_for_select([ "En cours", "Annulé", "Perdant", "Gagnant" ], params[:status_id]), prompt: "Veuillez choisir un statut", class: "form-control" %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Montant minimum</label>
+          <div class="formRight">
+            <%= text_field_tag "min_amount", @min_amount, placeholder: "Veuillez choisir le montant minimal de gains", :class => "form-control" %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Montant maximum</label>
+          <div class="formRight">
+            <%= text_field_tag "max_amount", @max_amount, placeholder: "Veuillez choisir le montant maximal de gains", class: "form-control" %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <%= submit_tag "Valider", class: 'basic' %>
+        </div>
+
+      </div>
+    </fieldset>
+  <% end %>
+
   <div class="widget">
     <div class="title"><img src="<%= asset_path 'icons/dark/full2.png' %>" alt="" class="titleIcon" /><h6>Liste des paris LOTO</h6></div>
     <table cellpadding="0" cellspacing="0" border="0" class="display dTable taskWidget">
