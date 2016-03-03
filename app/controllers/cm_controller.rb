@@ -28,9 +28,11 @@ class CmController < ApplicationController
 
       if error_code.blank? && @error != true
         session[:connection_id] = (@request_result.xpath('//loginResponse').at('connectionId').content  rescue nil)
+        @connection_id = session[:connection_id]
         CmLog.create(operation: "Login", connection_id: @connection_id, login_request: body, login_response: @response_body)
       else
         @login_error = true
+        session[:connection_id] = nil
         CmLog.create(login_error_code: error_code, login_error_description: (@request_result.xpath('//return').at('message').content rescue nil), login_request: body, login_response: @response_body, login_error_code: @response_code)
       end
     else
