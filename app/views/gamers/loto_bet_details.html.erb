@@ -28,13 +28,81 @@
       <div class="widget">
         <div class="title">
           <img src="<%= asset_path 'icons/dark/users.png' %>" alt="" class="titleIcon" />
-          <h6>Détails du pari</h6>
+          <h6>Détails du pari - Loto</h6>
         </div>
+
+        <div class="formRow">
+          <label>Statut du pari</label>
+          <div class="formRight" style = "color:<%= @bet.bet_status == 'En cours' ? 'grey' : (@bet.bet_status == 'Gagnant' ? 'green' : 'red') %>">
+            <b><%= @bet.bet_status %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+            <label>Date de prise du pari</label>
+            <div class="formRight">
+              <b><%= @bet.bet_date %></b>
+            </div>
+            <div class="clear"></div>
+          </div>
+
+        <div class="formRow">
+          <label>Début de l'évènement</label>
+          <div class="formRight">
+            <b><%= @bet.begin_date %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Fin de l'évènement</label>
+          <div class="formRight">
+            <b><%= @bet.end_date %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <% if @bet.earning_paid %>
+          <div class="formRow">
+            <label>Montant du gain</label>
+            <div class="formRight" style = "color:green">
+              <b><%= @bet.earning_amount %></b>
+            </div>
+            <div class="clear"></div>
+          </div>
+
+          <div class="formRow">
+            <label>Date de paiement des gains</label>
+            <div class="formRight" style = "color:green">
+              <b><%= @bet.earning_paid_at.strftime("%d-%m-%Y") rescue "" + " à " + @bet.earning_paid_at.strftime("%Hh %Mmn") rescue "" %></b>
+            </div>
+            <div class="clear"></div>
+          </div>
+        <% end %>
+
+        <% if @bet.refund_paid %>
+          <div class="formRow">
+            <label>Montant du remboursement</label>
+            <div class="formRight" style = "color:red">
+              <b><%= @bet.refund_amount %></b>
+            </div>
+            <div class="clear"></div>
+          </div>
+
+          <div class="formRow">
+            <label>Date de paiement du remboursement</label>
+            <div class="formRight" style = "color:red">
+              <b><%= @bet.refund_paid_at.strftime("%d-%m-%Y") rescue "" + " à " + @bet.refund_paid_at.strftime("%Hh %Mmn") rescue "" %></b>
+            </div>
+            <div class="clear"></div>
+          </div>
+        <% end %>
 
         <div class="formRow">
           <label>Numéro de compte paymoney</label>
           <div class="formRight">
-            <b><%= @bet.bet_code %></b>
+            <b><%= @bet.paymoney_account_number %></b>
           </div>
           <div class="clear"></div>
         </div>
@@ -171,78 +239,6 @@
           <label>Normal entries</label>
           <div class="formRight">
             <b><%= @bet.normal_entries %></b>
-          </div>
-          <div class="clear"></div>
-        </div>
-
-        <div class="formRow">
-          <label>Identifiant</label>
-          <div class="formRight">
-            <b><%= @gamer.uuid %></b>
-          </div>
-          <div class="clear"></div>
-        </div>
-
-        <div class="formRow">
-          <label>Téléphone</label>
-          <div class="formRight">
-            <b><%= @gamer.msisdn %></b>
-          </div>
-          <div class="clear"></div>
-        </div>
-
-        <div class="formRow">
-          <label>Pseudonyme</label>
-          <div class="formRight">
-            <b><%= @gamer.pseudo %></b>
-          </div>
-          <div class="clear"></div>
-        </div>
-
-        <div class="formRow">
-          <label>Civilité</label>
-          <div class="formRight">
-            <b><%= @gamer.civility.name rescue "" %></b>
-          </div>
-          <div class="clear"></div>
-        </div>
-
-        <div class="formRow">
-          <label>Sexe</label>
-          <div class="formRight">
-            <b><%= @gamer.sex.name rescue "" %></b>
-          </div>
-          <div class="clear"></div>
-        </div>
-
-        <div class="formRow">
-          <label>Date de naissance</label>
-          <div class="formRight">
-            <b><%= @gamer.birthdate %></b>
-          </div>
-          <div class="clear"></div>
-        </div>
-
-        <div class="formRow">
-          <label>Date de création</label>
-          <div class="formRight">
-            <%= @gamer.created_at.strftime("%d-%m-%Y") + " à " + @gamer.created_at.strftime("%Hh %Mmn") %>
-          </div>
-          <div class="clear"></div>
-        </div>
-
-        <div class="formRow">
-          <label>Date d'activation</label>
-          <div class="formRight">
-            <%= @gamer.confirmed_at.strftime("%d-%m-%Y") rescue "" + " à " + @gamer.confirmed_at.strftime("%Hh %Mmn") rescue "" %>
-          </div>
-          <div class="clear"></div>
-        </div>
-
-        <div class="formRow">
-          <label>Dernière connexion</label>
-          <div class="formRight">
-            <%= @gamer.updated_at.strftime("%d-%m-%Y") + " à " + @gamer.updated_at.strftime("%Hh %Mmn") %>
           </div>
           <div class="clear"></div>
         </div>
