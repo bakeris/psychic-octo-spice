@@ -1,0 +1,154 @@
+<!-- Title area -->
+<div class="titleArea">
+    <div class="wrapper">
+        <div class="pageTitle">
+            <h5>Liste des paris LOTO</h5>
+            <span><%= @gamer.firstname %> <%= @gamer.lastname %> | <%= @gamer.uuid %> | <%= @gamer.email %></span>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="line"></div>
+
+  <div class="horControlB">
+    <ul>
+    	<li><a href="<%=gamer_profile_path(@gamer.id) %>" title=""><img src="<%= asset_path 'icons/control/16/archives.png' %>" alt=""><span>Retour</span></a></li>
+      </ul>
+  </div>
+
+<div class="line"></div>
+
+<!-- Main content wrapper -->
+<div class="wrapper">
+  <%= flash_messages! %>
+<!-- Widgets -->
+  <%= form_tag(gamer_loto_bet_search_path, method: :post, :class => 'form') do %>
+
+    <%= hidden_field_tag :uuid, @gamer.uuid %>
+
+    <fieldset>
+      <div class="widget">
+        <div class="title">
+          <img src="<%= asset_path 'icons/dark/full2.png' %>" alt="" class="titleIcon" />
+          <h6>Formulaire de recherche</h6>
+        </div>
+
+        <div class="formRow">
+          <label>Date de début</label>
+          <div class="formRight">
+            <%= date_field_tag :begin_date, params[:begin_date], start_year: (Date.today.year - 10), end_year: Date.today.year, class: "form-control" %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Date de fin</label>
+          <div class="formRight">
+            <%= date_field_tag :end_date, params[:end_date], start_year: (Date.today.year - 10), end_year: Date.today.year, class: "form-control" %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Statut</label>
+          <div class="formRight">
+            <%= select_tag "status_id", options_for_select([ "En cours", "Annulé", "Perdant", "Gagnant" ], params[:status_id]), prompt: "Veuillez choisir un statut", class: "form-control" %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Montant minimum</label>
+          <div class="formRight">
+            <%= text_field_tag "min_amount", @min_amount, placeholder: "Veuillez choisir le montant minimal de gains", :class => "form-control" %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Montant maximum</label>
+          <div class="formRight">
+            <%= text_field_tag "max_amount", @max_amount, placeholder: "Veuillez choisir le montant maximal de gains", class: "form-control" %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <%= submit_tag "Valider", class: 'basic' %>
+        </div>
+
+      </div>
+    </fieldset>
+  <% end %>
+
+  <div class="widget">
+    <div class="title"><img src="<%= asset_path 'icons/dark/full2.png' %>" alt="" class="titleIcon" /><h6>Liste des paris LOTO</h6></div>
+    <table cellpadding="0" cellspacing="0" border="0" class="display dTable taskWidget">
+      <thead>
+        <tr>
+          <th>Statut</th>
+          <th>N° de Réf.</th>
+          <th>N° de Tick.</th>
+          <th>Montant du gain</th>
+          <th>Montant du remboursement</th>
+          <th>Montant</th>
+          <th>Mise</th>
+          <th>Détails</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% unless @loto_bets.blank? %>
+          <% @loto_bets.each do |bet| %>
+            <tr class="gradeA">
+              <% css_class = (bet.bet_status == 'En cours' ? 'taskP' : (bet.bet_status == 'Gagnant' ? 'taskPr' : 'taskD')) %>
+              <td class = "<%= css_class %>">
+                <%= bet.bet_status %>
+              </td>
+              <td>
+                <%= bet.ref_number %>
+              </td>
+              <td>
+                <%= bet.ticket_number %>
+              </td>
+              <td>
+                <%= bet.earning_amount.to_i %>
+              </td>
+              <td>
+                <%= bet.refund_amount.to_i %>
+              </td>
+              <td>
+                <%= bet.bet_cost_amount %>
+              </td>
+              <td>
+                <%= bet.basis_amount %>
+              </td>
+              <td class = "customInfo">
+                <span>
+                  <strong>Créé le </strong> <%= bet.bet_date %>
+                </span>
+                <% if bet.bet_cancelled %>
+                  <span>
+                    <strong>Annulé le </strong> <%= bet.bet_cancelled_at.strftime("%d-%m-%Y") rescue "" + " à " + bet.bet_cancelled_at.strftime("%Hh %Mmn") rescue "" %>
+                  </span>
+                <% end %>
+                <span>
+                  <strong>Date de début </strong> <%= bet.begin_date %>
+                </span>
+                <span>
+                  <strong>Date de fin </strong> <%= bet.end_date %>
+                </span>
+              </td>
+
+              <td class = "actBtns">
+                <a href="<%= gamer_loto_bet_details_path(bet.id) %>" class="tipS" original-title="Détails"><%= image_tag('icons/color/user-black.png', alt: '') %></a>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- End Main content wrapper -->
