@@ -238,10 +238,16 @@ Rails.application.routes.draw do
   # Administration
   get '/administrator/gamers' => 'gamers#index', as: :gamers
   get '/administrator/gamer/profile/:gamer_id' => 'gamers#profile', as: :gamer_profile
+
   get '/administrator/gamer/loto/:gamer_id' => 'gamers#loto_bets', as: :gamer_loto_bets
   get '/administrator/gamer/loto/bet_details/:bet_id' => 'gamers#loto_bet_details', as: :gamer_loto_bet_details
   post '/administrator/gamer/loto/bet/search' => 'gamers#loto_bet_search', as: :gamer_loto_bet_search
   get '/administrator/gamer/loto/bet/search' => 'gamers#index'
+
+  get '/administrator/gamer/pmu_plr/:gamer_id' => 'gamers#pmu_plr_bets', as: :gamer_pmu_plr_bets
+  get '/administrator/gamer/pmu_plr/bet_details/:bet_id' => 'gamers#pmu_plr_bet_details', as: :gamer_pmu_plr_bet_details
+  post '/administrator/gamer/pmu_plr/bet/search' => 'gamers#pmu_plr_bet_search', as: :gamer_pmu_plr_bet_search
+  get '/administrator/gamer/pmu_plr/bet/search' => 'gamers#index'
 
   # Payment notification
   #post '/cm3/api/dfg7fvb3191/payment/notification' => 'ludwin_api#api_coupon_payment_notification'
