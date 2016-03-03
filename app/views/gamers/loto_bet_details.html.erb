@@ -11,15 +11,11 @@
 
 <div class="line mt30"></div>
 
-<div class="line"></div>
-
   <div class="horControlB">
     <ul>
     	<li><a href="javascript:history.go(-1);" title=""><img src="<%= asset_path 'icons/control/16/archives.png' %>" alt=""><span>Retour</span></a></li>
       </ul>
   </div>
-
-<div class="line"></div>
 
 <div class="line"></div>
 
@@ -32,29 +28,149 @@
       <div class="widget">
         <div class="title">
           <img src="<%= asset_path 'icons/dark/users.png' %>" alt="" class="titleIcon" />
-          <h6>Informations</h6>
+          <h6>Détails du pari</h6>
         </div>
 
         <div class="formRow">
-          <label>Nom</label>
+          <label>Numéro de compte paymoney</label>
           <div class="formRight">
-            <b><%= @gamer.firstname %></b>
+            <b><%= @bet.bet_code %></b>
           </div>
           <div class="clear"></div>
         </div>
 
         <div class="formRow">
-          <label>Prénom</label>
+          <label>Identifiant de la transaction</label>
           <div class="formRight">
-            <b><%= @gamer.lastname %></b>
+            <b><%= @bet.transaction_id %></b>
           </div>
           <div class="clear"></div>
         </div>
 
         <div class="formRow">
-          <label>Email</label>
+          <label>Numéro de ticket</label>
           <div class="formRight">
-            <b><%= @gamer.email %></b>
+            <b><%= @bet.ticket_number %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Numéro de reférence</label>
+          <div class="formRight">
+            <b><%= @bet.ref_number %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Numéro d'audit</label>
+          <div class="formRight">
+            <b><%= @bet.audit_number %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Montant du pari</label>
+          <div class="formRight">
+            <b><%= @bet.bet_cost_amount %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Mise de base</label>
+          <div class="formRight">
+            <b><%= @bet.basis_amount %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Id. du message</label>
+          <div class="formRight">
+            <b><%= @bet.message_id %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Bet code</label>
+          <div class="formRight">
+            <b><%= @bet.bet_code %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Bet modifier</label>
+          <div class="formRight">
+            <b><%= @bet.bet_modifier %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Selector 1</label>
+          <div class="formRight">
+            <b><%= @bet.selector1 %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Selector 2</label>
+          <div class="formRight">
+            <b><%= @bet.selector2 %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Repeats</label>
+          <div class="formRight">
+            <b><%= @bet.repeats %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Normal_count</label>
+          <div class="formRight">
+            <b><%= @bet.normal_count %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Special count</label>
+          <div class="formRight">
+            <b><%= @bet.special_count %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Entries</label>
+          <div class="formRight">
+            <b><%= @bet.entries %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Special entries</label>
+          <div class="formRight">
+            <b><%= @bet.special_entries %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Normal entries</label>
+          <div class="formRight">
+            <b><%= @bet.normal_entries %></b>
           </div>
           <div class="clear"></div>
         </div>
