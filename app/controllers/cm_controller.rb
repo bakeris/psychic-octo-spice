@@ -58,14 +58,12 @@ class CmController < ApplicationController
         @currency_name = (@request_result.xpath('//currency').at('name').content rescue nil)
         @currency_mnemonic = (@request_result.xpath('//currency').at('mnemonic').content rescue nil)
         @program_id = (@request_result.xpath('//programIdList').at('programId').content rescue nil)
-
-        CmLog.create(operation: "Current session", current_session_response: @response_body, connection_id: @connection_id)
       else
         @error_code = '3001'
         @error_description = "La session n'a pas pu être récupérée."
-        CmLog.create(operation: "Current session", current_session_error_code: @response_code, current_session_response: @response_body, connection_id: @connection_id)
       end
     end
+    CmLog.create(operation: "Current session", current_session_error_code: @response_body, current_session_request: "<sessionRequest><connectionId>#{@connection_id}</connectionId></sessionRequest>", current_session_response: @response_body, connection_id: @connection_id)
   end
 
   def api_get_program
@@ -385,7 +383,7 @@ class CmController < ApplicationController
           if error_code.blank? && @error != true
             @serial_number = (@request_result.xpath('//ticket').at('serialNumber').content)
             @amount = (@request_result.xpath('//ticket').at('amount').content rescue nil)
-            @bet.update_attributes(serial_number: @serial_number, placement_request: body, placement_response: @response_body, paymoney_account_number: paymoney_account_number, bet_identifier: "#{DateTime.now.to_i}-#{@program_id}-#{@race_id}")
+            @bet.update_attributes(serial_number: @serial_number, placement_request: body, placement_response: @response_body, paymoney_account_number: paymoney_account_number, bet_identifier: "#{DateTime.now.to_i}-#{@program_id}-#{@race_id}", bet_status: "En cours")
 
             place_cm3_bet_with_cancellation(@bet, "McoaDIET", paymoney_account_number, password, @amount)
 
@@ -496,7 +494,7 @@ class CmController < ApplicationController
           else
             @error_code = error_code
             @error_description = error_message
-            @bet.update_attributes(cancel_request: body, cancel_response: @response_body, cancelled: false, cancelled_at: DateTime.now)
+            @bet.update_attributes(cancel_request: body, cancel_response: @response_body, cancelled: false, cancelled_at: DateTime.now, bet_status: "Annulé")
           end
         else
           @error_code = '3011'
@@ -564,7 +562,7 @@ class CmController < ApplicationController
         winnings.each do |winning|
           bet = Cm.where("serial_number = '#{winning.at('serialNumber')}' AND game_account_token = '#{winning.at('clientId')}'").first rescue nil
           unless bet.blank?
-            bet.update_attributes(win_reason: winning.at('reason'), win_amount: winning.at('amount'))
+            bet.update_attributes(win_reason: winning.at('reason'), win_amount: winning.at('amount'), bet_status: "Gagnant")
             bet_ids = winning.xpath('betId') rescue nil
             unless bet_ids.blank?
               bet_ids.each do |bet_id|
