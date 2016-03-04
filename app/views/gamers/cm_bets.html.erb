@@ -126,11 +126,11 @@
               </td>
               <td class = "customInfo">
                 <span>
-                  <strong>Pari pris le </strong> <%= bet.bet_placed_at.strftime("%d-%m-%Y") rescue "" + " à " + bet.bet_placed_at.strftime("%Hh %Mmn") rescue "" %>
+                  <strong>Pari pris le </strong> <%= bet.bet_placed_at.strftime("%d-%m-%Y") + " à " + bet.bet_placed_at.strftime("%Hh %Mmn") %>
                 </span>
                 <% if bet.cancelled %>
                   <span>
-                    <strong>Annulé le </strong> <%= bet.cancelled_at.strftime("%d-%m-%Y") rescue "" + " à " + bet.cancelled_at.strftime("%Hh %Mmn") rescue "" %>
+                    <strong>Annulé le </strong> <%= bet.cancelled_at.strftime("%d-%m-%Y") + " à " + bet.cancelled_at.strftime("%Hh %Mmn") %>
                   </span>
                 <% end %>
                 <span>

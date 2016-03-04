@@ -126,7 +126,7 @@
                 </span>
                 <% if bet.bet_cancelled %>
                   <span>
-                    <strong>Annulé le </strong> <%= bet.bet_cancelled_at.strftime("%d-%m-%Y") rescue "" + " à " + bet.bet_cancelled_at.strftime("%Hh %Mmn") rescue "" %>
+                    <strong>Annulé le </strong> <%= bet.bet_cancelled_at.strftime("%d-%m-%Y") + " à " + bet.bet_cancelled_at.strftime("%Hh %Mmn") %>
                   </span>
                 <% end %>
                 <span>

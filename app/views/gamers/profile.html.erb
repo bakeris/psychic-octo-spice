@@ -101,7 +101,7 @@
         <div class="formRow">
           <label>Date de naissance</label>
           <div class="formRight">
-            <b><%= @gamer.birthdate %></b>
+            <b><%= @gamer.birthdate.strftime("%d-%m-%Y") %></b>
           </div>
           <div class="clear"></div>
         </div>
@@ -114,13 +114,15 @@
           <div class="clear"></div>
         </div>
 
-        <div class="formRow">
-          <label>Date d'activation</label>
-          <div class="formRight">
-            <%= @gamer.confirmed_at.strftime("%d-%m-%Y") rescue "" + " à " + @gamer.confirmed_at.strftime("%Hh %Mmn") rescue "" %>
+        <% unless @gamer.confirmed_at.blank? %>
+          <div class="formRow">
+            <label>Date d'activation</label>
+            <div class="formRight">
+              <%= @gamer.confirmed_at.strftime("%d-%m-%Y") + " à " + @gamer.confirmed_at.strftime("%Hh %Mmn") %>
+            </div>
+            <div class="clear"></div>
           </div>
-          <div class="clear"></div>
-        </div>
+        <% end %>
 
         <div class="formRow">
           <label>Dernière connexion</label>
