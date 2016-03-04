@@ -60,6 +60,8 @@ class CmController < ApplicationController
       else
         @error_code = '3001'
         @error_description = "La session n'a pas pu être récupérée."
+
+        reset_connection_id(error_code)
       end
     end
     CmLog.create(operation: "Current session", current_session_response: @response_body, connection_id: @connection_id)
@@ -97,7 +99,17 @@ class CmController < ApplicationController
         @error_code = '3002'
         @error_description = "Le programme n'a pas pu être récupéré."
         CmLog.create(operation: "Get program", get_program_error_code: @response_code, get_program_error_response: @response_body, connection_id: @connection_id)
+
+        reset_connection_id(error_code)
       end
+    end
+  end
+
+  def reset_connection_id(error_code)
+    if error_code == "501"
+      CmLogin.first.delete rescue nil
+      @error_code = '3000'
+      @error_description = "Session interrompue, veuillez réessayer."
     end
   end
 
@@ -154,6 +166,8 @@ class CmController < ApplicationController
         @error_code = '3003'
         @error_description = "La course n'a pas pu être récupérée."
         CmLog.create(operation: "Get Race", get_race_request_body: body, get_race_response: @response_body, get_race_code: @response_code, connection_id: @connection_id)
+
+        reset_connection_id(error_code)
       end
     end
   end
@@ -198,6 +212,8 @@ class CmController < ApplicationController
         @error_code = '3004'
         @error_description = "La liste des paris n'a pas pu être récupérée."
         CmLog.create(operation: "Get bet", get_bet_request_body: body, get_bet_response: @response_body, get_bet_id: @response_code, connection_id: @connection_id)
+
+        reset_connection_id(error_code)
       end
     end
   end
@@ -228,6 +244,8 @@ class CmController < ApplicationController
         @error_code = '3005'
         @error_description = "Les résultats n'ont pas pu être récupérés."
         CmLog.create(operation: "Get Results", get_results_request_body: body, get_results_response: @response_body, get_results_code: @response_code, connection_id: @connection_id)
+
+        reset_connection_id(error_code)
       end
     end
   end
@@ -270,6 +288,8 @@ class CmController < ApplicationController
         @error_code = '3006'
         @error_description = "Les dividendes n'ont pas pu être récupérés."
         CmLog.create(operation: "Get dividends", get_dividends_request_body: body, get_dividends_response: @response_body, get_dividends_code: @response_code, connection_id: @connection_id)
+
+        reset_connection_id(error_code)
       end
     end
   end
@@ -322,6 +342,8 @@ class CmController < ApplicationController
           @error_code = '3007'
           @error_description = "Les jeux n'ont pas pu être évalués."
           CmLog.create(operation: "Evaluate game", get_eval_request: body, get_eval_response: @response_body, get_eval_code: @response_code, connection_id: @connection_id)
+
+          reset_connection_id(error_code)
         end
       end
     end
@@ -390,6 +412,8 @@ class CmController < ApplicationController
             @error_code = error_code
             @error_description = error_message
             CmLog.create(operation: "Prise de pari", sell_ticket_request: body, sell_ticket_response: @response_body, sell_ticket_code: error_code, connection_id: @connection_id)
+
+            reset_connection_id(error_code)
           end
         else
           @error_code = '3008'
@@ -494,6 +518,8 @@ class CmController < ApplicationController
             @error_code = error_code
             @error_description = error_message
             @bet.update_attributes(cancel_request: body, cancel_response: @response_body, cancelled: false, cancelled_at: DateTime.now, bet_status: "Annulé")
+
+            reset_connection_id(error_code)
           end
         else
           @error_code = '3011'
@@ -550,6 +576,8 @@ class CmController < ApplicationController
       else
         @error_code = error_code
         @error_description = error_message
+
+        reset_connection_id(error_code)
       end
     end
   end
