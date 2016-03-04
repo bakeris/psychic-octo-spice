@@ -105,7 +105,7 @@
           <h6>Liste des paris</h6>
         </div>
 
-        <% unless @wagers %>
+        <% unless @wagers.blank? %>
           <% @wagers.each do |wager| %>
             <div class="formRow">
               <label>Nombre d'unités</label>
