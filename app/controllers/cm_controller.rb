@@ -62,7 +62,7 @@ class CmController < ApplicationController
         @error_description = "La session n'a pas pu être récupérée."
       end
     end
-    CmLog.create(operation: "Current session", current_session_error_code: @response_body, current_session_request: "<sessionRequest><connectionId>#{@connection_id}</connectionId></sessionRequest>", current_session_response: @response_body, connection_id: @connection_id)
+    CmLog.create(operation: "Current session", current_session_error_code: @response_body, current_session_response: @response_body, connection_id: @connection_id)
   end
 
   def api_get_program
