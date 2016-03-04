@@ -98,7 +98,6 @@
         <% end %>
 
         <% @wagers = @bet.cm_wagers %>
-        <hr />
 
         <div class="title">
           <img src="<%= asset_path 'icons/dark/users.png' %>" alt="" class="titleIcon" />
@@ -142,11 +141,12 @@
             <div class="formRow">
               <label>Statut</label>
               <div class="formRight">
-                <b><%= wager.winner %></b>
+                <b><%= wager.winner.blank? "En cours" : wager.winner %></b>
               </div>
               <div class="clear"></div>
             </div>
 
+            <hr />
           <% end %>
         <% end %>
 
