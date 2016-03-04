@@ -64,12 +64,12 @@
         </div>
 
         <div class="formRow">
-            <label>Date de prise du pari</label>
-            <div class="formRight">
-              <b><%= @bet.bet_placed_at.strftime("%d-%m-%Y") rescue "" + " à " + @bet.bet_placed_at.strftime("%Hh %Mmn") rescue "" %></b>
-            </div>
-            <div class="clear"></div>
+          <label>Date de prise du pari</label>
+          <div class="formRight">
+            <b><%= @bet.bet_placed_at.strftime("%d-%m-%Y") rescue "" + " à " + @bet.bet_placed_at.strftime("%Hh %Mmn") rescue "" %></b>
           </div>
+          <div class="clear"></div>
+        </div>
 
         <div class="formRow">
           <label>Début de l'évènement</label>
@@ -96,6 +96,60 @@
             <div class="clear"></div>
           </div>
         <% end %>
+
+        <% @wagers = @bet.cm_wagers %>
+        <hr />
+
+        <div class="title">
+          <img src="<%= asset_path 'icons/dark/users.png' %>" alt="" class="titleIcon" />
+          <h6>Liste des paris</h6>
+        </div>
+
+        <% unless @wagers %>
+          <% @wagers.each do |wager| %>
+            <div class="formRow">
+              <label>Nombre d'unités</label>
+              <div class="formRight">
+                <b><%= wager.nb_unit %></b>
+              </div>
+              <div class="clear"></div>
+            </div>
+
+            <div class="formRow">
+              <label>Nombre de combinaisons</label>
+              <div class="formRight">
+                <b><%= wager.nb_combinations %></b>
+              </div>
+              <div class="clear"></div>
+            </div>
+
+            <div class="formRow">
+              <label>Formule complète</label>
+              <div class="formRight">
+                <b><%= wager.full_box == "FALSE" ? "Non" : "Oui" %></b>
+              </div>
+              <div class="clear"></div>
+            </div>
+
+            <div class="formRow">
+              <label>Sélection</label>
+              <div class="formRight">
+                <b><%= wager.selections_string %></b>
+              </div>
+              <div class="clear"></div>
+            </div>
+
+            <div class="formRow">
+              <label>Statut</label>
+              <div class="formRight">
+                <b><%= wager.winner %></b>
+              </div>
+              <div class="clear"></div>
+            </div>
+
+          <% end %>
+        <% end %>
+
       </div>
     </fieldset>
   </form>
