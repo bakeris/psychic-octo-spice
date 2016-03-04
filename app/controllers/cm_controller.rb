@@ -631,7 +631,7 @@ class CmController < ApplicationController
 
     CmLog.create(operation: "Notify session", session_notification_connection_id: @connection_id, session_notification_session_id: @session_id, session_notification_reason: @reason, notify_session_request_body: request_body)
 
-    render text: status
+    render nothing: true, status: 200 #render text: status
   end
 
   def valid_notify_session_parameters?
@@ -669,7 +669,7 @@ class CmController < ApplicationController
 
     CmLog.create(operation: "Notify session", session_program_connection_id: @connection_id, program_notification_program_id: @program_id, session_notification_reason: @reason, notify_session_request_body: request_body)
 
-    render text: status
+    render nothing: true, status: 200 #render text: status
   end
 
   def valid_notify_program_parameters?
