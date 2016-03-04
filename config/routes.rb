@@ -259,6 +259,11 @@ Rails.application.routes.draw do
   post '/administrator/gamer/cm3/bet/search' => 'gamers#cm_bet_search', as: :gamer_cm_bet_search
   get '/administrator/gamer/cm3/bet/search' => 'gamers#index'
 
+  get '/administrator/gamer/eppl/:gamer_id' => 'gamers#eppl_bets', as: :gamer_eppl_bets
+  get '/administrator/gamer/eppl/bet_details/:bet_id' => 'gamers#eppl_bet_details', as: :gamer_eppl_bet_details
+  post '/administrator/gamer/eppl/bet/search' => 'gamers#eppl_bet_search', as: :gamer_eppl_bet_search
+  get '/administrator/gamer/eppl/bet/search' => 'gamers#index'
+
   # Payment notification
   #post '/cm3/api/dfg7fvb3191/payment/notification' => 'ludwin_api#api_coupon_payment_notification'
   #---------------------CM3---------------------

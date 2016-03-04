@@ -141,7 +141,7 @@
             <div class="formRow">
               <label>Statut</label>
               <div class="formRight">
-                <b><%= wager.winner.blank? "En cours" : wager.winner %></b>
+                <b><%= wager.winner.blank? ? "En cours" : wager.winner %></b>
               </div>
               <div class="clear"></div>
             </div>
