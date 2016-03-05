@@ -1,0 +1,58 @@
+<div class="widget">
+  <div class="title"><img src="<%= asset_path 'icons/dark/full2.png' %>" alt="" class="titleIcon" /><h6>Liste des paris Sport cash</h6></div>
+  <table cellpadding="0" cellspacing="0" border="0" class="display dTable taskWidget">
+    <thead>
+      <tr>
+        <th>Statut</th>
+        <th>Formule</th>
+        <th>N° de Tick.</th>
+        <th>N° de Trans.</th>
+        <th>Montant</th>
+        <th>Montant des gains</th>
+        <th>Détails</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% unless @spc_bets.blank? %>
+        <% @spc_bets.each do |bet| %>
+          <tr class="gradeA">
+            <% css_class = (bet.bet_status == 'En cours' ? 'taskP' : (bet.bet_status == 'Gagnant' ? 'taskPr' : 'taskD')) %>
+            <td class = "<%= css_class %>">
+              <%= bet.bet_status %>
+            </td>
+            <td>
+              <%= bet.formula %>
+            </td>
+            <td>
+              <%= bet.ticket_id %>
+            </td>
+            <td>
+              <%= bet.transaction_id %>
+            </td>
+            <td>
+              <%= number_with_delimiter(bet.amount) %>
+            </td>
+            <td>
+              <%= number_with_delimiter(bet.win_amount) %>
+            </td>
+            <td class = "customInfo">
+              <span>
+                <strong>Pari pris le </strong> <%= bet.validated_at.strftime("%d-%m-%Y") + " à " + bet.validated_at.strftime("%Hh %Mmn") %>
+              </span>
+              <% if bet.cancelled %>
+                <span>
+                  <strong>Annulé le </strong> <%= bet.cancelled_at.strftime("%d-%m-%Y") + " à " + bet.cancelled_at.strftime("%Hh %Mmn") %>
+                </span>
+              <% end %>
+            </td>
+
+            <td class = "actBtns">
+              <a href="<%= gamer_spc_bet_details_path(bet.id) %>" class="tipS" original-title="Détails"><%= image_tag('icons/color/user-black.png', alt: '') %></a>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
