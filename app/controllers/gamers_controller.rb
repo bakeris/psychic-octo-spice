@@ -191,6 +191,35 @@ class GamersController < ApplicationController
     end
   end
 
+  def list_spc_bets
+    @games_menu_style = "current"
+    @pmu_plr_game_menu_style = "this"
+
+    @spc_bets = Bet.where("validated IS TRUE").order("created_at DESC")
+  end
+
+  def list_spc_bet_search
+    @games_menu_style = "current"
+    @pmu_plr_game_menu_style = "this"
+    @begin_date = params[:begin_date]
+    @end_date = params[:end_date]
+    @status = params[:status_id]
+    @min_amount = params[:min_amount]
+    @max_amount = params[:max_amount]
+
+    params[:begin_date] = @begin_date
+    params[:end_date] = @end_date
+    params[:status_id] = @status
+    params[:min_amount] = @min_amount
+    params[:max_amount] = @max_amount
+
+    set_spc_search_params
+
+    @spc_bets = Bet.where("#{@sql_begin_date} #{@sql_begin_date.blank? ? '' : 'AND'} #{@sql_end_date} #{@sql_end_date.blank? ? '' : 'AND'} #{@sql_status} #{@sql_status.blank? ? '' : 'AND'} #{@sql_min_amount} #{@sql_min_amount.blank? ? '' : 'AND'} #{@sql_max_amount} #{@sql_max_amount.blank? ? '' : 'AND'} validated IS TRUE").order("created_at DESC")
+    flash[:success] = "#{@spc_bets.count} Résultat(s) trouvé(s)."
+  end
+
+
   def spc_bet_details
     @class_gamers = "active"
     @bet = Bet.find_by_id(params[:bet_id])
