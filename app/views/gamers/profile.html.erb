@@ -51,6 +51,14 @@
         </div>
 
         <div class="formRow">
+          <label>Pseudonyme</label>
+          <div class="formRight">
+            <b><%= @gamer.pseudo %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
           <label>Email</label>
           <div class="formRight">
             <b><%= @gamer.email %></b>
@@ -75,14 +83,6 @@
         </div>
 
         <div class="formRow">
-          <label>Pseudonyme</label>
-          <div class="formRight">
-            <b><%= @gamer.pseudo %></b>
-          </div>
-          <div class="clear"></div>
-        </div>
-
-        <div class="formRow">
           <label>Civilité</label>
           <div class="formRight">
             <b><%= @gamer.civility.name rescue "" %></b>
@@ -93,7 +93,7 @@
         <div class="formRow">
           <label>Sexe</label>
           <div class="formRight">
-            <b><%= @gamer.sex.name rescue "" %></b>
+            <b><%= @gamer.sex.name == "M" ? "Masculin" : "Féminin" %></b>
           </div>
           <div class="clear"></div>
         </div>
@@ -109,7 +109,7 @@
         <div class="formRow">
           <label>Date de création</label>
           <div class="formRight">
-            <%= @gamer.created_at.strftime("%d-%m-%Y") + " à " + @gamer.created_at.strftime("%Hh %Mmn") %>
+            <b><%= @gamer.created_at.strftime("%d-%m-%Y") + " à " + @gamer.created_at.strftime("%Hh %Mmn") %></b>
           </div>
           <div class="clear"></div>
         </div>
@@ -118,7 +118,7 @@
           <div class="formRow">
             <label>Date d'activation</label>
             <div class="formRight">
-              <%= @gamer.confirmed_at.strftime("%d-%m-%Y") + " à " + @gamer.confirmed_at.strftime("%Hh %Mmn") %>
+              <b><%= @gamer.confirmed_at.strftime("%d-%m-%Y") + " à " + @gamer.confirmed_at.strftime("%Hh %Mmn") %></b>
             </div>
             <div class="clear"></div>
           </div>
@@ -127,7 +127,7 @@
         <div class="formRow">
           <label>Dernière connexion</label>
           <div class="formRight">
-            <%= @gamer.updated_at.strftime("%d-%m-%Y") + " à " + @gamer.updated_at.strftime("%Hh %Mmn") %>
+            <b><%= @gamer.updated_at.strftime("%d-%m-%Y") + " à " + @gamer.updated_at.strftime("%Hh %Mmn") %></b>
           </div>
           <div class="clear"></div>
         </div>

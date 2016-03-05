@@ -25,7 +25,8 @@
     <table cellpadding="0" cellspacing="0" border="0" class="display dTable taskWidget">
       <thead>
         <tr>
-          <th>Identifiant</th>
+          <th>Nom</th>
+          <th>Email</th>
           <th>Identité</th>
           <th>Téléphone</th>
           <th>Dernière connexion</th>
@@ -38,18 +39,12 @@
             <tr class="gradeA">
               <% css_class = (gamer.confirmed_at.blank? ? 'taskD' : 'taskPr') %>
               <td class = "<%= css_class %>">
-                <%= gamer.uuid %>
+                <strong><%= gamer.firstname %> <%= gamer.lastname %></strong>
+              </td>
+              <td>
+                <%= gamer.email %>
               </td>
               <td class = "customInfo">
-                <span>
-                  <strong>Nom </strong> <%= gamer.firstname %>
-                </span>
-                <span>
-                  <strong>Prénom </strong> <%= gamer.lastname %>
-                </span>
-                <span>
-                  <strong>Email </strong> <%= gamer.email %>
-                </span>
                 <span>
                   <strong>Créé le </strong> <%= gamer.created_at.strftime("%d-%m-%Y") + " à " + gamer.created_at.strftime("%Hh %Mmn") %>
                 </span>

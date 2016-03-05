@@ -1,0 +1,60 @@
+<div class="widget">
+  <div class="title"><img src="<%= asset_path 'icons/dark/full2.png' %>" alt="" class="titleIcon" /><h6>Liste des paris PMU PLR</h6></div>
+  <table cellpadding="0" cellspacing="0" border="0" class="display dTable taskWidget">
+    <thead>
+      <tr>
+        <th>Statut</th>
+        <th>N° de Réf.</th>
+        <th>N° de Tick.</th>
+        <th>N° de Trans.</th>
+        <th>Montant du pari</th>
+        <th>Détails</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% unless @pmu_plr_bets.blank? %>
+        <% @pmu_plr_bets.each do |bet| %>
+          <tr class="gradeA">
+            <% css_class = (bet.bet_status == 'En cours' ? 'taskP' : (bet.bet_status == 'Gagnant' ? 'taskPr' : 'taskD')) %>
+            <td class = "<%= css_class %>">
+              <%= bet.bet_status %>
+            </td>
+            <td>
+              <%= bet.ref_number %>
+            </td>
+            <td>
+              <%= bet.ticket_number %>
+            </td>
+            <td>
+              <%= bet.transaction_id %>
+            </td>
+            <td>
+              <%= number_with_delimiter(bet.bet_cost_amount) %>
+            </td>
+            <td class = "customInfo">
+              <span>
+                <strong>Pari pris le </strong> <%= bet.bet_date %>
+              </span>
+              <% if bet.bet_cancelled %>
+                <span>
+                  <strong>Annulé le </strong> <%= bet.bet_cancelled_at.strftime("%d-%m-%Y") + " à " + bet.bet_cancelled_at.strftime("%Hh %Mmn") %>
+                </span>
+              <% end %>
+              <span>
+                <strong>Date de début </strong> <%= bet.begin_date %>
+              </span>
+              <span>
+                <strong>Date de fin </strong> <%= bet.end_date %>
+              </span>
+            </td>
+
+            <td class = "actBtns">
+              <a href="<%= gamer_pmu_plr_bet_details_path(bet.id) %>" class="tipS" original-title="Détails"><%= image_tag('icons/color/user-black.png', alt: '') %></a>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>

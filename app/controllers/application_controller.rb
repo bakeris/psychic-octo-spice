@@ -339,7 +339,7 @@ class ApplicationController < ActionController::Base
         response_body = response.body
 
         if !response_body.include?("|")
-          bet.update_attributes(paymoney_earning_id: response_body, :"#{payment_type}_paid" => true, :"#{payment_type}_paid_at" => DateTime.now, bet_status: "Gagnant")
+          bet.update_attributes(paymoney_earning_id: response_body, :"#{payment_type}_paid" => true, :"#{payment_type}_paid_at" => DateTime.now, bet_status: (payment_type == "earning" ? "Gagnant" : "Remboursé"))
           status = true
         else
           @error_code = '4001'

@@ -67,7 +67,7 @@
           <div class="formRow">
             <label>Montant du gain</label>
             <div class="formRight" style = "color:green">
-              <b><%= @bet.earning_amount %></b>
+              <b><%= number_with_delimiter(@bet.earning_amount) %></b>
             </div>
             <div class="clear"></div>
           </div>
@@ -85,7 +85,7 @@
           <div class="formRow">
             <label>Montant du remboursement</label>
             <div class="formRight" style = "color:red">
-              <b><%= @bet.refund_amount %></b>
+              <b><%= number_with_delimiter(@bet.refund_amount) %></b>
             </div>
             <div class="clear"></div>
           </div>
@@ -142,7 +142,7 @@
         <div class="formRow">
           <label>Montant du pari</label>
           <div class="formRight">
-            <b><%= @bet.bet_cost_amount %></b>
+            <b><%= number_with_delimiter(@bet.bet_cost_amount) %></b>
           </div>
           <div class="clear"></div>
         </div>

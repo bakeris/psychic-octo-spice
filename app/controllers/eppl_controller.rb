@@ -7,7 +7,8 @@ class EpplController < ApplicationController
 
   def charge_eppl_account
     @transaction_amount = params[:transaction_amount]
-    set_place_bet_params(params[:gamer_id], @transaction_amount)
+    @gamer_id = params[:gamer_id]
+    set_place_bet_params(@gamer_id, @transaction_amount)
 
     if @user.blank?
       @error_code = '3000'
@@ -40,6 +41,7 @@ class EpplController < ApplicationController
 
             if !response_body.include?("|")
               @transaction_id = response_body
+              Eppl.create(operation: "Chargement de compte", transaction_id: @transaction_id, paymoney_account_number: paymoney_account_number, transaction_amount: transaction_amount, game_account_token: game_account_token, bet_placed_at: DateTime.now, gamer_id: @gamer_id) rescue nil
             else
               @error_code = '4001'
               @error_description = "Le compte Paymoney n'a pas pu être débité. Veuillez vérifier votre crédit."
@@ -71,7 +73,7 @@ class EpplController < ApplicationController
       #@error_code = '3000'
       #@error_description = "L'identifiant du parieur n'a pas été trouvé."
     #else
-      @eppl = Eppl.create(transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s, paymoney_account_number: params[:paymoney_account_number], transaction_amount: @transaction_amount, remote_ip: @remote_ip, game_id: params[:game_id], game_account_token: @game_account_token, begin_date: begin_date, bet_placed: true, bet_placed_at: DateTime.now, paymoney_transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s)
+      @eppl = Eppl.create(operation: "Prise de pari", transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s, paymoney_account_number: params[:paymoney_account_number], transaction_amount: @transaction_amount, remote_ip: @remote_ip, game_id: params[:game_id], game_account_token: @game_account_token, begin_date: begin_date, bet_placed: true, bet_placed_at: DateTime.now, paymoney_transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s)
 
       #if !place_bet_with_cancellation(@eppl, @game_account_token, params[:paymoney_account_number], params[:password], @transaction_amount)
         #@eppl.update_attributes(error_code: @error_code, error_description: @error_description)
@@ -142,6 +144,7 @@ class EpplController < ApplicationController
   def api_transfer_earning
     #@eppl = (Eppl.where(transaction_id: params[:transaction_id], bet_placed: true).first rescue nil)
     paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
+    paymoney_account_number = params[:paymoney_account_number]
     paymoney_account_token = check_account_number(params[:paymoney_account_number])
     transaction_amount = params[:transaction_amount]
 
@@ -159,7 +162,7 @@ class EpplController < ApplicationController
             response_body = response.body
 
             if !response_body.include?("|")
-              #@eppl.update_attributes(earning_transaction_id: response_body, earning_paid: true, earning_paid_at: DateTime.now)
+              Eppl.create(operation: "Transfert de gains", transaction_id: response_body, paymoney_account_number: paymoney_account_number, transaction_amount: transaction_amount, game_account_token: "PExxGeLY", bet_placed_at: DateTime.now) rescue nil
               @response_body = response_body
               @error_code = ""
               @error_description = ""
@@ -202,6 +205,8 @@ class EpplController < ApplicationController
               @response_body = response_body
               @error_code = ""
               @error_description = ""
+
+              Eppl.create(operation: "Rechargement de compte", transaction_id: response_body, paymoney_account_number: "TRJ", transaction_amount: @transaction_amount, game_account_token: "PExxGeLY", bet_placed_at: DateTime.now, gamer_id: @gamer_id) rescue nil
             else
               @error_code = '4001'
               @error_description = "Erreur de paiement, le paiement n'a pas pu être effectué."

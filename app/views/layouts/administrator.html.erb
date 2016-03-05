@@ -19,7 +19,14 @@
 
     <!-- Left navigation -->
     <ul id="menu" class="nav">
-      <li class="dash"><%= link_to "<span>Parieurs</span>".html_safe, gamers_path, class: "#{@class_gamers}" %></li>
+      <li class="dash"><%= link_to "<span>Liste des Parieurs</span>".html_safe, gamers_path, class: "#{@class_gamers}" %></li>
+      <li class="tables"><a href="#" title="" class="exp" id = "<%= @games_menu_style %>"><span>Liste des jeux</span><strong>5</strong></a>
+        <ul class="sub">
+          <li class = "<%= @loto_game_menu_style %>"><a href="<%= list_loto_bets_path %>" title="">LOTO</a></li>
+          <li class = "<%= @pmu_plr_game_menu_style %>"><a href="<%= list_pmu_plr_bets_path %>" title="">PMU PLR</a></li>
+        </ul>
+      </li>
+      <li class="dash"><%= link_to "<span>SMS</span>".html_safe, "#" %></li>
     </ul>
 </div>
 
