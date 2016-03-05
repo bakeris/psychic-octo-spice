@@ -193,14 +193,14 @@ class GamersController < ApplicationController
 
   def list_spc_bets
     @games_menu_style = "current"
-    @pmu_plr_game_menu_style = "this"
+    @spc_game_menu_style = "this"
 
     @spc_bets = Bet.where("validated IS TRUE").order("created_at DESC")
   end
 
   def list_spc_bet_search
     @games_menu_style = "current"
-    @pmu_plr_game_menu_style = "this"
+    @spc_game_menu_style = "this"
     @begin_date = params[:begin_date]
     @end_date = params[:end_date]
     @status = params[:status_id]
@@ -268,6 +268,34 @@ class GamersController < ApplicationController
     end
   end
 
+  def list_cm_bets
+    @games_menu_style = "current"
+    @cm_game_menu_style = "this"
+
+    @cm_bets = Cm.where("serial_number IS NOT NULL").order("created_at DESC")
+  end
+
+  def list_cm_bet_search
+    @games_menu_style = "current"
+    @cm_game_menu_style = "this"
+    @begin_date = params[:begin_date]
+    @end_date = params[:end_date]
+    @status = params[:status_id]
+    @min_amount = params[:min_amount]
+    @max_amount = params[:max_amount]
+
+    params[:begin_date] = @begin_date
+    params[:end_date] = @end_date
+    params[:status_id] = @status
+    params[:min_amount] = @min_amount
+    params[:max_amount] = @max_amount
+
+    set_cm_search_params
+
+    @cm_bets = Cm.where("#{@sql_begin_date} #{@sql_begin_date.blank? ? '' : 'AND'} #{@sql_end_date} #{@sql_end_date.blank? ? '' : 'AND'} #{@sql_status} #{@sql_status.blank? ? '' : 'AND'} #{@sql_min_amount} #{@sql_min_amount.blank? ? '' : 'AND'} #{@sql_max_amount} #{@sql_max_amount.blank? ? '' : 'AND'} serial_number IS NOT NULL").order("created_at DESC")
+    flash[:success] = "#{@cm_bets.count} Résultat(s) trouvé(s)."
+  end
+
   def cm_bet_details
     @class_gamers = "active"
     @bet = Cm.find_by_id(params[:bet_id])
@@ -281,7 +309,7 @@ class GamersController < ApplicationController
 
   def cm_bet_search
     @class_gamers = "active"
-    @gamer = User.find_by_punter_id(params[:uuid])
+    @gamer = User.find_by_uuid(params[:uuid])
     @begin_date = params[:begin_date]
     @end_date = params[:end_date]
     @status = params[:status_id]
@@ -299,7 +327,7 @@ class GamersController < ApplicationController
 
       set_cm_search_params
 
-      @cm_bets = Cm.where("#{@sql_begin_date} #{@sql_begin_date.blank? ? '' : 'AND'} #{@sql_end_date} #{@sql_end_date.blank? ? '' : 'AND'} #{@sql_status} #{@sql_status.blank? ? '' : 'AND'} #{@sql_min_amount} #{@sql_min_amount.blank? ? '' : 'AND'} #{@sql_max_amount} #{@sql_max_amount.blank? ? '' : 'AND'} punter_id = '#{@gamer.uuid}' AND serial IS NOT NULL").order("created_at DESC")
+      @cm_bets = Cm.where("#{@sql_begin_date} #{@sql_begin_date.blank? ? '' : 'AND'} #{@sql_end_date} #{@sql_end_date.blank? ? '' : 'AND'} #{@sql_status} #{@sql_status.blank? ? '' : 'AND'} #{@sql_min_amount} #{@sql_min_amount.blank? ? '' : 'AND'} #{@sql_max_amount} #{@sql_max_amount.blank? ? '' : 'AND'} punter_id = '#{@gamer.uuid}' AND serial_number IS NOT NULL").order("created_at DESC")
       flash[:success] = "#{@cm_bets.count} Résultat(s) trouvé(s)."
     end
   end
@@ -314,6 +342,32 @@ class GamersController < ApplicationController
     else
       @eppl_bets = Eppl.where("gamer_id = '#{@gamer.uuid}' AND operation != 'Prise de pari' AND operation IS NOT NULL").order("created_at DESC")
     end
+  end
+
+  def list_eppl_bets
+    @games_menu_style = "current"
+    @eppl_game_menu_style = "this"
+
+    @eppl_bets = Eppl.where("operation != 'Prise de pari' AND operation IS NOT NULL").order("created_at DESC")
+  end
+
+  def list_eppl_bet_search
+    @games_menu_style = "current"
+    @eppl_game_menu_style = "this"
+    @begin_date = params[:begin_date]
+    @end_date = params[:end_date]
+    @status = params[:status_id]
+    @min_amount = params[:min_amount]
+    @max_amount = params[:max_amount]
+
+    params[:status_id] = @status
+    params[:min_amount] = @min_amount
+    params[:max_amount] = @max_amount
+
+    set_eppl_search_params
+
+    @eppl_bets = Eppl.where("#{@sql_status} #{(!@sql_status.blank? && (!@sql_min_amount.blank? || !@sql_max_amount.blank?)) ? 'AND' : ''} #{@sql_min_amount} #{(!@sql_min_amount.blank? && !@sql_max_amount.blank?) ? 'AND' : ''} #{@sql_max_amount}").order("created_at DESC")
+    flash[:success] = "#{@eppl_bets.count} Résultat(s) trouvé(s)."
   end
 
   def eppl_bet_details
