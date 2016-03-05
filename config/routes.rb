@@ -264,6 +264,12 @@ Rails.application.routes.draw do
   post '/administrator/gamer/eppl/bet/search' => 'gamers#eppl_bet_search', as: :gamer_eppl_bet_search
   get '/administrator/gamer/eppl/bet/search' => 'gamers#index'
 
+  get '/administrator/loto/bets' => 'gamers#list_loto_bets', as: :list_loto_bets
+  post '/administrator/loto/bets/search' => 'gamers#list_loto_bet_search', as: :list_loto_bet_search
+
+  get '/administrator/pmu_plr/bets' => 'gamers#list_pmu_plr_bets', as: :list_pmu_plr_bets
+  post '/administrator/pmu_plr/bets/search' => 'gamers#list_pmu_plr_bet_search', as: :list_pmu_plr_bet_search
+
   # Payment notification
   #post '/cm3/api/dfg7fvb3191/payment/notification' => 'ludwin_api#api_coupon_payment_notification'
   #---------------------CM3---------------------

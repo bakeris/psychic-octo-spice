@@ -1,0 +1,87 @@
+<!-- Title area -->
+<div class="titleArea">
+    <div class="wrapper">
+        <div class="pageTitle">
+            <h5>Profil du parieur</h5>
+            <span><%= @gamer.firstname %> <%= @gamer.lastname %></span>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="line mt30"></div>
+
+  <div class="horControlB">
+    <ul>
+    	<li><a href="javascript:history.go(-1);" title=""><img src="<%= asset_path 'icons/control/16/archives.png' %>" alt=""><span>Retour</span></a></li>
+      </ul>
+  </div>
+
+<div class="line"></div>
+
+<!-- Main content wrapper -->
+<div class="wrapper">
+  <%= flash_messages! %>
+  <form class = 'form'>
+
+    <fieldset>
+      <div class="widget">
+        <div class="title">
+          <img src="<%= asset_path 'icons/dark/users.png' %>" alt="" class="titleIcon" />
+          <h6>Détails du pari - Jeu Digital</h6>
+        </div>
+
+        <div class="formRow">
+          <label>Opération</label>
+          <div class="formRight">
+            <b><%= @bet.operation %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Code du jeu</label>
+          <div class="formRight">
+            <b><%= @bet.game_id %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Numéro de compte Paymoney</label>
+          <div class="formRight">
+            <b><%= @bet.paymoney_account_number %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Numéro de transaction</label>
+          <div class="formRight">
+            <b><%= @bet.transaction_id %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Montant de transaction</label>
+          <div class="formRight">
+            <b><%= number_with_delimiter(@bet.transaction_amount) %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Date</label>
+          <div class="formRight">
+            <b><%= @bet.bet_placed_at.strftime("%d-%m-%Y") + " à " + @bet.bet_placed_at.strftime("%Hh %Mmn") %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+      </div>
+    </fieldset>
+  </form>
+
+</div>
+<!-- End Main content wrapper -->

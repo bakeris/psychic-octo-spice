@@ -67,7 +67,7 @@
           <div class="formRow">
             <label>Montant du gain</label>
             <div class="formRight" style = "color:green">
-              <b><%= @bet.earning_amount %></b>
+              <b><%= number_with_delimiter(@bet.earning_amount) %></b>
             </div>
             <div class="clear"></div>
           </div>
@@ -75,7 +75,7 @@
           <div class="formRow">
             <label>Date de paiement des gains</label>
             <div class="formRight" style = "color:green">
-              <b><%= @bet.earning_paid_at.strftime("%d-%m-%Y") rescue "" + " à " + @bet.earning_paid_at.strftime("%Hh %Mmn") rescue "" %></b>
+              <b><%= @bet.earning_paid_at.strftime("%d-%m-%Y") + " à " + @bet.earning_paid_at.strftime("%Hh %Mmn") %></b>
             </div>
             <div class="clear"></div>
           </div>
@@ -85,7 +85,7 @@
           <div class="formRow">
             <label>Montant du remboursement</label>
             <div class="formRight" style = "color:red">
-              <b><%= @bet.refund_amount %></b>
+              <b><%= number_with_delimiter(@bet.refund_amount) %></b>
             </div>
             <div class="clear"></div>
           </div>
@@ -93,7 +93,7 @@
           <div class="formRow">
             <label>Date de paiement du remboursement</label>
             <div class="formRight" style = "color:red">
-              <b><%= @bet.refund_paid_at.strftime("%d-%m-%Y") rescue "" + " à " + @bet.refund_paid_at.strftime("%Hh %Mmn") rescue "" %></b>
+              <b><%= @bet.refund_paid_at.strftime("%d-%m-%Y") + " à " + @bet.refund_paid_at.strftime("%Hh %Mmn") %></b>
             </div>
             <div class="clear"></div>
           </div>
@@ -142,7 +142,7 @@
         <div class="formRow">
           <label>Montant du pari</label>
           <div class="formRight">
-            <b><%= @bet.bet_cost_amount %></b>
+            <b><%= number_with_delimiter(@bet.bet_cost_amount) %></b>
           </div>
           <div class="clear"></div>
         </div>
@@ -150,7 +150,7 @@
         <div class="formRow">
           <label>Mise de base</label>
           <div class="formRight">
-            <b><%= @bet.basis_amount %></b>
+            <b><%= number_with_delimiter(@bet.basis_amount) %></b>
           </div>
           <div class="clear"></div>
         </div>
@@ -204,7 +204,7 @@
         </div>
 
         <div class="formRow">
-          <label>Normal_count</label>
+          <label>Normal count</label>
           <div class="formRight">
             <b><%= @bet.normal_count %></b>
           </div>

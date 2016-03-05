@@ -1,0 +1,44 @@
+<div class="widget">
+  <div class="title"><img src="<%= asset_path 'icons/dark/full2.png' %>" alt="" class="titleIcon" /><h6>Liste des transactions des jeux digitaux</h6></div>
+  <table cellpadding="0" cellspacing="0" border="0" class="display dTable taskWidget">
+    <thead>
+      <tr>
+        <th>Operation</th>
+        <th>N° de cpt. Paymoney</th>
+        <th>N° de trans.</th>
+        <th>Montant de trans.</th>
+        <th>Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% unless @eppl_bets.blank? %>
+        <% @eppl_bets.each do |bet| %>
+          <tr class="gradeA">
+            <td class = "taskPr">
+              <%= bet.operation %>
+            </td>
+            <td>
+              <%= bet.paymoney_account_number %>
+            </td>
+            <td>
+              <%= bet.transaction_id %>
+            </td>
+            <td>
+              <%= number_with_delimiter(bet.transaction_amount) %>
+            </td>
+            <td class = "customInfo">
+              <span>
+                <%= bet.bet_placed_at.strftime("%d-%m-%Y") + " à " + bet.bet_placed_at.strftime("%Hh %Mmn") %>
+              </span>
+            </td>
+
+            <td class = "actBtns">
+              <a href="<%= gamer_eppl_bet_details_path(bet.id) %>" class="tipS" original-title="Détails"><%= image_tag('icons/color/user-black.png', alt: '') %></a>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>

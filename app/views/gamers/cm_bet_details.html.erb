@@ -40,6 +40,14 @@
         </div>
 
         <div class="formRow">
+          <label>Montant du pari</label>
+          <div class="formRight">
+            <b><%= number_with_delimiter(@bet.amount) %></b>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
           <label>Numéro de compte Paymoney</label>
           <div class="formRight">
             <b><%= @bet.paymoney_account_number %></b>
@@ -66,7 +74,7 @@
         <div class="formRow">
           <label>Date de prise du pari</label>
           <div class="formRight">
-            <b><%= @bet.bet_placed_at.strftime("%d-%m-%Y") rescue "" + " à " + @bet.bet_placed_at.strftime("%Hh %Mmn") rescue "" %></b>
+            <b><%= @bet.bet_placed_at.strftime("%d-%m-%Y") + " à " + @bet.bet_placed_at.strftime("%Hh %Mmn") %></b>
           </div>
           <div class="clear"></div>
         </div>

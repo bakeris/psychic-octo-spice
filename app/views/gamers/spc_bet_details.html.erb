@@ -28,7 +28,7 @@
       <div class="widget">
         <div class="title">
           <img src="<%= asset_path 'icons/dark/users.png' %>" alt="" class="titleIcon" />
-          <h6>Détails du pari - Sport Cash</h6>
+          <h6>Détails du pari - SportCash</h6>
         </div>
 
         <div class="formRow">
@@ -50,7 +50,7 @@
         <div class="formRow">
             <label>Date de prise du pari</label>
             <div class="formRight">
-              <b><%= @bet.created_at.strftime("%d-%m-%Y") rescue "" + " à " + @bet.created_at.strftime("%Hh %Mmn") rescue "" %></b>
+              <b><%= @bet.created_at.strftime("%d-%m-%Y") + " à " + @bet.created_at.strftime("%Hh %Mmn") %></b>
             </div>
             <div class="clear"></div>
           </div>
@@ -75,7 +75,7 @@
           <div class="formRow">
             <label>Montant du gain</label>
             <div class="formRight" style = "color:green">
-              <b><%= @bet.win_amount %></b>
+              <b><%= number_with_delimiter(@bet.win_amount) %></b>
             </div>
             <div class="clear"></div>
           </div>
@@ -83,7 +83,7 @@
           <div class="formRow">
             <label>Date de paiement des gains</label>
             <div class="formRight" style = "color:green">
-              <b><%= @bet.payment_status_datetime.strftime("%d-%m-%Y") rescue "" + " à " + @bet.payment_status_datetime.strftime("%Hh %Mmn") rescue "" %></b>
+              <b><%= @bet.payment_status_datetime.strftime("%d-%m-%Y") + " à " + @bet.payment_status_datetime.strftime("%Hh %Mmn") %></b>
             </div>
             <div class="clear"></div>
           </div>
@@ -113,6 +113,83 @@
           <div class="clear"></div>
         </div>
 
+        <% @wagers = @bet.bet_coupons %>
+
+        <div class="title">
+          <img src="<%= asset_path 'icons/dark/users.png' %>" alt="" class="titleIcon" />
+          <h6>Liste des paris</h6>
+        </div>
+
+        <% unless @wagers.blank? %>
+          <% @wagers.each do |wager| %>
+
+            <div class="formRow">
+              <label>Sport</label>
+              <div class="formRight">
+                <b><%= wager.sport %></b>
+              </div>
+              <div class="clear"></div>
+            </div>
+
+            <div class="formRow">
+              <label>Equipes</label>
+              <div class="formRight">
+                <b><%= wager.teams %></b>
+              </div>
+              <div class="clear"></div>
+            </div>
+
+            <div class="formRow">
+              <label>Date de début</label>
+              <div class="formRight">
+                <b><%= wager.begin_date[0..7][6..7] %>-<%= wager.begin_date[0..7][4..5] %>-<%= wager.begin_date[0..7][0..3] %> à <%= wager.begin_date[8..(wager.begin_date.length)] %></b>
+              </div>
+              <div class="clear"></div>
+            </div>
+
+            <div class="formRow">
+              <label>Pal code</label>
+              <div class="formRight">
+                <b><%= wager.pal_code %></b>
+              </div>
+              <div class="clear"></div>
+            </div>
+
+            <div class="formRow">
+              <label>Code de l'évènement</label>
+              <div class="formRight">
+                <b><%= wager.event_code %></b>
+              </div>
+              <div class="clear"></div>
+            </div>
+
+            <div class="formRow">
+              <label>Code du pari</label>
+              <div class="formRight">
+                <b><%= wager.bet_code %></b>
+              </div>
+              <div class="clear"></div>
+            </div>
+
+            <div class="formRow">
+              <label>Code du tirage</label>
+              <div class="formRight">
+                <b><%= wager.draw_code %></b>
+              </div>
+              <div class="clear"></div>
+            </div>
+
+            <div class="formRow">
+              <label>Côte</label>
+              <div class="formRight">
+                <b><%= wager.odd %></b>
+              </div>
+              <div class="clear"></div>
+            </div>
+
+            <hr />
+          <% end %>
+        <% end %>
       </div>
     </fieldset>
   </form>
