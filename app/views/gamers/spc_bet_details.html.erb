@@ -3,7 +3,7 @@
     <div class="wrapper">
         <div class="pageTitle">
             <h5>Profil du parieur</h5>
-            <span><%= @gamer.firstname %> <%= @gamer.lastname %></span>
+            <span><%= @gamer.firstname rescue "" %> <%= @gamer.lastname rescue "" %></span>
         </div>
         <div class="clear"></div>
     </div>
@@ -83,7 +83,7 @@
           <div class="formRow">
             <label>Date de paiement des gains</label>
             <div class="formRight" style = "color:green">
-              <b><%= @bet.payment_status_datetime.strftime("%d-%m-%Y") + " à " + @bet.payment_status_datetime.strftime("%Hh %Mmn") %></b>
+              <b><%= @bet.payment_status_datetime %></b>
             </div>
             <div class="clear"></div>
           </div>

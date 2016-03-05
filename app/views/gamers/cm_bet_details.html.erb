@@ -3,7 +3,7 @@
     <div class="wrapper">
         <div class="pageTitle">
             <h5>Profil du parieur</h5>
-            <span><%= @gamer.firstname %> <%= @gamer.lastname %></span>
+            <span><%= @gamer.firstname rescue "" %> <%= @gamer.lastname rescue "" %></span>
         </div>
         <div class="clear"></div>
     </div>
