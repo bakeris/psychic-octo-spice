@@ -716,6 +716,7 @@ class AilPmuController < ApplicationController
     success_array = []
     draw_id_array = []
     remote_ip_address = request.remote_ip
+    @sill_amount = Parameter.first.sill_amount rescue 0
 
     if notification_objects.blank? || (bets.class.to_s rescue nil) != "Array"
       @error_code = '5000'
@@ -855,7 +856,11 @@ class AilPmuController < ApplicationController
   end
 
   def payment_notification_earning
-    pay_ail_earnings(@bet, "ApXTrliOp", @bet.earning_amount, "earning")
+    if @bet.earning_amount.to_f > @sill_amount
+      @bet.update_attributes(bet_status: "Vainqueur en attente de paiement")
+    else
+      pay_ail_earnings(@bet, "ApXTrliOp", @bet.earning_amount, "earning")
+    end
 
     # SMS notification
     build_ail_message(@bet, @bet.earning_amount, "au PMU-PLR", @bet.ticket_number, @bet.ref_number)
@@ -891,6 +896,7 @@ class AilPmuController < ApplicationController
     bets = AilPmu.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En attente de validation' AND placement_acknowledge IS TRUE AND (earning_notification_received_at  < '#{DateTime.now + 5.minutes}' OR refund_notification_received_at  < '#{DateTime.now + 5.minutes}') AND earning_paid IS NULL AND refund_paid IS NULL")
     draw_ids = bets.pluck(:draw_id) rescue nil
 
+
     unless draw_ids.blank?
 
       draw_ids.each do |draw_id|
@@ -900,7 +906,11 @@ class AilPmuController < ApplicationController
           bets_payout = AilPmu.where("earning_notification_received IS TRUE AND draw_id = '#{draw_id}' AND paymoney_earning_id IS NULL")
           unless bets_payout.blank?
             bets_payout.each do |bet_payout|
-              pay_ail_earnings(bet_payout, "ApXTrliOp", bet_payout.earning_amount, "earning")
+              if bet_payout.earning_amount.to_f > @sill_amount
+                bet_payout.update_attributes(bet_status: "Vainqueur en attente de paiement")
+              else
+                pay_ail_earnings(bet_payout, "ApXTrliOp", bet_payout.earning_amount, "earning")
+              end
 
               # SMS notification
               build_ail_message(bet_payout, bet_payout.earning_amount, "au PMU-PLR", bet_payout.ticket_number, bet_payout.ref_number)

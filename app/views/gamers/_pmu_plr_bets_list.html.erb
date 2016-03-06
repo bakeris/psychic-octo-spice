@@ -27,30 +27,39 @@
               <%= bet.ticket_number %>
             </td>
             <td>
-              <%= bet.transaction_id %>
+              <%= bet.transaction_id[0..15] %>...
             </td>
             <td>
               <%= number_with_delimiter(bet.bet_cost_amount) %>
             </td>
             <td class = "customInfo">
-              <span>
-                <strong>Pari pris le </strong> <%= bet.bet_date %>
-              </span>
-              <% if bet.bet_cancelled %>
+              <% if !bet.bet_date.blank? %>
+                <span>
+                  <strong>Pari pris le </strong> <%= bet.bet_date %>
+                </span>
+              <% end %>
+              <% if !bet.bet_cancelled.blank? %>
                 <span>
                   <strong>Annulé le </strong> <%= bet.bet_cancelled_at.strftime("%d-%m-%Y") + " à " + bet.bet_cancelled_at.strftime("%Hh %Mmn") %>
                 </span>
               <% end %>
-              <span>
-                <strong>Date de début </strong> <%= bet.begin_date %>
-              </span>
-              <span>
-                <strong>Date de fin </strong> <%= bet.end_date %>
-              </span>
+              <% if !bet.begin_date.blank? %>
+                <span>
+                  <strong>Date de début </strong> <%= bet.begin_date %>
+                </span>
+              <% end %>
+              <% if !bet.end_date.blank? %>
+                <span>
+                  <strong>Date de fin </strong> <%= bet.end_date %>
+                </span>
+              <% end %>
             </td>
 
             <td class = "actBtns">
               <a href="<%= gamer_pmu_plr_bet_details_path(bet.id) %>" class="tipS" original-title="Détails"><%= image_tag('icons/color/user-black.png', alt: '') %></a>
+              <% if bet.bet_status == 'Vainqueur en attente de paiement' %>
+                <a href="<%= validate_on_hold_pmu_plr_winner_path(bet.id) %>" class="tipS" alt="Valider le paiement" onclick="return confirm('Êtes vous sûr de vouloir valider le paiement?')"><%= image_tag('icons/color/tick.png', alt: '') %></a>
+              <% end %>
             </td>
           </tr>
         <% end %>

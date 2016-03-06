@@ -33,7 +33,7 @@
 
         <div class="formRow">
           <label>Statut du pari</label>
-          <div class="formRight" style = "color:<%= @bet.bet_status == 'En cours' ? 'grey' : (@bet.bet_status == 'Gagnant' ? 'green' : 'red') %>">
+          <div class="formRight" style = "color:<%= (@bet.bet_status == 'En cours' || @bet.bet_status == 'Vainqueur en attente de paiement') ? 'grey' : (@bet.bet_status == 'Gagnant' ? 'green' : 'red') %>">
             <b><%= @bet.bet_status %></b>
           </div>
           <div class="clear"></div>
@@ -100,6 +100,16 @@
             <label>Raison du gain</label>
             <div class="formRight" style = "color:green">
               <b><%= @bet.win_reason %></b>
+            </div>
+            <div class="clear"></div>
+          </div>
+        <% end %>
+
+        <% unless @bet.on_hold_winner_paid_at.blank? %>
+          <div class="formRow">
+            <label>Date de paiement différée</label>
+            <div class="formRight" style = "color:green">
+              <b><%= @bet.on_hold_winner_paid_at.strftime("%d-%m-%Y") + " à " + @bet.on_hold_winner_paid_at.strftime("%Hh %Mmn") %></b>
             </div>
             <div class="clear"></div>
           </div>

@@ -737,7 +737,6 @@ class LudwinApiController < ApplicationController
 
             if pn_ticket_status == '1'
               body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>#{transaction_id}</TransactionID><TicketSogei>#{ticket_id}</TicketSogei></PaymentRequest></ServicesPSQF>]
-              puts body
 
               request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
 
@@ -750,9 +749,16 @@ class LudwinApiController < ApplicationController
                   if !nokogiri_response.blank?
                     response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
                     if response_code == '0' || response_code == '1024' || response_code == '5174'
-                      # Paymoney payment
-                      pay_earnings(@bet, "LhSpwtyN", @bet.win_amount)
-                      @bet.update_attributes(pr_status: true, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Gagnant")
+                      @sill_amount = Parameter.first.sill_amount rescue 0
+
+                      if (@bet.win_amount.to_f rescue 0) > @sill_amount
+                        @bet.update_attributes(payment_status_datetime: DateTime.now, bet_status: "Vainqueur en attente de paiement")
+                      else
+                        # Paymoney payment
+                        pay_earnings(@bet, "LhSpwtyN", @bet.win_amount)
+                        @bet.update_attributes(pr_status: true, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Gagnant")
+                      end
+
                       # SMS notification
                       build_message(@bet, @bet.win_amount, "à SPORTCASH", @bet.ticket_id)
                       send_sms_notification(@bet, @msisdn, "SPORTCASH", @message_content)

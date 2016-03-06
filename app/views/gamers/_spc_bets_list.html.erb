@@ -17,7 +17,7 @@
       <% unless @spc_bets.blank? %>
         <% @spc_bets.each do |bet| %>
           <tr class="gradeA">
-            <% css_class = (bet.bet_status == 'En cours' ? 'taskP' : (bet.bet_status == 'Gagnant' ? 'taskPr' : 'taskD')) %>
+            <% css_class = ((bet.bet_status == 'En cours' || bet.bet_status == 'Vainqueur en attente de paiement') ? 'taskP' : (bet.bet_status == 'Gagnant' ? 'taskPr' : 'taskD')) %>
             <td class = "<%= css_class %>">
               <%= bet.bet_status %>
             </td>
@@ -49,6 +49,9 @@
 
             <td class = "actBtns">
               <a href="<%= gamer_spc_bet_details_path(bet.id) %>" class="tipS" original-title="Détails"><%= image_tag('icons/color/user-black.png', alt: '') %></a>
+              <% if bet.bet_status == 'Vainqueur en attente de paiement' %>
+                <a href="<%= validate_on_hold_spc_winner_path(bet.id) %>" class="tipS" alt="Valider le paiement" onclick="return confirm('Êtes vous sûr de vouloir valider le paiement?')"><%= image_tag('icons/color/tick.png', alt: '') %></a>
+              <% end %>
             </td>
           </tr>
         <% end %>

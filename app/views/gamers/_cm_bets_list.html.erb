@@ -59,6 +59,9 @@
 
               <td class = "actBtns">
                 <a href="<%= gamer_cm_bet_details_path(bet.id) %>" class="tipS" original-title="Détails"><%= image_tag('icons/color/user-black.png', alt: '') %></a>
+                <% if bet.bet_status == 'Vainqueur en attente de paiement' %>
+                <a href="<%= validate_on_hold_cm_winner_path(bet.id) %>" class="tipS" alt="Valider le paiement" onclick="return confirm('Êtes vous sûr de vouloir valider le paiement?')"><%= image_tag('icons/color/tick.png', alt: '') %></a>
+              <% end %>
               </td>
             </tr>
           <% end %>

@@ -279,6 +279,18 @@ Rails.application.routes.draw do
   get '/administrator/eppl/bets' => 'gamers#list_eppl_bets', as: :list_eppl_bets
   post '/administrator/eppl/bets/search' => 'gamers#list_eppl_bet_search', as: :list_eppl_bet_search
 
+  get '/administrator/loto/winners_on_hold' => 'gamers#loto_winners_on_hold', as: :loto_winners_on_hold
+  get '/administrator/loto/winners_on_hold/validate/:bet_id' => 'gamers#validate_on_hold_loto_winner', as: :validate_on_hold_loto_winner
+
+  get '/administrator/pmu_plr/winners_on_hold' => 'gamers#pmu_plr_winners_on_hold', as: :pmu_plr_winners_on_hold
+  get '/administrator/pmu_plr/winners_on_hold/validate/:bet_id' => 'gamers#validate_on_hold_pmu_plr_winner', as: :validate_on_hold_pmu_plr_winner
+
+  get '/administrator/spc/winners_on_hold' => 'gamers#spc_winners_on_hold', as: :spc_winners_on_hold
+  get '/administrator/spc/winners_on_hold/validate/:bet_id' => 'gamers#validate_on_hold_spc_winner', as: :validate_on_hold_spc_winner
+
+  get '/administrator/cm/winners_on_hold' => 'gamers#cm_winners_on_hold', as: :cm_winners_on_hold
+  get '/administrator/cm/winners_on_hold/validate/:bet_id' => 'gamers#validate_on_hold_cm_winner', as: :validate_on_hold_cm_winner
+
   # Payment notification
   #post '/cm3/api/dfg7fvb3191/payment/notification' => 'ludwin_api#api_coupon_payment_notification'
   #---------------------CM3---------------------
