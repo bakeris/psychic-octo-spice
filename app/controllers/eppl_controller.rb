@@ -33,7 +33,11 @@ class EpplController < ApplicationController
         @error_code = '5001'
         @error_description = "Le compte Paymoney n'a pas été trouvé."
       else
-        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/#{transaction_id}/#{game_account_token}/#{paymoney_account_token}/#{password}/#{transaction_amount}", followlocation: true, method: :get)
+        @url = "#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/#{transaction_id}/#{game_account_token}/#{paymoney_account_token}/#{password}/#{transaction_amount}"
+
+        LogRequests.create(description: "Chargement de compte Eppl", request: @url)
+
+        request = Typhoeus::Request.new(@url, followlocation: true, method: :get)
 
         request.on_complete do |response|
           if response.success?
@@ -155,7 +159,10 @@ class EpplController < ApplicationController
       @error_description = "Le compte Paymoney n'a pas été trouvé."
     else
       #if @eppl.earning_transaction_id.blank?
-        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d1798bc43ed59e5207c68e864564/earnings/pay/PExxGeLY/#{paymoney_account_token}/#{transaction_id}/#{transaction_amount}", followlocation: true, method: :get)
+        @url = "#{paymoney_wallet_url}/api/86d1798bc43ed59e5207c68e864564/earnings/pay/PExxGeLY/#{paymoney_account_token}/#{transaction_id}/#{transaction_amount}"
+        LogRequests.create(description: "Transfert de gains EPPL", request: @url)
+
+        request = Typhoeus::Request.new(@url, followlocation: true, method: :get)
 
         request.on_complete do |response|
           if response.success?
@@ -194,7 +201,10 @@ class EpplController < ApplicationController
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
 
       #if @eppl.earning_transaction_id.blank?
-        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/#{transaction_id}/PExxGeLY/TRJ/TRJ_pass/#{@transaction_amount}", followlocation: true, method: :get)
+        @url = "#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/#{transaction_id}/PExxGeLY/TRJ/TRJ_pass/#{@transaction_amount}"
+        LogRequests.create(description: "Rechargement de compte EPPL", request: @url)
+
+        request = Typhoeus::Request.new(@url, followlocation: true, method: :get)
 
         request.on_complete do |response|
           if response.success?
