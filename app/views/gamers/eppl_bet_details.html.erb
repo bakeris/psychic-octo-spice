@@ -39,13 +39,15 @@
           <div class="clear"></div>
         </div>
 
-        <div class="formRow">
-          <label>Code du jeu</label>
-          <div class="formRight">
-            <b><%= @bet.game_id %></b>
+        <% unless @bet.game_id.blank? %>
+          <div class="formRow">
+            <label>Code du jeu</label>
+            <div class="formRight">
+              <b><%= @bet.game_id %></b>
+            </div>
+            <div class="clear"></div>
           </div>
-          <div class="clear"></div>
-        </div>
+        <% end %>
 
         <div class="formRow">
           <label>Numéro de compte Paymoney</label>

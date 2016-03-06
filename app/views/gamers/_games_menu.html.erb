@@ -1,7 +1,7 @@
 <div class="horControlB">
 	<ul>
   	<li><a href="<%= gamers_path %>" title=""><img src="<%= asset_path 'icons/control/16/archives.png' %>" alt=""><span>Retour</span></a></li>
-  	<li><a href="<%= gamer_loto_bets_path(@gamer.id) %>" title=""><img src="<%= asset_path 'icons/color/block.png' %>" alt=""><span>LOTO Bonheur (<%= @loto_bets_count %>)</span></a></li>
+  	<li><a href="<%= gamer_loto_bets_path(@gamer.id) %>" title=""><img src="<%= asset_path 'icons/color/block.png' %>" alt=""><span>LOTO BONHEUR (<%= @loto_bets_count %>)</span></a></li>
   	<li><a href="<%= gamer_pmu_plr_bets_path(@gamer.id) %>" title=""><img src="<%= asset_path 'icons/color/arrow-curve.png' %>" alt=""><span>PMU PLR (<%= @pmu_plr_bets_count %>)</span></a></li>
   	<li><a href="<%= gamer_spc_bets_path(@gamer.id) %>" title=""><img src="<%= asset_path 'icons/color/spectrum.png' %>" alt=""><span>SPORTCASH (<%= @sport_cash_bets_count %>)</span></a></li>
   	<li><a href="<%= gamer_cm_bets_path(@gamer.id) %>" title=""><img src="<%= asset_path 'icons/color/store.png' %>" alt=""><span>PMU ALR (<%= @cm_bets_count %>)</span></a></li>
