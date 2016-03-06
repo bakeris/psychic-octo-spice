@@ -4,6 +4,6 @@ class Parameters < ActiveRecord::Base
   attr_accessible :registration_url, :reset_password_url, :ail_username, :ail_password, :ail_terminal_id, :paymoney_wallet_url, :sill_amount
 
   validates :sill_amount, numericality: true
-  validated :sill_amount, presence: true
+  validates :sill_amount, presence: true
 
 end
