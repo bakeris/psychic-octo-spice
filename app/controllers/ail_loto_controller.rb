@@ -763,6 +763,7 @@ class AilLotoController < ApplicationController
     success_array = []
     draw_id_array = []
     remote_ip_address = request.remote_ip
+    @sill_amount = Parameter.first.sill_amount rescue 0
 
     if notification_objects.blank? || (bets.class.to_s rescue nil) != "Array"
       @error_code = '5000'
@@ -902,7 +903,11 @@ class AilLotoController < ApplicationController
   end
 
   def payment_notification_earning
-    pay_ail_earnings(@bet, "AliXTtooY", @bet.earning_amount, "earning")
+    if @bet.earning_amount.to_f > @sill_amount
+      @bet.update_attributes(bet_status: "Vainqueur en attente de paiement")
+    else
+      pay_ail_earnings(@bet, "AliXTtooY", @bet.earning_amount, "earning")
+    end
 
     # SMS notification
     build_ail_message(@bet, @bet.earning_amount, "au LOTO", @bet.ticket_number, @bet.ref_number)
@@ -947,8 +952,11 @@ class AilLotoController < ApplicationController
           bets_payout = AilLoto.where("earning_notification_received IS TRUE AND draw_id = '#{draw_id}' AND paymoney_earning_id IS NULL")
           unless bets_payout.blank?
             bets_payout.each do |bet_payout|
-              pay_ail_earnings(bet_payout, "AliXTtooY", bet_payout.earning_amount, "earning")
-
+              if bet_payout.earning_amount.to_f > @sill_amount
+                bet_payout.update_attributes(bet_status: "Vainqueur en attente de paiement")
+              else
+                pay_ail_earnings(bet_payout, "AliXTtooY", bet_payout.earning_amount, "earning")
+              end
               # SMS notification
               build_ail_message(bet_payout, bet_payout.earning_amount, "au LOTO", bet_payout.ticket_number, bet_payout.ref_number)
               send_sms_notification(bet_payout, @msisdn, "LOTO", @message_content)

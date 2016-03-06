@@ -404,7 +404,85 @@ class GamersController < ApplicationController
     end
   end
 
+  def loto_winners_on_hold
+    @winners_on_hold_menu_style = "current"
+    @loto_winner_on_hold_menu_style = "this"
 
+    @loto_bets = AilLoto.where("bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
+  end
+
+  def validate_on_hold_loto_winner
+    @loto_bet = AilLoto.where("id = ? AND bet_status = 'Vainqueur en attente de paiement'", params[:bet_id]).first rescue nil
+
+    if @loto_bet.blank?
+      flash[:error] = "Ce pari n'existe pas"
+      redirect_to :back
+    else
+      @loto_bet.update_attributes(bet_status: 'Gagnant', on_hold_winner_paid_at: DateTime.now)
+      flash[:success] = "Le pari a été payé"
+      redirect_to :back
+    end
+  end
+
+  def pmu_plr_winners_on_hold
+    @winners_on_hold_menu_style = "current"
+    @pmu_plr_winner_on_hold_menu_style = "this"
+
+    @pmu_plr_bets = AilPmu.where("bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
+  end
+
+  def validate_on_hold_pmu_plr_winner
+    @pmu_plr_bet = AilPmu.where("id = ? AND bet_status = 'Vainqueur en attente de paiement'", params[:bet_id]).first rescue nil
+
+    if @pmu_plr_bet.blank?
+      flash[:error] = "Ce pari n'existe pas"
+      redirect_to :back
+    else
+      @pmu_plr_bet.update_attributes(bet_status: 'Gagnant', on_hold_winner_paid_at: DateTime.now)
+      flash[:success] = "Le pari a été payé"
+      redirect_to :back
+    end
+  end
+
+  def spc_winners_on_hold
+    @winners_on_hold_menu_style = "current"
+    @spc_winner_on_hold_menu_style = "this"
+
+    @spc_bets = Bet.where("bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
+  end
+
+  def validate_on_hold_spc_winner
+    @spc_bet = Bet.where("id = ? AND bet_status = 'Vainqueur en attente de paiement'", params[:bet_id]).first rescue nil
+
+    if @spc_bet.blank?
+      flash[:error] = "Ce pari n'existe pas"
+      redirect_to :back
+    else
+      @spc_bet.update_attributes(bet_status: 'Gagnant', on_hold_winner_paid_at: DateTime.now)
+      flash[:success] = "Le pari a été payé"
+      redirect_to :back
+    end
+  end
+
+  def cm_winners_on_hold
+    @winners_on_hold_menu_style = "current"
+    @cm_winner_on_hold_menu_style = "this"
+
+    @cm_bets = Cm.where("bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
+  end
+
+  def validate_on_hold_cm_winner
+    @cm_bet = Cm.where("id = ? AND bet_status = 'Vainqueur en attente de paiement'", params[:bet_id]).first rescue nil
+
+    if @cm_bet.blank?
+      flash[:error] = "Ce pari n'existe pas"
+      redirect_to :back
+    else
+      @cm_bet.update_attributes(bet_status: 'Gagnant', on_hold_winner_paid_at: DateTime.now)
+      flash[:success] = "Le pari a été payé"
+      redirect_to :back
+    end
+  end
 
   private
     def set_loto_search_params

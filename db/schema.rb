@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160305070341) do
+ActiveRecord::Schema.define(version: 20160306132234) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -110,6 +110,7 @@ ActiveRecord::Schema.define(version: 20160305070341) do
     t.string   "bet_status"
     t.string   "basis_amount"
     t.string   "bet_date"
+    t.datetime "on_hold_winner_paid_at"
   end
 
   create_table "ail_pmu_logs", force: true do |t|
@@ -207,6 +208,7 @@ ActiveRecord::Schema.define(version: 20160305070341) do
     t.text     "race_details"
     t.string   "bet_status"
     t.string   "bet_date"
+    t.datetime "on_hold_winner_paid_at"
   end
 
   create_table "bet_coupons", force: true do |t|
@@ -277,6 +279,7 @@ ActiveRecord::Schema.define(version: 20160305070341) do
     t.string   "formula"
     t.string   "bet_status"
     t.string   "paymoney_account_number"
+    t.datetime "on_hold_winner_paid_at"
   end
 
   create_table "civilities", force: true do |t|
@@ -418,6 +421,7 @@ ActiveRecord::Schema.define(version: 20160305070341) do
     t.text     "notify_session_request_body"
     t.text     "notify_session_request_result"
     t.string   "bet_status"
+    t.datetime "on_hold_winner_paid_at"
   end
 
   create_table "creation_modes", force: true do |t|
@@ -536,6 +540,7 @@ ActiveRecord::Schema.define(version: 20160305070341) do
     t.string   "ail_password"
     t.string   "ail_terminal_id"
     t.string   "paymoney_wallet_url"
+    t.float    "sill_amount"
   end
 
   create_table "query_bets", force: true do |t|

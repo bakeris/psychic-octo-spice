@@ -22,11 +22,19 @@
       <li class="dash"><%= link_to "<span>Liste des Parieurs</span>".html_safe, gamers_path, class: "#{@class_gamers}" %></li>
       <li class="tables"><a href="#" title="" class="exp" id = "<%= @games_menu_style %>"><span>Liste des jeux</span><strong>5</strong></a>
         <ul class="sub">
-          <li class = "<%= @loto_game_menu_style %>"><a href="<%= list_loto_bets_path %>" title="">LOTO</a></li>
+          <li class = "<%= @loto_game_menu_style %>"><a href="<%= list_loto_bets_path %>" title="">LOTO BONHEUR</a></li>
           <li class = "<%= @pmu_plr_game_menu_style %>"><a href="<%= list_pmu_plr_bets_path %>" title="">PMU PLR</a></li>
           <li class = "<%= @spc_game_menu_style %>"><a href="<%= list_spc_bets_path %>" title="">SPORTCASH</a></li>
           <li class = "<%= @cm_game_menu_style %>"><a href="<%= list_cm_bets_path %>" title="">PMU ALR</a></li>
           <li class = "<%= @eppl_game_menu_style %>"><a href="<%= list_eppl_bets_path %>" title="">Jeux digitaux</a></li>
+        </ul>
+      </li>
+      <li class="tables"><a href="#" title="" class="exp" id = "<%= @winners_on_hold_menu_style %>"><span>En attente de paiement</span><strong>4</strong></a>
+        <ul class="sub">
+          <li class = "<%= @loto_winner_on_hold_menu_style %>"><a href="<%= loto_winners_on_hold_path %>" title="">LOTO BONHEUR</a></li>
+          <li class = "<%= @pmu_plr_winner_on_hold_menu_style %>"><a href="<%= pmu_plr_winners_on_hold_path %>" title="">PMU PLR</a></li>
+          <li class = "<%= @spc_winner_on_hold_menu_style %>"><a href="<%= spc_winners_on_hold_path %>" title="">SPORTCASH</a></li>
+          <li class = "<%= @cm_winner_on_hold_menu_style %>"><a href="<%= cm_winners_on_hold_path %>" title="">PMU ALR</a></li>
         </ul>
       </li>
       <li class="dash"><%= link_to "<span>SMS</span>".html_safe, "#" %></li>

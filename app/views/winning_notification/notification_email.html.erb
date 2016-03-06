@@ -16,9 +16,15 @@ Numéro de ticket: <%= @ticket_id %>.
 Numéro de Ref.: <%= @ref_number %>.
 <p></p>
 <% end %>
+<% if @amount.to_f > @sill_amount %>
+NOUS VOUS INVITONS A VOUS RENDRE DANS L'AGENCE LA PLUS PROCHE POUR LE RETRAIT DE VOTRE GAIN.
+<p></p>
+<h4>CONTINUEZ DE JOUER SUR PARIONS DIRECT ET GAGNEZ DIRECT!</h4>
+<% else %>
 Votre compte PAYMONEY LONACI: <%= @paymoney_account_number%> vient d'être crédité du montant de votre gain.
 <p></p>
 <h4>CONTINUEZ DE JOUER SUR PARIONS DIRECT ET GAGNEZ DIRECT!</h4>
+<% end %>
 
 </body>
 </html>
