@@ -291,6 +291,9 @@ Rails.application.routes.draw do
   get '/administrator/cm/winners_on_hold' => 'gamers#cm_winners_on_hold', as: :cm_winners_on_hold
   get '/administrator/cm/winners_on_hold/validate/:bet_id' => 'gamers#validate_on_hold_cm_winner', as: :validate_on_hold_cm_winner
 
+  # Excel export
+  get '/administrator/users/export' => 'gamers#export_gamers_list', as: :export_gamers_list
+
   # Payment notification
   #post '/cm3/api/dfg7fvb3191/payment/notification' => 'ludwin_api#api_coupon_payment_notification'
   #---------------------CM3---------------------

@@ -11,6 +11,12 @@ class GamersController < ApplicationController
     @unconfirmed_accounts = @gamers.where("confirmed_at IS NULL").count
   end
 
+  def export_gamers_list
+    @users = User.all
+
+    send_data @users.to_csv, filename: "Parieurs-#{Date.today}.csv"
+  end
+
   def profile
     @class_gamers = "active"
     @gamer = User.find_by_id(params[:gamer_id])

@@ -20,17 +20,19 @@
 <div class="wrapper">
   <%= flash_messages! %>
 <!-- Widgets -->
+  <a href="<%= export_gamers_list_path %>" title="" class="wButton orangewB ml15 m10"><span>Exporter en excel</span></a>
   <div class="widget">
     <div class="title"><img src="<%= asset_path 'icons/dark/full2.png' %>" alt="" class="titleIcon" /><h6>Liste des parieurs</h6></div>
     <table cellpadding="0" cellspacing="0" border="0" class="display dTable taskWidget">
       <thead>
         <tr>
-          <th>Nom</th>
-          <th>Email</th>
-          <th>Identité</th>
-          <th>Téléphone</th>
-          <th>Dernière connexion</th>
-          <th>Actions</th>
+          <th width = "15%">Nom</th>
+          <th width = "15%">Email</th>
+          <th width = "10%">Téléphone</th>
+          <th width = "15%">Date de création</th>
+          <th width = "15%">Date d'activation</th>
+          <th width = "15%">Dernière connexion</th>
+          <th width = "10%">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -44,21 +46,21 @@
               <td>
                 <%= gamer.email %>
               </td>
-              <td class = "customInfo">
-                <span>
-                  <strong>Créé le </strong> <%= gamer.created_at.strftime("%d-%m-%Y") + " à " + gamer.created_at.strftime("%Hh %Mmn") %>
-                </span>
-                <span>
-                  <strong>Activé le </strong> <%= gamer.confirmed_at.strftime("%d-%m-%Y") rescue "" + " à " + gamer.confirmed_at.strftime("%Hh %Mmn") rescue "" %>
-                </span>
-              </td>
               <td>
                 <%= gamer.msisdn %>
               </td>
-              <td class = "customInfo">
-                <span>
-                  <%= gamer.updated_at.strftime("%d-%m-%Y") + " à " + gamer.updated_at.strftime("%Hh %Mmn") %>
-                </span>
+              <td>
+                <%= gamer.created_at.strftime("%d-%m-%Y") + " à " + gamer.created_at.strftime("%Hh %Mmn") %>
+              </td>
+              <td>
+                <% unless gamer.confirmed_at.blank? %>
+                  <%= gamer.confirmed_at.strftime("%d-%m-%Y") + " à " + gamer.confirmed_at.strftime("%Hh %Mmn") %>
+                <% end %>
+              </td>
+              <td>
+                <% unless gamer.last_connection_date.blank? %>
+                  <%= gamer.last_connection_date.strftime("%d-%m-%Y") + " à " + gamer.last_connection_date.strftime("%Hh %Mmn") %>
+                <% end %>
               </td>
               <td class = "actBtns">
                 <a href="<%= gamer_profile_path(gamer.id) %>" class="tipS" original-title="Profil"><%= image_tag('icons/color/user-black.png', alt: '') %></a>

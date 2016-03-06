@@ -86,7 +86,7 @@ class UsersController < ApplicationController
         #if @user.login_status == "1"
           #render text: %Q({"errors":[{"message":"Ce compte est déjà connecté"}]})
         #else
-          #@user.update_attributes(login_status: "1")
+          @user.update_attributes(last_connection_date: DateTime.now)
         #end
       end
     else
@@ -104,7 +104,7 @@ class UsersController < ApplicationController
         #if @user.login_status == "1"
           #render text: %Q({"errors":[{"message":"Ce compte est déjà connecté"}]})
         #else
-          #@user.update_attributes(login_status: "1")
+          @user.update_attributes(last_connection_date: DateTime.now)
         #end
       end
     else

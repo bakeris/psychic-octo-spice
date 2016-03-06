@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   belongs_to :sex
 
   # Set accessible fields
-  attr_accessible :civility_id, :sex_id, :pseudo, :firstname, :lastname, :email, :password, :msisdn, :birthdate, :creation_mode_id, :reset_pasword_token, :salt, :confirmation_token, :confirmed_at, :reset_password_token, :password_reseted_at, :account_enabled, :uuid, :last_successful_message, :login_status
+  attr_accessible :civility_id, :sex_id, :pseudo, :firstname, :lastname, :email, :password, :msisdn, :birthdate, :creation_mode_id, :reset_pasword_token, :salt, :confirmation_token, :confirmed_at, :reset_password_token, :password_reseted_at, :account_enabled, :uuid, :last_successful_message, :login_status, :last_connection_date
 
 # Renaming attributes into more friendly text
   HUMANIZED_ATTRIBUTES = {
@@ -71,6 +71,19 @@ class User < ActiveRecord::Base
       end
     end
     status
+  end
+
+  def self.to_csv
+    attributes = %w{ID Email Nom Prénom Téléphone Civilité Sexe Id-parieur Date-de-naissance Date-de-création Date-dactivation Date-de-dernière-connexion}
+
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      all.each do |user|
+        csv << [user.id, user.email, user.firstname, user.firstname, user.msisdn, (user.civility.name rescue nil), (user.sex.name rescue nil), user.uuid, user.birthdate, user.created_at, user.confirmed_at, user.last_connection_date]
+        #csv << attributes.map{ |attr| user.send(attr) }
+      end
+    end
   end
 
   def self.full_name
