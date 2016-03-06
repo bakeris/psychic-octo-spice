@@ -1,3 +1,5 @@
+
+
 <!-- Title area -->
 <div class="titleArea">
     <div class="wrapper">
@@ -20,10 +22,10 @@
 <div class="wrapper">
   <%= flash_messages! %>
 <!-- Widgets -->
-  <a href="<%= export_gamers_list_path %>" title="" class="wButton orangewB ml15 m10"><span>Exporter en excel</span></a>
+  <a href="<%= export_gamers_list_path %>" title="" class="wButton orangewB ml15 m10"><span>Exporter</span></a>
   <div class="widget">
     <div class="title"><img src="<%= asset_path 'icons/dark/full2.png' %>" alt="" class="titleIcon" /><h6>Liste des parieurs</h6></div>
-    <table cellpadding="0" cellspacing="0" border="0" class="display dTable taskWidget">
+    <table cellpadding="0" cellspacing="0" border="0" class="display dTable taskWidget" id = "users_table">
       <thead>
         <tr>
           <th width = "15%">Nom</th>
@@ -73,3 +75,13 @@
   </div>
 </div>
 <!-- End Main content wrapper -->
+
+<script type = "text/javascript">
+  $(document).ready(function() {
+    //$('#users_table').dataTable( {
+      //"bRetrieve": true,
+      //"bSort": false
+      //"bDestroy": true
+    //});
+  });
+</script>

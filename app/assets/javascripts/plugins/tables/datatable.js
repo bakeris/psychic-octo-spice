@@ -9,7 +9,6 @@
  * Project:     Mtaala
  * Contact:     allan.jardine@sprymedia.co.uk
  *
- * Copyright 2008-2011 Allan Jardine, all rights reserved.
  *
  * This source file is free software, under either the GPL v2 license or a
  * BSD style license, as supplied with this software.
@@ -918,6 +917,7 @@
 				"bLengthChange": true,
 				"bFilter": true,
 				"bSort": true,
+				//"bSort": false,
 				"bInfo": true,
 				"bAutoWidth": true,
 				"bProcessing": false,
@@ -1075,7 +1075,8 @@
 			 *           Index 1 - current sorting direction
 			 *           Index 2 - index of asSorting for this column
 			 */
-			this.aaSorting = [ [0, 'asc', 0] ];
+			//this.aaSorting = [ [0, 'asc', 0] ];
+			this.aaSorting = [];
 
 			/*
 			 * Variable: aaSortingFixed
