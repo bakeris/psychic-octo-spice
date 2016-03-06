@@ -22,7 +22,7 @@ class EpplController < ApplicationController
     paymoney_account_token = check_account_number(paymoney_account_number)
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
 
-    paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
+    paymoney_wallet_url = Parameters.first.paymoney_wallet_url rescue ""
     transaction_amount = transaction_amount.to_f.abs
 
     if transaction_amount == 0
@@ -108,7 +108,7 @@ class EpplController < ApplicationController
 
   def api_pay_earning
     @eppl = (Eppl.where(transaction_id: params[:transaction_id], bet_placed: true).first rescue nil)
-    paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
+    paymoney_wallet_url = Parameters.first.paymoney_wallet_url rescue ""
 
     if @eppl.blank?
       @error_code = '4000'
@@ -147,7 +147,7 @@ class EpplController < ApplicationController
 
   def api_transfer_earning
     #@eppl = (Eppl.where(transaction_id: params[:transaction_id], bet_placed: true).first rescue nil)
-    paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
+    paymoney_wallet_url = Parameters.first.paymoney_wallet_url rescue ""
     paymoney_account_number = params[:paymoney_account_number]
     paymoney_account_token = check_account_number(params[:paymoney_account_number])
     transaction_amount = params[:transaction_amount]
@@ -195,7 +195,7 @@ class EpplController < ApplicationController
 
   def api_recharge_eppl_account
     #@eppl = (Eppl.where(transaction_id: params[:transaction_id], bet_placed: true).first rescue nil)
-    paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
+    paymoney_wallet_url = Parameters.first.paymoney_wallet_url rescue ""
     @transaction_amount = params[:transaction_amount]
 
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
