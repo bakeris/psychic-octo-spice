@@ -67,7 +67,7 @@
           <div class="formRow">
             <label>Montant du gain</label>
             <div class="formRight" style = "color:green">
-              <b><%= number_with_delimiter(@bet.earning_amount) %></b>
+              <b><%= number_with_delimiter(@bet.earning_amount) %> F CFA</b>
             </div>
             <div class="clear"></div>
           </div>
@@ -95,7 +95,7 @@
           <div class="formRow">
             <label>Montant du remboursement</label>
             <div class="formRight" style = "color:red">
-              <b><%= number_with_delimiter(@bet.refund_amount) %></b>
+              <b><%= number_with_delimiter(@bet.refund_amount) %> F CFA</b>
             </div>
             <div class="clear"></div>
           </div>
@@ -152,7 +152,7 @@
         <div class="formRow">
           <label>Montant du pari</label>
           <div class="formRight">
-            <b><%= number_with_delimiter(@bet.bet_cost_amount) %></b>
+            <b><%= number_with_delimiter(@bet.bet_cost_amount) %> F CFA</b>
           </div>
           <div class="clear"></div>
         </div>
@@ -166,7 +166,7 @@
         </div>
 
         <div class="formRow">
-          <label>Bet code</label>
+          <label>Type de pari</label>
           <div class="formRight">
             <b><%= @bet.bet_code %></b>
           </div>
@@ -198,7 +198,7 @@
         </div>
 
         <div class="formRow">
-          <label>Repeats</label>
+          <label>Nombre de fois</label>
           <div class="formRight">
             <b><%= @bet.repeats %></b>
           </div>
@@ -206,7 +206,7 @@
         </div>
 
         <div class="formRow">
-          <label>Normal_count</label>
+          <label>Normal count</label>
           <div class="formRight">
             <b><%= @bet.normal_count %></b>
           </div>
@@ -230,7 +230,7 @@
         </div>
 
         <div class="formRow">
-          <label>Special entries</label>
+          <label>Sélections</label>
           <div class="formRight">
             <b><%= @bet.special_entries %></b>
           </div>
@@ -238,7 +238,7 @@
         </div>
 
         <div class="formRow">
-          <label>Normal entries</label>
+          <label>Bases</label>
           <div class="formRight">
             <b><%= @bet.normal_entries %></b>
           </div>
