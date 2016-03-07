@@ -800,6 +800,7 @@ class CmController < ApplicationController
                 <connectionId>#{@connection_id}</connectionId>
               </logoutRequest>]
     send_request(body, "#{@@cm3_server_url}/logout")
+    ensure_login
     CmLogin.first.delete rescue nil
     CmLog.create(operation: "Logout", connection_id: @connection_id, login_request: body, login_response: @response_body)
   end
