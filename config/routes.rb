@@ -282,14 +282,22 @@ Rails.application.routes.draw do
   get '/administrator/loto/winners_on_hold' => 'gamers#loto_winners_on_hold', as: :loto_winners_on_hold
   get '/administrator/loto/winners_on_hold/validate/:bet_id' => 'gamers#validate_on_hold_loto_winner', as: :validate_on_hold_loto_winner
 
+   get '/administrator/loto/winners' => 'gamers#loto_winners', as: :loto_winners
+
   get '/administrator/pmu_plr/winners_on_hold' => 'gamers#pmu_plr_winners_on_hold', as: :pmu_plr_winners_on_hold
   get '/administrator/pmu_plr/winners_on_hold/validate/:bet_id' => 'gamers#validate_on_hold_pmu_plr_winner', as: :validate_on_hold_pmu_plr_winner
+
+  get '/administrator/pmu_plr/winners' => 'gamers#pmu_plr_winners', as: :pmu_plr_winners
 
   get '/administrator/spc/winners_on_hold' => 'gamers#spc_winners_on_hold', as: :spc_winners_on_hold
   get '/administrator/spc/winners_on_hold/validate/:bet_id' => 'gamers#validate_on_hold_spc_winner', as: :validate_on_hold_spc_winner
 
+  get '/administrator/spc/winners' => 'gamers#spc_winners', as: :spc_winners
+
   get '/administrator/cm/winners_on_hold' => 'gamers#cm_winners_on_hold', as: :cm_winners_on_hold
   get '/administrator/cm/winners_on_hold/validate/:bet_id' => 'gamers#validate_on_hold_cm_winner', as: :validate_on_hold_cm_winner
+
+  get '/administrator/cm/winners' => 'gamers#cm_winners', as: :cm_winners
 
   # Excel export
   get '/administrator/users/export' => 'gamers#export_gamers_list', as: :export_gamers_list
