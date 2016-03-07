@@ -52,6 +52,13 @@ class GamersController < ApplicationController
     @loto_bets = AilLoto.where("placement_acknowledge IS TRUE").order("created_at DESC")
   end
 
+  def loto_winners
+    @winners_menu_style = "current"
+    @loto_winners_menu_style = "this"
+
+    @loto_bets = AilLoto.where("bet_status = 'Gagnant' OR bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
+  end
+
   def list_loto_bet_search
     @games_menu_style = "current"
     @loto_game_menu_style = "this"
@@ -126,6 +133,13 @@ class GamersController < ApplicationController
     @pmu_plr_game_menu_style = "this"
 
     @pmu_plr_bets = AilPmu.where("placement_acknowledge IS TRUE").order("created_at DESC")
+  end
+
+  def pmu_plr_winners
+    @winners_menu_style = "current"
+    @pmu_plr_winners_menu_style = "this"
+
+    @pmu_plr_bets = AilPmu.where("bet_status = 'Gagnant' OR bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
   end
 
   def list_pmu_plr_bet_search
@@ -204,6 +218,13 @@ class GamersController < ApplicationController
     @spc_bets = Bet.where("validated IS TRUE").order("created_at DESC")
   end
 
+  def spc_winners
+    @winners_menu_style = "current"
+    @spc_winners_menu_style = "this"
+
+    @spc_bets = Bet.where("bet_status = 'Gagnant' OR bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
+  end
+
   def list_spc_bet_search
     @games_menu_style = "current"
     @spc_game_menu_style = "this"
@@ -279,6 +300,13 @@ class GamersController < ApplicationController
     @cm_game_menu_style = "this"
 
     @cm_bets = Cm.where("serial_number IS NOT NULL").order("created_at DESC")
+  end
+
+  def cm_winners
+    @winners_menu_style = "current"
+    @cm_winners_menu_style = "this"
+
+    @cm_bets = Cm.where("bet_status = 'Gagnant' OR bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
   end
 
   def list_cm_bet_search

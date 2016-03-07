@@ -37,6 +37,14 @@
           <li class = "<%= @cm_winner_on_hold_menu_style %>"><a href="<%= cm_winners_on_hold_path %>" title="">PMU ALR</a></li>
         </ul>
       </li>
+      <li class="tables"><a href="#" title="" class="exp" id = "<%= @winners_menu_style %>"><span>Liste des gagnants</span><strong>4</strong></a>
+        <ul class="sub">
+          <li class = "<%= @loto_winners_menu_style %>"><a href="<%= loto_winners_path %>" title="">LOTO BONHEUR</a></li>
+          <li class = "<%= @pmu_plr_winners_menu_style %>"><a href="<%= pmu_plr_winners_path %>" title="">PMU PLR</a></li>
+          <li class = "<%= @spc_winners_menu_style %>"><a href="<%= spc_winners_path %>" title="">SPORTCASH</a></li>
+          <li class = "<%= @cm_winners_menu_style %>"><a href="<%= cm_winners_path %>" title="">PMU ALR</a></li>
+        </ul>
+      </li>
       <li class="dash"><%= link_to "<span>SMS</span>".html_safe, "#" %></li>
     </ul>
 </div>
