@@ -564,7 +564,6 @@ class CmController < ApplicationController
     if @login_error
       @error_code = '3000'
       @error_description = "Session interrompue, veuillez réessayer."
-      reset_connection_id(error_code)
       logout
     else
       body = %Q[<?xml version='1.0' encoding='UTF-8'?><winningsRequest><connectionId>#{@connection_id}</connectionId><programId>#{@program_id}</programId><raceId>#{@race_id}</raceId></winningsRequest>]
@@ -582,7 +581,7 @@ class CmController < ApplicationController
         @error_code = error_code
         @error_description = error_message
 
-        reset_connection_id(error_code)
+        logout
       end
     end
   end
@@ -801,7 +800,7 @@ class CmController < ApplicationController
                 <connectionId>#{@connection_id}</connectionId>
               </logoutRequest>]
     send_request(body, "#{@@cm3_server_url}/logout")
-
+    CmLogin.first.delete rescue nil
     CmLog.create(operation: "Logout", connection_id: @connection_id, login_request: body, login_response: @response_body)
   end
 
