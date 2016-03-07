@@ -107,14 +107,6 @@ class CmController < ApplicationController
     end
   end
 
-  def reset_connection_id(error_code)
-    if error_code == "501"
-      CmLogin.first.delete rescue nil
-      @error_code = '3000'
-      @error_description = "Session interrompue, veuillez réessayer."
-    end
-  end
-
   # Ask for scratched list model
   # Exécuté 1 fois, retourne 404 - Exécuté une autre fois retourne les résultats
   def api_get_race
@@ -572,6 +564,7 @@ class CmController < ApplicationController
     if @login_error
       @error_code = '3000'
       @error_description = "Session interrompue, veuillez réessayer."
+      reset_connection_id(error_code)
       logout
     else
       body = %Q[<?xml version='1.0' encoding='UTF-8'?><winningsRequest><connectionId>#{@connection_id}</connectionId><programId>#{@program_id}</programId><raceId>#{@race_id}</raceId></winningsRequest>]
@@ -790,6 +783,15 @@ class CmController < ApplicationController
     end
 
     request.run
+  end
+
+  def reset_connection_id(error_code)
+    if error_code == "501"
+      logout
+      CmLogin.first.delete rescue nil
+      @error_code = '3000'
+      @error_description = "Session interrompue, veuillez réessayer."
+    end
   end
 
   def logout
