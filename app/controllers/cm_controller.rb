@@ -576,7 +576,7 @@ class CmController < ApplicationController
     else
       body = %Q[<?xml version='1.0' encoding='UTF-8'?><winningsRequest><connectionId>#{@connection_id}</connectionId><programId>#{@program_id}</programId><raceId>#{@race_id}</raceId></winningsRequest>]
 
-      send_request(body, "#{@@cm3_server_url}/getWinings")
+      send_request(body, "#{@@cm3_server_url}/getWinnings")
 
       CmLog.create(operation: "Get winners", connection_id: @connection_id, login_request: body, login_response: @response_body)
 
