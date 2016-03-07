@@ -566,8 +566,8 @@ class CmController < ApplicationController
   def api_get_winners
     @error_code = ''
     @error_description = ''
-    race_id = @race_id]
-    program_id = @program_id]
+    #race_id = @race_id]
+    #program_id = @program_id]
 
     if @login_error
       @error_code = '3000'
