@@ -789,6 +789,7 @@ class CmController < ApplicationController
   end
 
   def logout
+    @connection_id = CmLogin.first.connection_id rescue nil
     body = %Q[<?xml version='1.0' encoding='UTF-8'?>
               <logoutRequest>
                 <connectionId>#{@connection_id}</connectionId>
