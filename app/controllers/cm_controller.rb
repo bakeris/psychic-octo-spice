@@ -578,6 +578,8 @@ class CmController < ApplicationController
 
       send_request(body, "#{@@cm3_server_url}/getWinings")
 
+      CmLog.create(operation: "Get winners", connection_id: @connection_id, login_request: body, login_response: @response_body)
+
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
       error_message = (@request_result.xpath('//return').at('message').content rescue nil)
 
@@ -727,8 +729,10 @@ class CmController < ApplicationController
           if @reason == "winnings"
             api_get_winners
             status = "200"
+            CmLog.create(operation: @reason, notify_session_request_body: 1)
           else
             status = "412"
+            CmLog.create(operation: @reason, notify_session_request_body: 2)
           end
         end
       else
