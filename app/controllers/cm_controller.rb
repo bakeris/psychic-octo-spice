@@ -574,7 +574,7 @@ class CmController < ApplicationController
       @error_description = "Session interrompue, veuillez réessayer."
       logout
     else
-      body = %Q[<?xml version='1.0' encoding='UTF-8'?><winningsRequest><connectionId>#{@connection_id}</connectionId><programId>#{program_id}</programId><raceId>#{race_id}</raceId></winningsRequest>]
+      body = %Q[<?xml version='1.0' encoding='UTF-8'?><winningsRequest><connectionId>#{@connection_id}</connectionId><programId>#{@program_id}</programId><raceId>#{@race_id}</raceId></winningsRequest>]
 
       send_request(body, "#{@@cm3_server_url}/getWinings")
 
