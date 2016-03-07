@@ -566,8 +566,8 @@ class CmController < ApplicationController
   def api_get_winners
     @error_code = ''
     @error_description = ''
-    race_id = params[:race_id]
-    program_id = params[:program_id]
+    race_id = @race_id]
+    program_id = @program_id]
 
     if @login_error
       @error_code = '3000'
@@ -725,7 +725,7 @@ class CmController < ApplicationController
           status = "200"
         else
           if @reason == "winnings"
-            redirect_to controller: 'cm', action: 'api_get_winners', program_id: @program_id, race_id: @race_id
+            api_get_winners
             status = "200"
           else
             status = "412"
