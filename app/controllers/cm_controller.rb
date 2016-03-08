@@ -268,7 +268,10 @@ class CmController < ApplicationController
             tmp_dividend = {}
             tmp_dividend.merge!({:bet_id => (dividend.at('betId').content rescue '')})
             tmp_dividend.merge!({:option => (dividend.at('option').content rescue '')})
+            tmp_dividend.merge!({:combination => (dividend.at('combination').content rescue '')})
             tmp_dividend.merge!({:win_amount => (dividend.at('value[@type="GAIN"]').content rescue '')})
+            tmp_dividend.merge!({:dividend_amount => (dividend.at('value[@type="DIVIDEND"]').content rescue '')})
+=begin
             horses = (dividend.xpath('combination/horse') rescue nil)
             horses_array = []
             unless horses.blank?
@@ -277,6 +280,7 @@ class CmController < ApplicationController
               end
             end
             tmp_dividend.merge!({:horses => horses_array})
+=end
             @dividends << tmp_dividend
           end
         end

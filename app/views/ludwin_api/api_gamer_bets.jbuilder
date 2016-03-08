@@ -13,7 +13,8 @@ else
     json.cancelled_at bet.cancelled_at rescue nil
     json.created_at bet.created_at rescue nil
     json.bet_placed bet.bet_placed rescue nil
-    json.bet_placed_at bet.bet_placed_at rescue nil
+    json.bet_placed_at (bet.validated_at.strftime("%d-%m-%Y") + " " + bet.validated_at.strftime("%Hh %Mmn")) rescue nil
+
     json.paymoney_account_token bet.paymoney_account_token rescue nil
     json.bet_cancelled bet.bet_cancelled rescue nil
     json.bet_cancelled_at bet.bet_cancelled_at rescue nil
