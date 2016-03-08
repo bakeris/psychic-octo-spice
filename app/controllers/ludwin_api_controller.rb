@@ -749,7 +749,7 @@ class LudwinApiController < ApplicationController
                   if !nokogiri_response.blank?
                     response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
                     if response_code == '0' || response_code == '1024' || response_code == '5174'
-                      @sill_amount = Parameter.first.sill_amount rescue 0
+                      @sill_amount = Parameters.first.sill_amount rescue 0
 
                       if (@bet.win_amount.to_f rescue 0) > @sill_amount
                         @bet.update_attributes(payment_status_datetime: DateTime.now, bet_status: "Vainqueur en attente de paiement")

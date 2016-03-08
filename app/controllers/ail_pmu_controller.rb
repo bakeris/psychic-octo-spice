@@ -716,7 +716,7 @@ class AilPmuController < ApplicationController
     success_array = []
     draw_id_array = []
     remote_ip_address = request.remote_ip
-    @sill_amount = Parameter.first.sill_amount rescue 0
+    @sill_amount = Parameters.first.sill_amount rescue 0
 
     if notification_objects.blank? || (bets.class.to_s rescue nil) != "Array"
       @error_code = '5000'
