@@ -595,7 +595,7 @@ class CmController < ApplicationController
         @sill_amount = Parameter.first.sill_amount rescue 0
         winnings.each do |winning|
           CmLog.create(operation: "Winner", login_response: winning.at('serialNumber').content)
-          bet = Cm.where("serial_number = '#{winning.at('serialNumber').content}' AND sale_client_id = '#{winning.at('transactionId').content}'").first rescue nil
+          bet = Cm.where("sale_client_id = '#{winning.at('transactionId').content}'").first rescue nil
           CmLog.create(operation: bet.inspect)
           unless bet.blank?
             bet.update_attributes(win_reason: winning.at('reason'), win_amount: winning.at('amount'), bet_status: "Gagnant")
