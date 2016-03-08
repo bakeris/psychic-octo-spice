@@ -598,14 +598,14 @@ class CmController < ApplicationController
           bet = Cm.where("sale_client_id = '#{winning.at('transactionId').content}'").first rescue nil
           unless bet.blank?
             bet.update_attributes(win_reason: winning.at('reason').content, win_amount: winning.at('amount').content, bet_status: "Gagnant")
-            bet_ids = winning.xpath('betId') rescue nil
-            unless bet_ids.blank?
-              bet_ids.each do |bet_id|
-                bet.cm_wagers.where("bet_id = '#{bet_id}'").first.update_attribute(winner: true)
+            bet_id = winning.xpath('betId').content rescue nil
+            #unless bet_ids.blank?
+              #bet_ids.each do |bet_id|
+                bet.cm_wagers.where("bet_id = '#{bet_id}'").first.update_attributes(winner: true)
                 if (winning.at('amount').content.to_f rescue 0) > @sill_amount
                   bet.update_attributes(bet_status: "Vainqueur en attente de paiement")
                 else
-                  validate_bet_cm3(game_account_token, transaction_amount, race_id)
+                  validate_bet_cm3(game_account_token, bet.win_amount, bet.race_id)
                 end
 
                 # SMS notification
@@ -617,8 +617,8 @@ class CmController < ApplicationController
                 #if validate_bet_cm3(game_account_token, transaction_amount, race_id)
 
                 #end
-              end
-            end
+              #end
+            #end
           end
         end
       end
