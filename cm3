@@ -24,7 +24,7 @@ curl --request GET --data "<?xml version='1.0' encoding='UTF-8' ?><loginRequest>
 
 
 # Logout #2098490804
-curl --request GET --data '<logoutRequest><connectionId>396939572</connectionId></logoutRequest>' http://office.cm3.work:27000/logout --header 'Content-Type:text/xml'
+curl --request GET --data '<logoutRequest><connectionId>1700346423</connectionId></logoutRequest>' http://office.cm3.work:27000/logout --header 'Content-Type:text/xml'
 
 <?xml version='1.0' encoding='UTF-8' ?><loginResponse><connectionId>32850194855</connectionId></loginResponse>
 

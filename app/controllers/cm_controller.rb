@@ -789,7 +789,7 @@ class CmController < ApplicationController
   def reset_connection_id(error_code)
     if error_code == "501"
       #logout
-      CmLogin.first.delete rescue nil
+      #CmLogin.first.delete rescue nil
       @error_code = '3000'
       @error_description = "Session interrompue, veuillez réessayer."
     end
