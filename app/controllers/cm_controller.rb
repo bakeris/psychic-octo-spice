@@ -599,15 +599,14 @@ class CmController < ApplicationController
           unless bet.blank?
             bet.update_attributes(win_reason: winning.at('reason').content, win_amount: winning.at('amount').content, bet_status: "Gagnant")
             bet_id = winning.at('betId').content rescue nil
-            CmLog.create(operation: bet_id)
-=begin
+
             #unless bet_ids.blank?
               #bet_ids.each do |bet_id|
-                bet.cm_wagers.where("bet_id = '#{bet_id}'").first.update_attributes(winner: true)
+                bet.cm_wagers.where("bet_id = '#{bet_id}'").first.update_attributes(winner: true) rescue nil
                 if (winning.at('amount').content.to_f rescue 0) > @sill_amount
                   bet.update_attributes(bet_status: "Vainqueur en attente de paiement")
                 else
-                  validate_bet_cm3(game_account_token, bet.win_amount, bet.race_id)
+                  validate_bet_cm3("McoaDIET", bet.win_amount, bet.race_id)
                 end
 
                 # SMS notification
@@ -617,7 +616,7 @@ class CmController < ApplicationController
                 # Email notification
                 WinningNotification.notification_email(@user, bet.win_amount, "au PMU ALR", "PMU ALR", bet.serial_number, bet.paymoney_account_number, '').deliver
                 #if validate_bet_cm3(game_account_token, transaction_amount, race_id)
-=end
+
                 #end
               #end
             #end
