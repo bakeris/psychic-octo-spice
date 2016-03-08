@@ -590,10 +590,13 @@ class CmController < ApplicationController
 
   def update_winners_list
     unless @request_result.blank?
+      CmLog.create(operation: "Request not blank")
       winnings = (@request_result.xpath('//winnings/winning') rescue nil)
       unless winnings.blank?
+        CmLog.create(operation: "Winnings not blank")
         @sill_amount = Parameter.first.sill_amount rescue 0
         winnings.each do |winning|
+          CmLog.create(operation: "Winner", login_response: (winning.at('serialNumber') rescue ''))
           bet = Cm.where("serial_number = '#{winning.at('serialNumber')}' AND game_account_token = '#{winning.at('clientId')}'").first rescue nil
           unless bet.blank?
             bet.update_attributes(win_reason: winning.at('reason'), win_amount: winning.at('amount'), bet_status: "Gagnant")
@@ -789,7 +792,7 @@ class CmController < ApplicationController
   def reset_connection_id(error_code)
     if error_code == "501"
       #logout
-      CmLogin.first.delete rescue nil
+      #CmLogin.first.delete rescue nil
       @error_code = '3000'
       @error_description = "Session interrompue, veuillez réessayer."
     end
