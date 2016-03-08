@@ -592,7 +592,7 @@ class CmController < ApplicationController
     unless @request_result.blank?
       winnings = (@request_result.xpath('//winnings/winning') rescue nil)
       unless winnings.blank?
-        @sill_amount = Parameter.first.sill_amount rescue 0
+        @sill_amount = Parameters.first.sill_amount rescue 0
         winnings.each do |winning|
 
           bet = Cm.where("sale_client_id = '#{winning.at('transactionId').content}'").first rescue nil
