@@ -46,7 +46,7 @@ class CmController < ApplicationController
     if @login_error
       @error_code = '3000'
       @error_description = "Session interrompue, veuillez réessayer."
-      logout
+      #logout
     else
       send_request("<sessionRequest><connectionId>#{@connection_id}</connectionId></sessionRequest>", "#{@@cm3_server_url}/getCurrentSession")
 
@@ -75,7 +75,7 @@ class CmController < ApplicationController
     if @login_error
       @error_code = '3000'
       @error_description = "Session interrompue, veuillez réessayer."
-      logout
+      #logout
     else
       send_request("<programRequest><connectionId>#{@connection_id}</connectionId><programId>#{params[:program_id]}</programId></programRequest>", "#{@@cm3_server_url}/getProgram")
 
@@ -116,7 +116,7 @@ class CmController < ApplicationController
     if @login_error
       @error_code = '3000'
       @error_description = "Session interrompue, veuillez réessayer."
-      logout
+      #logout
     else
       body = %Q[<?xml version='1.0' encoding='UTF-8'?><raceRequest><connectionId>#{@connection_id}</connectionId><programId>#{params[:program_id]}</programId><raceId>#{params[:race_id]}</raceId></raceRequest>]
       send_request(body, "#{@@cm3_server_url}/getRace")
@@ -174,7 +174,7 @@ class CmController < ApplicationController
     if @login_error
       @error_code = '3000'
       @error_description = "Session interrompue, veuillez réessayer."
-      logout
+      #logout
     else
       body = %Q[<?xml version='1.0' encoding='UTF-8'?><betRequest><connectionId>#{@connection_id}</connectionId><betId>#{params[:bet_id]}</betId></betRequest>]
       send_request(body, "#{@@cm3_server_url}/getBet")
@@ -221,7 +221,7 @@ class CmController < ApplicationController
     if @login_error
       @error_code = '3000'
       @error_description = "Session interrompue, veuillez réessayer."
-      logout
+      #logout
     else
       body = %Q[<?xml version='1.0' encoding='UTF-8'?><resultRequest><connectionId>#{@connection_id}</connectionId><programId>#{params[:program_id]}</programId><raceId>#{params[:race_id]}</raceId></resultRequest>]
       send_request(body, "#{@@cm3_server_url}/getResult")
@@ -254,7 +254,7 @@ class CmController < ApplicationController
     if @login_error
       @error_code = '3000'
       @error_description = "Session interrompue, veuillez réessayer."
-      logout
+      #logout
     else
       body = %Q[<?xml version='1.0' encoding='UTF-8'?><dividendsRequest><connectionId>#{@connection_id}</connectionId><programId>#{params[:program_id]}</programId><raceId>#{params[:race_id]}</raceId></dividendsRequest>]
       send_request(body, "#{@@cm3_server_url}/getDividends")
@@ -299,7 +299,7 @@ class CmController < ApplicationController
     if @login_error
       @error_code = '3000'
       @error_description = "Session interrompue, veuillez réessayer."
-      logout
+      #logout
     else
       @games = JSON.parse(request.body.read)["games"] rescue ""
       if @games.blank?
@@ -381,7 +381,7 @@ class CmController < ApplicationController
     if @login_error
       @error_code = '3000'
       @error_description = "Session interrompue, veuillez réessayer."
-      logout
+      #logout
     else
       if gamer_account_exists
         @bet = JSON.parse(request_body) rescue ""
@@ -502,7 +502,7 @@ class CmController < ApplicationController
     if @login_error
       @error_code = '3000'
       @error_description = "Session interrompue, veuillez réessayer."
-      logout
+      #logout
     else
       if serial_exists
         if bet_cancellable
@@ -564,7 +564,8 @@ class CmController < ApplicationController
     if @login_error
       @error_code = '3000'
       @error_description = "Session interrompue, veuillez réessayer."
-      logout
+      ensure_login
+      #logout
     else
       body = %Q[<?xml version='1.0' encoding='UTF-8'?><winningsRequest><connectionId>#{@connection_id}</connectionId><programId>#{@program_id}</programId><raceId>#{@race_id}</raceId></winningsRequest>]
 
@@ -580,8 +581,8 @@ class CmController < ApplicationController
       else
         @error_code = error_code
         @error_description = error_message
-
-        logout
+        reset_connection_id(error_code)
+        #logout
       end
     end
   end
@@ -786,7 +787,7 @@ class CmController < ApplicationController
 
   def reset_connection_id(error_code)
     if error_code == "501"
-      logout
+      #logout
       CmLogin.first.delete rescue nil
       @error_code = '3000'
       @error_description = "Session interrompue, veuillez réessayer."
@@ -801,7 +802,6 @@ class CmController < ApplicationController
               </logoutRequest>]
     send_request(body, "#{@@cm3_server_url}/logout")
     ensure_login
-    CmLogin.first.delete rescue nil
     CmLog.create(operation: "Logout", connection_id: @connection_id, login_request: body, login_response: @response_body)
   end
 
