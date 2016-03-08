@@ -594,11 +594,13 @@ class CmController < ApplicationController
       unless winnings.blank?
         @sill_amount = Parameter.first.sill_amount rescue 0
         winnings.each do |winning|
-          CmLog.create(operation: "Winner", login_response: winning.at('serialNumber').content)
+
           bet = Cm.where("sale_client_id = '#{winning.at('transactionId').content}'").first rescue nil
           unless bet.blank?
             bet.update_attributes(win_reason: winning.at('reason').content, win_amount: winning.at('amount').content, bet_status: "Gagnant")
             bet_id = winning.xpath('betId').content rescue nil
+            CmLog.create(operation: bet_id)
+=begin
             #unless bet_ids.blank?
               #bet_ids.each do |bet_id|
                 bet.cm_wagers.where("bet_id = '#{bet_id}'").first.update_attributes(winner: true)
@@ -615,7 +617,7 @@ class CmController < ApplicationController
                 # Email notification
                 WinningNotification.notification_email(@user, bet.win_amount, "au PMU ALR", "PMU ALR", bet.serial_number, bet.paymoney_account_number, '').deliver
                 #if validate_bet_cm3(game_account_token, transaction_amount, race_id)
-
+=end
                 #end
               #end
             #end
