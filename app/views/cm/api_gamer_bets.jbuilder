@@ -8,9 +8,8 @@ else
     json.serial_number bet.serial_number rescue nil
     json.amount bet.amount rescue nil
     json.scratched_list bet.scratched_list rescue nil
-    json.bet_placed_at bet.bet_placed_at rescue nil
+    json.bet_placed_at (bet.bet_placed_at.strftime("%d-%m-%Y") + " " + bet.bet_placed_at.strftime("%Hh %Mmn")) rescue nil
     json.scratched_list bet.scratched_list rescue nil
-    json.bet_placed_at bet.bet_placed_at rescue nil
     json.cancelled bet.cancelled rescue nil
     json.cancelled_at bet.cancelled_at rescue nil
     json.win_amount bet.win_amount rescue nil
