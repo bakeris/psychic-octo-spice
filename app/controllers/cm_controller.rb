@@ -598,7 +598,7 @@ class CmController < ApplicationController
           bet = Cm.where("sale_client_id = '#{winning.at('transactionId').content}'").first rescue nil
           unless bet.blank?
             bet.update_attributes(win_reason: winning.at('reason').content, win_amount: winning.at('amount').content, bet_status: "Gagnant")
-            bet_id = winning.xpath('betId').content rescue nil
+            bet_id = winning.at('betId').content rescue nil
             CmLog.create(operation: bet_id)
 =begin
             #unless bet_ids.blank?
