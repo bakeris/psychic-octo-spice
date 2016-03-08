@@ -558,6 +558,7 @@ class CmController < ApplicationController
   def api_get_winners
     @error_code = ''
     @error_description = ''
+    @connection_id = CmLogin.first.connection_id rescue nil
     #race_id = @race_id]
     #program_id = @program_id]
 
