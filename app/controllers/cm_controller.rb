@@ -339,7 +339,7 @@ class CmController < ApplicationController
           CmLog.create(operation: "Evaluate game", get_eval_request: body, get_eval_response: @response_body, connection_id: @connection_id)
         else
           @error_code = '3007'
-          @error_description = "Les jeux n'ont pas pu être évalués."
+          @error_description = "Aucun pari selectionné."
           CmLog.create(operation: "Evaluate game", get_eval_request: body, get_eval_response: @response_body, get_eval_code: @response_code, connection_id: @connection_id)
 
           reset_connection_id(error_code)
@@ -596,7 +596,7 @@ class CmController < ApplicationController
         CmLog.create(operation: "Winnings not blank")
         @sill_amount = Parameter.first.sill_amount rescue 0
         winnings.each do |winning|
-          CmLog.create(operation: "Winner", login_response: (winning.at('serialNumber') rescue ''))
+          CmLog.create(operation: "Winner", login_response: winning.at('serialNumber').to_s)
           bet = Cm.where("serial_number = '#{winning.at('serialNumber')}' AND game_account_token = '#{winning.at('clientId')}'").first rescue nil
           unless bet.blank?
             bet.update_attributes(win_reason: winning.at('reason'), win_amount: winning.at('amount'), bet_status: "Gagnant")
