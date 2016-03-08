@@ -382,7 +382,10 @@ class ApplicationController < ActionController::Base
   end
 
   def build_message(bet, amount, game, ticket_number)
-    @user = User.find_by_uuid(bet.gamer_id || bet.punter_id)
+    @user = User.find_by_uuid(bet.gamer_id) rescue nil
+    if @user.blank?
+      @user = User.find_by_uuid(bet.punter_id)
+    end
     @msisdn = @user.msisdn rescue ""
     if amount.to_f > @sill_amount
       @message_content = %Q[
