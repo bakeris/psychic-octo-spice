@@ -304,11 +304,11 @@ Rails.application.routes.draw do
 
 
   # Deposit
-  get '/api/86d13843ed59e5207c68e864564/deposit/:account_number/:transaction_amount' => 'accounts#api_deposit', :constraints => {:transaction_amount => /(\d+(.\d+)?)/}
+  #get '/api/86d13843ed59e5207c68e864564/deposit/:account_number/:transaction_amount' => 'accounts#api_deposit', :constraints => {:transaction_amount => /(\d+(.\d+)?)/}
 
   # Deposits
-  get "/api/8c240bd95c/fee/check/:amount" => 'accounts#deposit_fee'
-  post "/api/8c240bd95c/fee/check/:amount" => 'accounts#deposit_fee'
+  #get "/api/8c240bd95c/fee/check/:amount" => 'accounts#deposit_fee'
+  #post "/api/8c240bd95c/fee/check/:amount" => 'accounts#deposit_fee'
 
   # Pos sale balance
   get "/api/a1b43b7d1b/pos_balance/get/:game_token/:pos_id/:session_id" => 'deposits#api_get_pos_sale_balance'
