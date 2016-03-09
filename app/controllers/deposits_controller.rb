@@ -386,8 +386,9 @@ class DepositsController < ApplicationController
     transaction_status = false
     @fee = "0"
 
-    merchant_pos = CertifiedAgent.where("certified_agent_id = '#{agent}' AND sub_certified_agent_id IS NULL").first rescue nil
-    if merchant_pos.blank?
+    #merchant_pos = CertifiedAgent.where("certified_agent_id = '#{agent}' AND sub_certified_agent_id IS NULL").first rescue nil
+    merchant_pos = (RestClient.get "#{@@paymoney_wallet_url}/api/c067dkkdfkkdh48a789e8fdb4c4556c239/certified_agent/check/#{agent}" rescue "")
+    if merchant_pos == 'not_found'
       @status = "|4042|"
     else
       #private_pos = CertifiedAgent.where("sub_certified_agent_id = '#{params[:sub_agent]}' ").first rescue "null"
@@ -400,10 +401,10 @@ class DepositsController < ApplicationController
 
           @fee = check_deposit_fee((transaction_amount.to_i rescue 0))
 
-          @url = "#{@@paymoney_wallet_url}/PAYMONEY_WALLET/rest/Remonte/#{@token}/#{merchant_pos.token}/#{@paymoney_account_token.blank? ? 'DNLiVHcI' : @paymoney_account_token}/#{transaction_amount}/#{@fee}/100/#{transaction_id}/null/#{@pos_id}"
+          @url = "#{@@paymoney_wallet_url}/PAYMONEY_WALLET/rest/Remonte/#{@token}/#{merchant_pos}/#{@paymoney_account_token.blank? ? 'DNLiVHcI' : @paymoney_account_token}/#{transaction_amount}/#{@fee}/100/#{transaction_id}/null/#{@pos_id}"
 
           if agent == "af478a2c47d8418a"
-            @url = "#{@@paymoney_wallet_url}/PAYMONEY_WALLET/rest/Remonte/#{@token}/#{merchant_pos.token}/#{@paymoney_account_token.blank? ? 'DNLiVHcI' : @paymoney_account_token}/#{transaction_amount}/#{@fee}/100/#{transaction_id}/null/#{@pos_id}"
+            @url = "#{@@paymoney_wallet_url}/PAYMONEY_WALLET/rest/Remonte/#{@token}/#{merchant_pos}/#{@paymoney_account_token.blank? ? 'DNLiVHcI' : @paymoney_account_token}/#{transaction_amount}/#{@fee}/100/#{transaction_id}/null/#{@pos_id}"
           end
 
           BombLog.create(sent_url: @url)
@@ -444,8 +445,9 @@ class DepositsController < ApplicationController
     transaction_status = false
     @fee = "0"
 
-    merchant_pos = CertifiedAgent.where("certified_agent_id = '#{@agent}' AND sub_certified_agent_id IS NULL").first rescue nil
-    if merchant_pos.blank?
+    #merchant_pos = CertifiedAgent.where("certified_agent_id = '#{@agent}' AND sub_certified_agent_id IS NULL").first rescue nil
+    merchant_pos = (RestClient.get "#{@@paymoney_wallet_url}/api/c067dkkdfkkdh48a789e8fdb4c4556c239/certified_agent/check/#{agent}" rescue "")
+    if merchant_pos == 'not_found'
       @status = "|4042|"
     else
       #private_pos = CertifiedAgent.where("sub_certified_agent_id = '#{params[:sub_agent]}' ").first rescue "null"
@@ -463,10 +465,10 @@ class DepositsController < ApplicationController
 
           if has_rib(@agent)
             @token = "13a3fd04"
-            @url = "#{@@paymoney_wallet_url}/PAYMONEY_WALLET/rest/Remonte_avec_rib/#{@token}/#{merchant_pos.token}/#{@paymoney_account_token.blank? ? 'DNLiVHcI' : @paymoney_account_token}/#{transaction_amount}/#{@fee}/100/#{transaction_id}/null/#{@pos_id}"
+            @url = "#{@@paymoney_wallet_url}/PAYMONEY_WALLET/rest/Remonte_avec_rib/#{@token}/#{merchant_pos}/#{@paymoney_account_token.blank? ? 'DNLiVHcI' : @paymoney_account_token}/#{transaction_amount}/#{@fee}/100/#{transaction_id}/null/#{@pos_id}"
           else
             @token = "e3875eab"
-            @url = "#{@@paymoney_wallet_url}/PAYMONEY_WALLET/rest/Remonte_sans_rib/#{@token}/#{merchant_pos.token}/#{@paymoney_account_token.blank? ? 'DNLiVHcI' : @paymoney_account_token}/#{transaction_amount}/#{@fee}/100/#{transaction_id}/null/#{@pos_id}"
+            @url = "#{@@paymoney_wallet_url}/PAYMONEY_WALLET/rest/Remonte_sans_rib/#{@token}/#{merchant_pos}/#{@paymoney_account_token.blank? ? 'DNLiVHcI' : @paymoney_account_token}/#{transaction_amount}/#{@fee}/100/#{transaction_id}/null/#{@pos_id}"
           end
 
           BombLog.create(sent_url: @url)
