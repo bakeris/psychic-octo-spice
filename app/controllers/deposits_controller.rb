@@ -274,7 +274,7 @@ class DepositsController < ApplicationController
       cm3_paymoney_deposit
     else
       @error_code = (@request_result.xpath('//return').at('error').content rescue nil)
-      @error_description = (@request_result.xpath('//message').at('error').content rescue nil)
+      @error_description = (@request_result.xpath('//return').at('message').content rescue nil)
 
       reset_connection_id(error_code)
     end
