@@ -614,11 +614,11 @@ class CmController < ApplicationController
                 end
 
                 # SMS notification
-                build_message(bet, bet.win_amount, "au PMU ALR", bet.serial_number)
-                send_sms_notification(bet, @msisdn, "PMU ALR", @message_content)
+                build_message(bet, bet.win_amount, "au PMU-ALR", bet.serial_number)
+                send_sms_notification(bet, @msisdn, "PMU-ALR", @message_content)
 
                 # Email notification
-                WinningNotification.notification_email(@user, bet.win_amount, "au PMU ALR", "PMU ALR", bet.serial_number, bet.paymoney_account_number, '').deliver
+                WinningNotification.notification_email(@user, bet.win_amount, "au PMU-ALR", "PMU-ALR", bet.serial_number, bet.paymoney_account_number, '').deliver
                 #if validate_bet_cm3(game_account_token, transaction_amount, race_id)
 
                 #end
@@ -810,7 +810,7 @@ class CmController < ApplicationController
                 <connectionId>#{@connection_id}</connectionId>
               </logoutRequest>]
     send_request(body, "#{@@cm3_server_url}/logout")
-    CmLogin.first.delete rescue nil
+    CmLogin.first.update_attributes(connection_id: ) rescue nil
     CmLog.create(operation: "Logout", connection_id: @connection_id, login_request: body, login_response: @response_body)
   end
 
