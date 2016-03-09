@@ -783,6 +783,9 @@ class CmController < ApplicationController
       if response.success?
         @response_body = response.body
         @request_result = (Nokogiri::XML(@response_body) rescue nil)
+
+        error_code = (@request_result.xpath('//return').at('error').content rescue nil)
+        reset_connection_id(error_code)
       else
         @error = true
         @response_code = response.code rescue nil
@@ -794,8 +797,7 @@ class CmController < ApplicationController
 
   def reset_connection_id(error_code)
     if error_code == "501"
-      #logout
-      #CmLogin.first.delete rescue nil
+      logout
       @error_code = '3000'
       @error_description = "Session interrompue, veuillez réessayer."
     end
@@ -808,7 +810,7 @@ class CmController < ApplicationController
                 <connectionId>#{@connection_id}</connectionId>
               </logoutRequest>]
     send_request(body, "#{@@cm3_server_url}/logout")
-    ensure_login
+    CmLogin.first.delete rescue nil
     CmLog.create(operation: "Logout", connection_id: @connection_id, login_request: body, login_response: @response_body)
   end
 

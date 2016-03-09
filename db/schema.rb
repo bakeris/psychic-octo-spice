@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160306192533) do
+ActiveRecord::Schema.define(version: 20160309093728) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -422,6 +422,10 @@ ActiveRecord::Schema.define(version: 20160306192533) do
     t.text     "notify_session_request_result"
     t.string   "bet_status"
     t.datetime "on_hold_winner_paid_at"
+    t.boolean  "sms_sent"
+    t.text     "sms_content"
+    t.string   "sms_id"
+    t.string   "sms_status"
   end
 
   create_table "creation_modes", force: true do |t|
