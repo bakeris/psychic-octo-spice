@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160309130334) do
+ActiveRecord::Schema.define(version: 20160309193743) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -553,6 +553,7 @@ ActiveRecord::Schema.define(version: 20160309130334) do
     t.string   "ail_terminal_id"
     t.string   "paymoney_wallet_url"
     t.float    "sill_amount"
+    t.string   "hub_front_office_url"
   end
 
   create_table "query_bets", force: true do |t|
