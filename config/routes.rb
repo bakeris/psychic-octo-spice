@@ -302,6 +302,28 @@ Rails.application.routes.draw do
   # Excel export
   get '/administrator/users/export' => 'gamers#export_gamers_list', as: :export_gamers_list
 
+
+  # Deposit
+  get '/api/86d13843ed59e5207c68e864564/deposit/:account_number/:transaction_amount' => 'accounts#api_deposit', :constraints => {:transaction_amount => /(\d+(.\d+)?)/}
+
+  # Deposits
+  get "/api/8c240bd95c/fee/check/:amount" => 'accounts#deposit_fee'
+  post "/api/8c240bd95c/fee/check/:amount" => 'accounts#deposit_fee'
+
+  # Pos sale balance
+  get "/api/a1b43b7d1b/pos_balance/get/:game_token/:pos_id/:session_id" => 'deposits#api_get_pos_sale_balance'
+  post "/api/a1b43b7d1b/pos_balance/get/:game_token/:pos_id/:session_id" => 'deposits#api_get_pos_sale_balance'
+
+  # Vendor balance
+  get "/api/4839f1cb04/deposit/on_hold/:game_token/:pos_id" => 'deposits#api_get_daily_balance'
+  post "/api/4839f1cb04/deposit/on_hold/:game_token/:pos_id" => 'deposits#api_get_daily_balance'
+
+  # Make a deposit
+  get "/api/3ae7e2f1b1/deposit/:game_token/:pos_id/:paymoney_account_number/:agent/:sub_agent/:date/:amount" => 'deposits#api_proceed_deposit'
+
+  # SF Make a deposit
+  get "/api/rff741v1b1/deposit/:game_token/:pos_id/:paymoney_account_number/:agent/:sub_agent/:date/:amount" => 'deposits#api_sf_proceed_deposit'
+
   # Payment notification
   #post '/cm3/api/dfg7fvb3191/payment/notification' => 'ludwin_api#api_coupon_payment_notification'
   #---------------------CM3---------------------

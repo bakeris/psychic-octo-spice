@@ -28,7 +28,7 @@
               <%= bet.ticket_number %>
             </td>
             <td>
-              <%= bet.transaction_id %>
+              <%= bet.transaction_id[0..15] %>...
             </td>
             <td>
               <%= number_with_delimiter(bet.bet_cost_amount) %>
