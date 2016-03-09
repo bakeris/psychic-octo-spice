@@ -416,4 +416,9 @@ class ApplicationController < ActionController::Base
   def not_a_number?(n)
   	n.to_s.match(/\A[+-]?\d+?(\.\d+)?\Z/) == nil ? true : false
   end
+
+  # Check if the parameter is not a number
+  def is_a_number?(n)
+  	n.to_s.match(/\A[+-]?\d+?(\.\d+)?\Z/) == nil ? false : true
+  end
 end
