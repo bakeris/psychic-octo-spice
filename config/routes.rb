@@ -319,10 +319,10 @@ Rails.application.routes.draw do
   post "/api/4839f1cb04/deposit/on_hold/:game_token/:pos_id" => 'deposits#api_get_daily_balance'
 
   # Make a deposit
-  get "/api/3ae7e2f1b1/deposit/:game_token/:pos_id/:paymoney_account_number/:agent/:sub_agent/:date/:amount" => 'deposits#api_proceed_deposit'
+  get "/api/3ae7e2f1b1/deposit/:game_token/:pos_id/:paymoney_account_number/:agent/:sub_agent/:date/:amount/:merchant_pos/:fee" => 'deposits#api_proceed_deposit', :constraints => {:fee => /(\d+(.\d+)?)/}
 
   # SF Make a deposit
-  get "/api/rff741v1b1/deposit/:game_token/:pos_id/:paymoney_account_number/:agent/:sub_agent/:date/:amount" => 'deposits#api_sf_proceed_deposit'
+  get "/api/rff741v1b1/deposit/:game_token/:pos_id/:paymoney_account_number/:agent/:sub_agent/:date/:amount/:merchant_pos/:fee" => 'deposits#api_sf_proceed_deposit', :constraints => {:fee => /(\d+(.\d+)?)/}
 
   # Payment notification
   #post '/cm3/api/dfg7fvb3191/payment/notification' => 'ludwin_api#api_coupon_payment_notification'

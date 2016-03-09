@@ -203,6 +203,8 @@ class DepositsController < ApplicationController
     @sub_agent = params[:sub_agent]
     @paymoney_account_number = params[:paymoney_account_number]
     @transaction_amount = params[:amount]
+    @merchant_pos = params[:merchant_pos]
+    @fee = params[:fee]
     @date = @date = params[:date] #(Date.today - 1).strftime("%Y-%m-%d")
     @error_code = ''
     @error_description = ''
@@ -234,6 +236,8 @@ class DepositsController < ApplicationController
     @sub_agent = params[:sub_agent]
     @paymoney_account_number = params[:paymoney_account_number]
     @transaction_amount = params[:amount]
+    @merchant_pos = params[:merchant_pos]
+    @fee = params[:fee]
     @date = params[:date]#(Date.today - 1).strftime("%Y-%m-%d")
     @error_code = ''
     @error_description = ''
@@ -384,11 +388,11 @@ class DepositsController < ApplicationController
     error_log = "none"
     @status = "|5000|"
     transaction_status = false
-    @fee = "0"
+    #@fee = "0"
 
     #merchant_pos = CertifiedAgent.where("certified_agent_id = '#{agent}' AND sub_certified_agent_id IS NULL").first rescue nil
-    merchant_pos = (RestClient.get "#{@@paymoney_wallet_url}/api/c067dkkdfkkdh48a789e8fdb4c4556c239/certified_agent/check/#{agent}" rescue "")
-    if merchant_pos == 'not_found'
+    #merchant_pos = (RestClient.get "#{@@paymoney_wallet_url}/api/c067dkkdfkkdh48a789e8fdb4c4556c239/certified_agent/check/#{agent}" rescue "")
+    if @merchant_pos == 'not_found'
       @status = "|4042|"
     else
       #private_pos = CertifiedAgent.where("sub_certified_agent_id = '#{params[:sub_agent]}' ").first rescue "null"
@@ -399,7 +403,7 @@ class DepositsController < ApplicationController
           transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join)
           set_pos_operation_token(agent, "ascent")
 
-          @fee = @fee = (RestClient.get "#{@@paymoney_wallet_url}/api/df522df8418a789e8fdb4c4556c239/fee/check/#{transaction_amount.to_i}" rescue 0)
+          #@fee = @fee = (RestClient.get "#{@@paymoney_wallet_url}/api/df522df8418a789e8fdb4c4556c239/fee/check/#{transaction_amount.to_i}" rescue 0)
 
           @url = "#{@@paymoney_wallet_url}/PAYMONEY_WALLET/rest/Remonte/#{@token}/#{merchant_pos}/#{@paymoney_account_token.blank? ? 'DNLiVHcI' : @paymoney_account_token}/#{transaction_amount}/#{@fee}/100/#{transaction_id}/null/#{@pos_id}"
 
@@ -443,7 +447,7 @@ class DepositsController < ApplicationController
     error_log = "none"
     @status = "|5000|"
     transaction_status = false
-    @fee = "0"
+    #@fee = "0"
 
     #merchant_pos = CertifiedAgent.where("certified_agent_id = '#{@agent}' AND sub_certified_agent_id IS NULL").first rescue nil
     merchant_pos = (RestClient.get "#{@@paymoney_wallet_url}/api/c067dkkdfkkdh48a789e8fdb4c4556c239/certified_agent/check/#{agent}" rescue "")
@@ -461,7 +465,7 @@ class DepositsController < ApplicationController
 
           set_pos_operation_token("99999999", "ascent")
 
-          @fee = (RestClient.get "#{@@paymoney_wallet_url}/api/df522df8418a789e8fdb4c4556c239/fee/check/#{transaction_amount.to_i}" rescue 0)
+          #@fee = (RestClient.get "#{@@paymoney_wallet_url}/api/df522df8418a789e8fdb4c4556c239/fee/check/#{transaction_amount.to_i}" rescue 0)
           #@fee = check_deposit_fee((transaction_amount.to_i rescue 0))
 
           if has_rib(@agent)
