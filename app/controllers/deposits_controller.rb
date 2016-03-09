@@ -399,7 +399,7 @@ class DepositsController < ApplicationController
           transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join)
           set_pos_operation_token(agent, "ascent")
 
-          @fee = check_deposit_fee((transaction_amount.to_i rescue 0))
+          @fee = @fee = (RestClient.get "#{@@paymoney_wallet_url}/api/df522df8418a789e8fdb4c4556c239/fee/check/#{transaction_amount.to_i}" rescue 0)
 
           @url = "#{@@paymoney_wallet_url}/PAYMONEY_WALLET/rest/Remonte/#{@token}/#{merchant_pos}/#{@paymoney_account_token.blank? ? 'DNLiVHcI' : @paymoney_account_token}/#{transaction_amount}/#{@fee}/100/#{transaction_id}/null/#{@pos_id}"
 
@@ -461,7 +461,8 @@ class DepositsController < ApplicationController
 
           set_pos_operation_token("99999999", "ascent")
 
-          @fee = check_deposit_fee((transaction_amount.to_i rescue 0))
+          @fee = (RestClient.get "#{@@paymoney_wallet_url}/api/df522df8418a789e8fdb4c4556c239/fee/check/#{transaction_amount.to_i}" rescue 0)
+          #@fee = check_deposit_fee((transaction_amount.to_i rescue 0))
 
           if has_rib(@agent)
             @token = "13a3fd04"
