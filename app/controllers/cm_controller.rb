@@ -11,8 +11,8 @@ class CmController < ApplicationController
   @@password = "lemotdepasse"
   @@notification_url = "http://154.68.45.82:1180/api/dc4741d1b1/"
   @@hub_notification_url = "http://parionsdirect.ci/test" # URL vers la plateforme de Moïse
-  @@cm3_server_url = "http://office.cm3.work:27000"
-  #@@cm3_server_url = "http://192.168.1.44:29000"
+  #@@cm3_server_url = "http://office.cm3.work:27000"
+  @@cm3_server_url = "http://192.168.1.44:29000"
 
   def ensure_login
     @connection_id = CmLogin.first.connection_id rescue nil
