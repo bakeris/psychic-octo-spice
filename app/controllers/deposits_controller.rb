@@ -405,10 +405,10 @@ class DepositsController < ApplicationController
 
           #@fee = @fee = (RestClient.get "#{@@paymoney_wallet_url}/api/df522df8418a789e8fdb4c4556c239/fee/check/#{transaction_amount.to_i}" rescue 0)
 
-          @url = "#{@@paymoney_wallet_url}/PAYMONEY_WALLET/rest/Remonte/#{@token}/#{merchant_pos}/#{@paymoney_account_token.blank? ? 'DNLiVHcI' : @paymoney_account_token}/#{transaction_amount}/#{@fee}/100/#{transaction_id}/null/#{@pos_id}"
+          @url = "#{@@paymoney_wallet_url}/PAYMONEY_WALLET/rest/Remonte/#{@token}/#{@merchant_pos}/#{@paymoney_account_token.blank? ? 'DNLiVHcI' : @paymoney_account_token}/#{transaction_amount}/#{@fee}/100/#{transaction_id}/null/#{@pos_id}"
 
           if agent == "af478a2c47d8418a"
-            @url = "#{@@paymoney_wallet_url}/PAYMONEY_WALLET/rest/Remonte/#{@token}/#{merchant_pos}/#{@paymoney_account_token.blank? ? 'DNLiVHcI' : @paymoney_account_token}/#{transaction_amount}/#{@fee}/100/#{transaction_id}/null/#{@pos_id}"
+            @url = "#{@@paymoney_wallet_url}/PAYMONEY_WALLET/rest/Remonte/#{@token}/#{@merchant_pos}/#{@paymoney_account_token.blank? ? 'DNLiVHcI' : @paymoney_account_token}/#{transaction_amount}/#{@fee}/100/#{transaction_id}/null/#{@pos_id}"
           end
 
           BombLog.create(sent_url: @url)
