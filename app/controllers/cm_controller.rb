@@ -642,7 +642,7 @@ class CmController < ApplicationController
 
       if valid_notify_session_parameters?
         if @reason.downcase != "balance" && (@reason.downcase == "new" || @reason.downcase == "program_added")
-          RestClient.get "#{@@hub_notification_url}/api/cm3/session_notification/#{@session_id}/#{@reason}" rescue nil
+          RestClient.get "#{@@hub_notification_url}/api/cm3/session_notification/#{@session_id}/#{@reason.upcase}" rescue nil
           CmLog.create(operation: "Session notification", notify_session_request_body: "#{@@hub_notification_url}/api/cm3/session_notification/#{@session_id}/#{@reason}")
           status = "200"
         else
@@ -681,7 +681,7 @@ class CmController < ApplicationController
 
       if valid_notify_program_parameters?
         if @reason.downcase == "state"
-          RestClient.get "#{@@hub_notification_url}/api/cm3/program_notification/#{@program_id}/#{@reason}" rescue nil
+          RestClient.get "#{@@hub_notification_url}/api/cm3/program_notification/#{@program_id}/#{@reason.upcase}" rescue nil
           CmLog.create(operation: "Program notification", notify_session_request_body: "#{@@hub_notification_url}/api/cm3/program_notification/#{@program_id}/#{@reason}")
           status = "200"
         else
@@ -722,7 +722,7 @@ class CmController < ApplicationController
 
       if valid_notify_race_parameters?
         if @reason == "max_runners" || @reason == "scratched" || @reason == "couple" || @reason == "state" || @reason == "bet_state" || @reason == "dividends"
-          RestClient.get "#{@@hub_notification_url}/api/cm3/race_notification/#{@program_id}/#{@race_id}/#{@reason}" rescue nil
+          RestClient.get "#{@@hub_notification_url}/api/cm3/race_notification/#{@program_id}/#{@race_id}/#{@reason.upcase}" rescue nil
           CmLog.create(operation: "Race notification", notify_session_request_body: "#{@@hub_notification_url}/api/cm3/race_notification/#{@program_id}/#{@race_id}/#{@reason}")
           status = "200"
         else
