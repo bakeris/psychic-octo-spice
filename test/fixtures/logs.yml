@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  transaction_type: MyString
+  checkout_amount: MyString
+  response_log: MyText
+  status: false
+  agent: MyString
+  sub_agent: MyString
+  transaction_id: MyString
+  fee: MyString
+
+two:
+  transaction_type: MyString
+  checkout_amount: MyString
+  response_log: MyText
+  status: false
+  agent: MyString
+  sub_agent: MyString
+  transaction_id: MyString
+  fee: MyString
