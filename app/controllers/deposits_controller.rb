@@ -416,7 +416,7 @@ class DepositsController < ApplicationController
 
           unless response.blank?
             if response.to_s == "good"
-              @status = transaction_id
+              @status = @transaction_id
               response_log = response.to_s
               transaction_status = true
               Log.create(transaction_type: "Remontée de fonds", checkout_amount: transaction_amount, response_log: response_log, status: true, remote_ip_address: remote_ip_address, agent: agent, sub_agent: sub_agent, transaction_id: @transaction_id, fee: @fee)
@@ -484,7 +484,7 @@ class DepositsController < ApplicationController
 
           unless response.blank?
             if response.to_s == "good"
-              @status = transaction_id
+              @status = @transaction_id
               response_log = response.to_s
               transaction_status = true
               Log.create(transaction_type: "Remontée de fonds", checkout_amount: transaction_amount, response_log: response_log, status: true, remote_ip_address: remote_ip_address, agent: agent, sub_agent: sub_agent, transaction_id: @transaction_id, fee: @fee)
