@@ -468,7 +468,10 @@ class DepositsController < ApplicationController
           #@fee = (RestClient.get "#{@@paymoney_wallet_url}/api/df522df8418a789e8fdb4c4556c239/fee/check/#{transaction_amount.to_i}" rescue 0)
           #@fee = check_deposit_fee((transaction_amount.to_i rescue 0))
 
-          if has_rib(@agent)
+          @has_rib = (RestClient.get "http://pay-money.net/pos/has_rib/#{@agent}" rescue "")
+          @has_rib.to_s == "0" ? @has_rib = false : @has_rib = true
+
+          if @has_rib
             @token = "13a3fd04"
             @url = "#{@@paymoney_wallet_url}/PAYMONEY_WALLET/rest/Remonte_avec_rib/#{@token}/#{merchant_pos}/#{@paymoney_account_token.blank? ? 'DNLiVHcI' : @paymoney_account_token}/#{transaction_amount}/#{@fee}/100/#{transaction_id}/null/#{@pos_id}"
           else
