@@ -638,9 +638,11 @@ class LudwinApiController < ApplicationController
   def api_cancel_coupon
     remote_ip_address = request.remote_ip
     url = "#{@@url}/cancelBet"
-    license_code = '1000'
-    point_of_sale_code = '1000'
-    terminal_id = '0'
+    license_code = '299'
+    #license_code = '6951' #prod
+    point_of_sale_code = '595'
+    #point_of_sale_code = '138889' #prod
+    terminal_id = '201'
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
     ticket_id = params[:ticket_id]
     @error_code = ''
