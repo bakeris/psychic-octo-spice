@@ -2,6 +2,12 @@ class LudwinApiController < ApplicationController
   @@url = 'https://services.sports4africa.com/Ussd' # prod
   #@@url = 'https://test.sports4africa.com/testUSSD' # test
 
+  @@license_code = '299'
+  #@@license_code = '6951' #prod
+  @@point_of_sale_code = '595'
+  #@@point_of_sale_code = '138889' #prod
+  @@terminal_id = '201'
+
   def api_list_sports
     remote_ip_address = request.remote_ip
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
@@ -543,11 +549,9 @@ class LudwinApiController < ApplicationController
     remote_ip_address = request.remote_ip
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
     url = "#{@@url}/doBet"
-    license_code = '299'
-    #license_code = '6951' #prod
-    point_of_sale_code = '595'
-    #point_of_sale_code = '138889' #prod
-    terminal_id = '201'
+    license_code = @@license_code
+    point_of_sale_code = @@point_of_sale_code
+    terminal_id = @@terminal_id
     account_id = 'scommessina31'
     account_type = '14'
     coupons_body = ''
@@ -638,11 +642,9 @@ class LudwinApiController < ApplicationController
   def api_cancel_coupon
     remote_ip_address = request.remote_ip
     url = "#{@@url}/cancelBet"
-    license_code = '299'
-    #license_code = '6951' #prod
-    point_of_sale_code = '595'
-    #point_of_sale_code = '138889' #prod
-    terminal_id = '201'
+     license_code = @@license_code
+    point_of_sale_code = @@point_of_sale_code
+    terminal_id = @@terminal_id
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
     ticket_id = params[:ticket_id]
     @error_code = ''
