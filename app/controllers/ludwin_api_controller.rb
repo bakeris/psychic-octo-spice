@@ -2,10 +2,10 @@ class LudwinApiController < ApplicationController
   @@url = 'https://services.sports4africa.com/Ussd' # prod
   #@@url = 'https://test.sports4africa.com/testUSSD' # test
 
-  @@license_code = '299'
-  #@@license_code = '6951' #prod
-  @@point_of_sale_code = '595'
-  #@@point_of_sale_code = '138889' #prod
+  #@@license_code = '299'
+  @@license_code = '6951' #prod
+  #@@point_of_sale_code = '595'
+  @@point_of_sale_code = '138889' #prod
   @@terminal_id = '201'
 
   def api_list_sports
