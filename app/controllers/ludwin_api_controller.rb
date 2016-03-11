@@ -619,7 +619,7 @@ class LudwinApiController < ApplicationController
             @error_code = '5001'
             @error_description = "Le montant des gains n'a pas pu être récupéré."
           else
-            @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: terminal_id, account_id: account_id, account_type: account_type, transaction_id: transaction_id, gamer_id: gamer_id, game_account_token: "LhSpwtyN", amount: @amount, formula: formula, paymoney_account_number: paymoney_account_number)
+            @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: @terminal.code, account_id: account_id, account_type: account_type, transaction_id: transaction_id, gamer_id: gamer_id, game_account_token: "LhSpwtyN", amount: @amount, formula: formula, paymoney_account_number: paymoney_account_number)
             coupons_body = format_coupouns(coupons["bets"])
 
             if coupons_body.blank?
@@ -628,7 +628,7 @@ class LudwinApiController < ApplicationController
             else
               terminal_id = @terminal.code
 
-              body = %Q[<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellRequest><CodConc>#{license_code}</CodConc><CodDiritto>#{point_of_sale_code}</CodDiritto><IdTerminal>#{terminal_id}</IdTerminal><TransactionID>#{transaction_id}</TransactionID><AmountCoupon>#{@amount}</AmountCoupon><AmountWin>#{@win_amount}</AmountWin>#{coupons_body}</SellRequest></ServicesPSQF>]
+              body = %Q[<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellRequest><CodConc>#{license_code}</CodConc><CodDiritto>#{point_of_sale_code}</CodDiritto><IdTerminal>#{@terminal.code}</IdTerminal><TransactionID>#{transaction_id}</TransactionID><AmountCoupon>#{@amount}</AmountCoupon><AmountWin>#{@win_amount}</AmountWin>#{coupons_body}</SellRequest></ServicesPSQF>]
 
               @bet.update_attributes(win_amount: @win_amount)
 
@@ -667,7 +667,7 @@ class LudwinApiController < ApplicationController
               # Free the terminal
               @terminal.update_attributes(busy: false)
 
-              LudwinLog.create(operation: "Prise de pari", transaction_id: transaction_id, error_code: @error_code, sent_body: body, response_body: response_body, remote_ip_address: remote_ip_address)
+              LudwinLog.create(operation: "Prise de pari", transaction_id: (@terminal.code rescue ""), error_code: @error_code, sent_body: body, response_body: response_body, remote_ip_address: remote_ip_address)
             end
             #end
           end
@@ -720,7 +720,7 @@ class LudwinApiController < ApplicationController
                   <CancelRequest>
                     <CodConc>#{license_code}</CodConc>
 		                <CodDiritto>#{point_of_sale_code}</CodDiritto>
-		                <IdTerminal>#{terminal_id}</IdTerminal>
+		                <IdTerminal>#{@terminal.code}</IdTerminal>
 		                <TransactionID>#{transaction_id}</TransactionID>
 		                <TicketID>#{ticket_id}</TicketID>
 	                </CancelRequest>
@@ -761,7 +761,7 @@ class LudwinApiController < ApplicationController
       end
     end
 
-    LudwinLog.create(operation: "Annulation de pari", transaction_id: transaction_id, error_code: @error_code, sent_body: body, response_body: response_body, remote_ip_address: remote_ip_address)
+    LudwinLog.create(operation: "Annulation de pari", transaction_id: @transaction_id, error_code: @error_code, sent_body: body, response_body: response_body, remote_ip_address: remote_ip_address)
   end
 
   # 102- Generic error
