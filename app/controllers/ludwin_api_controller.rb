@@ -1,9 +1,11 @@
 class LudwinApiController < ApplicationController
+  @@url = 'https://services.sports4africa.com/Ussd' # prod
+  #@@url = 'https://test.sports4africa.com/testUSSD' # test
 
   def api_list_sports
     remote_ip_address = request.remote_ip
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
-    url = 'https://test.sports4africa.com/testUSSD/getSport'
+    url = "#{@@url}/getSport"
     language = 'FR'
     @error_code = ''
     @error_description = ''
@@ -75,7 +77,7 @@ class LudwinApiController < ApplicationController
   def api_show_sport
     remote_ip_address = request.remote_ip
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
-    url = 'https://test.sports4africa.com/testUSSD/getSport'
+    url = "#{@@url}/getSport"
     sport_code = params[:sport_code]
     language = 'FR'
     @error_code = ''
@@ -147,7 +149,7 @@ class LudwinApiController < ApplicationController
   def api_list_tournaments
     remote_ip_address = request.remote_ip
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
-    url = 'https://test.sports4africa.com/testUSSD/getTournament'
+    url = "#{@@url}/getTournament"
     sport_code = params[:sport_code]
     language = 'FR'
     @error_code = ''
@@ -220,7 +222,7 @@ class LudwinApiController < ApplicationController
   def api_show_tournament
     remote_ip_address = request.remote_ip
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
-    url = 'https://test.sports4africa.com/testUSSD/getTournament'
+    url = "#{@@url}/getTournament"
     language = 'FR'
     sport_code = params[:sport_code]
     tournament_code = params[:tournament_code]
@@ -301,7 +303,7 @@ class LudwinApiController < ApplicationController
     @error_description = ''
     response_body = ''
     response_code = ''
-    url = "https://test.sports4africa.com/testUSSD/getEvent?system_code=PD&type=FULL&isLive=0&len=#{language}"
+    url = "#{@@url}/getEvent?system_code=PD&type=FULL&isLive=0&len=#{language}"
 
     request = Typhoeus::Request.new(url, followlocation: true, method: :get, ssl_verifypeer: false, ssl_verifyhost: 0)
 
@@ -328,7 +330,7 @@ class LudwinApiController < ApplicationController
   def api_list_bets
     remote_ip_address = request.remote_ip
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
-    url = 'https://test.sports4africa.com/testUSSD/getBet'
+    url = "#{@@url}/getBet"
     language = 'FR'
     @error_code = ''
     @error_description = ''
@@ -375,7 +377,7 @@ class LudwinApiController < ApplicationController
   def api_show_bet
     remote_ip_address = request.remote_ip
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
-    url = 'https://test.sports4africa.com/testUSSD/getBet'
+    url = "#{@@url}/getBet"
     language = 'FR'
     bet_code = params[:bet_code]
     @error_code = ''
@@ -424,7 +426,7 @@ class LudwinApiController < ApplicationController
   def api_sell_coupon
     remote_ip_address = request.remote_ip
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
-    url = 'https://test.sports4africa.com/testUSSD/doBet'
+    url = "#{@@url}/doBet"
     license_code = '299'
     point_of_sale_code = '595'
     terminal_id = '201'
@@ -540,9 +542,11 @@ class LudwinApiController < ApplicationController
   def api_m_sell_coupon
     remote_ip_address = request.remote_ip
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
-    url = 'https://test.sports4africa.com/testUSSD/doBet'
+    url = "#{@@url}/doBet"
     license_code = '299'
+    #license_code = '6951' #prod
     point_of_sale_code = '595'
+    #point_of_sale_code = '138889' #prod
     terminal_id = '201'
     account_id = 'scommessina31'
     account_type = '14'
@@ -633,7 +637,7 @@ class LudwinApiController < ApplicationController
 
   def api_cancel_coupon
     remote_ip_address = request.remote_ip
-    url = 'https://test.sports4africa.com/testUSSD/cancelBet'
+    url = "#{@@url}/cancelBet"
     license_code = '1000'
     point_of_sale_code = '1000'
     terminal_id = '0'
@@ -700,7 +704,7 @@ class LudwinApiController < ApplicationController
     @error_description = ''
     remote_ip_address = request.remote_ip
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
-    url = 'https://test.sports4africa.com/testUSSD/paymentTicket'
+    url = "#{@@url}/paymentTicket"
     payment_notification_envelope = (Nokogiri::XML(request.body.read) rescue nil)
     LudwinLog.create(operation: "Paiement de coupon", response_body: request.body.read, remote_ip_address: remote_ip_address)
 

@@ -12,6 +12,10 @@ Erreur:
 
 curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><winningsRequest><connectionId>605576106</connectionId><programId>20160671</programId><raceId>2016067101</raceId></winningsRequest>" http://office.cm3.work:27000/getWinnings --header 'Content-Type:text/xml'
 
+# Ping
+curl --request GET http://office.cm3.work:27000/ping --header 'Content-Type:text/xml'
+
+curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><vendorBalanceRequest><connectionId>474114602</connectionId><vendorId>1341</vendorId></vendorBalanceRequest>" http://office.cm3.work:27000/getVendorBalance --header 'Content-Type:text/xml'
 
 <loginRequest>
 <username>lutilisateur</username>
