@@ -29,6 +29,9 @@ Rails.application.routes.draw do
   # Return all prematch data
   get '/spc/api/0790f43181/prematch_data/list' => 'ludwin_api#api_list_prematch_data'
 
+  # Return all prematch data as delta
+  get '/spc/api/4441f43181/prematch_data_delta/list' => 'ludwin_api#api_list_prematch_data_delta'
+
   # List all sports
   get '/spc/api/882198a635/sports' => 'ludwin_api#api_list_sports'
 
