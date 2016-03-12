@@ -13,9 +13,9 @@ Erreur:
 curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><winningsRequest><connectionId>605576106</connectionId><programId>20160671</programId><raceId>2016067101</raceId></winningsRequest>" http://office.cm3.work:27000/getWinnings --header 'Content-Type:text/xml'
 
 # Ping
-curl --request GET http://office.cm3.work:27000/ping --header 'Content-Type:text/xml'
+curl --request GET http://192.168.1.44:29000/ping --header 'Content-Type:text/xml'
 
-curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><vendorBalanceRequest><connectionId>474114602</connectionId><vendorId>1341</vendorId></vendorBalanceRequest>" http://office.cm3.work:27000/getVendorBalance --header 'Content-Type:text/xml'
+curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><sellRequest><connectionId>109669815</connectionId><sale><programId>20160721</programId><raceId>2016072101</raceId><transactionId>107790426443433386</transactionId><amount>300</amount><scratchedList></scratchedList><wager><betId>7</betId><nbUnits>1</nbUnits><nbCombinations>1</nbCombinations><fullBox>FALSE</fullBox><selection><item>6</item><item>8</item><item>10</item></selection></wager></sale></sellRequest>" http://192.168.1.41:29000/sellTicket --header 'Content-Type:text/xml'
 
 <loginRequest>
 <username>lutilisateur</username>
@@ -24,7 +24,7 @@ curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><vendorBalanceR
 </loginRequest>
 
 # Login #
-curl --request GET --data "<?xml version='1.0' encoding='UTF-8' ?><loginRequest><username>ngser@lonaci</username><password>lemotdepasse</password><notificationUrl>http://154.68.45.82:1180/api/dc4741d1b1/</notificationUrl></loginRequest>" http://office.cm3.work:27000/login --header 'Content-Type:text/xml'
+curl --request GET --data "<?xml version='1.0' encoding='UTF-8' ?><loginRequest><username>ngser@lonaci</username><password>nglonaci@2016</password><notificationUrl>http://154.68.45.82:1180/api/dc4741d1b1/</notificationUrl></loginRequest>" http://192.168.1.44:29000/login --header 'Content-Type:text/xml'
 
 
 # Logout #2098490804

@@ -14,6 +14,8 @@ ID:202 port:7202
 ID:203 port:7203
 
 
+curl -k https://services.sports4africa.com/Ussd/getEvent?system_code=PD&type=FULL&isLive=0&len=FR --insecure
+
 curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SportRequest><TransactionID>8552214</TransactionID><Language>FR</Language></SportRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getSport --header "Content-Type:text/xml" --insecure
 
 curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><TournamentRequest><CodSport>1</CodSport><TransactionID>8514273</TransactionID><Language>FR</Language></TournamentRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getTournament --header "Content-Type:text/xml" --insecure

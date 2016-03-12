@@ -674,10 +674,10 @@ class LudwinApiController < ApplicationController
           @error_code = '5000'
           @error_description = 'Invalid JSON data.'
         end
-      end
 
-      # Free the terminal
-      @terminal.update_attributes(busy: false)
+        # Free the terminal
+        @terminal.update_attributes(busy: false)
+      end
     end
   end
 
