@@ -2,7 +2,7 @@ class DepositsController < ApplicationController
   before_action :ensure_login, only: [:api_get_pos_sale_balance, :api_get_daily_balance, :api_proceed_deposit, :api_sf_proceed_deposit]
 
   @@user_name = "ngser@lonaci"
-  @@password = "lemotdepasse"
+  @@password = "nglonaci@2016"
   @@notification_url = "http://154.68.45.82:1180/api/dc4741d1b1/"
   @@hub_notification_url = "http://parionsdirect.ci/test/api/cm3" # URL vers la plateforme de Moïse
   #@@cm3_server_url = "http://office.cm3.work:27000"

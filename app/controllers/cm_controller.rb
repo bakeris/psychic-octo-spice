@@ -8,7 +8,7 @@ class CmController < ApplicationController
   before_action :ensure_login, only: [:api_current_session, :api_get_program, :api_get_race, :api_get_bet, :api_get_results, :api_get_dividends, :api_evaluate_game, :api_sell_ticket, :api_cancel_ticket, :api_get_winners]
 
   @@user_name = "ngser@lonaci"
-  @@password = "lemotdepasse"
+  @@password = "nglonaci@2016"
   @@notification_url = "http://154.68.45.82:1180/api/dc4741d1b1/"
   @@hub_notification_url = "http://parionsdirect.ci" # URL vers la plateforme de Moïse
   #@@cm3_server_url = "http://office.cm3.work:27000"
