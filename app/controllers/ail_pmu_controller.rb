@@ -12,6 +12,7 @@ class AilPmuController < ApplicationController
     @user_id = "1"
     #@confirm_id = (AilPmu.last.transaction_id rescue "")
     @date_time = DateTime.now.strftime("%Y-%m-%d %H:%M:%S")
+    @@url = 'http://41.21.163.46/RTS_AVTBet_ws_V1/AVTBetV1.svc'
   end
 
   def set_minimal_credentials
@@ -22,7 +23,7 @@ class AilPmuController < ApplicationController
   def api_get_draws
     set_credentials
     remote_ip_address = request.remote_ip
-    url = "http://office.rtsapps.co.za/RTS_AVTBet_ws_V1/AVTBetV1.svc/draws/get"
+    url = "#{@@url}/draws/get"
     @error_code = ''
     @error_description = ''
     response_body = ''
@@ -80,7 +81,7 @@ class AilPmuController < ApplicationController
   def api_query_bet
     set_credentials
     remote_ip_address = request.remote_ip
-    url = "http://office.rtsapps.co.za/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/querybet"
+    url = "#{@@url}/bet/querybet"
     @error_code = ''
     @error_description = ''
     response_body = ''
@@ -156,7 +157,7 @@ class AilPmuController < ApplicationController
                           }
                         }
                       }|
-              url = "http://office.rtsapps.co.za/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/ackbet"
+              url = "#{@@url}/bet/ackbet"
               request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "application/json"})
 
               request.on_complete do |response|
@@ -208,7 +209,7 @@ class AilPmuController < ApplicationController
   def api_place_bet
     set_credentials
     remote_ip_address = request.remote_ip
-    url = "http://office.rtsapps.co.za/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/placebet"
+    url = "#{@@url}/bet/placebet"
     @error_code = ''
     @error_description = ''
     response_body = ''
@@ -302,7 +303,7 @@ class AilPmuController < ApplicationController
     set_minimal_credentials
     status = false
     remote_ip_address = request.remote_ip
-    url = "http://office.rtsapps.co.za/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/ackbet"
+    url = "#{@@url}/bet/ackbet"
     @error_code = ''
     @error_description = ''
     response_body = ''
@@ -377,7 +378,7 @@ class AilPmuController < ApplicationController
   def api_cancel_bet
     set_credentials
     remote_ip_address = request.remote_ip
-    url = "http://office.rtsapps.co.za/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/cancelbet"
+    url = "#{@@url}/bet/cancelbet"
     @error_code = ''
     @error_description = ''
     response_body = ''
@@ -458,7 +459,7 @@ class AilPmuController < ApplicationController
     set_minimal_credentials
     status = false
     remote_ip_address = request.remote_ip
-    url = "http://office.rtsapps.co.za/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/ackcancel"
+    url = "#{@@url}/bet/ackcancel"
     @error_code = ''
     @error_description = ''
     response_body = ''
@@ -533,7 +534,7 @@ class AilPmuController < ApplicationController
   def api_refund_bet
     set_credentials
     remote_ip_address = request.remote_ip
-    url = "http://office.rtsapps.co.za/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/refundbet"
+    url = "#{@@url}/bet/refundbet"
     @error_code = ''
     @error_description = ''
     response_body = ''
@@ -608,7 +609,7 @@ class AilPmuController < ApplicationController
     set_minimal_credentials
     status = false
     remote_ip_address = request.remote_ip
-    url = "http://office.rtsapps.co.za/RTS_AVTBet_ws_V1/AVTBetV1.svc/bet/ackrefund"
+    url = "#{@@url}/bet/ackrefund"
     @error_code = ''
     @error_description = ''
     response_body = ''
