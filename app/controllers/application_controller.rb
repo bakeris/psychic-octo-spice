@@ -279,7 +279,7 @@ class ApplicationController < ActionController::Base
         response_body = response.body
 
         if !response_body.include?("|")
-          bet.update_attributes(cancel_request: request_body, p_cancellation_id: response_body, cancelled: true, cancelled_at: DateTime.now)
+          bet.update_attributes(cancel_request: request_body, p_cancellation_id: response_body, cancelled: true, cancelled_at: DateTime.now, bet_status: "Annulé")
           status = true
         else
           @error_code = '4001'
