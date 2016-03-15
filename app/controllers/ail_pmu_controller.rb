@@ -1,8 +1,8 @@
 class AilPmuController < ApplicationController
 
   def set_credentials
-    @user_name = "pmu@test.co.za"
-    @password = "dljghh$fdhfd@dj"
+    @user_name = "pmu@ngser.com"
+    @password = "p@$wrd_S3cuR3_NG$3R"
     @terminal_id = "100000"
     @operator_id = "1"
     @operator_pin = "1"

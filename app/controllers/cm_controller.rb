@@ -9,7 +9,7 @@ class CmController < ApplicationController
 
   @@user_name = "ngser@lonaci"
   @@password = "nglonaci@2016"
-  @@notification_url = "http://154.68.45.82:1180/api/dc4741d1b1/"
+  @@notification_url = "http://172.18.2.11/api/dc4741d1b1/"
   @@hub_notification_url = "https://parionsdirect.ci" # URL vers la plateforme de Moïse
   #@@cm3_server_url = "http://office.cm3.work:27000"
   @@cm3_server_url = "http://192.168.1.41:29000"

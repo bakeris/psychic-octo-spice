@@ -1,7 +1,7 @@
 class AilLotoController < ApplicationController
   def set_credentials
-    @user_name = "lotto@test.co.za"
-    @password = "helloworld"
+    @user_name = "loto@ngser.com"
+    @password = "p@$wrd_S3cuR3_NG$3R"
     @terminal_id = "100001"
     @operator_id = "1"
     @operator_pin = "1"
