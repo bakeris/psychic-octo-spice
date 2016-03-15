@@ -19,6 +19,7 @@ else
     json.refunded (bet.p_refund_id.blank? ? false : true)
     json.begin_date bet.begin_date rescue nil
     json.end_date bet.end_date rescue nil
+    json.bet_status bet.bet_status rescue nil
     wagers = bet.cm_wagers
     unless wagers.blank?
       json.wagers wagers do |wager|
