@@ -826,7 +826,7 @@ class LudwinApiController < ApplicationController
 
                     if !nokogiri_response.blank?
                       response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
-                      if response_code == '0' || response_code == '1024' || response_code == '5174'
+                      if response_code == '0' || response_code == '1024' || response_code == '5174' || response_code == '-1024' || response_code == '-5174' || response_code == '-0'
                         @sill_amount = Parameters.first.sill_amount rescue 0
 
                         if (@bet.win_amount.to_f rescue 0) > @sill_amount
@@ -844,7 +844,9 @@ class LudwinApiController < ApplicationController
                         # Email notification
                         WinningNotification.notification_email(@user, @bet.win_amount, "à SPORTCASH", "SPORTCASH", @bet.ticket_id, @bet.paymoney_account_number, '').deliver
                       else
-                        @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Perdant")
+                        if response_code == '5177' || response_code == '-5177'
+                          @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Perdant")
+                        end
                         @error_code = response_code
                         @error_description = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
                       end
