@@ -876,6 +876,9 @@ class LudwinApiController < ApplicationController
       end
     end
 
+    # Free the terminal
+    @terminal.update_attributes(busy: false)
+
     body = %Q[<?xml version="1.0" encoding="UTF-8"?>
               <ServicesPSQF>
                 <PaymentNotificationResponse>
