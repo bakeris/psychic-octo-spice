@@ -11,7 +11,7 @@ else
     json.ticket_timestamp bet.ticket_timestamp rescue nil
     json.cancelled bet.cancelled rescue nil
     json.cancelled_at bet.cancelled_at rescue nil
-    json.created_at bet.created_at rescue nil
+    json.created_at b(bet.created_at.strftime("%d-%m-%Y") + " " + bet.created_at.strftime("%Hh %Mmn")) rescue nil
     json.bet_placed bet.bet_placed rescue nil
     json.bet_placed_at (bet.validated_at.strftime("%d-%m-%Y") + " " + bet.validated_at.strftime("%Hh %Mmn")) rescue nil
 
