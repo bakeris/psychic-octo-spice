@@ -771,98 +771,105 @@ class LudwinApiController < ApplicationController
     @error_code = ''
     @error_description = ''
     remote_ip_address = request.remote_ip
+    license_code = @@license_code
+    point_of_sale_code = @@point_of_sale_code
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
     url = "#{@@url}/paymentTicket"
     payment_notification_envelope = (Nokogiri::XML(request.body.read) rescue nil)
     LudwinLog.create(operation: "Paiement de coupon", response_body: request.body.read, remote_ip_address: remote_ip_address)
 
-    if payment_notification_envelope.blank?
-      @error_code = '5000'
-      @error_description = 'Invalid XML data.'
+    unless terminal_selected
+      @error_code = '3001'
+      @error_description = "Veuillez réessayer."
     else
-      ticket_id = (payment_notification_envelope.xpath('//PaymentNotificationRequest').at('TicketSogei').content rescue nil)
-      pn_transaction_id = (payment_notification_envelope.xpath('//PaymentNotificationRequest').at('TransactionID').content rescue nil)
-
-      @bet = Bet.where(ticket_id: ticket_id, transaction_id: pn_transaction_id)
-
-      if @bet.blank?
-        @error_code = '5001'
-        @error_description = 'The coupon could not be found.'
+      if payment_notification_envelope.blank?
+        @error_code = '5000'
+        @error_description = 'Invalid XML data.'
       else
-        @bet = @bet.first
+        ticket_id = (payment_notification_envelope.xpath('//PaymentNotificationRequest').at('TicketSogei').content rescue nil)
+        pn_transaction_id = (payment_notification_envelope.xpath('//PaymentNotificationRequest').at('TransactionID').content rescue nil)
 
-        if !@bet.pn_ticket_status.blank?
-          @error_code = '5002'
-          @error_description = 'Ce coupon a déja été validé.'
+        @bet = Bet.where(ticket_id: ticket_id, transaction_id: pn_transaction_id)
+
+        if @bet.blank?
+          @error_code = '5001'
+          @error_description = 'The coupon could not be found.'
         else
-          pn_ticket_status = (payment_notification_envelope.xpath('//PaymentNotificationRequest').at('StatusTicket').content rescue nil)
-          pn_timestamp = (payment_notification_envelope.xpath('//PaymentNotificationRequest').at('TimeStamp').content rescue nil)
-          pn_amount_win = (payment_notification_envelope.xpath('//PaymentNotificationRequest').at('AmountWin').content rescue nil)
-          #pn_type_result = (payment_notification_envelope.xpath('//Result').at('TypeResult').content rescue nil)
-          #pn_winning_value = (payment_notification_envelope.xpath('//Result/Winning').at('Value').content rescue nil)
-          #pn_winning_position = (payment_notification_envelope.xpath('//Result/Winning').at('Position').content rescue nil)
+          @bet = @bet.first
 
-          if ['1', '2', '3'].include?(pn_ticket_status)
-            @bet.update_attributes(pn_ticket_status: pn_ticket_status, pn_amount_win: pn_amount_win, pn_transaction_id: pn_transaction_id, pn_timestamp: pn_timestamp)
-            @error_code = '0'
-            @error_description = 'OK'
+          if !@bet.pn_ticket_status.blank?
+            @error_code = '5002'
+            @error_description = 'Ce coupon a déja été validé.'
+          else
+            pn_ticket_status = (payment_notification_envelope.xpath('//PaymentNotificationRequest').at('StatusTicket').content rescue nil)
+            pn_timestamp = (payment_notification_envelope.xpath('//PaymentNotificationRequest').at('TimeStamp').content rescue nil)
+            pn_amount_win = (payment_notification_envelope.xpath('//PaymentNotificationRequest').at('AmountWin').content rescue nil)
+            #pn_type_result = (payment_notification_envelope.xpath('//Result').at('TypeResult').content rescue nil)
+            #pn_winning_value = (payment_notification_envelope.xpath('//Result/Winning').at('Value').content rescue nil)
+            #pn_winning_position = (payment_notification_envelope.xpath('//Result/Winning').at('Position').content rescue nil)
 
-            if pn_ticket_status == '1'
-              body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentRequest><CodConc>299</CodConc><CodDiritto>595</CodDiritto><IdTerminal>201</IdTerminal><TransactionID>#{transaction_id}</TransactionID><TicketSogei>#{ticket_id}</TicketSogei></PaymentRequest></ServicesPSQF>]
+            if ['1', '2', '3'].include?(pn_ticket_status)
+              @bet.update_attributes(pn_ticket_status: pn_ticket_status, pn_amount_win: pn_amount_win, pn_transaction_id: pn_transaction_id, pn_timestamp: pn_timestamp)
+              @error_code = '0'
+              @error_description = 'OK'
 
-              request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
+              if pn_ticket_status == '1'
+                body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentRequest><CodConc>#{license_code}</CodConc><CodDiritto>#{point_of_sale_code}</CodDiritto><IdTerminal>#{@terminal.code}</IdTerminal><TransactionID>#{transaction_id}</TransactionID><TicketSogei>#{ticket_id}</TicketSogei></PaymentRequest></ServicesPSQF>]
 
-              request.on_complete do |response|
-                if response.success?
-                  response_body = response.body
-                  #response_body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentResponse><ReturnCode><Code>0</Code><Description>OK</Description><FlgRetry>false</FlgRetry></ReturnCode></PaymentResponse></ServicesPSQF>]
-                  nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
+                request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
 
-                  if !nokogiri_response.blank?
-                    response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
-                    if response_code == '0' || response_code == '1024' || response_code == '5174'
-                      @sill_amount = Parameters.first.sill_amount rescue 0
+                request.on_complete do |response|
+                  if response.success?
+                    response_body = response.body
+                    #response_body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentResponse><ReturnCode><Code>0</Code><Description>OK</Description><FlgRetry>false</FlgRetry></ReturnCode></PaymentResponse></ServicesPSQF>]
+                    nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
 
-                      if (@bet.win_amount.to_f rescue 0) > @sill_amount
-                        @bet.update_attributes(payment_status_datetime: DateTime.now, bet_status: "Vainqueur en attente de paiement")
+                    if !nokogiri_response.blank?
+                      response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
+                      if response_code == '0' || response_code == '1024' || response_code == '5174'
+                        @sill_amount = Parameters.first.sill_amount rescue 0
+
+                        if (@bet.win_amount.to_f rescue 0) > @sill_amount
+                          @bet.update_attributes(payment_status_datetime: DateTime.now, bet_status: "Vainqueur en attente de paiement")
+                        else
+                          # Paymoney payment
+                          pay_earnings(@bet, "LhSpwtyN", @bet.win_amount)
+                          @bet.update_attributes(pr_status: true, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Gagnant")
+                        end
+
+                        # SMS notification
+                        build_message(@bet, @bet.win_amount, "à SPORTCASH", @bet.ticket_id)
+                        send_sms_notification(@bet, @msisdn, "SPORTCASH", @message_content)
+
+                        # Email notification
+                        WinningNotification.notification_email(@user, @bet.win_amount, "à SPORTCASH", "SPORTCASH", @bet.ticket_id, @bet.paymoney_account_number, '').deliver
                       else
-                        # Paymoney payment
-                        pay_earnings(@bet, "LhSpwtyN", @bet.win_amount)
-                        @bet.update_attributes(pr_status: true, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Gagnant")
+                        @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Perdant")
+                        @error_code = response_code
+                        @error_description = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
                       end
-
-                      # SMS notification
-                      build_message(@bet, @bet.win_amount, "à SPORTCASH", @bet.ticket_id)
-                      send_sms_notification(@bet, @msisdn, "SPORTCASH", @message_content)
-
-                      # Email notification
-                      WinningNotification.notification_email(@user, @bet.win_amount, "à SPORTCASH", "SPORTCASH", @bet.ticket_id, @bet.paymoney_account_number, '').deliver
                     else
-                      @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Perdant")
-                      @error_code = response_code
-                      @error_description = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
+                      @error_code = '4001'
+                      @error_description = 'Error while parsing XML.'
                     end
                   else
-                    @error_code = '4001'
-                    @error_description = 'Error while parsing XML.'
+                    @error_code = '4000'
+                    @error_description = 'Unavailable resource.'
                   end
-                else
-                  @error_code = '4000'
-                  @error_description = 'Unavailable resource.'
+                  LudwinLog.create(operation: "Paiement de coupon", response_body: response_body, remote_ip_address: remote_ip_address, sent_body: body)
                 end
-                LudwinLog.create(operation: "Paiement de coupon", response_body: response_body, remote_ip_address: remote_ip_address, sent_body: body)
+
+                request.run
+
+
               end
-
-              request.run
-
-
+            else
+              @error_code = '5003'
+              @error_description = 'Invalid notification status.'
             end
-          else
-            @error_code = '5003'
-            @error_description = 'Invalid notification status.'
-          end
 
-          @bet.update_attributes(error_code: @error_code, error_description: @error_description)
+            @bet.update_attributes(error_code: @error_code, error_description: @error_description)
+          end
         end
       end
     end
