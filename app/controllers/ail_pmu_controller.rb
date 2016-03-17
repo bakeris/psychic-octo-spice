@@ -900,11 +900,12 @@ class AilPmuController < ApplicationController
 
   def validate_loosers
      bets = AilPmu.where("bet_status = 'En cours'")
-     AilPmu.where("created_at  < '#{DateTime.now - 3.hour}' AND draw_id = '#{draw_id}'").update_all(bet_status: 'Perdant') rescue nil
      draw_ids = bets.pluck(:draw_id) rescue nil
 
      unless draw_ids.blank?
        draw_ids.each do |draw_id|
+        AilPmu.where("created_at  < '#{DateTime.now - 3.hour}' AND draw_id = '#{draw_id}'").update_all(bet_status: 'Perdant') rescue nil
+
          bets = AilPmu.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND (earning_notification_received_at  < '#{DateTime.now - 2.hour}' OR refund_notification_received_at  < '#{DateTime.now - 2.hour}') AND draw_id = '#{draw_id}'")
          unless bets.blank?
           AilPmu.where("bet_status = 'En cours' AND draw_id = '#{draw_id}'").update_all(bet_status: 'Perdant') rescue nil
