@@ -898,6 +898,20 @@ class AilPmuController < ApplicationController
     return result
   end
 
+  def validate_loosers
+     bets = AilPmu.where("bet_status = 'En attente de validation'")
+     draw_ids = bets.pluck(:draw_id) rescue nil
+
+     unless draw_ids.blank?
+       draw_ids.each do |draw_id|
+         bets = AilPmu.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND (earning_notification_received_at  < '#{DateTime.now - 2.hour}' OR refund_notification_received_at  < '#{DateTime.now - 2.hour}') AND draw_id = '#{draw_id}'")
+         unless bets.blank?
+          AilPmu.where("bet_status = 'En attente de validation' AND draw_id = '#{draw_id}'").update_all(bet_status: 'Perdant') rescue nil
+         end
+       end
+     end
+  end
+
   def validate_payment_notifications
     #{DateTime.now - 16.minutes}
     bets = AilPmu.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En attente de validation' AND placement_acknowledge IS TRUE AND (earning_notification_received_at  < '#{DateTime.now + 5.minutes}' OR refund_notification_received_at  < '#{DateTime.now + 5.minutes}') AND earning_paid IS NULL AND refund_paid IS NULL")
