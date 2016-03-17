@@ -900,6 +900,7 @@ class AilPmuController < ApplicationController
 
   def validate_loosers
      bets = AilPmu.where("bet_status = 'En attente de validation'")
+     AilPmu.where("created_at  < '#{DateTime.now - 3.hour}' AND draw_id = '#{draw_id}'").update_all(bet_status: 'Perdant') rescue nil
      draw_ids = bets.pluck(:draw_id) rescue nil
 
      unless draw_ids.blank?
