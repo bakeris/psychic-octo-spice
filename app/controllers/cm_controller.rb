@@ -594,37 +594,46 @@ class CmController < ApplicationController
   end
 
   def update_winners_list
-    unless @request_result.blank?
-      winnings = (@request_result.xpath('//winnings/winning') rescue nil)
-      unless winnings.blank?
-        @sill_amount = Parameters.first.sill_amount rescue 0
-        winnings.each do |winning|
+    bets = Cm.where("p_validated IS NULL AND serial_number IS NOT NULL AND program_id = '#{@program_id}' AND race_id = '#{@race_id}'")
+    unless bets.blank?
 
-          bet = Cm.where("sale_client_id = '#{winning.at('transactionId').content}' AND serial_number = '#{winning.at('serialNumber').content}' AND p_validated IS NULL").first rescue nil
-          unless bet.blank?
-            bet.update_attributes(win_reason: winning.at('reason').content, win_amount: winning.at('amount').content, bet_status: "Gagnant")
-            bet_id = winning.at('betId').content rescue nil
+      bets_amount = bets.map{|bet| (bet.amount.to_f rescue 0)}.sum rescue 0
+      if validate_bet_cm3("McoaDIET", bets_amount, @program_id, @race_id)
 
-            #unless bet_ids.blank?
-              #bet_ids.each do |bet_id|
-                bet.cm_wagers.where("bet_id = '#{bet_id}'").first.update_attributes(winner: true) rescue nil
-                if (winning.at('amount').content.to_f rescue 0) > @sill_amount
-                  bet.update_attributes(bet_status: "Vainqueur en attente de paiement")
-                else
-                  validate_bet_cm3("McoaDIET", bet.win_amount, bet.race_id)
-                end
+        unless @request_result.blank?
+          winnings = (@request_result.xpath('//winnings/winning') rescue nil)
+          unless winnings.blank?
+            @sill_amount = Parameters.first.sill_amount rescue 0
+            winnings.each do |winning|
 
-                # SMS notification
-                build_message(bet, bet.win_amount, "au PMU-ALR", bet.serial_number)
-                send_sms_notification(bet, @msisdn, "PMU-ALR", @message_content)
+              bet = Cm.where("sale_client_id = '#{winning.at('transactionId').content}' AND serial_number = '#{winning.at('serialNumber').content}' AND p_validated IS NULL").first rescue nil
+              unless bet.blank?
+                bet.update_attributes(win_reason: winning.at('reason').content, win_amount: winning.at('amount').content, bet_status: "Gagnant")
+                bet_id = winning.at('betId').content rescue nil
 
-                # Email notification
-                WinningNotification.notification_email(@user, bet.win_amount, "au PMU-ALR", "PMU-ALR", bet.serial_number, bet.paymoney_account_number, '').deliver
-                #if validate_bet_cm3(game_account_token, transaction_amount, race_id)
+                #unless bet_ids.blank?
+                  #bet_ids.each do |bet_id|
+                    bet.cm_wagers.where("bet_id = '#{bet_id}'").first.update_attributes(winner: true) rescue nil
+                    if (winning.at('amount').content.to_f rescue 0) > @sill_amount
+                      bet.update_attributes(bet_status: "Vainqueur en attente de paiement")
+                    else
+                      #validate_bet_cm3("McoaDIET", bet.amount, bet.race_id)
+                      pay_cm3_earnings(bet, "McoaDIET", bet.win_amount)
+                    end
 
+                    # SMS notification
+                    build_message(bet, bet.win_amount, "au PMU-ALR", bet.serial_number)
+                    send_sms_notification(bet, @msisdn, "PMU-ALR", @message_content)
+
+                    # Email notification
+                    WinningNotification.notification_email(@user, bet.win_amount, "au PMU-ALR", "PMU-ALR", bet.serial_number, bet.paymoney_account_number, '').deliver
+                    #if validate_bet_cm3(game_account_token, transaction_amount, race_id)
+
+                    #end
+                  #end
                 #end
-              #end
-            #end
+              end
+            end
           end
         end
       end

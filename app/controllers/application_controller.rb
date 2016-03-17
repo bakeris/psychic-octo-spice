@@ -206,7 +206,7 @@ class ApplicationController < ActionController::Base
     return status
   end
 
-  def validate_bet_cm3(game_account_token, transaction_amount, race_id)
+  def validate_bet_cm3(game_account_token, transaction_amount, program_id, race_id)
     paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
     status = false
 
@@ -217,7 +217,7 @@ class ApplicationController < ActionController::Base
         response_body = response.body
 
         if !response_body.include?("|")
-          ActiveRecord::Base.connection.execute("UPDATE cms SET p_validation_id = '#{response_body}', p_validated = TRUE, p_validated_at = '#{DateTime.now}' WHERE win_reason IS NOT NULL AND race_id = '#{race_id}' AND p_validated IS NULL")
+          ActiveRecord::Base.connection.execute("UPDATE cms SET p_validation_id = '#{response_body}', p_validated = TRUE, p_validated_at = '#{DateTime.now}' WHERE win_reason IS NOT NULL AND program_id = '#{program_id}' AND race_id = '#{race_id}' AND p_validated IS NULL")
           #bet.update_attributes(paymoney_transaction_id: response_body, bet_placed: true, bet_placed_at: DateTime.now)
           status = true
         else
@@ -350,6 +350,38 @@ class ApplicationController < ActionController::Base
         @error_code = '4000'
         @error_description = "Le serveur de paiement n'est pas disponible."
         bet.update_attributes(error_code: @error_code, error_description: @error_description)
+      end
+    end
+
+    request.run
+
+    return status
+  end
+
+  def pay_cm3_earnings(bet, game_account_token, transaction_amount)
+    paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
+    status = false
+
+    url = "#{paymoney_wallet_url}/api/86d1798bc43ed59e5207c68e864564/earnings/pay/#{game_account_token}/#{bet.paymoney_account_token}/#{bet.transaction_id}/#{transaction_amount}"
+
+    request = Typhoeus::Request.new(url, followlocation: true, method: :get)
+
+    request.on_complete do |response|
+      if response.success?
+        response_body = response.body
+
+        if !response_body.include?("|")
+          bet.update_attributes(p_earning_id: response_body, pay_earning_request: url)
+          status = true
+        else
+          @error_code = '4001'
+          @error_description = 'Erreur de paiement.'
+          bet.update_attributes(win_request: url, win_response: response_body)
+        end
+      else
+        @error_code = '4000'
+        @error_description = "Le serveur de paiement n'est pas disponible."
+        bet.update_attributes(win_request: url)
       end
     end
 
