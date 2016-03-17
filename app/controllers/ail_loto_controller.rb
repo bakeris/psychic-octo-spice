@@ -946,7 +946,7 @@ class AilLotoController < ApplicationController
   end
 
   def validate_loosers
-     bets = AilLoto.where("bet_status = 'En attente de validation'")
+     bets = AilLoto.where("bet_status = 'En cours'")
      AilLoto.where("created_at  < '#{DateTime.now - 3.hour}' AND draw_id = '#{draw_id}'").update_all(bet_status: 'Perdant') rescue nil
      draw_ids = bets.pluck(:draw_id) rescue nil
 
@@ -954,7 +954,7 @@ class AilLotoController < ApplicationController
        draw_ids.each do |draw_id|
          bets = AilLoto.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND (earning_notification_received_at  < '#{DateTime.now - 2.hour}' OR refund_notification_received_at  < '#{DateTime.now - 2.hour}') AND draw_id = '#{draw_id}'")
          unless bets.blank?
-          AilLoto.where("bet_status = 'En attente de validation' AND draw_id = '#{draw_id}'").update_all(bet_status: 'Perdant') rescue nil
+          AilLoto.where("bet_status = 'En cours' AND draw_id = '#{draw_id}'").update_all(bet_status: 'Perdant') rescue nil
          end
        end
      end
@@ -962,13 +962,13 @@ class AilLotoController < ApplicationController
 
   def validate_payment_notifications
     #{DateTime.now - 16.minutes}
-    bets = AilLoto.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En attente de validation' AND placement_acknowledge IS TRUE AND (earning_notification_received_at  < '#{DateTime.now + 5.minutes}' OR refund_notification_received_at  < '#{DateTime.now + 5.minutes}') AND earning_paid IS NULL AND refund_paid IS NULL")
+    bets = AilLoto.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En cours' AND placement_acknowledge IS TRUE AND (earning_notification_received_at  < '#{DateTime.now + 5.minutes}' OR refund_notification_received_at  < '#{DateTime.now + 5.minutes}') AND earning_paid IS NULL AND refund_paid IS NULL")
     draw_ids = bets.pluck(:draw_id) rescue nil
 
     unless draw_ids.blank?
 
       draw_ids.each do |draw_id|
-        bets = AilLoto.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En attente de validation' AND placement_acknowledge IS TRUE AND (earning_notification_received_at  < '#{DateTime.now + 5.minutes}' OR refund_notification_received_at  < '#{DateTime.now + 5.minutes}') AND earning_paid IS NULL AND refund_paid IS NULL AND draw_id = '#{draw_id}'")
+        bets = AilLoto.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En cours' AND placement_acknowledge IS TRUE AND (earning_notification_received_at  < '#{DateTime.now + 5.minutes}' OR refund_notification_received_at  < '#{DateTime.now + 5.minutes}') AND earning_paid IS NULL AND refund_paid IS NULL AND draw_id = '#{draw_id}'")
         bets_amount = bets.map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0
         if validate_bet_ail("AliXTtooY", bets_amount, "ail_pmus")
           bets_payout = AilLoto.where("earning_notification_received IS TRUE AND draw_id = '#{draw_id}' AND paymoney_earning_id IS NULL")
