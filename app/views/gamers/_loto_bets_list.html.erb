@@ -17,7 +17,7 @@
       <% unless @loto_bets.blank? %>
         <% @loto_bets.each do |bet| %>
           <tr class="gradeA">
-            <% css_class = ((bet.bet_status == 'En cours' || bet.bet_status == 'Vainqueur en attente de paiement') ? 'taskP' : (bet.bet_status == 'Gagnant' ? 'taskPr' : 'taskD')) %>
+            <% css_class = ((bet.bet_status == 'En cours' || bet.bet_status == 'Vainqueur en attente de paiement') ? 'taskP' : ((bet.bet_status == 'Gagnant' || bet.bet_status == 'Remboursé') ? 'taskPr' : 'taskD')) %>
             <td class = "<%= css_class %>">
               <%= bet.bet_status %>
             </td>
