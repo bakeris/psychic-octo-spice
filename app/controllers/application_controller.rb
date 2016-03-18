@@ -362,7 +362,7 @@ class ApplicationController < ActionController::Base
     paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
     status = false
 
-    url = "#{paymoney_wallet_url}/api/86d1798bc43ed59e5207c68e864564/earnings/pay/#{game_account_token}/#{bet.paymoney_account_token}/#{bet.transaction_id}/#{transaction_amount}"
+    url = "#{paymoney_wallet_url}/api/86d1798bc43ed59e5207c68e864564/earnings/pay/#{game_account_token}/#{bet.paymoney_account_token}/#{bet.sale_client_id}/#{transaction_amount}"
 
     request = Typhoeus::Request.new(url, followlocation: true, method: :get)
 
@@ -371,7 +371,7 @@ class ApplicationController < ActionController::Base
         response_body = response.body
 
         if !response_body.include?("|")
-          bet.update_attributes(p_earning_id: response_body, pay_earning_request: url)
+          bet.update_attributes(p_earning_id: response_body, pay_earning_request: url, bet_status: "Gagnant", p_validated: true)
           status = true
         else
           @error_code = '4001'
