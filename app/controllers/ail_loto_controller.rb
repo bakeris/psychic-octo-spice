@@ -801,7 +801,7 @@ class AilLotoController < ApplicationController
               notification_field = "refund"
             end
 
-            @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => amount, :"#{notification_field}_notification_received_at" => DateTime.now, bet_status: "En attente de validation")
+            @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => amount, :"#{notification_field}_notification_received_at" => DateTime.now, bet_status: "En cours")
           end
         end
       end
