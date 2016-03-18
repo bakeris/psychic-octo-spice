@@ -951,9 +951,9 @@ class AilLotoController < ApplicationController
 
      unless draw_ids.blank?
        draw_ids.each do |draw_id|
-         AilLoto.where("created_at  < '#{DateTime.now - 3.hour}' AND draw_id = '#{draw_id}'").update_all(bet_status: 'Perdant') rescue nil
+         #AilLoto.where("created_at  < '#{DateTime.now - 3.hour}' AND draw_id = '#{draw_id}'").update_all(bet_status: 'Perdant') rescue nil
 
-         bets = AilLoto.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND (earning_notification_received_at  < '#{DateTime.now - 2.hour}' OR refund_notification_received_at  < '#{DateTime.now - 2.hour}') AND draw_id = '#{draw_id}'")
+         bets = AilLoto.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND (earning_notification_received_at  < '#{DateTime.now - 1.hour}' OR refund_notification_received_at  < '#{DateTime.now - 1.hour}') AND draw_id = '#{draw_id}'")
          unless bets.blank?
           AilLoto.where("bet_status = 'En cours' AND draw_id = '#{draw_id}'").update_all(bet_status: 'Perdant') rescue nil
          end
