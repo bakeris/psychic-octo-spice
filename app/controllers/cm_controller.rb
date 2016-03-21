@@ -581,7 +581,7 @@ class CmController < ApplicationController
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
       error_message = (@request_result.xpath('//return').at('message').content rescue nil)
 
-      if error_code.blank? && @error != true
+      if (error_code.blank? && @error != true) || error_code.to_s == '457'
         update_winners_list
         Cm.where("program_id = '#{@program_id}' AND race_id = '#{@race_id}' AND p_validated IS NULL").update_all(bet_status: "Perdant") rescue nil
       else
@@ -731,7 +731,7 @@ class CmController < ApplicationController
       @reason =  (notification.xpath('//raceNotification').at('reason').content.downcase rescue nil)
 
       if valid_notify_race_parameters?
-        if @reason == "max_runners" || @reason == "scratched" || @reason == "couple" || @reason == "state" || @reason == "bet_state" || @reason == "dividends"
+        if @reason == "max_runners" || @reason == "scratched" || @reason == "couple" || @reason == "state" || @reason == "bet_state" || @reason == "dividends" || @reason = "result"
           RestClient.get "#{@@hub_notification_url}/api/cm3/race_notification/#{@program_id}/#{@race_id}/#{@reason.upcase}" rescue nil
           CmLog.create(operation: "Race notification", notify_session_request_body: "#{@@hub_notification_url}/api/cm3/race_notification/#{@program_id}/#{@race_id}/#{@reason}")
           status = "200"
