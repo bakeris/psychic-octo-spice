@@ -594,7 +594,7 @@ class CmController < ApplicationController
   end
 
   def update_winners_list
-    bets = Cm.where("p_validated IS NULL AND serial_number IS NOT NULL AND program_id = '#{@program_id}' AND race_id = '#{@race_id}'")
+    bets = Cm.where("p_validated IS NULL AND serial_number IS NOT NULL AND program_id = '#{@program_id}' AND race_id = '#{@race_id}' AND bet_status = 'En cours'")
     unless bets.blank?
 
       bets_amount = bets.map{|bet| (bet.amount.to_f rescue 0)}.sum rescue 0
