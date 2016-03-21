@@ -731,7 +731,7 @@ class CmController < ApplicationController
       @reason =  (notification.xpath('//raceNotification').at('reason').content.downcase rescue nil)
 
       if valid_notify_race_parameters?
-        if @reason == "max_runners" || @reason == "scratched" || @reason == "couple" || @reason == "state" || @reason == "bet_state" || @reason == "dividends" || @reason = "result"
+        if @reason == "max_runners" || @reason == "scratched" || @reason == "couple" || @reason == "state" || @reason == "bet_state" || @reason == "dividends" || @reason == "result"
           RestClient.get "#{@@hub_notification_url}/api/cm3/race_notification/#{@program_id}/#{@race_id}/#{@reason.upcase}" rescue nil
           CmLog.create(operation: "Race notification", notify_session_request_body: "#{@@hub_notification_url}/api/cm3/race_notification/#{@program_id}/#{@race_id}/#{@reason}")
           status = "200"
