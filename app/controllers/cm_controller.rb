@@ -754,7 +754,7 @@ class CmController < ApplicationController
 
     CmLog.create(operation: "Notify race", notify_race_connection_id: @connection_id, notify_race_program_id: @program_id, notify_race_race_id: @race_id, notify_race_reason: @reason, notify_race_request_body: request_body)
 
-    #render text: status
+    #render text: @reason
     render nothing: true, status: 200
   end
 
