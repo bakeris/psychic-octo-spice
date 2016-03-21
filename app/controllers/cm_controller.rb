@@ -583,7 +583,7 @@ class CmController < ApplicationController
 
       if (error_code.blank? && @error != true) || error_code.to_s == '457'
         update_winners_list
-        Cm.where("program_id = '#{@program_id}' AND race_id = '#{@race_id}' AND p_validated IS NULL").update_all(bet_status: "Perdant") rescue nil
+        Cm.where("program_id = '#{@program_id}' AND race_id = '#{@race_id}' AND p_validated IS NULL AND bet_status = 'En cours'").update_all(bet_status: "Perdant") rescue nil
       else
         @error_code = error_code
         @error_description = error_message
