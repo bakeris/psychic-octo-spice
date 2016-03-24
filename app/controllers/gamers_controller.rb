@@ -25,10 +25,10 @@ class GamersController < ApplicationController
       flash[:error] = "Cet utilisateur n'existe pas"
       redirect_to gamers_path
     else
-      @pmu_plr_bets_count = AilPmu.where("gamer_id = '#{@gamer.uuid}'").count
-      @loto_bets_count = AilLoto.where("gamer_id = '#{@gamer.uuid}'").count
-      @sport_cash_bets_count = Bet.where("gamer_id = '#{@gamer.uuid}'").count
-      @cm_bets_count = Cm.where("punter_id = '#{@gamer.uuid}'").count
+      @pmu_plr_bets_count = AilPmu.where("gamer_id = '#{@gamer.uuid}' AND placement_acknowledge IS TRUE").count
+      @loto_bets_count = AilLoto.where("gamer_id = '#{@gamer.uuid}' AND placement_acknowledge IS TRUE").count
+      @sport_cash_bets_count = Bet.where("gamer_id = '#{@gamer.uuid}' AND ticket_id IS NOT NULL").count
+      @cm_bets_count = Cm.where("punter_id = '#{@gamer.uuid}' AND serial_number IS NOT NULL").count
       @eppl_bets_count = Eppl.where("gamer_id = '#{@gamer.uuid}' AND operation != 'Prise de pari' AND operation IS NOT NULL").count
     end
   end

@@ -22,7 +22,7 @@ Rails.application.configure do
 		:password => '20dianapopoulos12'
 	}
 =begin
-	config.action_mailer.default_url_options = { host: '41.189.40.193:10000', from: 'Asministrateur - Parions Direct' }
+	config.action_mailer.default_url_options = { host: 'pay-money.net', from: 'Administrateur - Parions Direct' }
   ActionMailer::Base.smtp_settings = {
   	:openssl_verify_mode => 'none',
 		:address => "de2608.ispfr.net",
