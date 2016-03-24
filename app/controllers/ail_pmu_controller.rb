@@ -906,8 +906,8 @@ class AilPmuController < ApplicationController
        draw_ids.each do |draw_id|
 
         #orphan_bets = AilPmu.where("created_at  < '#{DateTime.now - 3.hour}' AND draw_id = '#{draw_id}'").update_all(bet_status: 'Perdant') rescue nil
-        orphan_bets = AilPmu.where("to_date(bet_date, 'DD/MM/YYYY HH24:MI:SS')  < '#{DateTime.now - 2.hour}' AND draw_id = '#{draw_id}'") rescue nil
-        cancel_amount = AilPmu.where("to_date(bet_date, 'DD/MM/YYYY HH24:MI:SS')  < '#{DateTime.now - 2.hour}' AND draw_id = '#{draw_id}' AND bet_cancelled IS TRUE").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0
+        orphan_bets = AilPmu.where("to_date(bet_date, ''YYYY/MM/DD HH24:MI:SS')  < '#{DateTime.now - 2.hour}' AND draw_id = '#{draw_id}'") rescue nil
+        cancel_amount = AilPmu.where("to_date(bet_date, ''YYYY/MM/DD HH24:MI:SS')  < '#{DateTime.now - 2.hour}' AND draw_id = '#{draw_id}' AND bet_cancelled IS TRUE").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0
 
         orphan_amount = (orphan_bets.map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0) - cancel_amount
         unless orphan_bets.blank?
