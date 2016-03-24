@@ -277,7 +277,7 @@ class AilPmuController < ApplicationController
                 bet_cost_amount = (json_response["content"]["betCostAmount"] rescue nil)
                 bet_payout_amount = (json_response["content"]["betPayoutAmount"] rescue nil)
 
-                @ail_pmu = AilPmu.create(transaction_id: @transaction_id, message_id: @message_id, audit_number: @audit_id, date_time: @date_time, bet_code: @bet_code, bet_modifier: @bet_modifier, selector1: @selector1, selector2: @selector2, repeats: @repeats, normal_entries: @normal_entries, special_entries: @special_entries, ticket_number: ticket_number, ref_number: ref_number, bet_cost_amount: bet_cost_amount, bet_payout_amount: bet_payout_amount, paymoney_account_number: paymoney_account_number, gamer_id: gamer_id, user_id: user.id, game_account_token: "ApXTrliOp", draw_id: "#{DateTime.now.to_i}-#{@selector1}-#{@selector2}", starter_horses: @starter_horses, race_details: @race_details, begin_date: @begin_date, end_date: @end_date, bet_date: bet_date)
+                @ail_pmu = AilPmu.create(transaction_id: @transaction_id, message_id: @message_id, audit_number: @audit_id, date_time: @date_time, bet_code: @bet_code, bet_modifier: @bet_modifier, selector1: @selector1, selector2: @selector2, repeats: @repeats, normal_entries: @normal_entries, special_entries: @special_entries, ticket_number: ticket_number, ref_number: ref_number, bet_cost_amount: bet_cost_amount, bet_payout_amount: bet_payout_amount, paymoney_account_number: paymoney_account_number, gamer_id: gamer_id, user_id: user.id, game_account_token: "ApXTrliOp", draw_id: "#{DateTime.now.strftime("%d%m%Y")}-#{@selector1}-#{@selector2}", starter_horses: @starter_horses, race_details: @race_details, begin_date: @begin_date, end_date: @end_date, bet_date: bet_date)
 
                 if place_bet_with_cancellation(@ail_pmu, "ApXTrliOp", paymoney_account_number, password, bet_cost_amount)
                   api_acknowledge_bet_old
@@ -910,8 +910,10 @@ class AilPmuController < ApplicationController
         cancel_amount = AilPmu.where("to_date(bet_date, 'DD/MM/YYYY HH24:MI:SS')  < '#{DateTime.now - 2.hour}' AND draw_id = '#{draw_id}' AND bet_cancelled IS TRUE").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0
 
         orphan_amount = (orphan_bets.map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0) - cancel_amount
-        if validate_bet_ail("ApXTrliOp", orphan_amount, "ail_pmus")
-          orphan_bets.update_all(bet_status: 'Perdant') rescue nil
+        unless orphan_bets.blank?
+          if validate_bet_ail("ApXTrliOp", orphan_amount, "ail_pmus")
+            orphan_bets.update_all(bet_status: 'Perdant') rescue nil
+          end
         end
 
          bets = AilPmu.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND (earning_notification_received_at  < '#{DateTime.now - 2.hour}' OR refund_notification_received_at  < '#{DateTime.now - 2.hour}') AND draw_id = '#{draw_id}'")
