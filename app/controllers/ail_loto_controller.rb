@@ -1094,7 +1094,7 @@ class AilLotoController < ApplicationController
 
         end
 
-        AilLoto.where("draw_id = '#{draw_id}' AND earning_paid IS NULL AND refund_paid IS NULL AND placement_acknowledge").map{|bet| bet.update_attributes(bet_satus: "Perdant")}
+        AilLoto.where("draw_id = '#{draw_id}' AND earning_paid IS NULL AND refund_paid IS NULL AND placement_acknowledge IS TRUE AND bet_satus = 'En cours'").map{|bet| bet.update_attributes(bet_satus: "Perdant")}
       end
     end
 

@@ -906,7 +906,7 @@ class AilPmuController < ApplicationController
        draw_ids.each do |draw_id|
 
         #orphan_bets = AilPmu.where("created_at  < '#{DateTime.now - 3.hour}' AND draw_id = '#{draw_id}'").update_all(bet_status: 'Perdant') rescue nil
-        orphan_bets = AilPmu.where("TO_TIMESTAMP(begin_date, 'DD/MM/YYYY HH24:MI:SS')  < '#{DateTime.now - 2.hour}' AND draw_id = '#{draw_id}'") rescue nil
+        orphan_bets = AilPmu.where("TO_TIMESTAMP(begin_date, 'DD/MM/YYYY HH24:MI:SS')  < '#{DateTime.now - 2.hour}' AND draw_id = '#{draw_id}' AND bet_status = 'En cours'") rescue nil
         cancel_amount = AilPmu.where("TO_TIMESTAMP(begin_date, 'DD/MM/YYYY HH24:MI:SS')  < '#{DateTime.now - 2.hour}' AND draw_id = '#{draw_id}' AND bet_cancelled IS TRUE").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0
 
         orphan_amount = (orphan_bets.map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0) - cancel_amount
@@ -1061,7 +1061,7 @@ class AilPmuController < ApplicationController
 
         end
 
-        AilPmu.where("draw_id = '#{draw_id}' AND earning_paid IS NULL AND refund_paid IS NULL AND placement_acknowledge").map{|bet| bet.update_attributes(bet_satus: "Perdant")}
+        AilPmu.where("draw_id = '#{draw_id}' AND earning_paid IS NULL AND refund_paid IS NULL AND placement_acknowledge AND bet_status = 'En cours'").map{|bet| bet.update_attributes(bet_satus: "Perdant")}
       end
     end
 
