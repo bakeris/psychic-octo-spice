@@ -595,10 +595,12 @@ class CmController < ApplicationController
 
   def update_winners_list
     bets = Cm.where("p_validated IS NULL AND serial_number IS NOT NULL AND program_id = '#{@program_id}' AND race_id = '#{@race_id}' AND bet_status = 'En cours'")
+    cancelled_bets = Cm.where("cancelled IS TRUE AND serial_number IS NOT NULL AND program_id = '#{@program_id}' AND race_id = '#{@race_id}'")
     unless bets.blank?
 
       bets_amount = bets.map{|bet| (bet.amount.to_f rescue 0)}.sum rescue 0
-      if validate_bet_cm3("McoaDIET", bets_amount, @program_id, @race_id)
+      cancelled_amount = cancelled_bets.map{|bet| (bet.amount.to_f rescue 0)}.sum rescue 0
+      if validate_bet_cm3("McoaDIET", bets_amount - cancelled_amount, @program_id, @race_id)
 
         unless @request_result.blank?
           winnings = (@request_result.xpath('//winnings/winning') rescue nil)
