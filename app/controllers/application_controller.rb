@@ -267,6 +267,36 @@ class ApplicationController < ActionController::Base
     return status
   end
 
+  def payback_unplaced_bet(bet)
+    paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
+    status = false
+
+    request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/35959d477b5ffc06dc673befbe5b4/bet/payback/#{bet.transaction_id}", followlocation: true, method: :get)
+
+    request.on_complete do |response|
+      if response.success?
+        response_body = response.body
+
+        if !response_body.include?("|")
+          bet.update_attributes(payback_unplaced_bet_request: request_body, payback_unplaced_bet_response: response_body, payback_unplaced_bet: true, payback_unplaced_bet_at: DateTime.now)
+          status = true
+        else
+          @error_code = '4001'
+          @error_description = "Le pari n'a pas pu être annulé."
+          bet.update_attributes(payback_unplaced_bet_request: request_body, payback_unplaced_bet_response: response_body, error_code: @error_code, error_description: @error_description)
+        end
+      else
+        @error_code = '4000'
+        @error_description = "Le serveur de paiement n'est pas accessible."
+        bet.update_attributes(payback_unplaced_bet_request: request_body, error_code: @error_code, error_description: @error_description, response_body: response_body)
+      end
+    end
+
+    request.run
+
+    return status
+  end
+
   def cancel_cm3_bet(bet)
     paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
     status = false
@@ -290,6 +320,37 @@ class ApplicationController < ActionController::Base
         @error_code = '4000'
         @error_description = 'Le serveur de paiement est indisponible.'
         bet.update_attributes(cancel_request: request_body)
+      end
+    end
+
+    request.run
+
+    return status
+  end
+
+  def payback_unplaced_bet_cm3(bet)
+    paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
+    status = false
+    request_body = "#{paymoney_wallet_url}/api/35959d477b5ffc06dc673befbe5b4/bet/payback/#{bet.sale_client_id}"
+
+    request = Typhoeus::Request.new(request_body, followlocation: true, method: :get)
+
+    request.on_complete do |response|
+      if response.success?
+        response_body = response.body
+
+        if !response_body.include?("|")
+          bet.update_attributes(payback_unplaced_bet_request: request_body, payback_unplaced_bet_response: response_body, payback_unplaced_bet: true, payback_unplaced_bet_at: DateTime.now)
+          status = true
+        else
+          @error_code = '4001'
+          @error_description = "Erreur de paiement, le pari n'a pas pu être annulé."
+          bet.update_attributes(payback_unplaced_bet_request: request_body, payback_unplaced_bet_response: response_body)
+        end
+      else
+        @error_code = '4000'
+        @error_description = 'Le serveur de paiement est indisponible.'
+        bet.update_attributes(payback_unplaced_bet_request: request_body)
       end
     end
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160311204400) do
+ActiveRecord::Schema.define(version: 20160326194502) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -280,6 +280,10 @@ ActiveRecord::Schema.define(version: 20160311204400) do
     t.string   "bet_status"
     t.string   "paymoney_account_number"
     t.datetime "on_hold_winner_paid_at"
+    t.text     "payback_unplaced_bet_request"
+    t.string   "payback_unplaced_bet_response"
+    t.boolean  "payback_unplaced_bet"
+    t.datetime "payback_unplaced_bet_at"
   end
 
   create_table "bomb_logs", force: true do |t|
@@ -432,6 +436,10 @@ ActiveRecord::Schema.define(version: 20160311204400) do
     t.text     "sms_content"
     t.string   "sms_id"
     t.string   "sms_status"
+    t.text     "payback_unplaced_bet_request"
+    t.string   "payback_unplaced_bet_response"
+    t.boolean  "payback_unplaced_bet"
+    t.datetime "payback_unplaced_bet_at"
   end
 
   create_table "creation_modes", force: true do |t|
