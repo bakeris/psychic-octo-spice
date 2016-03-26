@@ -708,7 +708,7 @@ class AilPmuController < ApplicationController
       @error_code = '4000'
       @error_description = 'The gamer id could not be found'
     else
-      @bets = user.ail_pmus.order("created_at DESC") rescue nil
+      @bets = user.ail_pmus.where("bet_status IS NOT NULL").order("created_at DESC") rescue nil
     end
   end
 

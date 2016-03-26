@@ -780,7 +780,7 @@ class CmController < ApplicationController
       @error_code = '4000'
       @error_description = "Ce parieur n'a pas été trouvé."
     else
-      @bets = Cm.where(punter_id: params[:gamer_id]).order("created_at DESC")
+      @bets = Cm.where("punter_id = '#{params[:gamer_id]}' AND bet_status IS NOT NULL").order("created_at DESC")
     end
   end
 
