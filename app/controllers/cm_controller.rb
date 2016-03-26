@@ -408,9 +408,10 @@ class CmController < ApplicationController
           if error_code.blank? && @error != true
             @serial_number = (@request_result.xpath('//ticket').at('serialNumber').content)
             @amount = (@request_result.xpath('//ticket').at('amount').content rescue nil)
-            @bet.update_attributes(serial_number: @serial_number, placement_request: body, placement_response: @response_body, paymoney_account_number: paymoney_account_number, bet_identifier: "#{DateTime.now.to_i}-#{@program_id}-#{@race_id}", bet_status: "En cours")
 
-            place_cm3_bet_with_cancellation(@bet, "McoaDIET", paymoney_account_number, password, @amount)
+            if place_cm3_bet_with_cancellation(@bet, "McoaDIET", paymoney_account_number, password, @amount)
+              @bet.update_attributes(serial_number: @serial_number, placement_request: body, placement_response: @response_body, paymoney_account_number: paymoney_account_number, bet_identifier: "#{DateTime.now.to_i}-#{@program_id}-#{@race_id}", bet_status: "En cours")
+            end
 
           else
             @error_code = error_code
