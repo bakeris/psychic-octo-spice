@@ -390,8 +390,6 @@ class CmController < ApplicationController
       if gamer_account_exists
         @bet = JSON.parse(request_body) rescue ""
 
-
-
         if valid_bet_params
           set_scratched_list
           set_wagers
@@ -400,25 +398,29 @@ class CmController < ApplicationController
 
           create_bet
 
-          send_request(body, "#{@@cm3_server_url}/sellTicket")
+          # Débit du compte parieur
+          if place_cm3_bet_with_cancellation(@bet, "McoaDIET", paymoney_account_number, password, @amount)
 
-          error_code = (@request_result.xpath('//return').at('error').content rescue nil)
-          error_message = (@request_result.xpath('//return').at('message').content rescue nil)
+            # Placement du pari chez CM3
+            send_request(body, "#{@@cm3_server_url}/sellTicket")
 
-          if error_code.blank? && @error != true
-            @serial_number = (@request_result.xpath('//ticket').at('serialNumber').content)
-            @amount = (@request_result.xpath('//ticket').at('amount').content rescue nil)
+            error_code = (@request_result.xpath('//return').at('error').content rescue nil)
+            error_message = (@request_result.xpath('//return').at('message').content rescue nil)
 
-            if place_cm3_bet_with_cancellation(@bet, "McoaDIET", paymoney_account_number, password, @amount)
+            if error_code.blank? && @error != true
+              @serial_number = (@request_result.xpath('//ticket').at('serialNumber').content)
+              @amount = (@request_result.xpath('//ticket').at('amount').content rescue nil)
+
               @bet.update_attributes(serial_number: @serial_number, placement_request: body, placement_response: @response_body, paymoney_account_number: paymoney_account_number, bet_identifier: "#{DateTime.now.to_i}-#{@program_id}-#{@race_id}", bet_status: "En cours")
+            else
+              # Remboursement tu ticket en cas d'erreur chez CM3
+              payback_unplaced_bet_cm3(@bet)
+              @error_code = error_code
+              @error_description = error_message
+              CmLog.create(operation: "Prise de pari", sell_ticket_request: body, sell_ticket_response: @response_body, sell_ticket_code: error_code, connection_id: @connection_id)
+
+              reset_connection_id(error_code)
             end
-
-          else
-            @error_code = error_code
-            @error_description = error_message
-            CmLog.create(operation: "Prise de pari", sell_ticket_request: body, sell_ticket_response: @response_body, sell_ticket_code: error_code, connection_id: @connection_id)
-
-            reset_connection_id(error_code)
           end
         else
           @error_code = '3008'

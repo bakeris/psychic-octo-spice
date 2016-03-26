@@ -506,41 +506,38 @@ class LudwinApiController < ApplicationController
             else
               body = %Q[<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellRequest><CodConc>#{license_code}</CodConc><CodDiritto>#{point_of_sale_code}</CodDiritto><IdTerminal>#{terminal_id}</IdTerminal><TransactionID>#{transaction_id}</TransactionID><AmountCoupon>#{@amount}</AmountCoupon><AmountWin>#{@win_amount}</AmountWin>#{coupons_body}</SellRequest></ServicesPSQF>]
 
-              print body
-
               @bet.update_attributes(win_amount: @win_amount)
 
-              request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
+                if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, @amount)
+                  request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
+                  request.on_complete do |response|
+                    if response.success? || response.code == 417
+                      response_body = response.body
+                      nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
 
-              request.on_complete do |response|
-                if response.success? || response.code == 417
-                  response_body = response.body
-                  nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
-
-                  if !nokogiri_response.blank?
-                    response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
-                    if response_code == '0' || response_code == '1024'
-                      if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, @amount)
-                        @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
-                        @bet.update_attributes(validated: true, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil))
-                        @coupons = @bet.bet_coupons
+                      if !nokogiri_response.blank?
+                        response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
+                        if response_code == '0' || response_code == '1024'
+                          @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
+                          @bet.update_attributes(validated: true, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil))
+                          @coupons = @bet.bet_coupons
+                        else
+                          @bet.update_attributes(validated: false, validated_at: DateTime.now)
+                          @error_code = nokogiri_response.xpath('//ReturnCode').at('Code').content rescue ""
+                          @error_description = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
+                        end
+                      else
+                        @error_code = '4001'
+                        @error_description = 'Erreur lors du parsing du XML.'
                       end
                     else
-                      @bet.update_attributes(validated: false, validated_at: DateTime.now)
-                      @error_code = nokogiri_response.xpath('//ReturnCode').at('Code').content rescue ""
-                      @error_description = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
+                      @error_code = '4000'
+                      @error_description = 'Plateforme non disponible.'
                     end
-                  else
-                    @error_code = '4001'
-                    @error_description = 'Erreur lors du parsing du XML.'
                   end
-                else
-                  @error_code = '4000'
-                  @error_description = 'Plateforme non disponible.'
-                end
-              end
 
-              request.run
+                  request.run
+                end
 
               LudwinLog.create(operation: "Prise de pari", transaction_id: transaction_id, error_code: @error_code, sent_body: body, response_body: response_body, remote_ip_address: remote_ip_address)
             end
@@ -632,39 +629,41 @@ class LudwinApiController < ApplicationController
 
               @bet.update_attributes(win_amount: @win_amount)
 
-              request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
+              # débit du compte paymoney
+              if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, @amount)
+                request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
 
-              request.on_complete do |response|
-                if response.success? || response.code == 417
-                  response_body = response.body
-                  nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
+                request.on_complete do |response|
+                  if response.success? || response.code == 417
+                    response_body = response.body
+                    nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
 
-                  if !nokogiri_response.blank?
-                    response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
-                    if response_code == '0' || response_code == '1024'
-                      if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, @amount)
+                    if !nokogiri_response.blank?
+                      response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
+                      if response_code == '0' || response_code == '1024'
                         @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
                         @bet.update_attributes(validated: true, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil), bet_status: "En cours")
                         @coupons = @bet.bet_coupons
+                      else
+                        # Remboursement tu ticket en cas d'erreur chez Ludwin
+                        payback_unplaced_bet(@bet)
+                        @bet.update_attributes(validated: false, validated_at: DateTime.now)
+                        @error_code = nokogiri_response.xpath('//ReturnCode').at('Code').content rescue ""
+                        @error_description = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
                       end
                     else
-                      @bet.update_attributes(validated: false, validated_at: DateTime.now)
-                      @error_code = nokogiri_response.xpath('//ReturnCode').at('Code').content rescue ""
-                      @error_description = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
+                      @error_code = '4001'
+                      @error_description = 'Erreur lors du parsing du XML.'
                     end
                   else
-                    @error_code = '4001'
-                    @error_description = 'Erreur lors du parsing du XML.'
+                    @error_code = '4000'
+                    @error_description = 'Plateforme non disponible.'
                   end
-                else
-                  @error_code = '4000'
-                  @error_description = 'Plateforme non disponible.'
                 end
+
+                request.run
+
               end
-
-              request.run
-
-
 
               LudwinLog.create(operation: "Prise de pari", transaction_id: (@terminal.code rescue ""), error_code: @error_code, sent_body: body, response_body: response_body, remote_ip_address: remote_ip_address)
             end
