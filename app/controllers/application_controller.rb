@@ -252,12 +252,12 @@ class ApplicationController < ActionController::Base
           status = true
         else
           @error_code = '4001'
-          @error_description = 'Payment error, could not cancel the bet.'
+          @error_description = "Le pari n'a pas pu être annulé."
           bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
         end
       else
         @error_code = '4000'
-        @error_description = 'Cannot join paymoney wallet server.'
+        @error_description = "Le serveur de paiement n'est pas accessible."
         bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
       end
     end
