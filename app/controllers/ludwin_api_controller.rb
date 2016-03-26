@@ -916,7 +916,7 @@ class LudwinApiController < ApplicationController
       @error_code = '4000'
       @error_description = 'The gamer id could not be found'
     else
-      @bets = Bet.where(gamer_id: params[:gamer_id]).order("created_at DESC")
+      @bets = Bet.where("gamer_id = '#{params[:gamer_id]}' AND bet_status IS NOT NULL").order("created_at DESC")
     end
   end
 end
