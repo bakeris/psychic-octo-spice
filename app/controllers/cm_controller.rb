@@ -525,7 +525,7 @@ class CmController < ApplicationController
           else
             @error_code = error_code
             @error_description = error_message
-            @bet.update_attributes(cancel_request: body, cancel_response: @response_body, cancelled: false, cancelled_at: DateTime.now, bet_status: "Annulé")
+            @bet.update_attributes(cancel_request: body, cancel_response: @response_body, cancelled: false, cancelled_at: DateTime.now)
 
             reset_connection_id(error_code)
           end
