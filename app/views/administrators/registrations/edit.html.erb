@@ -1,39 +1,96 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<div class="titleArea">
+    <div class="wrapper">
+        <div class="pageTitle">
+            <h5>Changez votre profil</h5>
+            <span>Modifiez les informations liées à votre compte.</span>
+        </div>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="line"></div>
+
+<%= render "administrators/shared/administrator_menu.html.erb" %>
+
+<div class="line"></div>
+
+<!-- Main content wrapper -->
+<div class="wrapper">
+
   <%= devise_error_messages! %>
+  <%= flash_messages! %>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: 'form' }) do |f| %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
-  </div>
+    <fieldset>
+      <div class="widget">
+        <div class="title">
+          <img src="<%= asset_path 'icons/dark/users.png' %>" alt="" class="titleIcon" />
+          <h6>Formulaire de mise à jour de compte</h6>
+        </div>
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+        <div class="formRow">
+          <label><%= f.label :firstname %></label>
+          <div class="formRight">
+            <%= f.text_field :firstname, placeholder: "Veuillez entrer le nom", class: 'form-control', autofocus: true %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label><%= f.label :lastname %></label>
+          <div class="formRight">
+            <%= f.text_field :lastname, placeholder: "Veuillez entrer les prénoms", class: 'form-control' %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label><%= f.label :phone_number %></label>
+          <div class="formRight">
+            <%= f.text_field :phone_number, placeholder: "Veuillez entrer le numéro de téléphone fixe", class: 'form-control' %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label><%= f.label :email %></label>
+          <div class="formRight">
+            <%= f.text_field :email, placeholder: "Veuillez entrer l'email", class: 'form-control' %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label><%= f.label :password %></label>
+          <div class="formRight">
+            <%= f.password_field :password, placeholder: "Veuillez entrer le mot de passe", autocomplete: "off", class: 'form-control' %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label><%= f.label :password_confirmation %></label>
+          <div class="formRight">
+            <%= f.password_field :password_confirmation, placeholder: "Veuillez confirmer le mot de passe", autocomplete: "off", class: 'form-control' %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label><%= f.label :current_password %></label>
+          <div class="formRight">
+            <%= f.password_field :current_password, placeholder: "Veuillez entrer votre mot de passe actuel", autocomplete: "off", class: 'form-control' %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <%= f.submit "Valider", class: 'basic' %>
+        </div>
+      </div>
+    </fieldset>
   <% end %>
 
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "off" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "off" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
-
-<h3>Cancel my account</h3>
-
-<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
-
-<%= link_to "Back", :back %>
+</div>
+<!-- End Main content wrapper -->
