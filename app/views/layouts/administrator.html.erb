@@ -19,7 +19,8 @@
 
     <!-- Left navigation -->
     <ul id="menu" class="nav">
-      <li class="dash"><%= link_to "<span>Liste des Parieurs</span>".html_safe, gamers_path, class: "#{@class_gamers}" %></li>
+      <li class="dash"><%= link_to "<span>Administration</span>".html_safe, new_administrator_registration_path, class: "#{@class_administrators}" %></li>
+      <li class="dash"><%= link_to "<span>Liste des Joueurs</span>".html_safe, gamers_path, class: "#{@class_gamers}" %></li>
       <li class="tables"><a href="#" title="" class="exp" id = "<%= @games_menu_style %>"><span>Liste des transactions</span><strong>5</strong></a>
         <ul class="sub">
           <li class = "<%= @loto_game_menu_style %>"><a href="<%= list_loto_bets_path %>" title="">LOTO BONHEUR</a></li>
@@ -59,7 +60,12 @@
             <div class="welcome"><%#= image_tag(current_user.avatar.url(:small), width: "18px") rescue "" %><span><%#= current_user.full_name rescue "" %></span></div>
             <div class="userNav">
                 <ul>
-
+                  <% unless current_administrator.blank? %>
+                    <li><a href="/administrators/edit.<%= current_administrator.id %>" title=""><img src="<%= asset_path 'icons/topnav/profile.png' %>" alt="" /><span>Profil</span></a></li>
+                    <li>
+                      <a data-method="delete" href="/administrators/sign_out" rel="nofollow"><img src="<%= asset_path 'icons/topnav/logout.png' %>" alt="" /><span>Se déconnecter</span></a>
+                    </li>
+                  <% end %>
                 </ul>
             </div>
             <div class="clear"></div>

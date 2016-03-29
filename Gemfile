@@ -42,6 +42,9 @@ gem "nokogiri"
 # Export as xlsx
 gem "acts_as_xlsx"
 
+# User authentication
+gem 'devise'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

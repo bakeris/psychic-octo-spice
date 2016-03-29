@@ -1,0 +1,62 @@
+<!-- Title area -->
+<div class="titleArea">
+    <div class="wrapper">
+        <div class="pageTitle">
+            <h5>Liste des comptes administrateurs</h5>
+            <span>Prise en charge des actions liées à la liste des comptes administrateurs.</span>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="line"></div>
+
+<%= render "administrators/shared/administrator_menu" %>
+
+<div class="line"></div>
+
+<!-- Main content wrapper -->
+<div class="wrapper">
+  <%= flash_messages! %>
+<!-- Widgets -->
+  <div class="widget">
+    <div class="title"><img src="<%= asset_path 'icons/dark/full2.png' %>" alt="" class="titleIcon" /><h6>Liste des comptes administrateurs</h6></div>
+    <table cellpadding="0" cellspacing="0" border="0" class="display dTable taskWidget">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Numéro téléphonique</th>
+          <th>Infos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% unless @users.blank? %>
+          <%# current_user_profile_shortcut = current_user.profile.shortcut %>
+          <%# current_user_id = current_user.id %>
+          <% @users.each do |user| %>
+            <tr class="gradeA">
+              <%# css_class = (user.confirmed_at.blank? ? 'taskP' : (user.published == false ? 'taskD' : 'taskPr')) %>
+              <td class = "taskP">
+                <%= "#{user.full_name}" %>
+              </td>
+              <td>
+                <%= user.email %>
+              </td>
+              <td>
+                <%= user.phone_number %>
+              </td>
+              <td class = "customInfo">
+                <span>
+                  <strong>Créé le </strong> <%= user.created_at.strftime("%d-%m-%Y") + " à " + user.created_at.strftime("%Hh %Mmn") %>
+                </span>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- End Main content wrapper -->

@@ -4,4 +4,9 @@ class AilLoto < ActiveRecord::Base
 
   # Relationships
   belongs_to :user
+
+  def loto_code
+    bet_type = LotoBetType.where(code: bet_code, category: bet_modifier)
+    return bet_type.first.description rescue ""
+  end
 end
