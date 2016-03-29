@@ -1,7 +1,7 @@
 class Administrators::RegistrationsController < Devise::RegistrationsController
 # before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
-  before_filter :authenticate_administrator!
+  prepend_before_filter :authenticate_scope!
   before_filter :init_form_style
 
   layout "administrator"
