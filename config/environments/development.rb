@@ -12,17 +12,6 @@ Rails.application.configure do
 
 	config.action_mailer.default_url_options = { host: 'pay-money.net', from: 'Administrateur - Parions Direct' }
   ActionMailer::Base.smtp_settings = {
-<<<<<<< HEAD
-        :openssl_verify_mode => "none",
-                :address => "de2608.ispfr.net",
-                :enable_starttls_auto => true,
-                :port => 587,
-                :authentication => :plain,
-                :user_name => "serviceclients@parionsdirect.net",
-                :password => "clients#2015"
-        }
-
-=======
   	:openssl_verify_mode => 'none',
 		:address => "de2608.ispfr.net",
 		:enable_starttls_auto => true,
@@ -31,7 +20,6 @@ Rails.application.configure do
 		:user_name => "serviceclients@de2608.ispfr.net",
 		:password => 'clients#2015'
 	}
->>>>>>> 00fdbfef87b6713c0810543bf381bdd2d7ed0f6f
 
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
