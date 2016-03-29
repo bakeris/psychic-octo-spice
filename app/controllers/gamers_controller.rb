@@ -1,5 +1,7 @@
 class GamersController < ApplicationController
 
+  before_filter :authenticate_administrator!
+
   layout "administrator"
 
   def index

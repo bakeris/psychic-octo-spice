@@ -3,7 +3,21 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'errors#routing'
+
+
+  devise_for :administrators, controllers: {
+    sessions: 'administrators/sessions',
+    registrations: 'administrators/registrations',
+    passwords: 'administrators/passwords',
+    confirmations: 'administrators/confirmations'
+  }
+
+  devise_scope :administrator do
+    root 'administrators/sessions#new'
+  end
+
+  # Administration
+  get '/administrators/list' => 'administrators#list', as: :list_administrators
 
   # Liste des civilités
   get '/6ba041bf35229938ba869a7a9c59f3a0/api/civility/list' => 'civilities#api_list'

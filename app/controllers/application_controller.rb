@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :null_session
 
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
   def place_bet_with_cancellation(bet, game_account_token, paymoney_account_number, password, transaction_amount)
     paymoney_account_token = check_account_number(paymoney_account_number)
 
@@ -544,8 +546,6 @@ class ApplicationController < ActionController::Base
       @has_rib = (RestClient.get "http://pay-money.net/pos/has_rib/#{@certified_agent_id}" rescue "")
       @has_rib.to_s == "0" ? @has_rib = false : @has_rib = true
 
-      print "*****************" + @has_rib.to_s + "*****************"
-
       if operation_type == "cash_in"
         if @has_rib
           @token = "5a518a5a"
@@ -569,4 +569,12 @@ class ApplicationController < ActionController::Base
       end
     end
   end
+
+  protected
+
+    def configure_permitted_parameters
+      devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:firstname, :lastname, :phone_number, :email, :password, :password_confirmation) }
+
+      devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:firstname, :lastname, :phone_number, :password, :password_confirmation, :current_password) }
+    end
 end

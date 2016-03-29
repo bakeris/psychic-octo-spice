@@ -4,4 +4,9 @@ class AilPmu < ActiveRecord::Base
 
   # Relationships
   belongs_to :user
+
+  def pmu_code
+    bet_type = PmuBetType.where(code: bet_code, category: bet_modifier)
+    return bet_type.first.description rescue ""
+  end
 end
