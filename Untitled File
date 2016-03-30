@@ -1,12 +1,44 @@
-# Full list of tournaments
-curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><TournamentRequest><CodSport>1</CodSport><TransactionID>1393843971185</TransactionID><Language>EN</Language></TournamentRequest>
-</ServicesPSQF>" https://sports4africa.com/testUSSD/getTournament --header "Content-Type:text/xml" --insecure
+Statut
+Nbre paris
+Mt paris
+Mt annulations
+Mt gains
 
-# Full list of bets
-curl --request POST --data "<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><BetsRequest><TransactionID>1393844324731</TransactionID><Language>EN</Language></BetsRequest></ServicesPSQF>" https://sports4africa.com/testUSSD/getBet --header "Content-Type:text/xml" --insecure
 
-"errorMessage":"The operation has timed out"
+aussi un affichage du total des nombres des tickets et leur somme après l'exécution d'une requête multi critère sur le statut ou la période (tu vois ce que je veux dire ?)
 
-*/16 * * * * /bin/bash -l -c 'cd /var/www/html/PaymoneyGateway && source /home/ngser/.rvm/environments/ruby-2.0.0-p195@rails4.0.7 && RAILS_ENV=development /home/ngser/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/bin/rake ail_loto:validate_ail_loto_bets --silent >> /var/www/html/cron_log.log 2>&1'
 
-*/16 * * * * /bin/bash -l -c 'cd /var/www/html/PaymoneyGateway && source /home/ngser/.rvm/environments/ruby-2.0.0-p195@rails4.0.7 && RAILS_ENV=development /home/ngser/.rvm/gems/ruby-2.0.0-p195@rails4.0.7/bin/rake ail_pmu:validate_ail_pmu_bets --silent >> /var/www/html/cron_log.log 2>&1'
+quelle somme, montant du pari? montant des gains? remboursements, annulations?
+
+
+oui
+De :
+james akran
+tout
+De :
+james akran
+comme une facilitation de recap
+De :
+james akran
+par exemple quand on clique sur liste des paris PLR
+De :
+james akran
+tu as tous les paris pris qui s'affiche avec leur statut
+De :
+james akran
+donc ce qu'il demande c'est :
+De :
+james akran
+1/ pourvoir faire l'export en Excel
+De :
+james akran
+2/ pouvoir voir le nombre et la somme total des tickets En cours, perdant, gagnant, annulée
+De :
+james akran
+et que ces possibilités ci dessus soit possible après aussi une recherche multi critère exécutée
+
+
+juste afficher "le nombre et la somme total des tickets En cours, perdant, gagnant, annulée"
+De :
+james akran
+pour le tableau (ou la recherche multicritère) qui sera présenté sur la page choisie

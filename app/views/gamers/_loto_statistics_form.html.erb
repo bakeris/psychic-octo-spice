@@ -1,0 +1,88 @@
+<div class="widget">
+  <div class="title"><img src="<%= asset_path 'icons/dark/full2.png' %>" alt="" class="titleIcon" /><h6>Statistiques relatives au LOTO</h6></div>
+  <table cellpadding="0" cellspacing="0" border="0" class="display dTable taskWidget">
+    <thead>
+      <tr>
+        <th>Statut</th>
+        <th>Nombre de paris</th>
+        <th>Montant des paris</th>
+        <th>Montant des annulations</th>
+        <th>Montant des gains</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="gradeA">
+        <%# css_class = (bet.bet_status == 'En cours' ? 'taskP' : ((bet.bet_status == 'Gagnant' || bet.bet_status == 'Remboursé') ? 'taskPr' : 'taskD')) %>
+        <td class = "taskP">
+          En cours
+        </td>
+        <td>
+          <%= @loto_bets.where("bet_status = 'En cours'").count %>
+        </td>
+        <td>
+          <%= number_with_delimiter(@loto_bets.where("bet_status = 'En cours'").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum) %>
+        </td>
+        <td>
+          <%#= number_with_delimiter(@loto_bets.where("bet_status = 'Annulé'").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum) %>
+        </td>
+        <td>
+          <%#= number_with_delimiter(@loto_bets.where("bet_status = 'Gagnant' OR bet_status = 'Remboursé'").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum) %>
+        </td>
+      </tr>
+      <tr class="gradeA">
+        <%# css_class = (bet.bet_status == 'En cours' ? 'taskP' : ((bet.bet_status == 'Gagnant' || bet.bet_status == 'Remboursé') ? 'taskPr' : 'taskD')) %>
+        <td class = "taskD">
+          Annulé
+        </td>
+        <td>
+          <%= @loto_bets.where("bet_status = 'Annulé'").count %>
+        </td>
+        <td>
+          <%= number_with_delimiter(@loto_bets.where("bet_status = 'Annulé'").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum) %>
+        </td>
+        <td>
+          <%= number_with_delimiter(@loto_bets.where("bet_status = 'Annulé'").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum) %>
+        </td>
+        <td>
+          <%#= number_with_delimiter(@loto_bets.where("bet_status = 'Gagnant' OR bet_status = 'Remboursé'").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum) %>
+        </td>
+      </tr>
+      <tr class="gradeA">
+        <%# css_class = (bet.bet_status == 'En cours' ? 'taskP' : ((bet.bet_status == 'Gagnant' || bet.bet_status == 'Remboursé') ? 'taskPr' : 'taskD')) %>
+        <td class = "taskD">
+          Perdant
+        </td>
+        <td>
+          <%= @loto_bets.where("bet_status = 'Perdant'").count %>
+        </td>
+        <td>
+          <%= number_with_delimiter(@loto_bets.where("bet_status = 'Perdant'").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum) %>
+        </td>
+        <td>
+          <%#= number_with_delimiter(@loto_bets.where("bet_status = 'Perdant'").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum) %>
+        </td>
+        <td>
+          <%#= number_with_delimiter(@loto_bets.where("bet_status = 'Gagnant' OR bet_status = 'Remboursé'").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum) %>
+        </td>
+      </tr>
+      <tr class="gradeA">
+        <%# css_class = (bet.bet_status == 'En cours' ? 'taskP' : ((bet.bet_status == 'Gagnant' || bet.bet_status == 'Remboursé') ? 'taskPr' : 'taskD')) %>
+        <td class = "taskPr">
+          Gagnant
+        </td>
+        <td>
+          <%= @loto_bets.where("bet_status = 'Gagnant'").count %>
+        </td>
+        <td>
+          <%= number_with_delimiter(@loto_bets.where("bet_status = 'Gagnant'").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum) %>
+        </td>
+        <td>
+          <%#= number_with_delimiter(@loto_bets.where("bet_status = 'Gagnant'").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum) %>
+        </td>
+        <td>
+          <%= number_with_delimiter(@loto_bets.where("bet_status = 'Gagnant' OR bet_status = 'Remboursé'").map{|bet| ((bet.earning_amount.to_f rescue 0) + (bet.refund_amount.to_f rescue 0))}.sum) %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
