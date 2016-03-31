@@ -319,6 +319,7 @@ Rails.application.routes.draw do
   # Excel export
   get '/administrator/gamers/list/export' => 'gamers#export_gamers_list', as: :export_gamers_list
   get '/administrator/loto/bets/export' => 'gamers#export_loto_bets', as: :export_loto_bets
+  get '/administrator/pmu/bets/export' => 'gamers#export_pmu_bets', as: :export_pmu_bets
 
 
   # Deposit

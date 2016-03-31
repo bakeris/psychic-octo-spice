@@ -86,7 +86,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def self.full_name
+  def full_name
     return "#{lastname} #{firstname}"
   end
 
