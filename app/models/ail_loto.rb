@@ -9,4 +9,17 @@ class AilLoto < ActiveRecord::Base
     bet_type = LotoBetType.where(code: bet_code, category: bet_modifier)
     return bet_type.first.description rescue ""
   end
+
+  def self.to_csv
+    attributes = %w{Id-de-transaction Statut-du-ticket Date-de-prise-du-pari Formule-du-pari Code-du-pari Type-de-pari Selecteur1 Selecteur2 Repeats Special-count Normal-count Entrees Entrees-normales Entrees-speciales mise-de-base Numero-de-ticket Reference-du-ticket Montant-du-ticket Montant-du-gain Montant-du-remboursement Code-parieur Nom-parieur Email-parieur Telephone-parieur Compte-paymoney}
+
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      all.each do |loto_bet|
+        csv << [loto_bet.transaction_id, loto_bet.bet_status, loto_bet.bet_date, loto_bet.loto_code, loto_bet.bet_code, loto_bet.bet_modifier, loto_bet.selector1, loto_bet.selector2, loto_bet.repeats, loto_bet.special_count, loto_bet.normal_count, loto_bet.normal_entries, loto_bet.special_entries, loto_bet.basis_amount, loto_bet.ticket_number, loto_bet.ref_number, loto_bet.bet_cost_amount, loto_bet.earning_amount, loto_bet.refund_amount, loto_bet.gamer_id, (User.find_by_uuid(loto_bet.gamer_id).full_name rescue ''), (User.find_by_uuid(loto_bet.gamer_id).email rescue ''), (User.find_by_uuid(loto_bet.gamer_id).msisdn rescue '')]
+      end
+    end
+  end
+
 end

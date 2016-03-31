@@ -317,7 +317,7 @@ Rails.application.routes.draw do
   get '/administrator/cm/winners' => 'gamers#cm_winners', as: :cm_winners
 
   # Excel export
-  get '/administrator/users/export' => 'gamers#export_gamers_list', as: :export_gamers_list
+  get '/administrator/loto/bets/export' => 'gamers#export_loto_bets', as: :export_loto_bets
 
 
   # Deposit
