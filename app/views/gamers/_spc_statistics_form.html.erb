@@ -12,75 +12,98 @@
     </thead>
     <tbody>
       <tr class="gradeA">
-        <%# css_class = (bet.bet_status == 'En cours' ? 'taskP' : ((bet.bet_status == 'Gagnant' || bet.bet_status == 'Remboursé') ? 'taskPr' : 'taskD')) %>
         <td class = "taskP">
           En cours
         </td>
         <td>
-          <%= @spc_bets.where("bet_status = 'En cours'").count %>
+          <% on_hold_count = @spc_bets.where("bet_status = 'En cours'").count %>
+          <%= number_with_delimiter(on_hold_count) %>
         </td>
         <td>
-          <%= number_with_delimiter(@spc_bets.where("bet_status = 'En cours'").map{|bet| (bet.amount.to_f rescue 0)}.sum) %>
+          <% on_hold_amount = @spc_bets.where("bet_status = 'En cours'").map{|bet| (bet.amount.to_f rescue 0)}.sum %>
+          <%= number_with_delimiter(on_hold_amount) %>
         </td>
         <td>
-          <%#= number_with_delimiter(@spc_bets.where("bet_status = 'Annulé'").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum) %>
+
         </td>
         <td>
-          <%#= number_with_delimiter(@spc_bets.where("bet_status = 'Gagnant' OR bet_status = 'Remboursé'").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum) %>
+
         </td>
       </tr>
       <tr class="gradeA">
-        <%# css_class = (bet.bet_status == 'En cours' ? 'taskP' : ((bet.bet_status == 'Gagnant' || bet.bet_status == 'Remboursé') ? 'taskPr' : 'taskD')) %>
+
         <td class = "taskD">
           Annulé
         </td>
         <td>
-          <%= @spc_bets.where("bet_status = 'Annulé'").count %>
+          <% cancelled_count = @spc_bets.where("bet_status = 'Annulé'").count %>
+          <%= number_with_delimiter(cancelled_count) %>
         </td>
         <td>
-          <%= number_with_delimiter(@spc_bets.where("bet_status = 'Annulé'").map{|bet| (bet.amount.to_f rescue 0)}.sum) %>
+          <% cancelled_amount = @spc_bets.where("bet_status = 'Annulé'").map{|bet| (bet.amount.to_f rescue 0)}.sum %>
+          <%= number_with_delimiter(cancelled_amount) %>
         </td>
         <td>
-          <%= number_with_delimiter(@spc_bets.where("bet_status = 'Annulé'").map{|bet| (bet.amount.to_f rescue 0)}.sum) %>
+          <%= number_with_delimiter(cancelled_amount) %>
         </td>
         <td>
-          <%#= number_with_delimiter(@spc_bets.where("bet_status = 'Gagnant' OR bet_status = 'Remboursé'").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum) %>
+
         </td>
       </tr>
       <tr class="gradeA">
-        <%# css_class = (bet.bet_status == 'En cours' ? 'taskP' : ((bet.bet_status == 'Gagnant' || bet.bet_status == 'Remboursé') ? 'taskPr' : 'taskD')) %>
         <td class = "taskD">
           Perdant
         </td>
         <td>
-          <%= @spc_bets.where("bet_status = 'Perdant'").count %>
+          <% loosers_count = @spc_bets.where("bet_status = 'Perdant'").count %>
+          <%= number_with_delimiter(loosers_count) %>
         </td>
         <td>
-          <%= number_with_delimiter(@spc_bets.where("bet_status = 'Perdant'").map{|bet| (bet.amount.to_f rescue 0)}.sum) %>
+          <% loosers_amount = @spc_bets.where("bet_status = 'Perdant'").map{|bet| (bet.amount.to_f rescue 0)}.sum %>
+          <%= number_with_delimiter(loosers_amount) %>
         </td>
         <td>
-          <%#= number_with_delimiter(@spc_bets.where("bet_status = 'Perdant'").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum) %>
+
         </td>
         <td>
-          <%#= number_with_delimiter(@spc_bets.where("bet_status = 'Gagnant' OR bet_status = 'Remboursé'").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum) %>
+
         </td>
       </tr>
       <tr class="gradeA">
-        <%# css_class = (bet.bet_status == 'En cours' ? 'taskP' : ((bet.bet_status == 'Gagnant' || bet.bet_status == 'Remboursé') ? 'taskPr' : 'taskD')) %>
         <td class = "taskPr">
           Gagnant
         </td>
         <td>
-          <%= @spc_bets.where("bet_status = 'Gagnant'").count %>
+          <% winners_count = @spc_bets.where("bet_status = 'Gagnant'").count %>
+          <%= number_with_delimiter(winners_count) %>
         </td>
         <td>
-          <%= number_with_delimiter(@spc_bets.where("bet_status = 'Gagnant'").map{|bet| (bet.amount.to_f rescue 0)}.sum) %>
+          <% winners_amount = @spc_bets.where("bet_status = 'Gagnant'").map{|bet| (bet.amount.to_f rescue 0)}.sum %>
+          <%= number_with_delimiter(winners_amount) %>
         </td>
         <td>
-          <%#= number_with_delimiter(@spc_bets.where("bet_status = 'Gagnant'").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum) %>
+
         </td>
         <td>
-          <%= number_with_delimiter(@spc_bets.where("bet_status = 'Gagnant' OR bet_status = 'Remboursé'").map{|bet| (bet.pn_amount_win.to_f rescue 0)}.sum) %>
+          <% win_amount = @spc_bets.where("bet_status = 'Gagnant' OR bet_status = 'Remboursé'").map{|bet| (bet.pn_amount_win.to_f rescue 0)}.sum %>
+          <%= number_with_delimiter(win_amount) %>
+        </td>
+      </tr>
+      <tr class="gradeA">
+        <td>
+          <b>Total</b>
+        </td>
+        <td>
+          <b><%= number_with_delimiter(winners_count + loosers_count + cancelled_count + on_hold_count) %></b>
+        </td>
+        <td>
+          <b><%= number_with_delimiter(winners_amount + loosers_amount + cancelled_amount + on_hold_amount) %></b>
+        </td>
+        <td>
+          <b><%= number_with_delimiter(cancelled_amount) %></b>
+        </td>
+        <td>
+          <b><%= number_with_delimiter(win_amount) %></b>
         </td>
       </tr>
     </tbody>
