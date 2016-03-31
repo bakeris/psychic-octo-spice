@@ -19,6 +19,10 @@ class GamersController < ApplicationController
     send_data @users.to_csv, filename: "Parieurs-#{Date.today}.csv"
   end
 
+  def export_loto_bets
+
+  end
+
   def profile
     @class_gamers = "active"
     @gamer = User.find_by_id(params[:gamer_id])
@@ -80,6 +84,13 @@ class GamersController < ApplicationController
 
     @loto_bets = AilLoto.where("#{@sql_begin_date} #{@sql_begin_date.blank? ? '' : 'AND'} #{@sql_end_date} #{@sql_end_date.blank? ? '' : 'AND'} #{@sql_status} #{@sql_status.blank? ? '' : 'AND'} #{@sql_min_amount} #{@sql_min_amount.blank? ? '' : 'AND'} #{@sql_max_amount} #{@sql_max_amount.blank? ? '' : 'AND'} placement_acknowledge IS TRUE").order("created_at DESC")
     flash[:success] = "#{@loto_bets.count} Résultat(s) trouvé(s)."
+
+    if params[:commit] == "Exporter"
+
+      @users = User.all
+
+      send_data @loto_bets.to_csv, filename: "Parieurs-Loto-#{Date.today}.csv"
+    end
   end
 
   def loto_bet_details

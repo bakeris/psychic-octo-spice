@@ -630,7 +630,13 @@ class LudwinApiController < ApplicationController
               @bet.update_attributes(win_amount: @win_amount)
 
               # débit du compte paymoney
-              if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, @amount)
+              #if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, @amount)
+              # Vérification du solde Paymoney
+              @url = "http://94.247.178.141:8080/PAYMONEY_WALLET/rest/solte_compte/#{paymoney_account_number}/#{password}"
+              sold = JSON.parse((RestClient.get @url rescue ""))
+              sold = sold["solde"].to_f
+              if sold >= @amount.to_f
+
                 request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
 
                 request.on_complete do |response|
@@ -642,11 +648,19 @@ class LudwinApiController < ApplicationController
                       response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
                       if response_code == '0' || response_code == '1024'
                         @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
-                        @bet.update_attributes(validated: true, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil), bet_status: "En cours")
+                        # débit du compte paymoney
+                        if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, @amount)
+                          ticket_status = true
+                          bet_status = 'En cours'
+                        else
+                          ticket_status = false
+                          bet_status = nil
+                        end
+                        @bet.update_attributes(validated: ticket_status, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil), bet_status: bet_status)
                         @coupons = @bet.bet_coupons
                       else
                         # Remboursement tu ticket en cas d'erreur chez Ludwin
-                        payback_unplaced_bet(@bet)
+                        #payback_unplaced_bet(@bet)
                         @bet.update_attributes(validated: false, validated_at: DateTime.now)
                         @error_code = nokogiri_response.xpath('//ReturnCode').at('Code').content rescue ""
                         @error_description = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
@@ -662,7 +676,9 @@ class LudwinApiController < ApplicationController
                 end
 
                 request.run
-
+              else
+                @error_code = '5005'
+                @error_description = 'Veuillez vérifier votre compte et votre solde.'
               end
 
               LudwinLog.create(operation: "Prise de pari", transaction_id: (@terminal.code rescue ""), error_code: @error_code, sent_body: body, response_body: response_body, remote_ip_address: remote_ip_address)
