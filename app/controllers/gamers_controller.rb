@@ -86,9 +86,6 @@ class GamersController < ApplicationController
     flash[:success] = "#{@loto_bets.count} Résultat(s) trouvé(s)."
 
     if params[:commit] == "Exporter"
-
-      @users = User.all
-
       send_data @loto_bets.to_csv, filename: "Parieurs-Loto-#{Date.today}.csv"
     end
   end
@@ -174,6 +171,10 @@ class GamersController < ApplicationController
 
     @pmu_plr_bets = AilPmu.where("#{@sql_begin_date} #{@sql_begin_date.blank? ? '' : 'AND'} #{@sql_end_date} #{@sql_end_date.blank? ? '' : 'AND'} #{@sql_status} #{@sql_status.blank? ? '' : 'AND'} #{@sql_min_amount} #{@sql_min_amount.blank? ? '' : 'AND'} #{@sql_max_amount} #{@sql_max_amount.blank? ? '' : 'AND'} placement_acknowledge IS TRUE").order("created_at DESC")
     flash[:success] = "#{@pmu_plr_bets.count} Résultat(s) trouvé(s)."
+
+    if params[:commit] == "Exporter"
+      send_data @pmu_plr_bets.to_csv, filename: "Parieurs-PMU-PLR-#{Date.today}.csv"
+    end
   end
 
   def pmu_plr_bet_details
