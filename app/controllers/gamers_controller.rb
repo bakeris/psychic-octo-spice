@@ -258,6 +258,10 @@ class GamersController < ApplicationController
 
     @spc_bets = Bet.where("#{@sql_begin_date} #{@sql_begin_date.blank? ? '' : 'AND'} #{@sql_end_date} #{@sql_end_date.blank? ? '' : 'AND'} #{@sql_status} #{@sql_status.blank? ? '' : 'AND'} #{@sql_min_amount} #{@sql_min_amount.blank? ? '' : 'AND'} #{@sql_max_amount} #{@sql_max_amount.blank? ? '' : 'AND'} validated IS TRUE").order("created_at DESC")
     flash[:success] = "#{@spc_bets.count} Résultat(s) trouvé(s)."
+
+    if params[:commit] == "Exporter"
+      send_data @spc_bets.to_csv, filename: "Parieurs-SPORTCASH-#{Date.today}.csv"
+    end
   end
 
 
@@ -342,6 +346,10 @@ class GamersController < ApplicationController
 
     @cm_bets = Cm.where("#{@sql_begin_date} #{@sql_begin_date.blank? ? '' : 'AND'} #{@sql_end_date} #{@sql_end_date.blank? ? '' : 'AND'} #{@sql_status} #{@sql_status.blank? ? '' : 'AND'} #{@sql_min_amount} #{@sql_min_amount.blank? ? '' : 'AND'} #{@sql_max_amount} #{@sql_max_amount.blank? ? '' : 'AND'} serial_number IS NOT NULL").order("created_at DESC")
     flash[:success] = "#{@cm_bets.count} Résultat(s) trouvé(s)."
+
+    if params[:commit] == "Exporter"
+      send_data @cm_bets.to_csv, filename: "Parieurs-PMU-ALR-#{Date.today}.csv"
+    end
   end
 
   def cm_bet_details

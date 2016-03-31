@@ -5,4 +5,17 @@ class Bet < ActiveRecord::Base
   # Relationships
   has_many :bet_coupons
   belongs_to :user
+
+  def self.to_csv
+    attributes = %w{Id-de-transaction Statut-du-ticket Date-de-prise-du-pari Formule-du-pari Numero-de-ticket Montant-du-ticket Montant-du-gain Code-parieur Nom-parieur Email-parieur Telephone-parieur Compte-paymoney}
+
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      all.each do |spc_bet|
+        @user = User.find_by_uuid(spc_bet.gamer_id)
+        csv << [spc_bet.transaction_id, spc_bet.bet_status, spc_bet.validated_at, spc_bet.formula, spc_bet.ticket_id, spc_bet.amount, spc_bet.win_amount, spc_bet.gamer_id, (@user.full_name rescue ''), (@user.email rescue ''), (@user.msisdn rescue ''), spc_bet.paymoney_account_number]
+      end
+    end
+  end
 end
