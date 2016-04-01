@@ -424,6 +424,10 @@ class GamersController < ApplicationController
 
     @eppl_bets = Eppl.where("#{@sql_status} #{(!@sql_status.blank? && (!@sql_min_amount.blank? || !@sql_max_amount.blank?)) ? 'AND' : ''} #{@sql_min_amount} #{(!@sql_min_amount.blank? && !@sql_max_amount.blank?) ? 'AND' : ''} #{@sql_max_amount}").order("created_at DESC")
     flash[:success] = "#{@eppl_bets.count} Résultat(s) trouvé(s)."
+
+    if params[:commit] == "Exporter"
+      send_data @eppl_bets.to_csv, filename: "Parieurs-Jeux-digitaux-#{Date.today}.csv"
+    end
   end
 
   def eppl_bet_details

@@ -1,0 +1,64 @@
+<div class="widget">
+  <div class="title"><img src="<%= asset_path 'icons/dark/full2.png' %>" alt="" class="titleIcon" /><h6>Statistiques relatives aux Jeux digitaux</h6></div>
+  <table cellpadding="0" cellspacing="0" border="0" class="display dTable taskWidget">
+    <thead>
+      <tr>
+        <th>Statut</th>
+        <th>Nombre de paris</th>
+        <th>Chiffre d'affaires</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="gradeA">
+        <td class = "taskPr">
+          Chargement de compte
+        </td>
+        <td>
+          <% load_count = @eppl_bets.where("operation = 'Chargement de compte'").count %>
+          <%= number_with_delimiter(load_count) %>
+        </td>
+        <td>
+          <% load_amount = @eppl_bets.where("operation = 'Chargement de compte'").map{|bet| (bet.transaction_amount.to_f rescue 0)}.sum %>
+          <%= number_with_delimiter(load_amount) %>
+        </td>
+      </tr>
+      <tr class="gradeA">
+        <td class = "taskPr">
+          Rechargement de compte
+        </td>
+        <td>
+          <% reload_count = @eppl_bets.where("operation = 'Rechargement de compte'").count %>
+          <%= number_with_delimiter(reload_count) %>
+        </td>
+        <td>
+          <% reload_amount = @eppl_bets.where("operation = 'Rechargement de compte'").map{|bet| (bet.transaction_amount.to_f rescue 0)}.sum %>
+          <%= number_with_delimiter(reload_amount) %>
+        </td>
+      </tr>
+      <tr class="gradeA">
+        <td class = "taskPr">
+          Rechargement de compte
+        </td>
+        <td>
+          <% transfer_count = @eppl_bets.where("operation = 'Transfert de gains'").count %>
+          <%= number_with_delimiter(transfer_count) %>
+        </td>
+        <td>
+          <% transfer_amount = @eppl_bets.where("operation = 'Transfert de gains'").map{|bet| (bet.transaction_amount.to_f rescue 0)}.sum %>
+          <%= number_with_delimiter(transfer_amount) %>
+        </td>
+      </tr>
+      <tr class="gradeA">
+        <td>
+          <b>Total</b>
+        </td>
+        <td>
+          <b><%= number_with_delimiter(load_count + reload_count + transfer_count) %></b>
+        </td>
+        <td>
+          <b><%= number_with_delimiter(load_amount + reload_amount + transfer_amount) %></b>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

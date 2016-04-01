@@ -5,7 +5,7 @@
       <tr>
         <th>Statut</th>
         <th>Nombre de paris</th>
-        <th>Montant des paris</th>
+        <th>Chiffre d'affaires</th>
         <th>Montant des annulations</th>
         <th>Montant des gains</th>
       </tr>
@@ -97,7 +97,7 @@
           <b><%= number_with_delimiter(winners_count + loosers_count + cancelled_count + on_hold_count) %></b>
         </td>
         <td>
-          <b><%= number_with_delimiter(winners_amount + loosers_amount + cancelled_amount + on_hold_amount) %></b>
+          <b><%= number_with_delimiter(winners_amount + loosers_amount + on_hold_amount) %></b>
         </td>
         <td>
           <b><%= number_with_delimiter(cancelled_amount) %></b>
