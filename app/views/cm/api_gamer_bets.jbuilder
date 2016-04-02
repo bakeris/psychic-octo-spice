@@ -29,6 +29,7 @@ else
         json.full_box wager.full_box
         json.selections_string wager.selections_string
         json.winner wager.winner
+        json.wager_status (bet.bet_status == 'Annulé' ? 'Annulé' : (bet.bet_status == 'Perdant' ? 'Perdant' : (bet.bet_status == 'En cours' ? 'En cours' : (wager.winner == true ? 'Gagnant' : 'Perdant'))))
       end
     end
   end
