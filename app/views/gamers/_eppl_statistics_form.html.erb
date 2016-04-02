@@ -5,7 +5,7 @@
       <tr>
         <th>Statut</th>
         <th>Nombre de transactions</th>
-        <th>Chiffre d'affaires</th>
+        <th>Récapitulatif</th>
       </tr>
     </thead>
     <tbody>
@@ -37,7 +37,7 @@
       </tr>
       <tr class="gradeA">
         <td class = "taskPr">
-          Rechargement de compte
+          Transfert de gains
         </td>
         <td>
           <% transfer_count = @eppl_bets.where("operation = 'Transfert de gains'").count %>

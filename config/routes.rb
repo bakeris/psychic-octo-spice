@@ -319,6 +319,17 @@ Rails.application.routes.draw do
   # Excel export
   get '/administrator/gamers/list/export' => 'gamers#export_gamers_list', as: :export_gamers_list
 
+  get '/administrator/loto/winners/on_hold/export' => 'gamers#export_loto_winners_on_hold', as: :export_loto_winners_on_hold
+  get '/administrator/loto/winners/export' => 'gamers#export_loto_winners', as: :export_loto_winners
+
+  get '/administrator/pmu_plr/winners/on_hold/export' => 'gamers#export_pmu_plr_winners_on_hold', as: :export_pmu_plr_winners_on_hold
+  get '/administrator/pmu_plr/winners/export' => 'gamers#export_pmu_plr_winners', as: :export_pmu_plr_winners
+
+  get '/administrator/pmu_alr/winners/on_hold/export' => 'gamers#export_cm_winners_on_hold', as: :export_pmu_alr_winners_on_hold
+  get '/administrator/pmu_alr/winners/export' => 'gamers#export_cm_winners', as: :export_pmu_alr_winners
+
+  get '/administrator/spc/winners/on_hold/export' => 'gamers#export_spc_winners_on_hold', as: :export_spc_winners_on_hold
+  get '/administrator/spc/winners/export' => 'gamers#export_spc_winners', as: :export_spc_winners
 
   # Deposit
   #get '/api/86d13843ed59e5207c68e864564/deposit/:account_number/:transaction_amount' => 'accounts#api_deposit', :constraints => {:transaction_amount => /(\d+(.\d+)?)/}
