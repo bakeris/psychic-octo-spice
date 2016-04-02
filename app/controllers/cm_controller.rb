@@ -586,7 +586,9 @@ class CmController < ApplicationController
 
       if (error_code.blank? && @error != true) || error_code.to_s == '457'
         update_winners_list
-        Cm.where("program_id = '#{@program_id}' AND race_id = '#{@race_id}' AND p_validated IS NULL AND bet_status = 'En cours'").update_all(bet_status: "Perdant") rescue nil
+        if @validated == true
+          Cm.where("program_id = '#{@program_id}' AND race_id = '#{@race_id}' AND p_validated IS NULL AND bet_status = 'En cours'").update_all(bet_status: "Perdant") rescue nil
+        end
       else
         @error_code = error_code
         @error_description = error_message
@@ -604,7 +606,7 @@ class CmController < ApplicationController
       bets_amount = bets.map{|bet| (bet.amount.to_f rescue 0)}.sum rescue 0
       cancelled_amount = cancelled_bets.map{|bet| (bet.amount.to_f rescue 0)}.sum rescue 0
       if validate_bet_cm3("McoaDIET", bets_amount - cancelled_amount, @program_id, @race_id)
-
+        @validated = true
         unless @request_result.blank?
           winnings = (@request_result.xpath('//winnings/winning') rescue nil)
           unless winnings.blank?
@@ -641,6 +643,8 @@ class CmController < ApplicationController
             end
           end
         end
+      else
+        @validated = false
       end
     end
   end

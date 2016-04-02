@@ -19,10 +19,6 @@ class GamersController < ApplicationController
     send_data @users.to_csv, filename: "Parieurs-#{Date.today}.csv"
   end
 
-  def export_loto_bets
-
-  end
-
   def profile
     @class_gamers = "active"
     @gamer = User.find_by_id(params[:gamer_id])
@@ -63,6 +59,12 @@ class GamersController < ApplicationController
     @loto_winners_menu_style = "this"
 
     @loto_bets = AilLoto.where("bet_status = 'Gagnant' OR bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
+  end
+
+  def export_loto_winners
+    @loto_bets = AilLoto.where("bet_status = 'Gagnant' OR bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
+
+    send_data @loto_bets.to_csv, filename: "Gagnants-LOTO-#{Date.today}.csv"
   end
 
   def list_loto_bet_search
@@ -152,6 +154,18 @@ class GamersController < ApplicationController
     @pmu_plr_bets = AilPmu.where("bet_status = 'Gagnant' OR bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
   end
 
+  def export_pmu_plr_winners
+    @pmu_plr_bets = AilPmu.where("bet_status = 'Gagnant' OR bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
+
+    send_data @pmu_plr_bets.to_csv, filename: "Gagnants-PMU-PLR-#{Date.today}.csv"
+  end
+
+  def export_pmu_plr_winners_on_hold
+    @pmu_plr_bets = AilPmu.where("bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
+
+    send_data @pmu_plr_bets.to_csv, filename: "Gagnants-PMU-PLR-en-attente-de-paiement-#{Date.today}.csv"
+  end
+
   def list_pmu_plr_bet_search
     @games_menu_style = "current"
     @pmu_plr_game_menu_style = "this"
@@ -237,6 +251,18 @@ class GamersController < ApplicationController
     @spc_winners_menu_style = "this"
 
     @spc_bets = Bet.where("bet_status = 'Gagnant' OR bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
+  end
+
+  def export_spc_winners
+    @spc_bets = Bet.where("bet_status = 'Gagnant' OR bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
+
+    send_data @spc_bets.to_csv, filename: "Gagnants-SPORTCASH-#{Date.today}.csv"
+  end
+
+  def export_spc_winners_on_hold
+    @spc_bets = Bet.where("bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
+
+    send_data @spc_bets.to_csv, filename: "Gagnants-SPORTCASH-en-attente-de-paiement-#{Date.today}.csv"
   end
 
   def list_spc_bet_search
@@ -325,6 +351,18 @@ class GamersController < ApplicationController
     @cm_winners_menu_style = "this"
 
     @cm_bets = Cm.where("bet_status = 'Gagnant' OR bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
+  end
+
+  def export_cm_winners
+    @cm_bets = Cm.where("bet_status = 'Gagnant' OR bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
+
+    send_data @cm_bets.to_csv, filename: "Gagnants-PMU-ALR-#{Date.today}.csv"
+  end
+
+  def export_cm_winners_on_hold
+    @cm_bets = Cm.where("bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
+
+    send_data @cm_bets.to_csv, filename: "Gagnants-PMU-ALR-en-attente-de-paiement-#{Date.today}.csv"
   end
 
   def list_cm_bet_search
@@ -469,6 +507,12 @@ class GamersController < ApplicationController
     @loto_winner_on_hold_menu_style = "this"
 
     @loto_bets = AilLoto.where("bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
+  end
+
+  def export_loto_winners_on_hold
+    @loto_bets = AilLoto.where("bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
+
+    send_data @loto_bets.to_csv, filename: "Gagnants-LOTO-en-attente-de-paiement-#{Date.today}.csv"
   end
 
   def validate_on_hold_loto_winner
