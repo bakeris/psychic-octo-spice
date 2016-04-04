@@ -39,11 +39,11 @@
           <%= cancelled_count %>
         </td>
         <td>
-          <% cancelled_amount = @pmu_plr_bets.where("bet_status = 'Annulé'").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum %>
-          <%= number_with_delimiter(cancelled_amount) %>
+
         </td>
         <td>
-
+          <% cancelled_amount = @pmu_plr_bets.where("bet_status = 'Annulé'").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum %>
+          <%= number_with_delimiter(cancelled_amount) %>
         </td>
         <td>
 
