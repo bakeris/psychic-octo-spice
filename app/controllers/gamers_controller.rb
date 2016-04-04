@@ -454,13 +454,15 @@ class GamersController < ApplicationController
     @min_amount = params[:min_amount]
     @max_amount = params[:max_amount]
 
+    params[:begin_date] = @begin_date
+    params[:end_date] = @end_date
     params[:status_id] = @status
     params[:min_amount] = @min_amount
     params[:max_amount] = @max_amount
 
     set_eppl_search_params
 
-    @eppl_bets = Eppl.where("#{@sql_status} #{(!@sql_status.blank? && (!@sql_min_amount.blank? || !@sql_max_amount.blank?)) ? 'AND' : ''} #{@sql_min_amount} #{(!@sql_min_amount.blank? && !@sql_max_amount.blank?) ? 'AND' : ''} #{@sql_max_amount}").order("created_at DESC")
+    @eppl_bets = Eppl.where("#{@sql_begin_date} #{@sql_begin_date.blank? ? '' : 'AND'} #{@sql_end_date} #{@sql_end_date.blank? ? '' : 'AND'} #{@sql_status} #{(!@sql_status.blank? && (!@sql_min_amount.blank? || !@sql_max_amount.blank?)) ? 'AND' : ''} #{@sql_min_amount} #{(!@sql_min_amount.blank? && !@sql_max_amount.blank?) ? 'AND' : ''} #{@sql_max_amount} bet_placed IS TRUE").order("created_at DESC")
     flash[:success] = "#{@eppl_bets.count} Résultat(s) trouvé(s)."
 
     if params[:commit] == "Exporter"
@@ -491,13 +493,15 @@ class GamersController < ApplicationController
     if @gamer.blank?
       redirect_to gamers_path
     else
+      params[:begin_date] = @begin_date
+      params[:end_date] = @end_date
       params[:status_id] = @status
       params[:min_amount] = @min_amount
       params[:max_amount] = @max_amount
 
       set_eppl_search_params
 
-      @eppl_bets = Eppl.where("#{@sql_status} #{@sql_status.blank? ? '' : 'AND'} #{@sql_min_amount} #{@sql_min_amount.blank? ? '' : 'AND'} #{@sql_max_amount} #{@sql_max_amount.blank? ? '' : 'AND'} gamer_id = '#{@gamer.uuid}'").order("created_at DESC")
+      @eppl_bets = Eppl.where("#{@sql_begin_date} #{@sql_begin_date.blank? ? '' : 'AND'} #{@sql_end_date} #{@sql_end_date.blank? ? '' : 'AND'} #{@sql_status} #{@sql_status.blank? ? '' : 'AND'} #{@sql_min_amount} #{@sql_min_amount.blank? ? '' : 'AND'} #{@sql_max_amount} #{@sql_max_amount.blank? ? '' : 'AND'} gamer_id = '#{@gamer.uuid}'").order("created_at DESC")
       flash[:success] = "#{@eppl_bets.count} Résultat(s) trouvé(s)."
     end
   end
@@ -690,6 +694,12 @@ class GamersController < ApplicationController
       @sql_min_amount = ""
       @sql_max_amount = ""
 
+      unless @begin_date.blank?
+        @sql_begin_date = "created_at >= '#{@begin_date}'"
+      end
+      unless @end_date.blank?
+        @sql_end_date = "created_at <= '#{@end_date}'"
+      end
       unless @status.blank?
         @sql_status = "operation = '#{@status}'"
       end
