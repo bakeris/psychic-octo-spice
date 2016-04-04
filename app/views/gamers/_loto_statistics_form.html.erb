@@ -8,6 +8,7 @@
         <th>Chiffre d'affaires</th>
         <th>Montant des annulations</th>
         <th>Montant des gains</th>
+        <th>Montant des remboursements</th>
       </tr>
     </thead>
     <tbody>
@@ -22,6 +23,9 @@
         <td>
           <% on_hold_amount = @loto_bets.where("bet_status = 'En cours'").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum %>
           <%= number_with_delimiter(on_hold_amount) %>
+        </td>
+        <td>
+
         </td>
         <td>
 
@@ -48,6 +52,9 @@
         <td>
 
         </td>
+        <td>
+
+        </td>
       </tr>
       <tr class="gradeA">
         <td class = "taskD">
@@ -60,6 +67,9 @@
         <td>
           <% loosers_amount = @loto_bets.where("bet_status = 'Perdant'").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum %>
           <%= number_with_delimiter(loosers_amount) %>
+        </td>
+        <td>
+
         </td>
         <td>
 
@@ -84,8 +94,33 @@
 
         </td>
         <td>
-          <% win_amount = @loto_bets.where("bet_status = 'Gagnant' OR bet_status = 'Remboursé'").map{|bet| ((bet.earning_amount.to_f rescue 0) + (bet.refund_amount.to_f rescue 0))}.sum %>
+          <% win_amount = @loto_bets.where("bet_status = 'Gagnant'").map{|bet| ((bet.earning_amount.to_f rescue 0) + (bet.refund_amount.to_f rescue 0))}.sum %>
           <%= number_with_delimiter(win_amount) %>
+        </td>
+        <td>
+
+        </td>
+      </tr>
+      <tr class="gradeA">
+        <td class = "taskPr">
+          Remboursé
+        </td>
+        <td>
+          <% refund_count = @loto_bets.where("bet_status = 'Remboursé'").count %>
+          <%= refund_count %>
+        </td>
+        <td>
+          <% refund_amount = @loto_bets.where("bet_status = 'Remboursé'").map{|bet| (bet.refund_amount.to_f rescue 0)}.sum %>
+          <%= number_with_delimiter(refund_amount) %>
+        </td>
+        <td>
+
+        </td>
+        <td>
+
+        </td>
+        <td>
+          <%= number_with_delimiter(refund_amount) %>
         </td>
       </tr>
       <tr class="gradeA">
@@ -93,16 +128,19 @@
           <b>Total</b>
         </td>
         <td>
-          <b><%= number_with_delimiter(winners_count + loosers_count + cancelled_count + on_hold_count) %></b>
+          <b><%= number_with_delimiter(winners_count + loosers_count + cancelled_count + on_hold_count + refund_count) %></b>
         </td>
         <td>
-          <b><%= number_with_delimiter(winners_amount + loosers_amount + on_hold_amount) %></b>
+          <b><%= number_with_delimiter(winners_amount + loosers_amount + on_hold_amount + refund_amount) %></b>
         </td>
         <td>
           <b><%= number_with_delimiter(cancelled_amount) %></b>
         </td>
         <td>
           <b><%= number_with_delimiter(win_amount) %></b>
+        </td>
+        <td>
+          <b><%= number_with_delimiter(refund_amount) %></b>
         </td>
       </tr>
     </tbody>
