@@ -10,6 +10,22 @@
       </div>
 
       <div class="formRow">
+        <label>Date de début</label>
+        <div class="formRight">
+          <%= date_field_tag :begin_date, params[:begin_date], start_year: (Date.today.year - 10), end_year: Date.today.year, class: "form-control" %>
+        </div>
+        <div class="clear"></div>
+      </div>
+
+      <div class="formRow">
+        <label>Date de fin</label>
+        <div class="formRight">
+          <%= date_field_tag :end_date, params[:end_date], start_year: (Date.today.year - 10), end_year: Date.today.year, class: "form-control" %>
+        </div>
+        <div class="clear"></div>
+      </div>
+
+      <div class="formRow">
         <label>Statut</label>
         <div class="formRight">
           <%= select_tag "status_id", options_for_select([ "Chargement de compte", "Rechargement de compte", "Transfert de gains" ], params[:status_id]), prompt: "Veuillez choisir un statut", class: "form-control" %>
