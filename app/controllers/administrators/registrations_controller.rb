@@ -3,12 +3,14 @@ class Administrators::RegistrationsController < Devise::RegistrationsController
 # before_filter :configure_account_update_params, only: [:update]
   prepend_before_filter :authenticate_scope!
   before_filter :init_form_style
+  before_filter :select_administrator_profile
 
   layout "administrator"
 
   # GET /resource/sign_up
   def new
     build_resource({})
+    @profiles = Profile.all
     @validatable = devise_mapping.validatable?
     if @validatable
       @minimum_password_length = resource_class.password_length.min
@@ -18,7 +20,8 @@ class Administrators::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
-    build_resource(sign_up_params)
+    build_resource(sign_up_params.merge({created_by: current_administrator.id, profile_id: profile_id}))
+    @profiles = Profile.all
 
     resource_saved = resource.save
     yield resource if block_given?
