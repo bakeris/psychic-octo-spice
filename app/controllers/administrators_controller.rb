@@ -1,5 +1,6 @@
 class AdministratorsController < ApplicationController
   before_filter :authenticate_administrator!
+  before_filter :select_administrator_profile
 
   layout "administrator"
 
