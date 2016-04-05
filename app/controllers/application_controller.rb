@@ -5,6 +5,14 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
+  def select_administrator_profile
+    @game_administrator = false
+    @profile = current_administrator.profile
+    if @profile.pmu_plr_right == true || @profile.pmu_alr_right == true || @profile.loto_right == true || @profile.spc_right == true || @profile.eppl_right == true
+      @game_administrator = true
+    end
+  end
+
   def place_bet_with_cancellation(bet, game_account_token, paymoney_account_number, password, transaction_amount)
     paymoney_account_token = check_account_number(paymoney_account_number)
 

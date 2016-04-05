@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  description: MyString
+  users_list_right: false
+  payment_on_hold_right: false
+  pmu_plr_right: false
+  loto_right: false
+  pmu_alr_right: false
+  spc_right: false
+  eppl_right: false
+
+two:
+  description: MyString
+  users_list_right: false
+  payment_on_hold_right: false
+  pmu_plr_right: false
+  loto_right: false
+  pmu_alr_right: false
+  spc_right: false
+  eppl_right: false

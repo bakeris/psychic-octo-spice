@@ -30,6 +30,14 @@
         </div>
 
         <div class="formRow">
+          <label><%= f.label :profile_id %></label>
+          <div class="formRight">
+            <%= f.collection_select :profile_id, @profiles, :id, :description, options ={prompt: "Veuillez choisir un profil"}, html_options = {class: "form-control"} %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
           <label><%= f.label :firstname %></label>
           <div class="formRight">
             <%= f.text_field :firstname, placeholder: "Veuillez entrer le nom", class: 'form-control', autofocus: true %>

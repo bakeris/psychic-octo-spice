@@ -19,17 +19,34 @@
 
     <!-- Left navigation -->
     <ul id="menu" class="nav">
+      <% if @profile.description == "Super Administrateur" %>
       <li class="dash"><%= link_to "<span>Administration</span>".html_safe, new_administrator_registration_path, class: "#{@class_administrators}" %></li>
+      <% end %>
+      <% if @game_administrator %>
       <li class="dash"><%= link_to "<span>Liste des Joueurs</span>".html_safe, gamers_path, class: "#{@class_gamers}" %></li>
+      <% end %>
+      <% if @game_administrator %>
       <li class="tables"><a href="#" title="" class="exp" id = "<%= @games_menu_style %>"><span>Liste des transactions</span><strong>5</strong></a>
         <ul class="sub">
-          <li class = "<%= @loto_game_menu_style %>"><a href="<%= list_loto_bets_path %>" title="">LOTO BONHEUR</a></li>
-          <li class = "<%= @pmu_plr_game_menu_style %>"><a href="<%= list_pmu_plr_bets_path %>" title="">PMU PLR</a></li>
-          <li class = "<%= @spc_game_menu_style %>"><a href="<%= list_spc_bets_path %>" title="">SPORTCASH</a></li>
-          <li class = "<%= @cm_game_menu_style %>"><a href="<%= list_cm_bets_path %>" title="">PMU ALR</a></li>
-          <li class = "<%= @eppl_game_menu_style %>"><a href="<%= list_eppl_bets_path %>" title="">Jeux digitaux</a></li>
+          <% if @profile.loto_right %>
+            <li class = "<%= @loto_game_menu_style %>"><a href="<%= list_loto_bets_path %>" title="">LOTO BONHEUR</a></li>
+          <% end %>
+          <% if @profile.pmu_plr_right %>
+            <li class = "<%= @pmu_plr_game_menu_style %>"><a href="<%= list_pmu_plr_bets_path %>" title="">PMU PLR</a></li>
+          <% end %>
+          <% if @profile.spc_right %>
+            <li class = "<%= @spc_game_menu_style %>"><a href="<%= list_spc_bets_path %>" title="">SPORTCASH</a></li>
+          <% end %>
+          <% if @profile.pmu_alr_right %>
+            <li class = "<%= @cm_game_menu_style %>"><a href="<%= list_cm_bets_path %>" title="">PMU ALR</a></li>
+          <% end %>
+          <% if @profile.eppl_right %>
+            <li class = "<%= @eppl_game_menu_style %>"><a href="<%= list_eppl_bets_path %>" title="">Jeux digitaux</a></li>
+          <% end %>
         </ul>
       </li>
+      <% end %>
+      <% if @profile.payment_on_hold_right %>
       <li class="tables"><a href="#" title="" class="exp" id = "<%= @winners_on_hold_menu_style %>"><span>En attente de paiement</span><strong>4</strong></a>
         <ul class="sub">
           <li class = "<%= @loto_winner_on_hold_menu_style %>"><a href="<%= loto_winners_on_hold_path %>" title="">LOTO BONHEUR</a></li>
@@ -38,14 +55,26 @@
           <li class = "<%= @cm_winner_on_hold_menu_style %>"><a href="<%= cm_winners_on_hold_path %>" title="">PMU ALR</a></li>
         </ul>
       </li>
+      <% end %>
+
+      <% if @game_administrator %>
       <li class="tables"><a href="#" title="" class="exp" id = "<%= @winners_menu_style %>"><span>Liste des gagnants</span><strong>4</strong></a>
         <ul class="sub">
-          <li class = "<%= @loto_winners_menu_style %>"><a href="<%= loto_winners_path %>" title="">LOTO BONHEUR</a></li>
-          <li class = "<%= @pmu_plr_winners_menu_style %>"><a href="<%= pmu_plr_winners_path %>" title="">PMU PLR</a></li>
-          <li class = "<%= @spc_winners_menu_style %>"><a href="<%= spc_winners_path %>" title="">SPORTCASH</a></li>
-          <li class = "<%= @cm_winners_menu_style %>"><a href="<%= cm_winners_path %>" title="">PMU ALR</a></li>
+          <% if @profile.loto_right %>
+            <li class = "<%= @loto_winners_menu_style %>"><a href="<%= loto_winners_path %>" title="">LOTO BONHEUR</a></li>
+          <% end %>
+          <% if @profile.pmu_plr_right %>
+            <li class = "<%= @pmu_plr_winners_menu_style %>"><a href="<%= pmu_plr_winners_path %>" title="">PMU PLR</a></li>
+          <% end %>
+          <% if @profile.spc_right %>
+            <li class = "<%= @spc_winners_menu_style %>"><a href="<%= spc_winners_path %>" title="">SPORTCASH</a></li>
+          <% end %>
+          <% if @profile.pmu_alr_right %>
+            <li class = "<%= @cm_winners_menu_style %>"><a href="<%= cm_winners_path %>" title="">PMU ALR</a></li>
+          <% end %>
         </ul>
       </li>
+      <% end %>
       <li class="dash"><%= link_to "<span>SMS</span>".html_safe, "#" %></li>
     </ul>
 </div>
@@ -57,7 +86,7 @@
     <!-- Top fixed navigation -->
     <div class="topNav">
         <div class="wrapper">
-            <div class="welcome"><%#= image_tag(current_user.avatar.url(:small), width: "18px") rescue "" %><span><%#= current_user.full_name rescue "" %></span></div>
+            <div class="welcome"><%#= image_tag(current_user.avatar.url(:small), width: "18px") rescue "" %><span><%= "#{current_administrator.full_name} [#{@profile.description}]"  %></span></div>
             <div class="userNav">
                 <ul>
                   <% unless current_administrator.blank? %>
