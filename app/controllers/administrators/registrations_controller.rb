@@ -20,7 +20,7 @@ class Administrators::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
-    build_resource(sign_up_params.merge({created_by: current_administrator.id, profile_id: profile_id}))
+    build_resource(sign_up_params.merge({created_by: current_administrator.id, profile_id: params[:administrator][:profile_id]}))
     @profiles = Profile.all
 
     resource_saved = resource.save
