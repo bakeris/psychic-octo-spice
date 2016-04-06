@@ -127,7 +127,7 @@ class AilLotoController < ApplicationController
 
           if @error_code == 0 && (json_response["header"]["status"] == 'success' rescue nil)
             @bet = (json_response["content"] rescue nil)
-
+=begin
             unless @bet.blank?
               ticket_number = (json_response["content"]["ticketNumber"] rescue nil)
               ref_number = (json_response["content"]["refNumber"] rescue nil)
@@ -188,6 +188,7 @@ class AilLotoController < ApplicationController
               request.run
               # Bet acknowledgement
             end
+=end
           else
             @error_code = '4002'
             @error_description = 'Pari non autorisé.'
