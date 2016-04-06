@@ -498,7 +498,7 @@ class AilPmuController < ApplicationController
                     "content":{
                       "ticketNumber":#{@bet.ticket_number},
                       "refNumber":#{@bet.ref_number},
-                      "reqType":0
+                      "reqType":1
                     }
                   }
                 }|
@@ -648,7 +648,7 @@ class AilPmuController < ApplicationController
                     "content":{
                       "ticketNumber":#{@bet.ticket_number},
                       "refNumber":#{@bet.ref_number},
-                      "reqType":0
+                      "reqType":2
                     }
                   }
                 }|
