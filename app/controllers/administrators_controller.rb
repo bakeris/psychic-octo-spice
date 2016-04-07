@@ -24,9 +24,9 @@ class AdministratorsController < ApplicationController
   def enable_administrator_account
     user = Administrator.find_by_id(params[:administrator_id])
 
-    if user
+    if !user.blank?
       flash[:success] = "Le compte de #{user.full_name} a été activé."
-      user.update_attributes(published: true,)
+      user.update_attributes(published: true)
     else
       flash[:error] = "Cet utilisateur n'existe pas."
     end
