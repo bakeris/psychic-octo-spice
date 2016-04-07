@@ -19,10 +19,10 @@
 
     <!-- Left navigation -->
     <ul id="menu" class="nav">
-      <% if @profile.description == "Super Administrateur" %>
+      <% if @profile.users_list_right %>
       <li class="dash"><%= link_to "<span>Administration</span>".html_safe, new_administrator_registration_path, class: "#{@class_administrators}" %></li>
       <% end %>
-      <% if @game_administrator %>
+      <% if @profile.gamers_list_right %>
       <li class="dash"><%= link_to "<span>Liste des Joueurs</span>".html_safe, gamers_path, class: "#{@class_gamers}" %></li>
       <% end %>
       <% if @game_administrator %>

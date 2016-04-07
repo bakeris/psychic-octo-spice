@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160405060412) do
+ActiveRecord::Schema.define(version: 20160407075920) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -626,6 +626,7 @@ ActiveRecord::Schema.define(version: 20160405060412) do
     t.boolean  "eppl_right"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "gamers_list_right"
   end
 
   create_table "query_bets", force: true do |t|
