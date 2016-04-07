@@ -30,6 +30,7 @@
           <th>Email</th>
           <th>Numéro téléphonique</th>
           <th>Infos</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -55,6 +56,11 @@
                 <span>
                   <strong>Créé le </strong> <%= user.created_at.strftime("%d-%m-%Y") + " à " + user.created_at.strftime("%Hh %Mmn") %>
                 </span>
+              </td>
+              <td class = "actBtns">
+                <% if @profile.description == 'Super Administrateur' %>
+                  <%= activation_desactivation_links(@profile.description, current_administrator.id, current_administrator) %>
+                <% end %>
               </td>
             </tr>
           <% end %>

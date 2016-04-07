@@ -331,6 +331,9 @@ Rails.application.routes.draw do
   get '/administrator/spc/winners/on_hold/export' => 'gamers#export_spc_winners_on_hold', as: :export_spc_winners_on_hold
   get '/administrator/spc/winners/export' => 'gamers#export_spc_winners', as: :export_spc_winners
 
+  get "users/administrators/disable/:administrator_id" => "administrators#disable_administrator_account", as: :disable_administrator_account
+    get "users/administrators/enable/:administrator_id" => "administrators#enable_administrator_account", as: :enable_administrator_account
+
   # Deposit
   #get '/api/86d13843ed59e5207c68e864564/deposit/:account_number/:transaction_amount' => 'accounts#api_deposit', :constraints => {:transaction_amount => /(\d+(.\d+)?)/}
 

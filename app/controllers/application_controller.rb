@@ -13,6 +13,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def sign_out_disabled_users
+    if current_administrator.published == false
+      sign_out(current_administrator)
+      flash[:alert] = "Votre compte a été désactivé. Veuillez contacter l'administrateur."
+
+      redirect_to new_administrator_session_path
+    end
+  end
+
   def place_bet_with_cancellation(bet, game_account_token, paymoney_account_number, password, transaction_amount)
     paymoney_account_token = check_account_number(paymoney_account_number)
 

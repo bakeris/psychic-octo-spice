@@ -4,6 +4,7 @@ class Administrators::RegistrationsController < Devise::RegistrationsController
   prepend_before_filter :authenticate_scope!
   before_filter :init_form_style
   before_filter :select_administrator_profile
+  before_filter :sign_out_disabled_users
 
   layout "administrator"
 
