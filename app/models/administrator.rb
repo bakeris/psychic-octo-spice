@@ -6,7 +6,7 @@ class Administrator < ActiveRecord::Base
 
   belongs_to :profile
 
-  attr_accessible :firstname, :lastname, :phone_number, :email, :password, :password_confirmation, :current_password, :profile_id, :created_by
+  attr_accessible :firstname, :lastname, :phone_number, :email, :password, :password_confirmation, :current_password, :profile_id, :created_by, :published
 
   # Rename attributes into more friendly text
   HUMANIZED_ATTRIBUTES = {
