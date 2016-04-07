@@ -59,7 +59,7 @@
               </td>
               <td class = "actBtns">
                 <% if @profile.description == 'Super Administrateur' %>
-                  <%= activation_desactivation_links(@profile.description, current_administrator.id, current_administrator) %>
+                  <%= activation_desactivation_links(@profile.description, user) %>
                 <% end %>
               </td>
             </tr>
