@@ -47,8 +47,21 @@ class ApplicationController < ActionController::Base
               bet.update_attributes(paymoney_transaction_id: response_body, bet_placed: true, bet_placed_at: DateTime.now, paymoney_account_token: paymoney_account_token)
               status = true
             else
-              @error_code = '4001'
-              @error_description = "Le compte Paymoney n'a pas pu être débité. Veuillez vérifier votre crédit."
+              case response_body
+                when "|0|"
+                  @error_code = '4001'
+                  @error_description = "Le compte Paymoney n'existe pas."
+                when "|3|"
+                  @error_code = '4002'
+                  @error_description = "La transaction a échoué."
+                when "|4|"
+                  @error_code = '4003'
+                  @error_description = "Votre solde disponible sur le compte PAYMONEY est insuffisant. Veuillez recharger votre compte dans un point de rechargement. Merci!"
+                else
+                  @error_code = '4004'
+                  @error_description = "Une erreur s'est produite, veuillez réessayer."
+                end
+
               bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body, paymoney_account_token: paymoney_account_token)
             end
           else
@@ -91,8 +104,20 @@ class ApplicationController < ActionController::Base
               bet.update_attributes(p_payment_transaction_id: response_body, p_payment_request: body, paymoney_account_token: paymoney_account_token, p_payment_response: response_body)
               status = true
             else
-              @error_code = '4001'
-              @error_description = "Le compte Paymoney n'a pas pu être débité. Veuillez vérifier votre crédit."
+              case response_body
+                when "|0|"
+                  @error_code = '4001'
+                  @error_description = "Le compte Paymoney n'existe pas."
+                when "|3|"
+                  @error_code = '4002'
+                  @error_description = "La transaction a échoué."
+                when "|4|"
+                  @error_code = '4003'
+                  @error_description = "Votre solde disponible sur le compte PAYMONEY est insuffisant. Veuillez recharger votre compte dans un point de rechargement. Merci!"
+                else
+                  @error_code = '4004'
+                  @error_description = "Une erreur s'est produite, veuillez réessayer."
+                end
               bet.update_attributes(payment_error_code: @error_code, payment_error_description: @error_description, p_payment_request: body, paymoney_account_token: paymoney_account_token, p_payment_response: response_body)
             end
           else
@@ -138,8 +163,21 @@ class ApplicationController < ActionController::Base
               bet.update_attributes(paymoney_transaction_id: response_body, bet_placed: true, bet_placed_at: DateTime.now, paymoney_account_token: paymoney_account_token)
               status = true
             else
-              @error_code = '4001'
-              @error_description = 'Votre solde disponible sur le compte PAYMONEY est insuffisant. Veuillez recharger votre compte dans un point de rechargement. Merci!'
+              case response_body
+                when "|0|"
+                  @error_code = '4001'
+                  @error_description = "Le compte Paymoney n'existe pas."
+                when "|3|"
+                  @error_code = '4002'
+                  @error_description = "La transaction a échoué."
+                when "|4|"
+                  @error_code = '4003'
+                  @error_description = "Votre solde disponible sur le compte PAYMONEY est insuffisant. Veuillez recharger votre compte dans un point de rechargement. Merci!"
+                else
+                  @error_code = '4004'
+                  @error_description = "Une erreur s'est produite, veuillez réessayer."
+                end
+
               bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body, paymoney_account_token: paymoney_account_token)
             end
           else
