@@ -47,8 +47,20 @@ class EpplController < ApplicationController
               @transaction_id = response_body
               Eppl.create(operation: "Chargement de compte", transaction_id: @transaction_id, paymoney_account_number: paymoney_account_number, transaction_amount: transaction_amount, game_account_token: game_account_token, bet_placed_at: DateTime.now, gamer_id: @gamer_id) rescue nil
             else
-              @error_code = '4001'
-              @error_description = "Le compte Paymoney n'a pas pu être débité. Veuillez vérifier votre crédit."
+              case response_body
+                when "|0|"
+                  @error_code = '4001'
+                  @error_description = "Le compte Paymoney n'existe pas."
+                when "|3|"
+                  @error_code = '4002'
+                  @error_description = "La transaction a échoué."
+                when "|4|"
+                  @error_code = '4003'
+                  @error_description = "Votre solde disponible sur le compte PAYMONEY est insuffisant. Veuillez recharger votre compte dans un point de rechargement. Merci!"
+                else
+                  @error_code = '4004'
+                  @error_description = "Une erreur s'est produite, veuillez réessayer."
+                end
             end
           else
             @error_code = '4000'
@@ -218,8 +230,20 @@ class EpplController < ApplicationController
 
               Eppl.create(operation: "Rechargement de compte", transaction_id: response_body, paymoney_account_number: "TRJ", transaction_amount: @transaction_amount, game_account_token: "PExxGeLY", bet_placed_at: DateTime.now, gamer_id: @gamer_id) rescue nil
             else
-              @error_code = '4001'
-              @error_description = "Erreur de paiement, le paiement n'a pas pu être effectué."
+              case response_body
+                when "|0|"
+                  @error_code = '4001'
+                  @error_description = "Le compte Paymoney n'existe pas."
+                when "|3|"
+                  @error_code = '4002'
+                  @error_description = "La transaction a échoué."
+                when "|4|"
+                  @error_code = '4003'
+                  @error_description = "Votre solde disponible sur le compte PAYMONEY est insuffisant. Veuillez recharger votre compte dans un point de rechargement. Merci!"
+                else
+                  @error_code = '4004'
+                  @error_description = "Une erreur s'est produite, veuillez réessayer."
+                end
               #@eppl.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
             end
           else
