@@ -33,9 +33,9 @@ class ApplicationController < ActionController::Base
      @error_code = '5000'
      @error_description = "Le montant de transaction ne peut pas être nul."
     else
-      if paymoney_account_token.blank?
+      if paymoney_account_token.blank? || paymoney_account_token == 'null'
         @error_code = '5001'
-        @error_description = "Le compte Paymoney n'a pas été trouvé."
+        @error_description = "Le numéro PAYMONEY est inexistant. Veuillez créer un compte puis réessayez."
       else
         request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/#{bet.transaction_id}/#{game_account_token}/#{paymoney_account_token}/#{password}/#{transaction_amount}", followlocation: true, method: :get)
 
@@ -50,16 +50,16 @@ class ApplicationController < ActionController::Base
               case response_body
                 when "|0|"
                   @error_code = '4001'
-                  @error_description = "Le compte Paymoney n'existe pas."
+                  @error_description = "Le numéro PAYMONEY est inexistant. Veuillez créer un compte puis réessayez."
                 when "|3|"
                   @error_code = '4002'
-                  @error_description = "La transaction a échoué."
+                  @error_description = "Veuillez vérifier vos informations de paiement. Numéro de compte PAYMONEY et code secret."
                 when "|4|"
                   @error_code = '4003'
                   @error_description = "Votre solde disponible sur le compte PAYMONEY est insuffisant. Veuillez recharger votre compte dans un point de rechargement. Merci!"
                 else
                   @error_code = '4004'
-                  @error_description = "Une erreur s'est produite, veuillez réessayer."
+                  @error_description = "Veuillez vérifier vos informations de paiement. Numéro de compte PAYMONEY et code secret."
                 end
 
               bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body, paymoney_account_token: paymoney_account_token)
@@ -89,9 +89,9 @@ class ApplicationController < ActionController::Base
      @error_code = '5000'
      @error_description = "Le montant de transaction ne peut pas être nul."
     else
-      if paymoney_account_token.blank?
+      if paymoney_account_token.blank? || paymoney_account_token == 'null'
         @error_code = '5001'
-        @error_description = "Le compte Paymoney n'a pas été trouvé."
+        @error_description = "Le numéro PAYMONEY est inexistant. Veuillez créer un compte puis réessayez."
       else
         body = "#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/#{bet.sale_client_id}/#{game_account_token}/#{paymoney_account_token}/#{password}/#{transaction_amount}"
         request = Typhoeus::Request.new(body, followlocation: true, method: :get)
@@ -107,16 +107,16 @@ class ApplicationController < ActionController::Base
               case response_body
                 when "|0|"
                   @error_code = '4001'
-                  @error_description = "Le compte Paymoney n'existe pas."
+                  @error_description = "Le numéro PAYMONEY est inexistant. Veuillez créer un compte puis réessayez."
                 when "|3|"
                   @error_code = '4002'
-                  @error_description = "La transaction a échoué."
+                  @error_description = "Veuillez vérifier vos informations de paiement. Numéro de compte PAYMONEY et code secret."
                 when "|4|"
                   @error_code = '4003'
                   @error_description = "Votre solde disponible sur le compte PAYMONEY est insuffisant. Veuillez recharger votre compte dans un point de rechargement. Merci!"
                 else
                   @error_code = '4004'
-                  @error_description = "Une erreur s'est produite, veuillez réessayer."
+                  @error_description = "Veuillez vérifier vos informations de paiement. Numéro de compte PAYMONEY et code secret."
                 end
               bet.update_attributes(payment_error_code: @error_code, payment_error_description: @error_description, p_payment_request: body, paymoney_account_token: paymoney_account_token, p_payment_response: response_body)
             end
@@ -145,9 +145,9 @@ class ApplicationController < ActionController::Base
      @error_code = '5000'
      @error_description = "The transaction amount can't be 0."
     else
-      if paymoney_account_token.blank?
+      if paymoney_account_token.blank? || paymoney_account_token == 'null'
         @error_code = '5001'
-        @error_description = "The paymoney account have not been found."
+        @error_description = "Le numéro PAYMONEY est inexistant. Veuillez créer un compte puis réessayez."
       else
         @url = "#{paymoney_wallet_url}/api/9b04e57f135f05bc05b5cf6d9b0d8/bet/get/#{bet.transaction_id}/#{game_account_token}/#{paymoney_account_token}/#{password}/#{transaction_amount}"
 
@@ -166,16 +166,16 @@ class ApplicationController < ActionController::Base
               case response_body
                 when "|0|"
                   @error_code = '4001'
-                  @error_description = "Le compte Paymoney n'existe pas."
+                  @error_description = "Le numéro PAYMONEY est inexistant. Veuillez créer un compte puis réessayez."
                 when "|3|"
                   @error_code = '4002'
-                  @error_description = "La transaction a échoué."
+                  @error_description = "Veuillez vérifier vos informations de paiement. Numéro de compte PAYMONEY et code secret."
                 when "|4|"
                   @error_code = '4003'
                   @error_description = "Votre solde disponible sur le compte PAYMONEY est insuffisant. Veuillez recharger votre compte dans un point de rechargement. Merci!"
                 else
                   @error_code = '4004'
-                  @error_description = "Une erreur s'est produite, veuillez réessayer."
+                  @error_description = "Veuillez vérifier vos informations de paiement. Numéro de compte PAYMONEY et code secret."
                 end
 
               bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body, paymoney_account_token: paymoney_account_token)
