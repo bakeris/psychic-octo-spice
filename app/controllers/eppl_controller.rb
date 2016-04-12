@@ -31,7 +31,7 @@ class EpplController < ApplicationController
     else
       if paymoney_account_token.blank?
         @error_code = '5001'
-        @error_description = "Le compte Paymoney n'a pas été trouvé."
+        @error_description = "Le numéro PAYMONEY est inexistant. Veuillez créer un compte puis réessayez."
       else
         @url = "#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/#{transaction_id}/#{game_account_token}/#{paymoney_account_token}/#{password}/#{transaction_amount}"
 
@@ -50,16 +50,16 @@ class EpplController < ApplicationController
               case response_body
                 when "|0|"
                   @error_code = '4001'
-                  @error_description = "Le compte Paymoney n'existe pas."
+                  @error_description = "Le numéro PAYMONEY est inexistant. Veuillez créer un compte puis réessayez."
                 when "|3|"
                   @error_code = '4002'
-                  @error_description = "La transaction a échoué."
+                  @error_description = "Veuillez vérifier vos informations de paiement. Numéro de compte PAYMONEY et code secret."
                 when "|4|"
                   @error_code = '4003'
                   @error_description = "Votre solde disponible sur le compte PAYMONEY est insuffisant. Veuillez recharger votre compte dans un point de rechargement. Merci!"
                 else
                   @error_code = '4004'
-                  @error_description = "Une erreur s'est produite, veuillez réessayer."
+                  @error_description = "Veuillez vérifier vos informations de paiement. Numéro de compte PAYMONEY et code secret."
                 end
             end
           else
@@ -168,7 +168,7 @@ class EpplController < ApplicationController
 
     if paymoney_account_token.blank?
       @error_code = '4000'
-      @error_description = "Le compte Paymoney n'a pas été trouvé."
+      @error_description = "Le numéro PAYMONEY est inexistant. Veuillez créer un compte puis réessayez."
     else
       #if @eppl.earning_transaction_id.blank?
         @url = "#{paymoney_wallet_url}/api/86d1798bc43ed59e5207c68e864564/earnings/pay/PExxGeLY/#{paymoney_account_token}/#{transaction_id}/#{transaction_amount}"
@@ -233,16 +233,16 @@ class EpplController < ApplicationController
               case response_body
                 when "|0|"
                   @error_code = '4001'
-                  @error_description = "Le compte Paymoney n'existe pas."
+                  @error_description = "Le numéro PAYMONEY est inexistant. Veuillez créer un compte puis réessayez."
                 when "|3|"
                   @error_code = '4002'
-                  @error_description = "La transaction a échoué."
+                  @error_description = "Veuillez vérifier vos informations de paiement. Numéro de compte PAYMONEY et code secret."
                 when "|4|"
                   @error_code = '4003'
                   @error_description = "Votre solde disponible sur le compte PAYMONEY est insuffisant. Veuillez recharger votre compte dans un point de rechargement. Merci!"
                 else
                   @error_code = '4004'
-                  @error_description = "Une erreur s'est produite, veuillez réessayer."
+                  @error_description = "Veuillez vérifier vos informations de paiement. Numéro de compte PAYMONEY et code secret."
                 end
               #@eppl.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
             end
