@@ -604,8 +604,8 @@ class CmController < ApplicationController
     unless bets.blank?
 
       bets_amount = bets.map{|bet| (bet.amount.to_f rescue 0)}.sum rescue 0
-      cancelled_amount = cancelled_bets.map{|bet| (bet.amount.to_f rescue 0)}.sum rescue 0
-      if validate_bet_cm3("McoaDIET", bets_amount - cancelled_amount, @program_id, @race_id)
+      cancelled_amount =  0 #cancelled_bets.map{|bet| (bet.amount.to_f rescue 0)}.sum rescue 0
+      if validate_bet_cm3("McoaDIET", bets_amount, @program_id, @race_id)
         @validated = true
         unless @request_result.blank?
           winnings = (@request_result.xpath('//winnings/winning') rescue nil)
