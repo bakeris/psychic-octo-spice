@@ -812,7 +812,7 @@ class LudwinApiController < ApplicationController
         else
           @bet = @bet.first
 
-          if !@bet.pn_ticket_status.blank?
+          if false #!@bet.pn_ticket_status.blank?
             @error_code = '5002'
             @error_description = 'Ce coupon a déja été validé.'
           else
