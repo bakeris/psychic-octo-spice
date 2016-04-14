@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160407081257) do
+ActiveRecord::Schema.define(version: 20160414192328) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -628,6 +628,23 @@ ActiveRecord::Schema.define(version: 20160407081257) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "gamers_list_right"
+    t.boolean  "create_profile_right"
+    t.boolean  "habilitations_right"
+    t.boolean  "create_account_right"
+    t.boolean  "list_gamers_right"
+    t.boolean  "list_loto_transactions_right"
+    t.boolean  "list_pmu_plr_transactions_right"
+    t.boolean  "list_spc_transactions_right"
+    t.boolean  "list_pmu_alr_transactions_right"
+    t.boolean  "list_eppl_transactions_right"
+    t.boolean  "list_pmu_plr_on_hold_transactions_transactions_right"
+    t.boolean  "list_loto_on_hold_transactions_transactions_right"
+    t.boolean  "list_spc_on_hold_transactions_transactions_right"
+    t.boolean  "list_pmu_alr_on_hold_transactions_transactions_right"
+    t.boolean  "list_pmu_plr_winners_transactions_transactions_right"
+    t.boolean  "list_loto_winners_transactions_transactions_right"
+    t.boolean  "list_spc_winners_transactions_transactions_right"
+    t.boolean  "list_pmu_alr_winners_transactions_transactions_right"
   end
 
   create_table "query_bets", force: true do |t|

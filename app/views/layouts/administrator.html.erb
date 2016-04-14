@@ -19,68 +19,72 @@
 
     <!-- Left navigation -->
     <ul id="menu" class="nav">
-      <% if @profile.users_list_right %>
-      <li class="dash"><a href="#" title="" class="exp" id = "<%= @administration_menu_style %>"><span>Administration</span><strong>3</strong></a>
+      <li class="dash"><a href="#" title="" class="exp" id = "<%= @administration_menu_style %>"><span>Administration</span><strong>2</strong></a>
         <ul class="sub">
+          <% if @profile.create_profile_right == true %>
           <li class = "<%= @create_profile_menu_style %>"><a href="<%= new_profile_path %>" title="">Création de profil</a></li>
-          <li class = ""><a href="<%#= pmu_plr_winners_on_hold_path %>" title="">Habilitations liées aux profils</a></li>
+          <% end %>
+          <% if @profile.create_account_right == true %>
           <li class = "<%= @create_administrator_account_menu_style %>"><a href="<%= new_administrator_registration_path %>" title="">Création de comptes</a></li>
+          <% end %>
         </ul>
       </li>
-      <% end %>
-      <% if @profile.gamers_list_right %>
+
+      <% if @profile.list_gamers_right == true %>
       <li class="dash"><%= link_to "<span>Liste des Joueurs</span>".html_safe, gamers_path, class: "#{@class_gamers}" %></li>
       <% end %>
-      <% if @game_administrator %>
       <li class="tables"><a href="#" title="" class="exp" id = "<%= @games_menu_style %>"><span>Liste des transactions</span><strong>5</strong></a>
         <ul class="sub">
-          <% if @profile.loto_right %>
+          <% if @profile.list_loto_transactions_right == true %>
             <li class = "<%= @loto_game_menu_style %>"><a href="<%= list_loto_bets_path %>" title="">LOTO BONHEUR</a></li>
           <% end %>
-          <% if @profile.pmu_plr_right %>
+          <% if @profile.list_pmu_plr_transactions_right %>
             <li class = "<%= @pmu_plr_game_menu_style %>"><a href="<%= list_pmu_plr_bets_path %>" title="">PMU PLR</a></li>
           <% end %>
-          <% if @profile.spc_right %>
+          <% if @profile.list_spc_transactions_right == true %>
             <li class = "<%= @spc_game_menu_style %>"><a href="<%= list_spc_bets_path %>" title="">SPORTCASH</a></li>
           <% end %>
-          <% if @profile.pmu_alr_right %>
+          <% if @profile.list_pmu_alr_transactions_right == true %>
             <li class = "<%= @cm_game_menu_style %>"><a href="<%= list_cm_bets_path %>" title="">PMU ALR</a></li>
           <% end %>
-          <% if @profile.eppl_right %>
+          <% if @profile.list_eppl_transactions_right == true %>
             <li class = "<%= @eppl_game_menu_style %>"><a href="<%= list_eppl_bets_path %>" title="">Jeux digitaux</a></li>
           <% end %>
         </ul>
       </li>
-      <% end %>
-      <% if @profile.payment_on_hold_right %>
       <li class="tables"><a href="#" title="" class="exp" id = "<%= @winners_on_hold_menu_style %>"><span>En attente de paiement</span><strong>4</strong></a>
         <ul class="sub">
+          <% if @profile.list_loto_on_hold_transactions_transactions_right == true %>
           <li class = "<%= @loto_winner_on_hold_menu_style %>"><a href="<%= loto_winners_on_hold_path %>" title="">LOTO BONHEUR</a></li>
+          <% end %>
+          <% if @profile.list_pmu_plr_on_hold_transactions_transactions_right == true %>
           <li class = "<%= @pmu_plr_winner_on_hold_menu_style %>"><a href="<%= pmu_plr_winners_on_hold_path %>" title="">PMU PLR</a></li>
+          <% end %>
+          <% if @profile.list_spc_on_hold_transactions_transactions_right == true %>
           <li class = "<%= @spc_winner_on_hold_menu_style %>"><a href="<%= spc_winners_on_hold_path %>" title="">SPORTCASH</a></li>
+          <% end %>
+          <% if @profile.list_pmu_alr_on_hold_transactions_transactions_right == true %>
           <li class = "<%= @cm_winner_on_hold_menu_style %>"><a href="<%= cm_winners_on_hold_path %>" title="">PMU ALR</a></li>
+          <% end %>
         </ul>
       </li>
-      <% end %>
 
-      <% if @game_administrator %>
       <li class="tables"><a href="#" title="" class="exp" id = "<%= @winners_menu_style %>"><span>Liste des gagnants</span><strong>4</strong></a>
         <ul class="sub">
-          <% if @profile.loto_right %>
+          <% if @profile.list_loto_winners_transactions_transactions_right == true %>
             <li class = "<%= @loto_winners_menu_style %>"><a href="<%= loto_winners_path %>" title="">LOTO BONHEUR</a></li>
           <% end %>
-          <% if @profile.pmu_plr_right %>
+          <% if @profile.list_pmu_plr_winners_transactions_transactions_right == true %>
             <li class = "<%= @pmu_plr_winners_menu_style %>"><a href="<%= pmu_plr_winners_path %>" title="">PMU PLR</a></li>
           <% end %>
-          <% if @profile.spc_right %>
+          <% if @profile.list_spc_winners_transactions_transactions_right == true %>
             <li class = "<%= @spc_winners_menu_style %>"><a href="<%= spc_winners_path %>" title="">SPORTCASH</a></li>
           <% end %>
-          <% if @profile.pmu_alr_right %>
+          <% if @profile.list_pmu_alr_winners_transactions_transactions_right == true %>
             <li class = "<%= @cm_winners_menu_style %>"><a href="<%= cm_winners_path %>" title="">PMU ALR</a></li>
           <% end %>
         </ul>
       </li>
-      <% end %>
       <li class="dash"><%= link_to "<span>SMS</span>".html_safe, "#" %></li>
     </ul>
 </div>

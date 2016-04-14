@@ -1,0 +1,249 @@
+<!-- Title area -->
+<div class="titleArea">
+    <div class="wrapper">
+        <div class="pageTitle">
+            <h5><%= @admin_profile.description %></h5>
+            <span>Liste des habilitations liées au profil.</span>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="line"></div>
+
+  <div class="horControlB">
+    <ul>
+    	<li><a href="<%= list_profiles_path %>" title=""><img src="<%= asset_path 'icons/control/16/archives.png' %>" alt=""><span>Retour</span></a></li>
+      </ul>
+  </div>
+
+<div class="line"></div>
+
+
+<!-- Main content wrapper -->
+<div class="wrapper">
+<%= flash_messages! %>
+<!-- Widgets -->
+  <div class="widget">
+    <div class="title"><img src="<%= asset_path 'icons/dark/full2.png' %>" alt="" class="titleIcon" /><h6>Liste des profils d'administration</h6></div>
+    <table cellpadding="0" cellspacing="0" border="0" class="display dTable taskWidget">
+      <thead>
+        <tr>
+          <th>Habilitation</th>
+          <th>Statut</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="gradeA">
+          <td class = "<%= @admin_profile.create_profile_right == true ? 'taskPr' : 'taskD' %>">
+            Créer un profil
+          </td>
+          <td class = "actBtns">
+            <% if @admin_profile.create_profile_right == true %>
+              <a href="<%= disable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'create_profile_right') %>" class="tipS" original-title="Désactiver l'habilitation"><%= image_tag('icons/color/cross.png', alt: '')  %></a>
+            <% else %>
+              <a href="<%= enable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'create_profile_right') %>" class="tipS" original-title="Activer l'habilitation"><%= image_tag('icons/color/tick.png', alt: '')  %></a>
+            <% end %>
+          </td>
+        </tr>
+
+        <tr class="gradeA">
+          <td class = "<%= @admin_profile.create_account_right == true ? 'taskPr' : 'taskD' %>">
+            Créer un compte
+          </td>
+          <td class = "actBtns">
+            <% if @admin_profile.create_account_right == true %>
+              <a href="<%= disable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'create_account_right') %>" class="tipS" original-title="Désactiver l'habilitation"><%= image_tag('icons/color/cross.png', alt: '')  %></a>
+            <% else %>
+              <a href="<%= enable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'create_account_right') %>" class="tipS" original-title="Activer l'habilitation"><%= image_tag('icons/color/tick.png', alt: '')  %></a>
+            <% end %>
+          </td>
+        </tr>
+
+        <tr class="gradeA">
+          <td class = "<%= @admin_profile.list_gamers_right == true ? 'taskPr' : 'taskD' %>">
+            Liste des joueurs
+          </td>
+          <td class = "actBtns">
+            <% if @admin_profile.list_gamers_right == true %>
+              <a href="<%= disable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_gamers_right') %>" class="tipS" original-title="Désactiver l'habilitation"><%= image_tag('icons/color/cross.png', alt: '')  %></a>
+            <% else %>
+              <a href="<%= enable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_gamers_right') %>" class="tipS" original-title="Activer l'habilitation"><%= image_tag('icons/color/tick.png', alt: '')  %></a>
+            <% end %>
+          </td>
+        </tr>
+
+        <tr class="gradeA">
+          <td class = "<%= @admin_profile.list_pmu_plr_transactions_right == true ? 'taskPr' : 'taskD' %>">
+            Liste des transactions PMU PLR
+          </td>
+          <td class = "actBtns">
+            <% if @admin_profile.list_pmu_plr_transactions_right == true %>
+              <a href="<%= disable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_pmu_plr_transactions_right') %>" class="tipS" original-title="Désactiver l'habilitation"><%= image_tag('icons/color/cross.png', alt: '')  %></a>
+            <% else %>
+              <a href="<%= enable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_pmu_plr_transactions_right') %>" class="tipS" original-title="Activer l'habilitation"><%= image_tag('icons/color/tick.png', alt: '')  %></a>
+            <% end %>
+          </td>
+        </tr>
+
+        <tr class="gradeA">
+          <td class = "<%= @admin_profile.list_loto_transactions_right == true ? 'taskPr' : 'taskD' %>">
+            Liste des transactions LOTO
+          </td>
+          <td class = "actBtns">
+            <% if @admin_profile.list_loto_transactions_right == true %>
+              <a href="<%= disable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_loto_transactions_right') %>" class="tipS" original-title="Désactiver l'habilitation"><%= image_tag('icons/color/cross.png', alt: '')  %></a>
+            <% else %>
+              <a href="<%= enable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_loto_transactions_right') %>" class="tipS" original-title="Activer l'habilitation"><%= image_tag('icons/color/tick.png', alt: '')  %></a>
+            <% end %>
+          </td>
+        </tr>
+
+        <tr class="gradeA">
+          <td class = "<%= @admin_profile.list_spc_transactions_right == true ? 'taskPr' : 'taskD' %>">
+            Liste des transactions SPORTCASH
+          </td>
+          <td class = "actBtns">
+            <% if @admin_profile.list_spc_transactions_right == true %>
+              <a href="<%= disable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_spc_transactions_right') %>" class="tipS" original-title="Désactiver l'habilitation"><%= image_tag('icons/color/cross.png', alt: '')  %></a>
+            <% else %>
+              <a href="<%= enable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_spc_transactions_right') %>" class="tipS" original-title="Activer l'habilitation"><%= image_tag('icons/color/tick.png', alt: '')  %></a>
+            <% end %>
+          </td>
+        </tr>
+
+        <tr class="gradeA">
+          <td class = "<%= @admin_profile.list_pmu_alr_transactions_right == true ? 'taskPr' : 'taskD' %>">
+            Liste des transactions PMU ALR
+          </td>
+          <td class = "actBtns">
+            <% if @admin_profile.list_pmu_alr_transactions_right == true %>
+              <a href="<%= disable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_pmu_alr_transactions_right') %>" class="tipS" original-title="Désactiver l'habilitation"><%= image_tag('icons/color/cross.png', alt: '')  %></a>
+            <% else %>
+              <a href="<%= enable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_pmu_alr_transactions_right') %>" class="tipS" original-title="Activer l'habilitation"><%= image_tag('icons/color/tick.png', alt: '')  %></a>
+            <% end %>
+          </td>
+        </tr>
+
+        <tr class="gradeA">
+          <td class = "<%= @admin_profile.list_eppl_transactions_right == true ? 'taskPr' : 'taskD' %>">
+            Liste des transactions pour Jeux Digitaux
+          </td>
+          <td class = "actBtns">
+            <% if @admin_profile.list_eppl_transactions_right == true %>
+              <a href="<%= disable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_eppl_transactions_right') %>" class="tipS" original-title="Désactiver l'habilitation"><%= image_tag('icons/color/cross.png', alt: '')  %></a>
+            <% else %>
+              <a href="<%= enable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_eppl_transactions_right') %>" class="tipS" original-title="Activer l'habilitation"><%= image_tag('icons/color/tick.png', alt: '')  %></a>
+            <% end %>
+          </td>
+        </tr>
+
+        <tr class="gradeA">
+          <td class = "<%= @admin_profile.list_pmu_plr_on_hold_transactions_transactions_right == true ? 'taskPr' : 'taskD' %>">
+            Liste des transactions PMU PLR en attente
+          </td>
+          <td class = "actBtns">
+            <% if @admin_profile.list_pmu_plr_on_hold_transactions_transactions_right == true %>
+              <a href="<%= disable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_pmu_plr_on_hold_transactions_transactions_right') %>" class="tipS" original-title="Désactiver l'habilitation"><%= image_tag('icons/color/cross.png', alt: '')  %></a>
+            <% else %>
+              <a href="<%= enable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_pmu_plr_on_hold_transactions_transactions_right') %>" class="tipS" original-title="Activer l'habilitation"><%= image_tag('icons/color/tick.png', alt: '')  %></a>
+            <% end %>
+          </td>
+        </tr>
+
+        <tr class="gradeA">
+          <td class = "<%= @admin_profile.list_loto_on_hold_transactions_transactions_right == true ? 'taskPr' : 'taskD' %>">
+            Liste des transactions LOTO en attente
+          </td>
+          <td class = "actBtns">
+            <% if @admin_profile.list_loto_on_hold_transactions_transactions_right == true %>
+              <a href="<%= disable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_loto_on_hold_transactions_transactions_right') %>" class="tipS" original-title="Désactiver l'habilitation"><%= image_tag('icons/color/cross.png', alt: '')  %></a>
+            <% else %>
+              <a href="<%= enable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_loto_on_hold_transactions_transactions_right') %>" class="tipS" original-title="Activer l'habilitation"><%= image_tag('icons/color/tick.png', alt: '')  %></a>
+            <% end %>
+          </td>
+        </tr>
+
+        <tr class="gradeA">
+          <td class = "<%= @admin_profile.list_spc_on_hold_transactions_transactions_right == true ? 'taskPr' : 'taskD' %>">
+            Liste des transactions SPORTCASH en attente
+          </td>
+          <td class = "actBtns">
+            <% if @admin_profile.list_spc_on_hold_transactions_transactions_right == true %>
+              <a href="<%= disable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_spc_on_hold_transactions_transactions_right') %>" class="tipS" original-title="Désactiver l'habilitation"><%= image_tag('icons/color/cross.png', alt: '')  %></a>
+            <% else %>
+              <a href="<%= enable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_spc_on_hold_transactions_transactions_right') %>" class="tipS" original-title="Activer l'habilitation"><%= image_tag('icons/color/tick.png', alt: '')  %></a>
+            <% end %>
+          </td>
+        </tr>
+
+        <tr class="gradeA">
+          <td class = "<%= @admin_profile.list_pmu_alr_on_hold_transactions_transactions_right == true ? 'taskPr' : 'taskD' %>">
+            Liste des transactions PMU ALR en attente
+          </td>
+          <td class = "actBtns">
+            <% if @admin_profile.list_pmu_alr_on_hold_transactions_transactions_right == true %>
+              <a href="<%= disable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_pmu_alr_on_hold_transactions_transactions_right') %>" class="tipS" original-title="Désactiver l'habilitation"><%= image_tag('icons/color/cross.png', alt: '')  %></a>
+            <% else %>
+              <a href="<%= enable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_pmu_alr_on_hold_transactions_transactions_right') %>" class="tipS" original-title="Activer l'habilitation"><%= image_tag('icons/color/tick.png', alt: '')  %></a>
+            <% end %>
+          </td>
+        </tr>
+
+        <tr class="gradeA">
+          <td class = "<%= @admin_profile.list_pmu_plr_winners_transactions_transactions_right == true ? 'taskPr' : 'taskD' %>">
+            Liste des transactions des gagnants PMU PLR
+          </td>
+          <td class = "actBtns">
+            <% if @admin_profile.list_pmu_plr_winners_transactions_transactions_right == true %>
+              <a href="<%= disable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_pmu_plr_winners_transactions_transactions_right') %>" class="tipS" original-title="Désactiver l'habilitation"><%= image_tag('icons/color/cross.png', alt: '')  %></a>
+            <% else %>
+              <a href="<%= enable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_pmu_plr_winners_transactions_transactions_right') %>" class="tipS" original-title="Activer l'habilitation"><%= image_tag('icons/color/tick.png', alt: '')  %></a>
+            <% end %>
+          </td>
+        </tr>
+
+        <tr class="gradeA">
+          <td class = "<%= @admin_profile.list_loto_winners_transactions_transactions_right == true ? 'taskPr' : 'taskD' %>">
+            Liste des transactions des gagnants LOTO
+          </td>
+          <td class = "actBtns">
+            <% if @admin_profile.list_loto_winners_transactions_transactions_right == true %>
+              <a href="<%= disable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_loto_winners_transactions_transactions_right') %>" class="tipS" original-title="Désactiver l'habilitation"><%= image_tag('icons/color/cross.png', alt: '')  %></a>
+            <% else %>
+              <a href="<%= enable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_loto_winners_transactions_transactions_right') %>" class="tipS" original-title="Activer l'habilitation"><%= image_tag('icons/color/tick.png', alt: '')  %></a>
+            <% end %>
+          </td>
+        </tr>
+
+        <tr class="gradeA">
+          <td class = "<%= @admin_profile.list_spc_winners_transactions_transactions_right == true ? 'taskPr' : 'taskD' %>">
+            Liste des transactions des gagnants SPORTCASH
+          </td>
+          <td class = "actBtns">
+            <% if @admin_profile.list_spc_winners_transactions_transactions_right == true %>
+              <a href="<%= disable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_spc_winners_transactions_transactions_right') %>" class="tipS" original-title="Désactiver l'habilitation"><%= image_tag('icons/color/cross.png', alt: '')  %></a>
+            <% else %>
+              <a href="<%= enable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_spc_winners_transactions_transactions_right') %>" class="tipS" original-title="Activer l'habilitation"><%= image_tag('icons/color/tick.png', alt: '')  %></a>
+            <% end %>
+          </td>
+        </tr>
+
+        <tr class="gradeA">
+          <td class = "<%= @admin_profile.list_pmu_alr_winners_transactions_transactions_right == true ? 'taskPr' : 'taskD' %>">
+            Liste des transactions des gagnants PMU ALR
+          </td>
+          <td class = "actBtns">
+            <% if @admin_profile.list_pmu_alr_winners_transactions_transactions_right == true %>
+              <a href="<%= disable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_pmu_alr_winners_transactions_transactions_right') %>" class="tipS" original-title="Désactiver l'habilitation"><%= image_tag('icons/color/cross.png', alt: '')  %></a>
+            <% else %>
+              <a href="<%= enable_habilitation_right_path(profile_id: @admin_profile.id, habilitation: 'list_pmu_alr_winners_transactions_transactions_right') %>" class="tipS" original-title="Activer l'habilitation"><%= image_tag('icons/color/tick.png', alt: '')  %></a>
+            <% end %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- End Main content wrapper -->

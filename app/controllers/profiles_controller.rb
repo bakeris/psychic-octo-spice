@@ -25,6 +25,37 @@ class ProfilesController < ApplicationController
     render :index
   end
 
+  def profile_rights
+    @admin_profile = Profile.find_by_id(params[:profile_id])
+
+    if @admin_profile.blank?
+      flash[:error] = "Ce profil n'existe pas"
+      redirect_to list_profiles_path
+    end
+  end
+
+  def enable_habilitation
+    enable_disable_habilitation(params[:profile_id], true)
+  end
+
+  def disable_habilitation
+    enable_disable_habilitation(params[:profile_id], false)
+  end
+
+  def enable_disable_habilitation(profile_id, status)
+    @admin_profile = Profile.find_by_id(profile_id)
+
+    if @admin_profile.blank?
+      flash[:error] = "Ce profil n'existe pas"
+      redirect_to :back
+    else
+      flash[:success] = "L'habilitation a été modifiée"
+      @admin_profile.update_attributes(:"#{params[:habilitation]}" => status)
+
+      redirect_to profile_rights_path(profile_id)
+    end
+  end
+
   def list
     @admin_profiles = Profile.all.order('description ASC')
   end

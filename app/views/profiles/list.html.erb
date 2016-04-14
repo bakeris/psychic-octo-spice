@@ -18,6 +18,7 @@
 
 <!-- Main content wrapper -->
 <div class="wrapper">
+<%= flash_messages! %>
 <!-- Widgets -->
   <div class="widget">
     <div class="title"><img src="<%= asset_path 'icons/dark/full2.png' %>" alt="" class="titleIcon" /><h6>Liste des profils d'administration</h6></div>
@@ -25,17 +26,18 @@
       <thead>
         <tr>
           <th>Intitulé</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         <% unless @admin_profiles.blank? %>
-          <%# current_user_profile_shortcut = current_user.profile.shortcut %>
-          <%# current_user_id = current_user.id %>
           <% @admin_profiles.each do |profile| %>
             <tr class="gradeA">
-              <%# css_class = (user.confirmed_at.blank? ? 'taskP' : (user.published == false ? 'taskD' : 'taskPr')) %>
               <td class = "taskPr">
                 <%= profile.description %>
+              </td>
+              <td class = "actBtns">
+                <a href="<%= profile_rights_path(profile.id) %>" class="tipS"  original-title="Afficher les habilitations"><%= image_tag('icons/color/user-black.png', alt: '') %></a>
               </td>
             </tr>
           <% end %>
