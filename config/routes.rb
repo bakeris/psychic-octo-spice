@@ -325,6 +325,9 @@ Rails.application.routes.draw do
   get '/administrator/profile/new' => 'profiles#index', as: :new_profile
   post '/administrator/profile/create' => 'profiles#create', as: :create_profile
   get '/administrator/profiles/list' => 'profiles#list', as: :list_profiles
+  get '/administrator/profile/rights/:profile_id' => 'profiles#profile_rights', as: :profile_rights
+  get '/administrator/profile/habilitation/enable/:profile_id/:habilitation' => 'profiles#enable_habilitation', as: :enable_habilitation_right
+  get '/administrator/profile/habilitation/disable/:profile_id/:habilitation' => 'profiles#disable_habilitation', as: :disable_habilitation_right
 
   # Excel export
   get '/administrator/gamers/list/export' => 'gamers#export_gamers_list', as: :export_gamers_list
@@ -342,7 +345,7 @@ Rails.application.routes.draw do
   get '/administrator/spc/winners/export' => 'gamers#export_spc_winners', as: :export_spc_winners
 
   get "users/administrators/disable/:administrator_id" => "administrators#disable_administrator_account", as: :disable_administrator_account
-    get "users/administrators/enable/:administrator_id" => "administrators#enable_administrator_account", as: :enable_administrator_account
+  get "users/administrators/enable/:administrator_id" => "administrators#enable_administrator_account", as: :enable_administrator_account
 
   # Deposit
   #get '/api/86d13843ed59e5207c68e864564/deposit/:account_number/:transaction_amount' => 'accounts#api_deposit', :constraints => {:transaction_amount => /(\d+(.\d+)?)/}
