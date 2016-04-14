@@ -1,5 +1,5 @@
 <div class="widget">
-  <div class="title"><img src="<%= asset_path 'icons/dark/full2.png' %>" alt="" class="titleIcon" /><h6>Statistiques relatives à Sport Cash</h6></div>
+  <div class="title"><img src="<%= asset_path 'icons/dark/full2.png' %>" alt="" class="titleIcon" /><h6>Statistiques relatives au PMU ALR</h6></div>
   <table cellpadding="0" cellspacing="0" border="0" class="display dTable taskWidget">
     <thead>
       <tr>
@@ -39,11 +39,11 @@
           <%= number_with_delimiter(cancelled_count) %>
         </td>
         <td>
-          <% cancelled_amount = @cm_bets.where("bet_status = 'Annulé'").map{|bet| (bet.amount.to_f rescue 0)}.sum %>
-          <%= number_with_delimiter(cancelled_amount) %>
+
         </td>
         <td>
-
+          <% cancelled_amount = @cm_bets.where("bet_status = 'Annulé'").map{|bet| (bet.amount.to_f rescue 0)}.sum %>
+          <%= number_with_delimiter(cancelled_amount) %>
         </td>
         <td>
 
