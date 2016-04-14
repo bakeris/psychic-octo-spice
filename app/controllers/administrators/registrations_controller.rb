@@ -164,7 +164,8 @@ class Administrators::RegistrationsController < Devise::RegistrationsController
     end
 
     def init_form_style
-      @class_administrators = "active"
+      @administration_menu_style = 'current'
+      @create_administrator_account_menu_style = 'this'
     end
 
   # GET /resource/sign_up

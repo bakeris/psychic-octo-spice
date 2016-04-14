@@ -1,0 +1,47 @@
+<div class="titleArea">
+    <div class="wrapper">
+        <div class="pageTitle">
+            <h5>Création de profils d'administration</h5>
+            <span>Créez un profil afin de le doter d'habilitations.</span>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="line"></div>
+
+<%= render "profiles/profile_menu.html.erb" %>
+
+<div class="line"></div>
+
+<!-- Main content wrapper -->
+<div class="wrapper">
+
+  <%= flash_messages! %>
+  <%= form_for(@admin_profile, url: create_profile_path, method: :post, html: {class: 'form'}) do |f| %>
+
+    <fieldset>
+      <div class="widget">
+        <div class="title">
+          <img src="<%= asset_path 'icons/dark/users.png' %>" alt="" class="titleIcon" />
+          <h6>Formulaire de création de profil</h6>
+        </div>
+
+        <div class="formRow">
+          <label><%= f.label :description %></label>
+          <div class="formRight">
+            <%= f.text_field :description, placeholder: "Veuillez entrer l'intitulé du profil", class: 'form-control', autofocus: true %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <%= f.submit "Valider", class: 'basic' %>
+        </div>
+      </div>
+    </fieldset>
+  <% end %>
+
+</div>
+<!-- End Main content wrapper -->

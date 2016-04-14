@@ -43,8 +43,14 @@ Rails.application.routes.draw do
   # Return all prematch data
   get '/spc/api/0790f43181/prematch_data/list' => 'ludwin_api#api_list_prematch_data'
 
+  # Return all live data
+  get '/spc/api/0790f43182/live_data/list' => 'ludwin_api#api_list_live_data'
+
   # Return all prematch data as delta
   get '/spc/api/4441f43181/prematch_data_delta/list' => 'ludwin_api#api_list_prematch_data_delta'
+
+  # Return all live data as delta
+  get '/spc/api/4441f43182/live_data_delta/list' => 'ludwin_api#api_list_live_data_delta'
 
   # List all sports
   get '/spc/api/882198a635/sports' => 'ludwin_api#api_list_sports'
@@ -315,6 +321,10 @@ Rails.application.routes.draw do
   get '/administrator/cm/winners_on_hold/validate/:bet_id' => 'gamers#validate_on_hold_cm_winner', as: :validate_on_hold_cm_winner
 
   get '/administrator/cm/winners' => 'gamers#cm_winners', as: :cm_winners
+
+  get '/administrator/profile/new' => 'profiles#index', as: :new_profile
+  post '/administrator/profile/create' => 'profiles#create', as: :create_profile
+  get '/administrator/profiles/list' => 'profiles#list', as: :list_profiles
 
   # Excel export
   get '/administrator/gamers/list/export' => 'gamers#export_gamers_list', as: :export_gamers_list

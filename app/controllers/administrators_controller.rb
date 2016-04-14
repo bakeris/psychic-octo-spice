@@ -5,6 +5,8 @@ class AdministratorsController < ApplicationController
   layout "administrator"
 
   def list
+    @administration_menu_style = 'current'
+    @create_administrator_account_menu_style = 'this'
     @users = Administrator.all.order("created_at DESC")
   end
 

@@ -1,0 +1,47 @@
+<!-- Title area -->
+<div class="titleArea">
+    <div class="wrapper">
+        <div class="pageTitle">
+            <h5>Liste des profils d'administration</h5>
+            <span>Prise en charge des actions liées à la liste des profils d'administration.</span>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="line"></div>
+
+<%= render "profiles/profile_menu.html.erb" %>
+
+<div class="line"></div>
+
+<!-- Main content wrapper -->
+<div class="wrapper">
+<!-- Widgets -->
+  <div class="widget">
+    <div class="title"><img src="<%= asset_path 'icons/dark/full2.png' %>" alt="" class="titleIcon" /><h6>Liste des profils d'administration</h6></div>
+    <table cellpadding="0" cellspacing="0" border="0" class="display dTable taskWidget">
+      <thead>
+        <tr>
+          <th>Intitulé</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% unless @admin_profiles.blank? %>
+          <%# current_user_profile_shortcut = current_user.profile.shortcut %>
+          <%# current_user_id = current_user.id %>
+          <% @admin_profiles.each do |profile| %>
+            <tr class="gradeA">
+              <%# css_class = (user.confirmed_at.blank? ? 'taskP' : (user.published == false ? 'taskD' : 'taskPr')) %>
+              <td class = "taskPr">
+                <%= profile.description %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- End Main content wrapper -->

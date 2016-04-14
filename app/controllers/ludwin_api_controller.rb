@@ -333,7 +333,72 @@ class LudwinApiController < ApplicationController
     #LudwinLog.create(operation: "Liste complète des données d'avant match", transaction_id: transaction_id, language: language, error_code: @error_code, response_body: response_body, remote_ip_address: remote_ip_address)
   end
 
+   def api_list_live_data
+    remote_ip_address = request.remote_ip
+    language = 'FR'
+    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
+    @error_code = ''
+    @error_description = ''
+    response_body = ''
+    response_code = ''
+    url = "#{@@url}/getEvent?system_code=PD&type=FULL&isLive=1&len=#{language}"
+
+    request = Typhoeus::Request.new(url, followlocation: true, method: :get, ssl_verifypeer: false, ssl_verifyhost: 0)
+
+    request.on_complete do |response|
+      if response.success?
+        response_body = response.body
+        @sports_list = (Nokogiri::XML(response_body).xpath('//SportMobile') rescue nil)
+
+        if @sports_list.blank?
+          @error_code = '4001'
+          @error_description = 'Error while parsing XML.'
+        end
+      else
+        @error_code = '4000'
+        @error_description = 'Unavailable resource.'
+      end
+    end
+
+    request.run
+
+    #LudwinLog.create(operation: "Liste complète des données d'avant match", transaction_id: transaction_id, language: language, error_code: @error_code, response_body: response_body, remote_ip_address: remote_ip_address)
+  end
+
   def api_list_prematch_data_delta
+    remote_ip_address = request.remote_ip
+    language = 'FR'
+    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
+    @error_code = ''
+    @error_description = ''
+    response_body = ''
+    response_code = ''
+    url = "#{@@url}/getEvent?system_code=PD&type=DELTA&isLive=0&len=#{language}"
+
+    request = Typhoeus::Request.new(url, followlocation: true, method: :get, ssl_verifypeer: false, ssl_verifyhost: 0)
+
+    request.on_complete do |response|
+      if response.success?
+        @response_body = response.body
+        #@sports_list = (Nokogiri::XML(@response_body).xpath('//SportMobile') rescue nil)
+
+        if @sports_list.blank?
+          @error_code = '4001'
+          @error_description = 'Error while parsing XML.'
+        end
+      else
+        @error_code = '4000'
+        @error_description = 'Unavailable resource.'
+      end
+    end
+
+    request.run
+
+    #LudwinLog.create(operation: "Liste complète des données d'avant match", transaction_id: transaction_id, language: language, error_code: @error_code, response_body: response_body, remote_ip_address: remote_ip_address)
+    render text: @response_body
+  end
+
+  def api_list_live_data_delta
     remote_ip_address = request.remote_ip
     language = 'FR'
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]

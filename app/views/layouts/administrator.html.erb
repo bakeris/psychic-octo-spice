@@ -20,7 +20,13 @@
     <!-- Left navigation -->
     <ul id="menu" class="nav">
       <% if @profile.users_list_right %>
-      <li class="dash"><%= link_to "<span>Administration</span>".html_safe, new_administrator_registration_path, class: "#{@class_administrators}" %></li>
+      <li class="dash"><a href="#" title="" class="exp" id = "<%= @administration_menu_style %>"><span>Administration</span><strong>3</strong></a>
+        <ul class="sub">
+          <li class = "<%= @create_profile_menu_style %>"><a href="<%= new_profile_path %>" title="">Création de profil</a></li>
+          <li class = ""><a href="<%#= pmu_plr_winners_on_hold_path %>" title="">Habilitations liées aux profils</a></li>
+          <li class = "<%= @create_administrator_account_menu_style %>"><a href="<%= new_administrator_registration_path %>" title="">Création de comptes</a></li>
+        </ul>
+      </li>
       <% end %>
       <% if @profile.gamers_list_right %>
       <li class="dash"><%= link_to "<span>Liste des Joueurs</span>".html_safe, gamers_path, class: "#{@class_gamers}" %></li>
