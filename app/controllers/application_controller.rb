@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
         @error_code = '5001'
         @error_description = "Le numéro PAYMONEY est inexistant. Veuillez créer un compte puis réessayez."
       else
-        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/#{bet.transaction_id}/#{game_account_token}/#{paymoney_account_token}/#{password}/#{transaction_amount}", followlocation: true, method: :get)
+        request = Typhoeus::Request.new("#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/#{bet.transaction_id}/#{game_account_token}/#{paymoney_account_token}/#{password}/#{transaction_amount}", followlocation: true, method: :get, timeout: 30)
 
         request.on_complete do |response|
           if response.success?
@@ -94,7 +94,7 @@ class ApplicationController < ActionController::Base
         @error_description = "Le numéro PAYMONEY est inexistant. Veuillez créer un compte puis réessayez."
       else
         body = "#{paymoney_wallet_url}/api/86d138798bc43ed59e5207c684564/bet/get/#{bet.sale_client_id}/#{game_account_token}/#{paymoney_account_token}/#{password}/#{transaction_amount}"
-        request = Typhoeus::Request.new(body, followlocation: true, method: :get)
+        request = Typhoeus::Request.new(body, followlocation: true, method: :get, timeout: 30)
 
         request.on_complete do |response|
           if response.success?
@@ -153,7 +153,7 @@ class ApplicationController < ActionController::Base
 
         LogRequests.create(description: "Placement de pari sans annulation", request: @url)
 
-        request = Typhoeus::Request.new(@url, followlocation: true, method: :get)
+        request = Typhoeus::Request.new(@url, followlocation: true, method: :get, timeout: 30)
 
         request.on_complete do |response|
           if response.success?
