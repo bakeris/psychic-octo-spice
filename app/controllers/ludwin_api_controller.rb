@@ -702,7 +702,7 @@ class LudwinApiController < ApplicationController
               sold = sold["solde"].to_f
               if sold >= @amount.to_f
 
-                request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
+                request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0, timeout: 30)
 
                 request.on_complete do |response|
                   if response.success? || response.code == 417
