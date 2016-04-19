@@ -300,7 +300,7 @@ Rails.application.routes.draw do
   post '/administrator/cm/bets/search' => 'gamers#list_cm_bet_search', as: :list_cm_bet_search
 
   get '/administrator/eppl/bets' => 'gamers#list_eppl_bets', as: :list_eppl_bets
-  post '/administrator/eppl/bets/search' => 'gamers#list_eppl_bet_search', as: :list_eppl_bet_search
+  post '/administrator/list/eppl/bets/search' => 'gamers#list_eppl_bet_search', as: :list_eppl_bet_search
 
   get '/administrator/loto/winners_on_hold' => 'gamers#loto_winners_on_hold', as: :loto_winners_on_hold
   get '/administrator/loto/winners_on_hold/validate/:bet_id' => 'gamers#validate_on_hold_loto_winner', as: :validate_on_hold_loto_winner
