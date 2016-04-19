@@ -49,6 +49,19 @@
         </td>
       </tr>
       <tr class="gradeA">
+        <td class = "taskPr">
+          Prises de paris
+        </td>
+        <td>
+          <% bet_count = @eppl_bets.where("operation = 'Prise de pari'").count %>
+          <%= number_with_delimiter(bet_count) %>
+        </td>
+        <td>
+          <% bet_amount = @eppl_bets.where("operation = 'Prise de pari'").map{|bet| (bet.transaction_amount.to_f rescue 0)}.sum %>
+          <%= number_with_delimiter(bet_amount) %>
+        </td>
+      </tr>
+      <tr class="gradeA">
         <td>
           <b>Total</b>
         </td>
