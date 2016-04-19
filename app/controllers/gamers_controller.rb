@@ -444,7 +444,7 @@ class GamersController < ApplicationController
     @games_menu_style = "current"
     @eppl_game_menu_style = "this"
 
-    @eppl_bets = Eppl.where("operation != 'Prise de pari' AND operation IS NOT NULL").order("created_at DESC")
+    @eppl_bets = Eppl.where("operation IS NOT NULL AND bet_placed IS TRUE").order("created_at DESC")
   end
 
   def list_eppl_bet_search
