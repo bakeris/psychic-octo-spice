@@ -436,7 +436,7 @@ class GamersController < ApplicationController
       flash[:error] = "Cet utilisateur n'existe pas"
       redirect_to gamers_path
     else
-      @eppl_bets = Eppl.where("gamer_id = '#{@gamer.uuid}' AND operation != 'Prise de pari' AND operation IS NOT NULL").order("created_at DESC")
+      @eppl_bets = Eppl.where("gamer_id = '#{@gamer.uuid}' AND error_code IS NULL AND bet_placed IS TRUE").order("created_at DESC")
     end
   end
 
@@ -444,7 +444,7 @@ class GamersController < ApplicationController
     @games_menu_style = "current"
     @eppl_game_menu_style = "this"
 
-    @eppl_bets = Eppl.where("operation IS NOT NULL AND bet_placed IS TRUE").order("created_at DESC")
+    @eppl_bets = Eppl.where("error_code IS NULL AND bet_placed IS TRUE").order("created_at DESC")
   end
 
   def list_eppl_bet_search
@@ -464,7 +464,7 @@ class GamersController < ApplicationController
 
     set_eppl_search_params
 
-    @eppl_bets = Eppl.where("#{@sql_begin_date} #{@sql_begin_date.blank? ? '' : 'AND'} #{@sql_end_date} #{@sql_end_date.blank? ? '' : 'AND'} #{@sql_status} #{@sql_status.blank? ? '' : 'AND'} #{@sql_min_amount} #{@sql_min_amount.blank? ? '' : 'AND'} #{@sql_max_amount} #{@sql_max_amount.blank? ? '' : 'AND'} bet_placed IS TRUE").order("created_at DESC")
+    @eppl_bets = Eppl.where("#{@sql_begin_date} #{@sql_begin_date.blank? ? '' : 'AND'} #{@sql_end_date} #{@sql_end_date.blank? ? '' : 'AND'} #{@sql_status} #{@sql_status.blank? ? '' : 'AND'} #{@sql_min_amount} #{@sql_min_amount.blank? ? '' : 'AND'} #{@sql_max_amount} #{@sql_max_amount.blank? ? '' : 'AND'} error_code IS NULL AND bet_placed IS TRUE").order("created_at DESC")
     #@eppl_bets = Eppl.where("#{@sql_begin_date} #{@sql_begin_date.blank? ? '' : 'AND'} #{@sql_end_date} #{@sql_end_date.blank? ? '' : 'AND'} #{@sql_status} #{(!@sql_status.blank? && (!@sql_min_amount.blank? || !@sql_max_amount.blank?)) ? 'AND' : ''} #{@sql_min_amount} #{(!@sql_min_amount.blank? && !@sql_max_amount.blank?) ? 'AND' : ''} #{@sql_max_amount} bet_placed IS TRUE").order("created_at DESC")
     flash[:success] = "#{@eppl_bets.count} Résultat(s) trouvé(s)."
 
@@ -504,7 +504,7 @@ class GamersController < ApplicationController
 
       set_eppl_search_params
 
-      @eppl_bets = Eppl.where("#{@sql_begin_date} #{@sql_begin_date.blank? ? '' : 'AND'} #{@sql_end_date} #{@sql_end_date.blank? ? '' : 'AND'} #{@sql_status} #{@sql_status.blank? ? '' : 'AND'} #{@sql_min_amount} #{@sql_min_amount.blank? ? '' : 'AND'} #{@sql_max_amount} #{@sql_max_amount.blank? ? '' : 'AND'} gamer_id = '#{@gamer.uuid}' AND bet_placed IS TRUE").order("created_at DESC")
+      @eppl_bets = Eppl.where("#{@sql_begin_date} #{@sql_begin_date.blank? ? '' : 'AND'} #{@sql_end_date} #{@sql_end_date.blank? ? '' : 'AND'} #{@sql_status} #{@sql_status.blank? ? '' : 'AND'} #{@sql_min_amount} #{@sql_min_amount.blank? ? '' : 'AND'} #{@sql_max_amount} #{@sql_max_amount.blank? ? '' : 'AND'} gamer_id = '#{@gamer.uuid}' AND error_code IS NULL AND bet_placed IS TRUE").order("created_at DESC")
       flash[:success] = "#{@eppl_bets.count} Résultat(s) trouvé(s)."
     end
   end
