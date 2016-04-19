@@ -693,6 +693,8 @@ class GamersController < ApplicationController
     end
 
     def set_eppl_search_params
+      @sql_begin_date = ""
+      @sql_end_date = ""
       @sql_status = ""
       @sql_min_amount = ""
       @sql_max_amount = ""
