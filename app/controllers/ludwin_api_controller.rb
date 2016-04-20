@@ -702,12 +702,15 @@ class LudwinApiController < ApplicationController
               sold = sold["solde"].to_f
               if sold >= @amount.to_f
 
-                request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0, timeout: 30)
+                request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0, timeout: 15)
 
                 request.on_complete do |response|
                   if response.success? || response.code == 417
                     response_body = response.body
                     nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
+
+                    # Free the terminal
+                    @terminal.update_attributes(busy: false)
 
                     if !nokogiri_response.blank?
                       response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
@@ -731,6 +734,9 @@ class LudwinApiController < ApplicationController
                         @error_description = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
                       end
                     else
+                      # Free the terminal
+                      @terminal.update_attributes(busy: false)
+
                       @error_code = '4001'
                       @error_description = 'Erreur lors du parsing du XML.'
                     end
@@ -755,8 +761,7 @@ class LudwinApiController < ApplicationController
           @error_description = 'Invalid JSON data.'
         end
 
-        # Free the terminal
-        @terminal.update_attributes(busy: false)
+
       end
     end
   end
