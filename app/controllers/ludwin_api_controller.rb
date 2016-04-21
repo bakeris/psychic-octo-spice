@@ -916,18 +916,21 @@ class LudwinApiController < ApplicationController
 
                         if (@bet.win_amount.to_f rescue 0) > @sill_amount
                           @bet.update_attributes(payment_status_datetime: DateTime.now, bet_status: "Vainqueur en attente de paiement")
+                          send_winning_notification
                         else
                           # Paymoney payment
-                          pay_earnings(@bet, "LhSpwtyN", @bet.win_amount)
-                          @bet.update_attributes(pr_status: true, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Gagnant")
+                          if pay_earnings(@bet, "LhSpwtyN", @bet.win_amount)
+                            @bet.update_attributes(pr_status: true, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Gagnant")
+                            send_winning_notification
+                          end
                         end
 
                         # SMS notification
-                        build_message(@bet, @bet.win_amount, "à SPORTCASH", @bet.ticket_id)
-                        send_sms_notification(@bet, @msisdn, "SPORTCASH", @message_content)
+                        #build_message(@bet, @bet.win_amount, "à SPORTCASH", @bet.ticket_id)
+                        #send_sms_notification(@bet, @msisdn, "SPORTCASH", @message_content)
 
                         # Email notification
-                        WinningNotification.notification_email(@user, @bet.win_amount, "à SPORTCASH", "SPORTCASH", @bet.ticket_id, @bet.paymoney_account_number, '').deliver
+                        #WinningNotification.notification_email(@user, @bet.win_amount, "à SPORTCASH", "SPORTCASH", @bet.ticket_id, @bet.paymoney_account_number, '').deliver
                       else
                         if response_code == '5177' || response_code == '-5177'
                           @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Perdant")
@@ -977,6 +980,15 @@ class LudwinApiController < ApplicationController
               </ServicesPSQF>]
 
     render text: body
+  end
+
+  def send_winning_notification
+    # SMS notification
+    build_message(@bet, @bet.win_amount, "à SPORTCASH", @bet.ticket_id)
+    send_sms_notification(@bet, @msisdn, "SPORTCASH", @message_content)
+
+    # Email notification
+    WinningNotification.notification_email(@user, @bet.win_amount, "à SPORTCASH", "SPORTCASH", @bet.ticket_id, @bet.paymoney_account_number, '').deliver
   end
 
   def api_coupon_status
