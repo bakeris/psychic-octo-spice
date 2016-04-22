@@ -74,6 +74,7 @@ Rails.application.routes.draw do
   post '/spc/api/6d3782c78d/coupon/sell/:gamer_id/:paymoney_account_number/:password' => 'ludwin_api#api_sell_coupon'
 
   post '/spc/api/6d3782c78d/m_coupon/sell/:gamer_id/:paymoney_account_number/:password' => 'ludwin_api#api_m_sell_coupon'
+  post '/spc/api/6o412c78d/system_bet/place/:gamer_id/:paymoney_account_number/:password' => 'ludwin_api#api_system_bet_placement'
 
   post '/spc/api/6d3782c78d/m_coupon/sell/:gamer_id/:paymoney_account_number/:password/:begin_date' => 'ludwin_api#api_m_sell_coupon'
 
@@ -91,6 +92,9 @@ Rails.application.routes.draw do
 
   # Sandbox
   get '/sandbox/patron' => 'sandbox#patron_client'
+
+  # Last request log
+  get '/ail/spc/api/log/last_request' => 'ludwin_api#api_last_request_log'
 
   #---------------------LUDWIN---------------------
 

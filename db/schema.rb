@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160414192328) do
+ActiveRecord::Schema.define(version: 20160422013525) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -247,6 +247,9 @@ ActiveRecord::Schema.define(version: 20160414192328) do
     t.string   "begin_date"
     t.string   "teams"
     t.string   "sport"
+    t.string   "is_fix"
+    t.string   "handicap"
+    t.string   "flag_bonus"
   end
 
   create_table "bets", force: true do |t|
@@ -308,6 +311,8 @@ ActiveRecord::Schema.define(version: 20160414192328) do
     t.string   "payback_unplaced_bet_response"
     t.boolean  "payback_unplaced_bet"
     t.datetime "payback_unplaced_bet_at"
+    t.string   "system_code"
+    t.string   "number_of_combinations"
   end
 
   create_table "bomb_logs", force: true do |t|
