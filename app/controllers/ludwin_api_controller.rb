@@ -1183,7 +1183,7 @@ class LudwinApiController < ApplicationController
 
     unless terminals.blank?
       terminals.each do |terminal|
-        status << "Code du terminal: " + terminal.code.to_s + " -- Statut: " + (terminal.busy == true ? "Occupé" : "Libre<br /><br />") + " -- Date du verrouillage: " + (terminal.updated_at.to_s rescue "") + "<br /><br />"
+        status << "Code du terminal: " + terminal.code.to_s + " -- Statut: " + (terminal.busy == true ? "Occupé" : "Libre") + " -- Date du verrouillage: " + (terminal.updated_at.to_s rescue "") + "<br /><br />"
       end
     else
       status = "Aucun terminal trouvé"
