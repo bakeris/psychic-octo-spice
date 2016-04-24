@@ -938,7 +938,7 @@ class AilPmuController < ApplicationController
         bets = AilPmu.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En cours' AND placement_acknowledge IS TRUE AND (earning_notification_received_at  < '#{DateTime.now + 5.minutes}' OR refund_notification_received_at  < '#{DateTime.now + 5.minutes}') AND earning_paid IS NULL AND refund_paid IS NULL AND draw_id = '#{draw_id}'")
         cancel_amount = AilPmu.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En cours' AND placement_acknowledge IS TRUE AND (earning_notification_received_at  < '#{DateTime.now + 5.minutes}' OR refund_notification_received_at  < '#{DateTime.now + 5.minutes}') AND earning_paid IS NULL AND refund_paid IS NULL AND draw_id = '#{draw_id}' AND bet_cancelled IS TRUE").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0
 
-        bets_amount = (bets.map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0) - cancel_amount
+        bets_amount = (bets.map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0) #- cancel_amount
         if validate_bet_ail("ApXTrliOp", bets_amount, "ail_pmus")
           bets_payout = AilPmu.where("earning_notification_received IS TRUE AND draw_id = '#{draw_id}' AND paymoney_earning_id IS NULL")
           unless bets_payout.blank?
