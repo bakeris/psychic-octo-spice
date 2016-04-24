@@ -766,6 +766,166 @@ class LudwinApiController < ApplicationController
     end
   end
 
+  def api_system_bet_placement
+    remote_ip_address = request.remote_ip
+    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
+    url = "#{@@url}/doBet"
+    license_code = @@license_code
+    point_of_sale_code = @@point_of_sale_code
+    account_id = 'scommessina31'
+    account_type = '14'
+    coupons_body = ''
+    body = ''
+    @error_code = ''
+    @error_description = ''
+    response_body = ''
+    response_code = ''
+    coupons = (JSON.parse(request.body.read) rescue nil)
+    amount = ''
+    coupons_details = ''
+    paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
+    paymoney_account_number = params[:paymoney_account_number]
+    paymoney_account_token = check_account_number(paymoney_account_number)
+    user = User.find_by_uuid(params[:gamer_id])
+    gamer_id = params[:gamer_id]
+    password = params[:password]
+
+    if user.blank?
+      @error_code = '3000'
+      @error_description = "L'identifiant du parieur n'a pas été trouvé."
+    else
+      # Lock the terminal
+      unless terminal_selected
+        @error_code = '3001'
+        @error_description = "Veuillez réessayer."
+      else
+        if !(coupons["bets"] rescue nil).blank?
+          @amount = coupons["amount"].to_i rescue nil
+          formula = coupons["formula"] rescue nil
+          system_code = coupons["system_code"] rescue nil
+          number_of_combinations = coupons["number_of_combinations"] rescue nil
+
+          if @amount.blank?
+            @error_code = '5001'
+            @error_description = "Le montant des gains n'a pas pu être récupéré."
+          else
+            @bet = Bet.create(license_code: license_code, pos_code: point_of_sale_code, terminal_id: @terminal.code, account_id: account_id, account_type: account_type, transaction_id: transaction_id, gamer_id: gamer_id, game_account_token: "LhSpwtyN", amount: @amount, formula: formula, paymoney_account_number: paymoney_account_number, system_code: system_code, number_of_combinations: number_of_combinations)
+
+            coupons_body = format_system_coupouns(coupons["bets"])
+
+            if coupons_body.blank?
+              @error_code = '5003'
+              @error_description = 'Veuillez prendre au moins un pari.'
+            else
+              terminal_id = @terminal.code
+
+              body = %Q[<?xml version='1.0' encoding='UTF-8'?><ServicesPSQF><SellSystemRequest><CodConc>#{license_code}</CodConc><CodDiritto>#{point_of_sale_code}</CodDiritto><IdTerminal>#{@terminal.code}</IdTerminal><TransactionID>#{transaction_id}</TransactionID><AmountCoupon>#{@win_amount}</AmountCoupon><System><Code>#{system_code}</Code><Amount>#{@amount}</Amount><Num_Multiple>#{number_of_combinations}</Num_Multiple></System>#{coupons_body}</SellSystemRequest></ServicesPSQF>]
+
+              @bet.update_attributes(win_amount: @win_amount)
+
+              # débit du compte paymoney
+              #if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, @amount)
+              # Vérification du solde Paymoney
+              @url = "http://94.247.178.141:8080/PAYMONEY_WALLET/rest/solte_compte/#{paymoney_account_number}/#{password}"
+              sold = JSON.parse((RestClient.get @url rescue ""))
+              sold = sold["solde"].to_f
+              if sold >= @amount.to_f
+
+                request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0, timeout: 15)
+
+                request.on_complete do |response|
+                  if response.success? || response.code == 417
+                    response_body = response.body
+                    nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
+
+                    # Free the terminal
+                    @terminal.update_attributes(busy: false)
+
+                    if !nokogiri_response.blank?
+                      response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
+                      if response_code == '0' || response_code == '1024'
+                        @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
+                        # débit du compte paymoney
+                        if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, @amount)
+                          ticket_status = true
+                          bet_status = 'En cours'
+                        else
+                          ticket_status = false
+                          bet_status = nil
+                        end
+                        @bet.update_attributes(validated: ticket_status, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil), bet_status: bet_status)
+                        @coupons = @bet.bet_coupons
+                      else
+                        # Remboursement tu ticket en cas d'erreur chez Ludwin
+                        #payback_unplaced_bet(@bet)
+                        @bet.update_attributes(validated: false, validated_at: DateTime.now)
+                        @error_code = nokogiri_response.xpath('//ReturnCode').at('Code').content rescue ""
+                        @error_description = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
+                      end
+                    else
+                      # Free the terminal
+                      @terminal.update_attributes(busy: false)
+
+                      @error_code = '4001'
+                      @error_description = 'Erreur lors du parsing du XML.'
+                    end
+                  else
+                    @error_code = '4000'
+                    @error_description = 'Plateforme non disponible.'
+                  end
+                end
+
+                request.run
+              else
+                @error_code = '5005'
+                @error_description = 'Veuillez vérifier votre compte et votre solde.'
+              end
+
+              LudwinLog.create(operation: "Prise de pari", transaction_id: (@terminal.code rescue ""), error_code: @error_code, sent_body: body, response_body: response_body, remote_ip_address: remote_ip_address)
+            end
+            #end
+          end
+        else
+          @error_code = '5000'
+          @error_description = 'Invalid JSON data.'
+        end
+      end
+    end
+  end
+
+  def api_last_request_log
+    @previous_operation = LudwinLog.find(LudwinLog.last.id - 1) rescue ""
+    @last_operation = LudwinLog.last rescue ""
+
+    render text: "---Operation: " + (@previous_operation.operation || "") + "\n\n---Transaction ID: " +  (@previous_operation.transaction_id || "") + "\n\n---Sent params: " +  (@previous_operation.sent_body || "") + "\n\n---Response: " +  (@previous_operation.response_body || "") + "\n\n\n\n---Operation: " + (@last_operation.operation || "") + "\n\n---Transaction ID: " + (@last_operation.transaction_id || "") + "\n\n---Sent params: " + (@last_operation.sent_body || "") + "\n\n---Response: " + (@last_operation.response_body || "")
+  end
+
+  def format_system_coupouns(coupons)
+    tmp_coupons_body = ''
+    @win_amount = @amount
+    coupons.each do |coupon|
+      pal_code = (coupon["pal_code"].to_s rescue "")
+      event_code = (coupon["event_code"].to_s rescue "")
+      is_fix = (coupon["is_fix"].to_s rescue "")
+      bet_code = (coupon["bet_code"].to_s rescue "")
+      handicap = (coupon["handicap"].to_s rescue "")
+      draw_code = (coupon["draw_code"].to_s rescue "")
+      odd = (coupon["odd"].to_s rescue "")
+      begin_date = (coupon["begin_date"] rescue "")
+      teams = (coupon["teams"] rescue "")
+      sport = (coupon["sport"] rescue "")
+      @win_amount =   (@win_amount * ((odd.to_f rescue 0) / 100)).to_i rescue 0
+
+      unless pal_code.blank? || event_code.blank? || bet_code.blank? || draw_code.blank? || odd.blank?
+        @bet.bet_coupons.create(pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd, begin_date: begin_date, teams: teams, sport: sport, is_fix: is_fix, handicap: handicap, flag_bonus: "0")
+        tmp_coupons_body << %Q[<SystemEvent><CodPal>#{pal_code}</CodPal><CodEvent>#{event_code}</CodEvent><IsFix>#{is_fix}</IsFix><SystemBet><CodBet>#{bet_code}</CodBet><Handicap>#{handicap}</Handicap><SystemDraw><CodDraw>#{draw_code}</CodDraw><Odd>#{odd}</Odd><FlagBonus>0</FlagBonus></SystemDraw></SystemBet></SystemEvent>]
+      end
+    end
+
+    return tmp_coupons_body
+  end
+
+
   def terminal_selected
     status = false
     @terminal = SpcTerminal.where("busy IS NOT TRUE").first rescue nil
@@ -1015,5 +1175,26 @@ class LudwinApiController < ApplicationController
     else
       @bets = Bet.where("gamer_id = '#{params[:gamer_id]}' AND bet_status IS NOT NULL").order("created_at DESC")
     end
+  end
+
+  def terminals_status
+    terminals = SpcTerminal.all
+    status = ""
+
+    unless terminals.blank?
+      terminals.each do |terminal|
+        status << "Code du terminal: " + terminal.code.to_s + " -- Statut: " + (terminal.busy == true ? "Occupé<br /><br />" : "Libre<br /><br />")
+      end
+    else
+      status = "Aucun terminal trouvé"
+    end
+
+    render text: status.html_safe
+  end
+
+  def free_terminals
+    SpcTerminal.all.update_all(busy: false)
+
+    render text: "Les terminaux ont été libérés"
   end
 end

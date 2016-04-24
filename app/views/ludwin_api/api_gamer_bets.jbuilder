@@ -14,7 +14,8 @@ else
     json.created_at b(bet.created_at.strftime("%d-%m-%Y") + " " + bet.created_at.strftime("%Hh %Mmn")) rescue nil
     json.bet_placed bet.bet_placed rescue nil
     json.bet_placed_at (bet.validated_at.strftime("%d-%m-%Y") + " " + bet.validated_at.strftime("%Hh %Mmn")) rescue nil
-
+    json.system_code bet.system_code rescue nil
+    json.number_of_combinations bet.number_of_combinations rescue nil
     json.paymoney_account_token bet.paymoney_account_token rescue nil
     json.bet_cancelled bet.bet_cancelled rescue nil
     json.bet_cancelled_at bet.bet_cancelled_at rescue nil
@@ -30,6 +31,9 @@ else
         json.begin_date coupon.begin_date
         json.teams coupon.teams
         json.sport coupon.sport
+        json.is_fix coupon.is_fix
+        json.handicap coupon.handicap
+        json.flag_bonus coupon.flag_bonus
       end
     end
     json.formula bet.formula rescue nil
