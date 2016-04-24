@@ -122,4 +122,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def ut_test
+    result = (RestClient.get "http://94.247.178.141:8080/PAYMONEY_WALLET/rest/paiement_gain/74125895/rKQNyFfn/PExxGeLY/0/0/0/999909692280832259" rescue "")
+
+    render text: result.to_s.force_encoding('iso-8859-1').encode('utf-8') == "good, operation effectuée avec succes "
+  end
+
 end

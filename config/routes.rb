@@ -94,7 +94,13 @@ Rails.application.routes.draw do
   get '/sandbox/patron' => 'sandbox#patron_client'
 
   # Last request log
-  get '/ail/spc/api/log/last_request' => 'ludwin_api#api_last_request_log'
+  get '/spc/api/log/last_request' => 'ludwin_api#api_last_request_log'
+
+  # Terminal status
+  get '/spc/terminals/status' => 'ludwin_api#terminals_status'
+
+  # Free terminals
+  get '/spc/terminals/free' => 'ludwin_api#free_terminals'
 
   #---------------------LUDWIN---------------------
 
@@ -371,6 +377,8 @@ Rails.application.routes.draw do
 
   # SF Make a deposit
   get "/api/rff741v1b1/deposit/:game_token/:pos_id/:paymoney_account_number/:agent/:sub_agent/:date/:amount/:merchant_pos/:fee" => 'deposits#api_sf_proceed_deposit', :constraints => {:fee => /(\d+(.\d+)?)/}
+
+  get "utest" => "users#ut_test"
 
   # Payment notification
   #post '/cm3/api/dfg7fvb3191/payment/notification' => 'ludwin_api#api_coupon_payment_notification'

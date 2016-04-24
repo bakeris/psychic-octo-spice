@@ -1176,4 +1176,25 @@ class LudwinApiController < ApplicationController
       @bets = Bet.where("gamer_id = '#{params[:gamer_id]}' AND bet_status IS NOT NULL").order("created_at DESC")
     end
   end
+
+  def terminals_status
+    terminals = SpcTerminal.all
+    status = ""
+
+    unless terminals.blank?
+      terminals.each do |terminal|
+        status << "Code du terminal: " + terminal.code.to_s + " -- Statut: " + (terminal.busy == true ? "Occupé<br /><br />" : "Libre<br /><br />")
+      end
+    else
+      status = "Aucun terminal trouvé"
+    end
+
+    render text: status.html_safe
+  end
+
+  def free_terminals
+    SpcTerminal.all.update_all(busy: false)
+
+    render text: "Les terminaux ont été libérés"
+  end
 end
