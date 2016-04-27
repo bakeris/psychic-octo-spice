@@ -955,7 +955,7 @@ class AilLotoController < ApplicationController
          orphan_bets = AilLoto.where("TO_TIMESTAMP(end_date, 'DD/MM/YYYY HH24:MI:SS')  < '#{DateTime.now - 2.hour}' AND draw_id = '#{draw_id}' AND bet_status = 'En cours'") rescue nil
         cancel_amount = AilLoto.where("TO_TIMESTAMP(end_date, 'DD/MM/YYYY HH24:MI:SS')  < '#{DateTime.now - 2.hour}' AND draw_id = '#{draw_id}' AND bet_cancelled IS TRUE").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0
 
-        orphan_amount = (orphan_bets.map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0) - cancel_amount
+        orphan_amount = (orphan_bets.map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0) #- cancel_amount
         unless orphan_bets.blank?
           if validate_bet_ail("AliXTtooY", orphan_amount, "ail_lotos")
             orphan_bets.update_all(bet_status: 'Perdant') rescue nil
