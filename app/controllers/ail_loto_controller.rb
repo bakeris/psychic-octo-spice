@@ -438,7 +438,7 @@ class AilLotoController < ApplicationController
       @error_code = '4006'
       @error_description = "La transaction n'a pas été trouvée."
     else
-      if DateTime.now > (@bet.created_at + 5.minute)
+      if DateTime.now > (DateTime.parse(@bet.bet_date) + 4.minute + 10.seconds)#(@bet.created_at + 5.minute)
         @error_code = '4007'
         @error_description = "Le délai alloué pour l'annulation est dépassé."
       else
@@ -481,11 +481,13 @@ class AilLotoController < ApplicationController
                 if @error_code == 0 && (json_response["header"]["status"] == 'success' rescue nil)
                   @bet.update_attribute(:cancellation_acknowledge, false)
 
-                  if cancel_bet(@bet)
+
                     if api_acknowledge_cancel_old(params[:transaction_id])
-                      @bet = (json_response["content"] rescue nil)
+                      if cancel_bet(@bet)
+                        @bet = (json_response["content"] rescue nil)
+                      end
                     end
-                  end
+
 
                 else
                   @error_code = '4002'

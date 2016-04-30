@@ -397,68 +397,75 @@ class AilPmuController < ApplicationController
       @error_code = '4006'
       @error_description = "L'id de transaction n'a pas pu être trouvé."
     else
-      if @bet.cancellation_acknowledge == true
+      if DateTime.now > (DateTime.parse(@bet.bet_date) + 4.minute + 10.seconds)
         @error_code = '4007'
-        @error_description = 'Le pari a déjà été annulé.'
+        @error_description = "Le délai alloué pour l'annulation est dépassé."
       else
-        body = %Q[{
-                    "Bet":{
-                      "revision":"1",
-                      "header":{
-                        "userName":"#{@user_name}",
-                        "password":"#{@password}",
-                        "terminalID":#{@terminal_id},
-                        "operatorID":#{@operator_id},
-                        "operatorPIN":#{@operator_pin},
-                        "auditID":#{@audit_id},
-                        "messageID":#{@message_id},
-                        "userID":1,
-                        "dateTime":"#{@date_time}"
-                      },
-                      "content":{
-                        "ticketNumber":#{@bet.ticket_number},
-                        "refNumber":#{@bet.ref_number}
+        if @bet.cancellation_acknowledge == true
+          @error_code = '4007'
+          @error_description = 'Le pari a déjà été annulé.'
+        else
+          body = %Q[{
+                      "Bet":{
+                        "revision":"1",
+                        "header":{
+                          "userName":"#{@user_name}",
+                          "password":"#{@password}",
+                          "terminalID":#{@terminal_id},
+                          "operatorID":#{@operator_id},
+                          "operatorPIN":#{@operator_pin},
+                          "auditID":#{@audit_id},
+                          "messageID":#{@message_id},
+                          "userID":1,
+                          "dateTime":"#{@date_time}"
+                        },
+                        "content":{
+                          "ticketNumber":#{@bet.ticket_number},
+                          "refNumber":#{@bet.ref_number}
+                        }
                       }
-                    }
-                  }]
+                    }]
 
-        request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "application/json"})
+          request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "application/json"})
 
-        request.on_complete do |response|
-          if response.success?
-            response_body = response.body
-            json_response = (JSON.parse(response_body) rescue nil)
+          request.on_complete do |response|
+            if response.success?
+              response_body = response.body
+              json_response = (JSON.parse(response_body) rescue nil)
 
-            if !json_response.blank?
-              @error_code = (json_response["content"]["errorCode"] rescue nil)
-              @error_description = (json_response["content"]["errorMessage"] rescue nil)
+              if !json_response.blank?
+                @error_code = (json_response["content"]["errorCode"] rescue nil)
+                @error_description = (json_response["content"]["errorMessage"] rescue nil)
 
-              if @error_code == 0 && (json_response["header"]["status"] == 'success' rescue nil)
-                @bet.update_attribute(:cancellation_acknowledge, false)
+                if @error_code == 0 && (json_response["header"]["status"] == 'success' rescue nil)
+                  @bet.update_attribute(:cancellation_acknowledge, false)
 
-                if cancel_bet(@bet)
-                  if api_acknowledge_cancel_old(params[:transaction_id])
-                    @bet = (json_response["content"] rescue nil)
-                  end
+
+                    if api_acknowledge_cancel_old(params[:transaction_id])
+                      if cancel_bet(@bet)
+                        @bet = (json_response["content"] rescue nil)
+                      end
+                    end
+
+
+                else
+                  @error_code = '4002'
+                  @error_description = "Le pari n'a pas pu être annulé."
                 end
-
               else
-                @error_code = '4002'
-                @error_description = "Le pari n'a pas pu être annulé."
+                @error_code = '4001'
+                @error_description = 'Error while parsing JSON.'
               end
             else
-              @error_code = '4001'
-              @error_description = 'Error while parsing JSON.'
+              @error_code = '4000'
+              @error_description = 'Unavailable resource.'
             end
-          else
-            @error_code = '4000'
-            @error_description = 'Unavailable resource.'
           end
+
+          request.run
+
+          AilPmuLog.create(operation: 'Annulation de pari', transaction_id: @transaction_id, error_code: @error_code, sent_params: body, response_body: response_body, remote_ip_address: remote_ip_address)
         end
-
-        request.run
-
-        AilPmuLog.create(operation: 'Annulation de pari', transaction_id: @transaction_id, error_code: @error_code, sent_params: body, response_body: response_body, remote_ip_address: remote_ip_address)
       end
     end
   end
