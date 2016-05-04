@@ -362,7 +362,7 @@ class AilPmuController < ApplicationController
                 status = true
               else
                 @error_code = '4005'
-                @error_description = 'Could not acknowledge the bet.'
+                @error_description = 'Le pari n''a pas pu être validé.'
               end
             else
               @error_code = '4004'
@@ -370,7 +370,7 @@ class AilPmuController < ApplicationController
             end
           else
             @error_code = '4003'
-            @error_description = 'Could not acknowledge the bet.'
+            @error_description = 'Le pari n''a pas pu être validé.'
           end
         end
 
@@ -525,7 +525,7 @@ class AilPmuController < ApplicationController
                 status = true
               else
                 @error_code = '4005'
-                @error_description = 'Could not acknowledge the bet.'
+                @error_description = 'Le pari n''a pas pu être validé.'
               end
             else
               @error_code = '4004'
@@ -533,7 +533,7 @@ class AilPmuController < ApplicationController
             end
           else
             @error_code = '4003'
-            @error_description = 'Could not acknowledge the bet.'
+            @error_description = 'Le pari n''a pas pu être validé.'
           end
         end
 
@@ -675,7 +675,7 @@ class AilPmuController < ApplicationController
                 status = true
               else
                 @error_code = '4005'
-                @error_description = 'Could not acknowledge the bet.'
+                @error_description = 'Le pari n''a pas pu être validé.'
               end
             else
               @error_code = '4004'
@@ -683,7 +683,7 @@ class AilPmuController < ApplicationController
             end
           else
             @error_code = '4003'
-            @error_description = 'Could not acknowledge the bet.'
+            @error_description = 'Le pari n''a pas pu être validé.'
           end
         end
 
