@@ -604,10 +604,10 @@ class GamersController < ApplicationController
       @sql_max_amount = ""
 
       unless @begin_date.blank?
-        @sql_begin_date = "created_at >= '#{@begin_date}'"
+        @sql_begin_date = "created_at::date >= '#{@begin_date}'"
       end
       unless @end_date.blank?
-        @sql_end_date = "created_at <= '#{@end_date}'"
+        @sql_end_date = "created_at::date <= '#{@end_date}'"
       end
       unless @status.blank?
         @sql_status = "bet_status = '#{@status}'"
@@ -628,10 +628,10 @@ class GamersController < ApplicationController
       @sql_max_amount = ""
 
       unless @begin_date.blank?
-        @sql_begin_date = "created_at >= '#{@begin_date}'"
+        @sql_begin_date = "created_at::date >= '#{@begin_date}'"
       end
       unless @end_date.blank?
-        @sql_end_date = "created_at <= '#{@end_date}'"
+        @sql_end_date = "created_at::date <= '#{@end_date}'"
       end
       unless @status.blank?
         @sql_status = "bet_status = '#{@status}'"
@@ -652,10 +652,10 @@ class GamersController < ApplicationController
       @sql_max_amount = ""
 
       unless @begin_date.blank?
-        @sql_begin_date = "created_at >= '#{@begin_date}'"
+        @sql_begin_date = "created_at::date >= '#{@begin_date}'"
       end
       unless @end_date.blank?
-        @sql_end_date = "created_at <= '#{@end_date}'"
+        @sql_end_date = "created_at::date <= '#{@end_date}'"
       end
       unless @status.blank?
         @sql_status = "bet_status = '#{@status}'"
@@ -676,10 +676,10 @@ class GamersController < ApplicationController
       @sql_max_amount = ""
 
       unless @begin_date.blank?
-        @sql_begin_date = "created_at >= '#{@begin_date}'"
+        @sql_begin_date = "created_at::date >= '#{@begin_date}'"
       end
       unless @end_date.blank?
-        @sql_end_date = "created_at <= '#{@end_date}'"
+        @sql_end_date = "created_at::date <= '#{@end_date}'"
       end
       unless @status.blank?
         @sql_status = "bet_status = '#{@status}'"
@@ -700,10 +700,10 @@ class GamersController < ApplicationController
       @sql_max_amount = ""
 
       unless @begin_date.blank?
-        @sql_begin_date = "created_at >= '#{@begin_date}'"
+        @sql_begin_date = "created_at::date >= '#{@begin_date}'"
       end
       unless @end_date.blank?
-        @sql_end_date = "created_at <= '#{@end_date}'"
+        @sql_end_date = "created_at::date <= '#{@end_date}'"
       end
       unless @status.blank?
         @sql_status = "operation = '#{@status}'"
