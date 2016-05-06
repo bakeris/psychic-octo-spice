@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160422013525) do
+ActiveRecord::Schema.define(version: 20160506081018) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -650,6 +650,7 @@ ActiveRecord::Schema.define(version: 20160422013525) do
     t.boolean  "list_loto_winners_transactions_transactions_right"
     t.boolean  "list_spc_winners_transactions_transactions_right"
     t.boolean  "list_pmu_alr_winners_transactions_transactions_right"
+    t.string   "manager"
   end
 
   create_table "query_bets", force: true do |t|

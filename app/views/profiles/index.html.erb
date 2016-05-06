@@ -37,6 +37,14 @@
         </div>
 
         <div class="formRow">
+          <label><%= f.label :manager %></label>
+          <div class="formRight">
+            <%= f.text_field :manager, placeholder: "Veuillez le nom du chef de département", class: 'form-control' %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
           <%= f.submit "Valider", class: 'basic' %>
         </div>
       </div>

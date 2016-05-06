@@ -60,6 +60,33 @@ class ProfilesController < ApplicationController
     @admin_profiles = Profile.all.order('description ASC')
   end
 
+  def edit
+    @profile = Profile.find_by_id(params[:profile_id])
+
+    if @profile.blank?
+      flash[:error] = "Ce profil n'existe pas"
+      redirect_to :back
+    end
+  end
+
+  def update
+    @profile = Profile.find_by_id(params[:profile][:id])
+
+    if @profile.blank?
+      flash[:error] = "Ce profil n'existe pas"
+      redirect_to list_profiles_path
+    else
+      @profile.assign_attributes(params[:profile])
+      if @profile.valid?
+        @profile.save
+        flash.now[:success] = "Le profil a été mis à jour."
+      else
+        flash.now[:error] = @profile.errors.full_messages.map { |msg| "#{msg}<br />" }.join
+      end
+      render :edit
+    end
+  end
+
   def init_administration_menu
     @administration_menu_style = "current"
   end
