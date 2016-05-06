@@ -7,9 +7,18 @@ class ApplicationController < ActionController::Base
 
   def select_administrator_profile
     @game_administrator = false
-    @profile = current_administrator.profile
-    if @profile.pmu_plr_right == true || @profile.pmu_alr_right == true || @profile.loto_right == true || @profile.spc_right == true || @profile.eppl_right == true
-      @game_administrator = true
+    @profile = current_administrator.profile rescue nil
+    unless @profile.blank?
+      if @profile.pmu_plr_right == true || @profile.pmu_alr_right == true || @profile.loto_right == true || @profile.spc_right == true || @profile.eppl_right == true
+        @game_administrator = true
+      end
+    end
+  end
+
+  def disconnect_profiless_users
+    if current_administrator.blank?
+      flash[:alert] = "Votre compte n'a aucun profil."
+      redirect_to new_administrator_session_path
     end
   end
 

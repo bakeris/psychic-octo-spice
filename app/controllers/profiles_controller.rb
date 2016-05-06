@@ -1,9 +1,11 @@
 class ProfilesController < ApplicationController
 
+  before_filter :disconnect_profiless_users
   before_filter :authenticate_administrator!
   before_filter :select_administrator_profile
   before_filter :sign_out_disabled_users
   before_filter :init_administration_menu
+
 
   layout 'administrator'
 
@@ -70,7 +72,7 @@ class ProfilesController < ApplicationController
   end
 
   def update
-    @profile = Profile.find_by_id(params[:profile][:id])
+    @profile = Profile.find_by_id(params[:profile_id])
 
     if @profile.blank?
       flash[:error] = "Ce profil n'existe pas"
@@ -85,6 +87,21 @@ class ProfilesController < ApplicationController
       end
       render :edit
     end
+  end
+
+  def delete
+    @profile = Profile.find_by_id(params[:profile_id])
+
+    if @profile.blank?
+      flash[:error] = "Ce profil n'existe pas"
+      redirect_to list_profiles_path
+    else
+      @profile.administrators.update_all(profile_id: nil) rescue nil
+      @profile.delete
+      flash[:success] = "Le profil a été supprimé"
+    end
+
+    redirect_to list_profiles_path
   end
 
   def init_administration_menu

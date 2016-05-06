@@ -397,10 +397,10 @@ class AilPmuController < ApplicationController
       @error_code = '4006'
       @error_description = "L'id de transaction n'a pas pu être trouvé."
     else
-      if DateTime.now > (DateTime.parse(@bet.bet_date) + 4.minute + 10.seconds)
-        @error_code = '4007'
-        @error_description = "Le délai alloué pour l'annulation est dépassé."
-      else
+      #if DateTime.now > (DateTime.parse(@bet.bet_date) + 4.minute + 10.seconds)
+        #@error_code = '4007'
+        #@error_description = "Le délai alloué pour l'annulation est dépassé."
+      #else
         if @bet.cancellation_acknowledge == true
           @error_code = '4007'
           @error_description = 'Le pari a déjà été annulé.'
@@ -466,7 +466,7 @@ class AilPmuController < ApplicationController
 
           AilPmuLog.create(operation: 'Annulation de pari', transaction_id: @transaction_id, error_code: @error_code, sent_params: body, response_body: response_body, remote_ip_address: remote_ip_address)
         end
-      end
+      #end
     end
   end
 
