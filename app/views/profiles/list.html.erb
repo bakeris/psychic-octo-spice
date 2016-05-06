@@ -26,6 +26,7 @@
       <thead>
         <tr>
           <th>Intitulé</th>
+          <th>Responsable du département</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -36,7 +37,11 @@
               <td class = "taskPr">
                 <%= profile.description %>
               </td>
+              <td>
+                <%= profile.manager %>
+              </td>
               <td class = "actBtns">
+                <a href="<%= edit_profile_path(profile.id) %>" class="tipS" original-title="Modifier"><%= image_tag('icons/color/pencil.png', alt: '') %></a>
                 <a href="<%= profile_rights_path(profile.id) %>" class="tipS"  original-title="Afficher les habilitations"><%= image_tag('icons/color/user-black.png', alt: '') %></a>
               </td>
             </tr>
