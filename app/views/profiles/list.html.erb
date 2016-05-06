@@ -42,6 +42,7 @@
               </td>
               <td class = "actBtns">
                 <a href="<%= edit_profile_path(profile.id) %>" class="tipS" original-title="Modifier"><%= image_tag('icons/color/pencil.png', alt: '') %></a>
+                <a href="<%= delete_profile_path(profile.id) %>" class="tipS" original-title="Supprimer le profil"><%= image_tag('icons/color/cross.png', alt: '')  %></a>
                 <a href="<%= profile_rights_path(profile.id) %>" class="tipS"  original-title="Afficher les habilitations"><%= image_tag('icons/color/user-black.png', alt: '') %></a>
               </td>
             </tr>
