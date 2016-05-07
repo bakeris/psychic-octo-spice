@@ -2,7 +2,7 @@ class Profile < ActiveRecord::Base
   has_many :administrators
 
   # Accessible fields
-  attr_accessible :description, :manager, :create_profile_right, :habilitations_right, :create_account_right, :list_gamers_right, :list_loto_transactions_right, :list_pmu_plr_transactions_right, :list_spc_transactions_right, :list_pmu_alr_transactions_right, :list_eppl_transactions_right, :list_pmu_plr_on_hold_transactions_transactions_right, :list_loto_on_hold_transactions_transactions_right, :list_spc_on_hold_transactions_transactions_right, :list_pmu_alr_on_hold_transactions_transactions_right, :list_pmu_plr_winners_transactions_transactions_right, :list_loto_winners_transactions_transactions_right, :list_spc_winners_transactions_transactions_right, :list_pmu_alr_winners_transactions_transactions_right
+  attr_accessible :description, :manager, :create_profile_right, :habilitations_right, :create_account_right, :list_gamers_right, :list_loto_transactions_right, :list_pmu_plr_transactions_right, :list_spc_transactions_right, :list_pmu_alr_transactions_right, :list_eppl_transactions_right, :list_pmu_plr_on_hold_transactions_transactions_right, :list_loto_on_hold_transactions_transactions_right, :list_spc_on_hold_transactions_transactions_right, :list_pmu_alr_on_hold_transactions_transactions_right, :list_pmu_plr_winners_transactions_transactions_right, :list_loto_winners_transactions_transactions_right, :list_spc_winners_transactions_transactions_right, :list_pmu_alr_winners_transactions_transactions_right, :management_right
 
   # Rename attributes into more friendly text
   HUMANIZED_ATTRIBUTES = {

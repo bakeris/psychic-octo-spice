@@ -1,0 +1,55 @@
+<div class="titleArea">
+    <div class="wrapper">
+        <div class="pageTitle">
+            <h5>Gestion des rôles</h5>
+            <span>Associez un profil à un compte administrateur.</span>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="line"></div>
+
+<%= render "administrators/shared/administrator_menu.html.erb" %>
+
+<div class="line"></div>
+
+<!-- Main content wrapper -->
+<div class="wrapper">
+
+  <%= flash_messages! %>
+  <%= form_tag set_administrator_role_path do %>
+
+    <fieldset>
+      <div class="widget">
+        <div class="title">
+          <img src="<%= asset_path 'icons/dark/users.png' %>" alt="" class="titleIcon" />
+          <h6>Formulaire de gestion des rôles d'administration</h6>
+        </div>
+
+        <div class="formRow">
+          <label>Compte administrateur</label>
+          <div class="formRight">
+            <%= select_tag "administrator", options_from_collection_for_select(@administrators, "id", "email") , html_options = {class: "form-control"} %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Profil</label>
+          <div class="formRight">
+            <%= select_tag "profile", options_from_collection_for_select(@profiles, "id", "description") , html_options = {class: "form-control"} %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <%= submit_tag "Valider", class: 'basic' %>
+        </div>
+      </div>
+    </fieldset>
+  <% end %>
+
+</div>
+<!-- End Main content wrapper -->
