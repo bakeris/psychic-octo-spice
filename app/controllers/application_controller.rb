@@ -16,7 +16,8 @@ class ApplicationController < ActionController::Base
   end
 
   def disconnect_profiless_users
-    if current_administrator.blank?
+    if current_administrator.profile.blank?
+      sign_out(current_administrator)
       flash[:alert] = "Votre compte n'a aucun profil."
       redirect_to new_administrator_session_path
     end

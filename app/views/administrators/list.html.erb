@@ -58,9 +58,11 @@
                 </span>
               </td>
               <td class = "actBtns">
-                <% if @profile.description == 'Super Administrateur' %>
-                  <%= activation_desactivation_links(@profile.description, user) %>
-                <% end %>
+                <a href="<%= edit_admin_path(user.id) %>" class="tipS" original-title="Modifier"><%= image_tag('icons/color/pencil.png', alt: '') %></a>
+                <a href="<%= delete_admin_path(user.id) %>" class="tipS" original-title="Supprimer"><%= image_tag('icons/color/cross.png', alt: '') %></a>
+                <%# if @profile.description == 'Super Administrateur' %>
+                  <%#= activation_desactivation_links(@profile.description, user) %>
+                <%# end %>
               </td>
             </tr>
           <% end %>

@@ -1,0 +1,57 @@
+<div class="titleArea">
+    <div class="wrapper">
+        <div class="pageTitle">
+            <h5>Edition profils d'administration</h5>
+            <span>Modifier le profil: <b><%= @profile.description %>.</b></span>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="line"></div>
+
+<%= render "profiles/profile_menu.html.erb" %>
+
+<div class="line"></div>
+
+<!-- Main content wrapper -->
+<div class="wrapper">
+
+  <%= flash_messages! %>
+  <%= form_for(@profile, url: update_profile_path, method: :post, html: {class: 'form'}) do |f| %>
+
+    <fieldset>
+      <div class="widget">
+        <div class="title">
+          <img src="<%= asset_path 'icons/dark/users.png' %>" alt="" class="titleIcon" />
+          <h6>Formulaire d'édition de profil</h6>
+        </div>
+
+        <%= hidden_field_tag :id, @profile.id %>
+
+        <div class="formRow">
+          <label><%= f.label :description %></label>
+          <div class="formRight">
+            <%= f.text_field :description, placeholder: "Veuillez entrer l'intitulé du profil", class: 'form-control', autofocus: true %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label><%= f.label :manager %></label>
+          <div class="formRight">
+            <%= f.text_field :manager, placeholder: "Veuillez le nom du chef de département", class: 'form-control' %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <%= f.submit "Valider", class: 'basic' %>
+        </div>
+      </div>
+    </fieldset>
+  <% end %>
+
+</div>
+<!-- End Main content wrapper -->

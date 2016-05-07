@@ -58,6 +58,28 @@ class ProfilesController < ApplicationController
     end
   end
 
+  def enable_game_habilitation
+    enable_disable_game_habilitation(params[:profile_id], true)
+  end
+
+  def disable_game_habilitation
+    enable_disable_game_habilitation(params[:profile_id], false)
+  end
+
+  def enable_disable_game_habilitation(profile_id, status)
+    @admin_profile = Profile.find_by_id(profile_id)
+
+    if @admin_profile.blank?
+      flash[:error] = "Ce profil n'existe pas"
+      redirect_to :back
+    else
+      flash[:success] = "L'habilitation a été modifiée"
+      @admin_profile.update_attributes(:"list_#{params[:habilitation]}_transactions_right" => status, :"list_#{params[:habilitation]}_on_hold_transactions_transactions_right" => status, :"list_#{params[:habilitation]}_winners_transactions_transactions_right" => status)
+
+      redirect_to profile_rights_path(profile_id)
+    end
+  end
+
   def list
     @admin_profiles = Profile.all.order('description ASC')
   end

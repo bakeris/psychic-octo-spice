@@ -4,7 +4,6 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
 
-
   devise_for :administrators, controllers: {
     sessions: 'administrators/sessions',
     registrations: 'administrators/registrations',
@@ -15,6 +14,8 @@ Rails.application.routes.draw do
   devise_scope :administrator do
     root 'administrators/sessions#new'
   end
+
+  get "/dashboard" => 'home#index', as: :dashboard
 
   # Administration
   get '/administrators/list' => 'administrators#list', as: :list_administrators
@@ -337,10 +338,18 @@ Rails.application.routes.draw do
   post '/administrator/profile/update/:profile_id' => 'profiles#update', as: :update_profile
   get '/administrator/profile/delete/:profile_id' => 'profiles#delete', as: :delete_profile
   post '/administrator/profile/create' => 'profiles#create', as: :create_profile
+  get '/administrator/profile/create' => 'profiles#index'
   get '/administrator/profiles/list' => 'profiles#list', as: :list_profiles
   get '/administrator/profile/rights/:profile_id' => 'profiles#profile_rights', as: :profile_rights
   get '/administrator/profile/habilitation/enable/:profile_id/:habilitation' => 'profiles#enable_habilitation', as: :enable_habilitation_right
   get '/administrator/profile/habilitation/disable/:profile_id/:habilitation' => 'profiles#disable_habilitation', as: :disable_habilitation_right
+  get '/administrator/profile/game/habilitation/enable/:profile_id/:habilitation' => 'profiles#enable_game_habilitation', as: :enable_game_habilitation_right
+  get '/administrator/profile/game/habilitation/disable/:profile_id/:habilitation' => 'profiles#disable_game_habilitation', as: :disable_game_habilitation_right
+  get '/administrator/edit/:administrator_id' => 'administrators#edit_administrator', as: :edit_admin
+  post '/administrator/update' => 'administrators#update_administrator', as: :update_admin
+  get '/administrator/delete/:administrator_id' => 'administrators#delete_administrator', as: :delete_admin
+  get '/administrator/roles/management' => 'administrators#roles_management', as: :roles_management
+  post '/administrator/roles/set' => 'administrators#set_administrator_role', as: :set_administrator_role
 
   # Excel export
   get '/administrator/gamers/list/export' => 'gamers#export_gamers_list', as: :export_gamers_list
