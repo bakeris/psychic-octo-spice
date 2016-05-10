@@ -27,7 +27,7 @@ class Administrator < ActiveRecord::Base
   end
 
   # Validators
-  validates :profile_id, :firstname, :lastname, :phone_number, presence: true
+  validates :firstname, :lastname, :phone_number, presence: true
   validates :firstname, :lastname, length: {minimum: 2, allow_blank: true}
   validates :phone_number, numericality: {message: "n'est pas numérique", allow_blank: true}
   validates :phone_number, length: {minimum: 8, maximum: 13, allow_blank: true}
