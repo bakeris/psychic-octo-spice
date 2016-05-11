@@ -745,7 +745,7 @@ class CmController < ApplicationController
           CmLog.create(operation: "Race notification", notify_session_request_body: "#{@@hub_notification_url}/api/cm3/race_notification/#{@program_id}/#{@race_id}/#{@reason}")
           status = "200"
         else
-          if @reason == "winnings" || @reason == "result"
+          if @reason == "winnings" #|| @reason == "result"
             api_get_winners
             status = "200"
             CmLog.create(operation: @reason, notify_session_request_body: 1)

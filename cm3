@@ -10,7 +10,7 @@ Succès:
 Erreur:
 7284cc39bb/8901
 
-curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><winningsRequest><connectionId>605576106</connectionId><programId>20160671</programId><raceId>2016067101</raceId></winningsRequest>" http://office.cm3.work:27000/getWinnings --header 'Content-Type:text/xml'
+curl --request GET --data "<?xml version='1.0' encoding='UTF-8'?><winningsRequest><connectionId>1587863244</connectionId><programId>20161281</programId><raceId>2016128102</raceId></winningsRequest>" http://192.168.1.41:29000/getWinnings --header 'Content-Type:text/xml'
 
 # Ping
 curl --request GET http://192.168.1.41:29000/ping --header 'Content-Type:text/xml'
