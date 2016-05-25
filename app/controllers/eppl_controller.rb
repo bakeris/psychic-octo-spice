@@ -98,7 +98,7 @@ class EpplController < ApplicationController
   end
 
   def periodically_validate_bet
-    @unvalidated_bets = Eppl.where("bet_validated IS NULL")
+    @unvalidated_bets = Eppl.where("bet_validated IS NULL AND operation = 'Prise de pari'")
 
     unless @unvalidated_bets.blank?
       bets_amount = @unvalidated_bets.map{|bet| (bet.transaction_amount.to_f rescue 0)}.sum rescue 0
