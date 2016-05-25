@@ -414,8 +414,10 @@ class DepositsController < ApplicationController
           BombLog.create(sent_url: @url)
           response = (RestClient.get @url rescue "")
 
+          response_log = response.to_s.force_encoding('iso-8859-1').encode('utf-8')
+
           unless response.blank?
-            if response.to_s == "good"
+            if response_log == "good, operation effectuée avec succes "
               @status = @transaction_id
               response_log = response.to_s
               transaction_status = true
@@ -482,8 +484,10 @@ class DepositsController < ApplicationController
           BombLog.create(sent_url: @url)
           response = (RestClient.get @url rescue "")
 
+          response_log = response.to_s.force_encoding('iso-8859-1').encode('utf-8')
+
           unless response.blank?
-            if response.to_s == "good"
+            if response_log == "good, operation effectuée avec succes "
               @status = @transaction_id
               response_log = response.to_s
               transaction_status = true
