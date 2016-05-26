@@ -417,7 +417,7 @@ class DepositsController < ApplicationController
           response_log = response.to_s.force_encoding('iso-8859-1').encode('utf-8')
 
           unless response.blank?
-            if response_log == "good, operation effectuée avec succes "
+            if response_log == "good, operation effectué avec succes "
               @status = @transaction_id
               transaction_status = true
               Log.create(transaction_type: "Remontée de fonds", checkout_amount: transaction_amount, response_log: response_log, status: true, remote_ip_address: remote_ip_address, agent: agent, sub_agent: sub_agent, transaction_id: @transaction_id, fee: @fee, transaction_status: @status)
@@ -485,7 +485,7 @@ class DepositsController < ApplicationController
           response_log = response.to_s.force_encoding('iso-8859-1').encode('utf-8')
 
           unless response.blank?
-            if response_log == "good, operation effectuée avec succes "
+            if response_log == "good, operation effectué avec succes "
               @status = @transaction_id
               transaction_status = true
               Log.create(transaction_type: "Remontée de fonds", checkout_amount: transaction_amount, response_log: response_log, status: true, remote_ip_address: remote_ip_address, agent: agent, sub_agent: sub_agent, transaction_id: @transaction_id, fee: @fee, transaction_status: @status)
