@@ -308,7 +308,7 @@ class DepositsController < ApplicationController
           else
             @error_code = '4002'
             @error_description = 'Paymoney-Erreur de paiement.'
-            @deposit.update_attributes(paymoney_request: @url, paymoney_response: CertifiedAgent.where("certified_agent_id = '#{@agent}' AND sub_certified_agent_id IS NULL").first.inspect)
+            @deposit.update_attributes(paymoney_request: @url, paymoney_response: @error_code)
           end
         else
           if !api_ascent.include?("|")
@@ -450,7 +450,8 @@ class DepositsController < ApplicationController
     #@fee = "0"
 
     #merchant_pos = CertifiedAgent.where("certified_agent_id = '#{@agent}' AND sub_certified_agent_id IS NULL").first rescue nil
-    merchant_pos = (RestClient.get "#{@@paymoney_wallet_url}/api/c067dkkdfkkdh48a789e8fdb4c4556c239/certified_agent/check/#{agent}" rescue "")
+    merchant_pos = (RestClient.get "#{@@wallet_url}/api/c067dkkdfkkdh48a789e8fdb4c4556c239/certified_agent/check/#{agent}" rescue "")
+   print "#{@@paymoney_wallet_url}/api/c067dkkdfkkdh48a789e8fdb4c4556c239/certified_agent/check/#{agent}"
     if merchant_pos == 'not_found'
       @status = "|4042|"
     else
@@ -485,7 +486,7 @@ class DepositsController < ApplicationController
           response_log = response.to_s.force_encoding('iso-8859-1').encode('utf-8')
 
           unless response.blank?
-            if response_log == "good, operation effectué avec succes "
+            if response_log == "good, operation effectuée avec succes "
               @status = @transaction_id
               transaction_status = true
               Log.create(transaction_type: "Remontée de fonds", checkout_amount: transaction_amount, response_log: response_log, status: true, remote_ip_address: remote_ip_address, agent: agent, sub_agent: sub_agent, transaction_id: @transaction_id, fee: @fee, transaction_status: @status)
@@ -501,7 +502,7 @@ class DepositsController < ApplicationController
       #end
     end
 
-    Typhoeus.get("#{Parameter.first.hub_front_office_url}/api/367419f5968800cd/paymoney_wallet/store_log", params: { transaction_type: "Remontée de fonds", checkout_amount: transaction_amount, response_log: response_log, error_log: response_log, status: transaction_status, remote_ip_address: remote_ip_address, agent: agent, sub_agent: sub_agent, transaction_id: @transaction_id, fee: @fee })
+    Typhoeus.get("#{Parameters.first.hub_front_office_url}/api/367419f5968800cd/paymoney_wallet/store_log", params: { transaction_type: "Remontée de fonds", checkout_amount: transaction_amount, response_log: response_log, error_log: response_log, status: transaction_status, remote_ip_address: remote_ip_address, agent: agent, sub_agent: sub_agent, transaction_id: @transaction_id, fee: @fee })
 
     return @status
   end
