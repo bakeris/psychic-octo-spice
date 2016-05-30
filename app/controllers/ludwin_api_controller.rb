@@ -1149,7 +1149,7 @@ class LudwinApiController < ApplicationController
     point_of_sale_code = @@point_of_sale_code
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
     payment_url = "#{@@url}/paymentTicket"
-    unvalidated_bets =  Bet.where("bet_status = 'En cours' AND created_at > '#{Date.today - 15.day}'").pluck(:ticket_id).join(',') rescue ''
+    unvalidated_bets =  Bet.where("bet_status = 'En cours' AND created_at > '#{Date.today - 15.day}' AND created_at < '#{DateTime.now - 1.hour}'").pluck(:ticket_id).join(',') rescue ''
     status_message = ''
     url = "http://monaco.sports4africa.com/exabet/tickets_parionsdirect.cfm?liste_ticket_id=" + unvalidated_bets
 
