@@ -1160,12 +1160,11 @@ class LudwinApiController < ApplicationController
           response_body = response.body
           status_message = response_body
           nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
-          print nokogiri_response.to_s rescue "noko"
           if !nokogiri_response.blank?
             @tickets_list = (nokogiri_response.xpath('//Ticket') rescue nil)
             @tickets_list.each do |ticket|
-              print ticket.to_s rescue "ticket"
               @bet = Bet.find_by_ticket_id(ticket.at('ID')) rescue nil
+              print @bet.inspect
               if !@bet.blank?
                 ticket_status = ticket.at('Statut')
                 print ticket_status
