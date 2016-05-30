@@ -1155,26 +1155,33 @@ class LudwinApiController < ApplicationController
 
     unless unvalidated_bets.blank?
       request = Typhoeus::Request.new(url, followlocation: true, method: :get)
+      print unvalidated_bets
       request.on_complete do |response|
         if response.success?
           response_body = response.body
+          status_message = response_body
           nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
+          print response_body
           if !nokogiri_response.blank?
             @tickets_list = (nokogiri_response.xpath('//Ticket') rescue nil)
             @tickets_list.each do |ticket|
               @bet = Bet.find_by_ticket_id(ticket.at('ID')) rescue nil
               if !@bet.blank?
                 ticket_status = ticket.at('Statut')
+                print ticket_status
                 if ticket_status == 'PERDANT'
+                  print 'PERDANT'
                   @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Perdant")
                 end
                 if ticket_status == 'PAYABLE'
+                  print 'PAYABLE'
                   unless terminal_selected
                     status_message = "Terminal non disponible"
+                    print 'Terminal non disponible'
                   else
                     body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentRequest><CodConc>#{license_code}</CodConc><CodDiritto>#{point_of_sale_code}</CodDiritto><IdTerminal>#{@terminal.code}</IdTerminal><TransactionID>#{transaction_id}</TransactionID><TicketSogei>#{ticket_id}</TicketSogei></PaymentRequest></ServicesPSQF>]
 
-
+                    print body
                     request = Typhoeus::Request.new(payment_url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
 
                     request.on_complete do |response|
@@ -1184,6 +1191,7 @@ class LudwinApiController < ApplicationController
 
                         if !nokogiri_response.blank?
                           response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
+                          print response_code
                           if response_code == '0' || response_code == '1024' || response_code == '5174' || response_code == '-1024' || response_code == '-5174' || response_code == '-0'
                             sill_amount = Parameters.first.sill_amount rescue 0
 
