@@ -1232,6 +1232,8 @@ class LudwinApiController < ApplicationController
           status_message = "Ressource non disponible"
         end
       end
+
+      request.run
     end
 
     LudwinLog.create(operation: "Validation périodique de coupons", response_body: status_message, sent_body: url)
