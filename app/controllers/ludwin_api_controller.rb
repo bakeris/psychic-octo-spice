@@ -1155,16 +1155,16 @@ class LudwinApiController < ApplicationController
 
     unless unvalidated_bets.blank?
       request = Typhoeus::Request.new(url, followlocation: true, method: :get)
-      print unvalidated_bets
       request.on_complete do |response|
         if response.success?
           response_body = response.body
           status_message = response_body
           nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
-          print response_body
+          print nokogiri_response.to_s rescue "noko"
           if !nokogiri_response.blank?
             @tickets_list = (nokogiri_response.xpath('//Ticket') rescue nil)
             @tickets_list.each do |ticket|
+              print ticket.to_s rescue "ticket"
               @bet = Bet.find_by_ticket_id(ticket.at('ID')) rescue nil
               if !@bet.blank?
                 ticket_status = ticket.at('Statut')
