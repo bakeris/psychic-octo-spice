@@ -265,11 +265,11 @@ class AilPmuController < ApplicationController
 
             if @error_code == 0 && (json_response["header"]["status"] == 'success')
               tmp_bet_date = json_response["header"]["dateTime"] rescue nil
-              unless tmp_bet_date.blank?
-                tmp_bet_date = tmp_bet_date.split
-                tmp_date = tmp_bet_date[0].split("/")
-                tmp_bet_date = tmp_date[1] + "/" + tmp_date[0] + "/" + tmp_date[2] + " " + tmp_bet_date[1] + " " + tmp_bet_date[2] rescue ""
-              end
+              #unless tmp_bet_date.blank?
+                #tmp_bet_date = tmp_bet_date.split
+                #tmp_date = tmp_bet_date[0].split("/")
+                #tmp_bet_date = tmp_date[1] + "/" + tmp_date[0] + "/" + tmp_date[2] + " " + tmp_bet_date[1] + " " + tmp_bet_date[2] rescue ""
+              #end
               bet_date = DateTime.parse(tmp_bet_date).strftime("%d-%m-%Y %H:%M:%S") rescue nil
               @bet = (json_response["content"] rescue nil)
 
