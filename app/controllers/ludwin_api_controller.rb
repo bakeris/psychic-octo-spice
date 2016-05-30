@@ -1163,10 +1163,10 @@ class LudwinApiController < ApplicationController
           if !nokogiri_response.blank?
             @tickets_list = (nokogiri_response.xpath('//Ticket') rescue nil)
             @tickets_list.each do |ticket|
-              @bet = Bet.find_by_ticket_id(ticket.at('ID')) rescue nil
+              @bet = Bet.find_by_ticket_id(ticket.at('ID').content) rescue nil
               print @bet.inspect
               if !@bet.blank?
-                ticket_status = ticket.at('Statut')
+                ticket_status = ticket.at('Statut').content
                 print ticket_status
                 if ticket_status == 'PERDANT'
                   print 'PERDANT'
@@ -1178,7 +1178,7 @@ class LudwinApiController < ApplicationController
                     status_message = "Terminal non disponible"
                     print 'Terminal non disponible'
                   else
-                    body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentRequest><CodConc>#{license_code}</CodConc><CodDiritto>#{point_of_sale_code}</CodDiritto><IdTerminal>#{@terminal.code}</IdTerminal><TransactionID>#{transaction_id}</TransactionID><TicketSogei>#{ticket_id}</TicketSogei></PaymentRequest></ServicesPSQF>]
+                    body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentRequest><CodConc>#{license_code}</CodConc><CodDiritto>#{point_of_sale_code}</CodDiritto><IdTerminal>#{@terminal.code}</IdTerminal><TransactionID>#{transaction_id}</TransactionID><TicketSogei>#{@bet.ticket_id}</TicketSogei></PaymentRequest></ServicesPSQF>]
 
                     print body
                     request = Typhoeus::Request.new(payment_url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
