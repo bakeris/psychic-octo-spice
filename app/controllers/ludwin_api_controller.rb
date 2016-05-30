@@ -1201,12 +1201,10 @@ class LudwinApiController < ApplicationController
                             if response_code == '5177' || response_code == '-5177'
                               @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Perdant")
                             end
-                            error_code = response_code
-                            error_description = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
+                           status_message = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
                           end
                         else
-                          error_code = '4001'
-                          error_description = 'Error while parsing XML.'
+                          status_message = 'Error while parsing XML.'
                         end
                       end
                     end
