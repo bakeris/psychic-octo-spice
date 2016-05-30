@@ -1159,6 +1159,7 @@ class LudwinApiController < ApplicationController
       request.on_complete do |response|
         if response.success?
           response_body = response.body
+          status_message = response_body
           nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
           print response_body
           if !nokogiri_response.blank?
