@@ -1142,6 +1142,92 @@ class LudwinApiController < ApplicationController
     render text: body
   end
 
+  def periodically_validate_bet
+    error_code = ''
+    error_description = ''
+    license_code = @@license_code
+    point_of_sale_code = @@point_of_sale_code
+    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s[0..17]
+    payment_url = "#{@@url}/paymentTicket"
+    unvalidated_bets =  Bet.where("bet_status = 'En cours' AND created_at > '#{Date.today - 15.day}'").pluck(:ticket_id).join(',') rescue ''
+    status_message = ''
+    url = "http://monaco.sports4africa.com/exabet/tickets_parionsdirect.cfm?liste_ticket_id=" + unvalidated_bets
+
+    unless unvalidated_bets.blank?
+      request = Typhoeus::Request.new(url, followlocation: true, method: :get)
+      request.on_complete do |response|
+        if response.success?
+          response_body = response.body
+          nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
+          if !nokogiri_response.blank?
+            @tickets_list = (nokogiri_response.xpath('//Ticket') rescue nil)
+            @tickets_list.each do |ticket|
+              @bet = Bet.find_by_ticket_id(ticket.at('ID')) rescue nil
+              if !@bet.blank?
+                ticket_status = ticket.at('Statut')
+                if ticket_status = 'PERDANT'
+                  @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Perdant")
+                end
+                if ticket_status = 'PAYABLE'
+                  unless terminal_selected
+                    status_message = "Terminal non disponible"
+                  else
+                    body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentRequest><CodConc>#{license_code}</CodConc><CodDiritto>#{point_of_sale_code}</CodDiritto><IdTerminal>#{@terminal.code}</IdTerminal><TransactionID>#{transaction_id}</TransactionID><TicketSogei>#{ticket_id}</TicketSogei></PaymentRequest></ServicesPSQF>]
+
+
+                    request = Typhoeus::Request.new(payment_url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
+
+                    request.on_complete do |response|
+                      if response.success?
+                        response_body = response.body
+                        nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
+
+                        if !nokogiri_response.blank?
+                          response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
+                          if response_code == '0' || response_code == '1024' || response_code == '5174' || response_code == '-1024' || response_code == '-5174' || response_code == '-0'
+                            sill_amount = Parameters.first.sill_amount rescue 0
+
+                            if (@bet.win_amount.to_f rescue 0) > sill_amount
+                              @bet.update_attributes(payment_status_datetime: DateTime.now, bet_status: "Vainqueur en attente de paiement")
+                              send_winning_notification
+                            else
+                              # Paymoney payment
+                              if pay_earnings(@bet, "LhSpwtyN", @bet.win_amount)
+                                @bet.update_attributes(pr_status: true, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Gagnant")
+                                send_winning_notification
+                              end
+                            end
+                          else
+                            if response_code == '5177' || response_code == '-5177'
+                              @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Perdant")
+                            end
+                            error_code = response_code
+                            error_description = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
+                          end
+                        else
+                          error_code = '4001'
+                          error_description = 'Error while parsing XML.'
+                        end
+                      end
+                    end
+
+                    request.run
+                  end
+                end
+              end
+            end
+          else
+            status_message = response_body
+          end
+        else
+          status_message = "Ressource non disponible"
+        end
+      end
+    end
+
+    LudwinLog.create(operation: "Validation périodique de coupons", response_body: status_message, sent_body: url)
+  end
+
   def send_winning_notification
     # SMS notification
     build_message(@bet, @bet.win_amount, "à SPORTCASH", @bet.ticket_id)
