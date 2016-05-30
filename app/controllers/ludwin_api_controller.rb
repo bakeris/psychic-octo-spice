@@ -1165,10 +1165,10 @@ class LudwinApiController < ApplicationController
               @bet = Bet.find_by_ticket_id(ticket.at('ID')) rescue nil
               if !@bet.blank?
                 ticket_status = ticket.at('Statut')
-                if ticket_status = 'PERDANT'
+                if ticket_status == 'PERDANT'
                   @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Perdant")
                 end
-                if ticket_status = 'PAYABLE'
+                if ticket_status == 'PAYABLE'
                   unless terminal_selected
                     status_message = "Terminal non disponible"
                   else
@@ -1212,6 +1212,9 @@ class LudwinApiController < ApplicationController
                     end
 
                     request.run
+
+                    # Free the terminal
+                    @terminal.update_attributes(busy: false)
                   end
                 end
               end
