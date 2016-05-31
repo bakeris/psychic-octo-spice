@@ -194,20 +194,20 @@ Rails.application.routes.draw do
 
   #---------------------EPPL---------------------
   # Place a bet
-  get '/eppl/api/36e25e6bfd/bet/place/:game_id/:transaction_amount/:begin_date' => 'eppl#api_place_bet'
+  ##get '/eppl/api/36e25e6bfd/bet/place/:game_id/:transaction_amount/:begin_date' => 'eppl#api_place_bet'
 
   # Charge account
-  get '/eppl/api/345gb26bfd/account/load/:gamer_id/:paymoney_account_number/:password/:transaction_amount' => 'eppl#charge_eppl_account'
+  ##get '/eppl/api/345gb26bfd/account/load/:gamer_id/:paymoney_account_number/:password/:transaction_amount' => 'eppl#charge_eppl_account'
 
   #get '/eppl/bet/validate' => 'eppl#periodically_validate_bet'
 
   #get 'eppl/api/87eik741fd/earning/pay/:transaction_id' => 'eppl#api_pay_earning'
 
   # Transfer
-  get '/eppl/api/87eik741fd/earning/transfer/:paymoney_account_number/:transaction_amount' => 'eppl#api_transfer_earning'
+  ##get '/eppl/api/87eik741fd/earning/transfer/:paymoney_account_number/:transaction_amount' => 'eppl#api_transfer_earning'
 
   # Recharge eppl account
-  get '/eppl/api/ok478j41fd/account/reload/:transaction_amount' => 'eppl#api_recharge_eppl_account'
+  ##get '/eppl/api/ok478j41fd/account/reload/:transaction_amount' => 'eppl#api_recharge_eppl_account'
   #---------------------EPPL---------------------
 
   #---------------------CM3---------------------
