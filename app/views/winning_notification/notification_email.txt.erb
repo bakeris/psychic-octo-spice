@@ -7,6 +7,13 @@ Numéro de ticket: <%= @ticket_id %>.
 <% unless @ref_number.blank? %>
 Numéro de Ref.: <%= @ref_number %>.
 <% end %>
+<% if @bet.class.to_s == "AilPmu" || @bet.class.to_s == "AilLoto" %>
+Reunion: <%= @bet.selector1 %>
+Course: <%= @bet.selector2 %>
+<% end %>
+<% if @bet.class.to_s == "Cm" %>
+Réf: N  <%= @bet.race_id[-1..-1] %>
+<% end %>
 
 <% if @amount.to_f > 5000000 %>
 NOUS VOUS INVITONS A VOUS RENDRE DANS L'AGENCE LA PLUS PROCHE POUR LE RETRAIT DE VOTRE GAIN.
