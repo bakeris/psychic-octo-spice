@@ -924,7 +924,7 @@ class AilLotoController < ApplicationController
     send_sms_notification(@bet, @msisdn, "LOTO", @message_content)
 
     # Email notification
-    WinningNotification.notification_email(@bet.user, @bet.earning_amount, "au LOTO", "LOTO", @bet.ticket_number, @bet.paymoney_account_number, @bet.ref_number).deliver
+    WinningNotification.notification_email(@bet.user, @bet.earning_amount, "au LOTO", "LOTO", @bet.ticket_number, @bet.paymoney_account_number, @bet.ref_number, @bet).deliver
   end
 
   def payment_notification_refund
@@ -935,7 +935,7 @@ class AilLotoController < ApplicationController
     send_sms_notification(@bet, @msisdn, "LOTO", @message_content)
 
     # Email notification
-    WinningNotification.notification_email(@bet.user, @bet.refund_amount, "au LOTO", "LOTO", @bet.ticket_number, @bet.paymoney_account_number, @bet.ref_number).deliver
+    WinningNotification.notification_email(@bet.user, @bet.refund_amount, "au LOTO", "LOTO", @bet.ticket_number, @bet.paymoney_account_number, @bet.ref_number, @bet).deliver
   end
 
   def set_message_type(message_type)
@@ -998,7 +998,7 @@ class AilLotoController < ApplicationController
               send_sms_notification(bet_payout, @msisdn, "LOTO", @message_content)
 
               # Email notification
-              WinningNotification.notification_email(bet_payout.user, bet_payout.earning_amount, "au LOTO", "LOTO", bet_payout.ticket_number, bet_payout.paymoney_account_number, bet_payout.ref_number).deliver
+              WinningNotification.notification_email(bet_payout.user, bet_payout.earning_amount, "au LOTO", "LOTO", bet_payout.ticket_number, bet_payout.paymoney_account_number, bet_payout.ref_number, bet_payout).deliver
             end
           end
 
@@ -1012,7 +1012,7 @@ class AilLotoController < ApplicationController
               send_sms_notification(bet_refund, @msisdn, "LOTO", @message_content)
 
               # Email notification
-              WinningNotification.notification_email(bet_refund.user, bet_refund.refund_amount, "au LOTO", "LOTO", bet_refund.ticket_number, bet_refund.paymoney_account_number, bet_refund.ref_number).deliver
+              WinningNotification.notification_email(bet_refund.user, bet_refund.refund_amount, "au LOTO", "LOTO", bet_refund.ticket_number, bet_refund.paymoney_account_number, bet_refund.ref_number, bet_refund).deliver
             end
           end
 
@@ -1085,7 +1085,7 @@ class AilLotoController < ApplicationController
                 send_sms_notification(bet_payout, @msisdn, "LOTO", @message_content)
 
                 # Email notification
-                WinningNotification.notification_email(bet_payout.user, bet_payout.earning_amount, "au LOTO", "LOTO", bet_payout.ticket_number, bet_payout.paymoney_account_number).deliver
+                WinningNotification.notification_email(bet_payout.user, bet_payout.earning_amount, "au LOTO", "LOTO", bet_payout.ticket_number, bet_payout.paymoney_account_number, bet_payout).deliver
               end
             end
 
@@ -1099,7 +1099,7 @@ class AilLotoController < ApplicationController
                 send_sms_notification(bet_refund, @msisdn, "LOTO", @message_content)
 
                 # Email notification
-                WinningNotification.notification_email(bet_refund.user, bet_refund.refund_amount, "au LOTO", "LOTO", bet_refund.ticket_numberbet_refund.paymoney_account_number).deliver
+                WinningNotification.notification_email(bet_refund.user, bet_refund.refund_amount, "au LOTO", "LOTO", bet_refund.ticket_numberbet_refund.paymoney_account_number, bet_refund).deliver
               end
             end
           end

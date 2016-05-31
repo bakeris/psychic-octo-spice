@@ -550,11 +550,11 @@ class ApplicationController < ActionController::Base
     if amount.to_f > @sill_amount
       @message_content = %Q[
         Vous avez gagné #{amount} F en jouant #{game} sur PARIONS DIRECT.
-        Num ticket: #{ticket_number}. RDV au siège LONACI pour votre gain. CLIQUE-PARIE & GAGNE.]
+        Num ticket: #{ticket_number} #{bet.class.to_s == "Cm" ? "Réf: N" + bet.race_id[-1..-1] : ""}. RDV au siège LONACI pour votre gain. CLIQUE-PARIE & GAGNE.]
     else
       @message_content = %Q[
         Vous avez gagné #{amount} F en jouant #{game} sur PARIONS DIRECT.
-        Num ticket: #{ticket_number}. Votre compte PAYMONEY: #{bet.paymoney_account_number} vient d'être rechargé. CONTINUEZ DE JOUER ET GAGNEZ DIRECT.]
+        Num ticket: #{ticket_number} #{bet.class.to_s == "Cm" ? "Réf: N" + bet.race_id[-1..-1] : ""}. Votre compte PAYMONEY: #{bet.paymoney_account_number} vient d'être rechargé. CONTINUEZ DE JOUER ET GAGNEZ DIRECT.]
     end
   end
 

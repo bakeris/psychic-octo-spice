@@ -633,7 +633,7 @@ class CmController < ApplicationController
                     send_sms_notification(bet, @msisdn, "PMU-ALR", @message_content)
 
                     # Email notification
-                    WinningNotification.notification_email(@user, bet.win_amount, "au PMU-ALR", "PMU-ALR", bet.serial_number, bet.paymoney_account_number, '').deliver
+                    WinningNotification.notification_email(@user, bet.win_amount, "au PMU-ALR", "PMU-ALR", bet.serial_number, bet.paymoney_account_number, '', bet).deliver
                     #if validate_bet_cm3(game_account_token, transaction_amount, race_id)
 
                     #end
