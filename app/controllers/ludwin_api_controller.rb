@@ -1244,7 +1244,7 @@ class LudwinApiController < ApplicationController
     send_sms_notification(@bet, @msisdn, "SPORTCASH", @message_content)
 
     # Email notification
-    WinningNotification.notification_email(@user, @bet.win_amount, "à SPORTCASH", "SPORTCASH", @bet.ticket_id, @bet.paymoney_account_number, '').deliver
+    WinningNotification.notification_email(@user, @bet.win_amount, "à SPORTCASH", "SPORTCASH", @bet.ticket_id, @bet.paymoney_account_number, '', @bet).deliver
   end
 
   def api_coupon_status
