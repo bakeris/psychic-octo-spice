@@ -4,6 +4,14 @@ class EpplController < ApplicationController
 # Transfert de gains - paiement de gains eppl, du compte eppl vers son compte paymoney
 # Transfert de gains - rejouer à eppl compte TRJ, prise de paris TRJ débité pour créditer le compte eppl
 
+  before_filter :check_ip, only: [:charge_eppl_account, :api_place_bet, :api_pay_earning, :api_transfer_earning, :api_recharge_eppl_account]
+
+  def check_ip
+    remote_ip_address = request.remote_ip
+    if !(['94.247.179.9', '172.18.2.12', ' 192.168.1.41', '82.97.38.138', '41.21.163.46', '195.14.0.128'].include?(remote_ip_address) rescue false)
+      render text: 'moron'
+    end
+  end
 
   def charge_eppl_account
     @transaction_amount = params[:transaction_amount]
