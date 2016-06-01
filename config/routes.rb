@@ -197,11 +197,7 @@ Rails.application.routes.draw do
   ##get '/eppl/api/36e25e6bfd/bet/place/:game_id/:transaction_amount/:begin_date' => 'eppl#api_place_bet'
 
   # Charge account
-<<<<<<< HEAD
- ##get '/eppl/api/345gb26bfd/account/load/:gamer_id/:paymoney_account_number/:password/:transaction_amount' => 'eppl#charge_eppl_account'
-=======
   ##get '/eppl/api/345gb26bfd/account/load/:gamer_id/:paymoney_account_number/:password/:transaction_amount' => 'eppl#charge_eppl_account'
->>>>>>> 784d539be5b65c5d745bf6cee318448213a06726
 
   #get '/eppl/bet/validate' => 'eppl#periodically_validate_bet'
 
