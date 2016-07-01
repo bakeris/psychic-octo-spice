@@ -760,16 +760,23 @@ class AilPmuController < ApplicationController
           amount_type = notification_object["OperationType"].to_s rescue ""
 
           @bet = AilPmu.where(ref_number: ref_number, ticket_number: ticket_number, earning_paid: nil, refund_paid: nil, earning_notification_received: nil, refund_notification_received: nil).first rescue nil
-          if @bet.blank? || !["1", "2"].include?(amount_type)
+#
+          if @bet.blank? || !["1", "2", "0"].include?(amount_type)
             error_array << notification_object.to_s
           else
             success_array << notification_object.to_s
-
-            if amount_type == "1"
-              notification_field = "earning"
+            if amount_type == "0"
+              if validate_bet_ail("ApXTrliOp", (@bet.bet_cost_amount.to_f rescue 0), "ail_pmus")
+                @bet.update_attributes(bet_status: 'Perdant') rescue nil
+              end
             else
-              notification_field = "refund"
+              if amount_type == "1"
+                notification_field = "earning"
+              else
+                notification_field = "refund"
+              end
             end
+#
 
             @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => amount, :"#{notification_field}_notification_received_at" => DateTime.now, bet_status: "En cours")
           end
