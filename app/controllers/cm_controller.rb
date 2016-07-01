@@ -7,7 +7,7 @@ class CmController < ApplicationController
   #before_action :only => :guard do |s| s.get_service_by_token(params[:currency], params[:service_token], params[:operation_token], params[:order], params[:transaction_amount], params[:id]) end
   before_action :ensure_login, only: [:api_current_session, :api_get_program, :api_get_race, :api_get_bet, :api_get_results, :api_get_dividends, :api_evaluate_game, :api_sell_ticket, :api_cancel_ticket, :api_get_winners]
 
-  before_filter :check_ip, only: [:api_current_session, :api_get_program, :api_get_race, :api_get_bet, :api_get_results, :api_get_dividends, :api_evaluate_game, :api_sell_ticket, :api_cancel_ticket, :api_notify_session, :api_notify_program, :api_notify_race, :api_gamer_bets]
+  #before_filter :check_ip, only: [:api_current_session, :api_get_program, :api_get_race, :api_get_bet, :api_get_results, :api_get_dividends, :api_evaluate_game, :api_sell_ticket, :api_cancel_ticket, :api_notify_session, :api_notify_program, :api_notify_race, :api_gamer_bets]
 
   @@user_name = "ngser@lonaci"
   @@password = "nglonaci@2016"

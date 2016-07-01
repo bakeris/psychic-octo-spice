@@ -53,7 +53,7 @@ class EpplController < ApplicationController
 
             if !response_body.include?("|")
               @transaction_id = response_body
-              Eppl.create(operation: "Chargement de compte", transaction_id: @transaction_id, paymoney_account_number: paymoney_account_number, transaction_amount: transaction_amount, game_account_token: game_account_token, bet_placed_at: DateTime.now, gamer_id: @gamer_id) rescue nil
+              Eppl.create(operation: "Chargement de compte", bet_validated: true, transaction_id: @transaction_id, paymoney_account_number: paymoney_account_number, transaction_amount: transaction_amount, game_account_token: game_account_token, bet_placed_at: DateTime.now, gamer_id: @gamer_id) rescue nil
             else
               case response_body
                 when "|0|"
@@ -98,7 +98,7 @@ class EpplController < ApplicationController
       #@error_description = "L'identifiant du parieur n'a pas été trouvé."
     #else
       @eppl = Eppl.create(operation: "Prise de pari", transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s, paymoney_account_number: params[:paymoney_account_number], transaction_amount: @transaction_amount, remote_ip: @remote_ip, game_id: params[:game_id], game_account_token: @game_account_token, begin_date: begin_date, bet_placed: true, bet_placed_at: DateTime.now, paymoney_transaction_id: Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s)
-
+      periodically_validate_bet
       #if !place_bet_with_cancellation(@eppl, @game_account_token, params[:paymoney_account_number], params[:password], @transaction_amount)
         #@eppl.update_attributes(error_code: @error_code, error_description: @error_description)
       #end
@@ -189,7 +189,7 @@ class EpplController < ApplicationController
             response_body = response.body
 
             if !response_body.include?("|")
-              Eppl.create(operation: "Transfert de gains", transaction_id: response_body, paymoney_account_number: paymoney_account_number, transaction_amount: transaction_amount, game_account_token: "PExxGeLY", bet_placed_at: DateTime.now) rescue nil
+              Eppl.create(operation: "Transfert de gains", bet_validated: true, transaction_id: response_body, paymoney_account_number: paymoney_account_number, transaction_amount: transaction_amount, game_account_token: "PExxGeLY", bet_placed_at: DateTime.now) rescue nil
               @response_body = response_body
               @error_code = ""
               @error_description = ""
@@ -236,7 +236,7 @@ class EpplController < ApplicationController
               @error_code = ""
               @error_description = ""
 
-              Eppl.create(operation: "Rechargement de compte", transaction_id: response_body, paymoney_account_number: "TRJ", transaction_amount: @transaction_amount, game_account_token: "PExxGeLY", bet_placed_at: DateTime.now, gamer_id: @gamer_id) rescue nil
+              Eppl.create(operation: "Rechargement de compte", bet_validated: true, transaction_id: response_body, paymoney_account_number: "TRJ", transaction_amount: @transaction_amount, game_account_token: "PExxGeLY", bet_placed_at: DateTime.now, gamer_id: @gamer_id) rescue nil
             else
               case response_body
                 when "|0|"
