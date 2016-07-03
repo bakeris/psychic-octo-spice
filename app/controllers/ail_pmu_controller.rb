@@ -3,14 +3,14 @@ class AilPmuController < ApplicationController
 
   def check_ip
     remote_ip_address = request.remote_ip
-    if !(['94.247.179.9', '172.18.2.12', ' 192.168.1.41', '82.97.38.138', '41.21.163.46', '195.14.0.128'].include?(remote_ip_address) rescue false)
+    if !(['94.247.179.9', '172.18.2.12', ' 192.168.1.41', '82.97.38.138', '41.21.163.46', '195.14.0.128', '41.21.163.44'].include?(remote_ip_address) rescue false)
       render text: 'moron'
     end
   end
 
   def set_credentials
-    @user_name = "pmu@test.co.za"
-    @password = "dljghh$fdhfd@dj"
+    @user_name = "pmu@ngser.com"
+    @password = "p@$wrd_S3cuR3_NG$3R"
     @terminal_id = "100000"
     @operator_id = "1"
     @operator_pin = "1"
@@ -759,16 +759,26 @@ class AilPmuController < ApplicationController
           amount = notification_object["Amount"] rescue ""
           amount_type = notification_object["OperationType"].to_s rescue ""
 
+<<<<<<< HEAD
           @bet = AilPmu.where(ref_number: ref_number, ticket_number: ticket_number, earning_paid: nil, refund_paid: nil, earning_notification_received: nil, refund_notification_received: nil).first rescue nil
 #
           if @bet.blank? || !["1", "2", "0"].include?(amount_type)
+=======
+          @bet = AilPmu.where(ref_number: ref_number, ticket_number: ticket_number, earning_paid: nil, refund_paid: nil, earning_notification_received: nil, refund_notification_received: nil, bet_status: 'En cours').first rescue nil
+if @bet.blank? || !["1", "2", "0"].include?(amount_type)
+>>>>>>> 241ac386a867e2ead959336aacf0a2c2617d938c
             error_array << notification_object.to_s
           else
             success_array << notification_object.to_s
             if amount_type == "0"
+<<<<<<< HEAD
               if validate_bet_ail("ApXTrliOp", (@bet.bet_cost_amount.to_f rescue 0), "ail_pmus")
                 @bet.update_attributes(bet_status: 'Perdant') rescue nil
               end
+=======
+              @bet.update_attribute(:bet_status, 'Perdant') #rescue nil
+              #validate_bet_ail("ApXTrliOp", (@bet.bet_cost_amount.to_f rescue 0), "ail_pmus")
+>>>>>>> 241ac386a867e2ead959336aacf0a2c2617d938c
             else
               if amount_type == "1"
                 notification_field = "earning"
@@ -776,9 +786,13 @@ class AilPmuController < ApplicationController
                 notification_field = "refund"
               end
             end
+<<<<<<< HEAD
 #
 
             @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => amount, :"#{notification_field}_notification_received_at" => DateTime.now, bet_status: "En cours")
+=======
+            @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => amount, :"#{notification_field}_notification_received_at" => DateTime.now, bet_status: "En cours") rescue nil
+>>>>>>> 241ac386a867e2ead959336aacf0a2c2617d938c
           end
         end
       end
@@ -792,7 +806,7 @@ class AilPmuController < ApplicationController
           amount = notification_object["NewAmount"] rescue ""
           @adjustment_amount = notification_object["AdjustmentAmount"].to_i rescue ""
 
-          @bet = AilPmu.where("ticket_number = '#{ticket_number}' AND (earning_paid IS NOT NULL OR refund_paid IS NOT NULL) AND (earning_notification_received IS TRUE OR refund_notification_received IS TRUE)").first rescue nil
+          @bet = AilPmu.where("ticket_number = '#{ticket_number}' AND (earning_paid IS NOT NULL OR refund_paid IS NOT NULL) AND (earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En cours'").first rescue nil
           if @bet.blank? || !["0", "1", "2"].include?(original_operation_type) || !["0", "1", "2"].include?(new_operation_type)
             error_array << notification_object.to_s
           else
@@ -930,7 +944,7 @@ class AilPmuController < ApplicationController
        draw_ids.each do |draw_id|
 
         #orphan_bets = AilPmu.where("created_at  < '#{DateTime.now - 3.hour}' AND draw_id = '#{draw_id}'").update_all(bet_status: 'Perdant') rescue nil
-        orphan_bets = AilPmu.where("TO_TIMESTAMP(begin_date, 'DD/MM/YYYY HH24:MI:SS')  < '#{DateTime.now - 2.hour}' AND draw_id = '#{draw_id}' AND bet_status = 'En cours'") rescue nil
+        orphan_bets = AilPmu.where("TO_TIMESTAMP(begin_date, 'DD/MM/YYYY HH24:MI:SS')  < '#{DateTime.now - 2.hour}' AND draw_id = '#{draw_id}' AND bet_status = 'En cours' AND begin_date IS NOT NULL AND begin_date <> ''") rescue nil
         cancel_amount = AilPmu.where("TO_TIMESTAMP(begin_date, 'DD/MM/YYYY HH24:MI:SS')  < '#{DateTime.now - 2.hour}' AND draw_id = '#{draw_id}' AND bet_cancelled IS TRUE").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0
 
         orphan_amount = (orphan_bets.map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0) #- cancel_amount

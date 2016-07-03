@@ -7,18 +7,18 @@ class CmController < ApplicationController
   #before_action :only => :guard do |s| s.get_service_by_token(params[:currency], params[:service_token], params[:operation_token], params[:order], params[:transaction_amount], params[:id]) end
   before_action :ensure_login, only: [:api_current_session, :api_get_program, :api_get_race, :api_get_bet, :api_get_results, :api_get_dividends, :api_evaluate_game, :api_sell_ticket, :api_cancel_ticket, :api_get_winners]
 
-  before_filter :check_ip, only: [:api_current_session, :api_get_program, :api_get_race, :api_get_bet, :api_get_results, :api_get_dividends, :api_evaluate_game, :api_sell_ticket, :api_cancel_ticket, :api_notify_session, :api_notify_program, :api_notify_race, :api_gamer_bets]
+  #before_filter :check_ip, only: [:api_current_session, :api_get_program, :api_get_race, :api_get_bet, :api_get_results, :api_get_dividends, :api_evaluate_game, :api_sell_ticket, :api_cancel_ticket, :api_notify_session, :api_notify_program, :api_notify_race, :api_gamer_bets]
 
   @@user_name = "ngser@lonaci"
-  @@password = "lemotdepasse"
-  @@notification_url = "http://154.68.45.82:1180/api/dc4741d1b1/"
+  @@password = "nglonaci@2016"
+  @@notification_url = "http://172.18.2.11/api/dc4741d1b1/"
   @@hub_notification_url = "http://parionsdirect.ci" # URL vers la plateforme de Moïse
   #@@cm3_server_url = "http://office.cm3.work:27000"
-  @@cm3_server_url = "http://192.168.1.44:29000"
+  @@cm3_server_url = "http://192.168.1.41:29000"
 
   def check_ip
     remote_ip_address = request.remote_ip
-    if !(['94.247.179.9', '172.18.2.12', ' 192.168.1.41', '82.97.38.138', '41.21.163.46', '195.14.0.128'].include?(remote_ip_address) rescue false)
+    if !(['172.18.1.41', '94.247.179.9', '172.18.2.12', ' 192.168.1.41', '82.97.38.138', '41.21.163.46', '195.14.0.128'].include?(remote_ip_address) rescue false)
       render text: 'moron'
     end
   end
@@ -772,7 +772,7 @@ class CmController < ApplicationController
 
     CmLog.create(operation: "Notify race", notify_race_connection_id: @connection_id, notify_race_program_id: @program_id, notify_race_race_id: @race_id, notify_race_reason: @reason, notify_race_request_body: request_body)
 
-    #render text: status
+    #render text: @reason
     render nothing: true, status: 200
   end
 

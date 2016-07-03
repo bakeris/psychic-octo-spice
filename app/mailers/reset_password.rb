@@ -1,5 +1,5 @@
 class ResetPassword < ActionMailer::Base
-  default from: "LONACI"
+  default from: "serviceclients@parionsdirect.net"
 
   def send_reset_password_email(email, reset_password_url)
     @email = email
