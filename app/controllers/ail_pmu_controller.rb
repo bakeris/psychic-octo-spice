@@ -759,26 +759,14 @@ class AilPmuController < ApplicationController
           amount = notification_object["Amount"] rescue ""
           amount_type = notification_object["OperationType"].to_s rescue ""
 
-<<<<<<< HEAD
-          @bet = AilPmu.where(ref_number: ref_number, ticket_number: ticket_number, earning_paid: nil, refund_paid: nil, earning_notification_received: nil, refund_notification_received: nil).first rescue nil
-#
-          if @bet.blank? || !["1", "2", "0"].include?(amount_type)
-=======
           @bet = AilPmu.where(ref_number: ref_number, ticket_number: ticket_number, earning_paid: nil, refund_paid: nil, earning_notification_received: nil, refund_notification_received: nil, bet_status: 'En cours').first rescue nil
 if @bet.blank? || !["1", "2", "0"].include?(amount_type)
->>>>>>> 241ac386a867e2ead959336aacf0a2c2617d938c
             error_array << notification_object.to_s
           else
             success_array << notification_object.to_s
             if amount_type == "0"
-<<<<<<< HEAD
-              if validate_bet_ail("ApXTrliOp", (@bet.bet_cost_amount.to_f rescue 0), "ail_pmus")
-                @bet.update_attributes(bet_status: 'Perdant') rescue nil
-              end
-=======
               @bet.update_attribute(:bet_status, 'Perdant') #rescue nil
               #validate_bet_ail("ApXTrliOp", (@bet.bet_cost_amount.to_f rescue 0), "ail_pmus")
->>>>>>> 241ac386a867e2ead959336aacf0a2c2617d938c
             else
               if amount_type == "1"
                 notification_field = "earning"
@@ -786,13 +774,7 @@ if @bet.blank? || !["1", "2", "0"].include?(amount_type)
                 notification_field = "refund"
               end
             end
-<<<<<<< HEAD
-#
-
-            @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => amount, :"#{notification_field}_notification_received_at" => DateTime.now, bet_status: "En cours")
-=======
             @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => amount, :"#{notification_field}_notification_received_at" => DateTime.now, bet_status: "En cours") rescue nil
->>>>>>> 241ac386a867e2ead959336aacf0a2c2617d938c
           end
         end
       end

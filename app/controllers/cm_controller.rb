@@ -1,3 +1,4 @@
+
 class CmController < ApplicationController
   # 3000- La connexion n'a pas pu être établie
   # 3001- La session n'a pas pu être récupérée
@@ -35,6 +36,7 @@ class CmController < ApplicationController
       send_request(body, "#{@@cm3_server_url}/login")
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
+
 
       if error_code.blank? && @error != true
         @connection_id = (@request_result.xpath('//loginResponse').at('connectionId').content  rescue nil)
