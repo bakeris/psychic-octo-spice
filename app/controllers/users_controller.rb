@@ -128,4 +128,8 @@ class UsersController < ApplicationController
     render text: result.to_s.force_encoding('iso-8859-1').encode('utf-8') == "good, operation effectuée avec succes "
   end
 
+  def api_get_uuid
+    render text: (User.find_by_msisdn(params[:msisdn]).uuid rescue '')
+  end
+
 end
