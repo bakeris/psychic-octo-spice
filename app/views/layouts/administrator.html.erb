@@ -72,8 +72,9 @@
         </ul>
       </li>
 
-      <li class="tables"><a href="#" title="" class="exp" id = "<%= @winners_menu_style %>"><span>Liste des gagnants</span><strong>4</strong></a>
+      <li class="tables"><a href="#" title="" class="exp" id = "<%= @winners_menu_style %>"><span>Liste des gagnants</span><strong>5</strong></a>
         <ul class="sub">
+          <li class = "<%= @all_winners_menu_style %>"><a href="<%= all_winners_path %>" title="">Gagnants de jeux</a></li>
           <% if @profile.list_loto_winners_transactions_transactions_right == true %>
             <li class = "<%= @loto_winners_menu_style %>"><a href="<%= loto_winners_path %>" title="">LOTO BONHEUR</a></li>
           <% end %>

@@ -1,0 +1,73 @@
+<div class="widget">
+  <div class="title"><img src="<%= asset_path 'icons/dark/full2.png' %>" alt="" class="titleIcon" /><h6>Liste des paris</h6></div>
+  <table cellpadding="0" cellspacing="0" border="0" class="display dTable taskWidget">
+    <thead>
+      <tr>
+        <th>Création</th>
+        <th>Jeux</th>
+        <th>Statut</th>
+        <th>N° de Trans.</th>
+        <th>Mise</th>
+        <th>Montant du gain</th>
+        <th>Détails</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% unless @loto_bets.blank? %>
+        <% @loto_bets.each do |bet| %>
+          <tr class="gradeA">
+            <td>
+              <%= bet.created_at.strftime("%d-%m-%Y") + " à " + bet.created_at.strftime("%Hh %Mmn") %>
+            </td>
+            <td>
+              Loto
+            </td>
+            <% css_class = ((bet.bet_status == 'En cours' || bet.bet_status == 'Vainqueur en attente de paiement') ? 'taskP' : ((bet.bet_status == 'Gagnant' || bet.bet_status == 'Remboursé') ? 'taskPr' : 'taskD')) %>
+            <td class = "<%= css_class %>">
+              <%= bet.bet_status %>
+            </td>
+            <td>
+              <%= bet.transaction_id[0..15] %>...
+            </td>
+            <td>
+              <%= number_with_delimiter(bet.bet_cost_amount) %>
+            </td>
+            <td>
+              <%= number_with_delimiter(bet.earning_amount) %>
+            </td>
+            <td class = "customInfo">
+              <% if !bet.bet_date.blank? %>
+                <span>
+                  <strong>Pari pris le </strong> <%= bet.bet_date %>
+                </span>
+              <% end %>
+              <% if !bet.bet_cancelled.blank? %>
+                <span>
+                  <strong>Annulé le </strong> <%= bet.bet_cancelled_at.strftime("%d-%m-%Y") + " à " + bet.bet_cancelled_at.strftime("%Hh %Mmn") %>
+                </span>
+              <% end %>
+              <% if !bet.begin_date.blank? %>
+                <span>
+                  <strong>Date de début </strong> <%= bet.begin_date %>
+                </span>
+              <% end %>
+              <% if !bet.end_date.blank? %>
+                <span>
+                  <strong>Date de fin </strong> <%= bet.end_date %>
+                </span>
+              <% end %>
+            </td>
+
+            <td class = "actBtns">
+              <a href="<%= gamer_loto_bet_details_path(bet.id) %>" class="tipS" alt="Détails"><%= image_tag('icons/color/user-black.png', alt: '') %></a>
+              <% if bet.bet_status == 'Vainqueur en attente de paiement' %>
+                <a href="<%= validate_on_hold_loto_winner_path(bet.id) %>" class="tipS" alt="Valider le paiement" onclick="return confirm('Êtes vous sûr de vouloir valider le paiement?')"><%= image_tag('icons/color/tick.png', alt: '') %></a>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>

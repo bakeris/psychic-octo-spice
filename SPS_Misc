@@ -1,3 +1,11 @@
+Statut
+Jeux
+N° de transaction
+Montant des gains
+Détails (date de prise du pari)
+Actions
+
+
 https://test.sports4africa.com/testUSSD/getEvent?system_code=PD&type=DELTA&isLive=1&len=FR
 
 https://services.sports4africa.com/Ussd/dettaglio_ticket_psqf?ticket=3FF1083734DD0CBD1A0D&gameid=0

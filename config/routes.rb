@@ -334,6 +334,8 @@ Rails.application.routes.draw do
 
   get '/administrator/cm/winners' => 'gamers#cm_winners', as: :cm_winners
 
+  get '/administrator/all_winners' => 'gamers#all_winners', as: :all_winners
+
   get '/administrator/profile/new' => 'profiles#index', as: :new_profile
   get '/administrator/profile/edit/:profile_id' => 'profiles#edit', as: :edit_profile
   post '/administrator/profile/update/:profile_id' => 'profiles#update', as: :update_profile
