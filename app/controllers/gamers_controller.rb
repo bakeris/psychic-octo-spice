@@ -42,10 +42,10 @@ class GamersController < ApplicationController
   def all_winners
     @winners_menu_style = "current"
     @all_winners_menu_style = "this"
-    @loto_bets = AilLoto.select(:bet_status, :transaction_id, :bet_cost_amount, :earning_amount, :bet_date, :bet_cancelled_at, :begin_date, :end_date, :id, :created_at).where("bet_status = 'Gagnant' OR bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
-    @pmu_plr_bets = AilPmu.select(:bet_status, :transaction_id, :bet_cost_amount, :earning_amount, :bet_date, :bet_cancelled_at, :begin_date, :end_date, :id, :created_at).where("bet_status = 'Gagnant' OR bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
-    @spc_bets = Bet.select(:bet_status, :transaction_id, :amount, :win_amount, :bet_validated_at, :bet_cancelled_at, :id, :created_at).where("bet_status = 'Gagnant' OR bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
-    @cm_bets = Cm.select(:bet_status, :sale_client_id, :amount, :win_amount, :bet_placed_at, :bet_cancelled_at, :begin_date, :end_date, :id, :created_at).where("bet_status = 'Gagnant' OR bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
+    @loto_bets = AilLoto.select(:bet_status, :transaction_id, :bet_cost_amount, :earning_amount, :bet_date, :bet_cancelled_at, :bet_cancelled, :begin_date, :end_date, :id, :created_at).where("bet_status = 'Gagnant' OR bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
+    @pmu_plr_bets = AilPmu.select(:bet_status, :transaction_id, :bet_cost_amount, :earning_amount, :bet_date, :bet_cancelled_at, :bet_cancelled, :begin_date, :end_date, :id, :created_at).where("bet_status = 'Gagnant' OR bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
+    @spc_bets = Bet.select(:bet_status, :transaction_id, :amount, :win_amount, :bet_validated_at, :bet_cancelled_at, :cancelled, :id, :created_at).where("bet_status = 'Gagnant' OR bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
+    @cm_bets = Cm.select(:bet_status, :sale_client_id, :amount, :win_amount, :bet_placed_at, :bet_cancelled_at, :cancelled, :begin_date, :end_date, :id, :created_at).where("bet_status = 'Gagnant' OR bet_status = 'Vainqueur en attente de paiement'").order("created_at DESC")
   end
 
   def loto_bets
