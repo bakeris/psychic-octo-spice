@@ -771,6 +771,20 @@ class AilLotoController < ApplicationController
     end
   end
 
+  def ussd_gamer_bets
+    @error_code = ''
+    @error_description = ''
+
+    user = User.find_by_msisdn(params[:msisdn])
+
+    if user.blank?
+      @error_code = '4000'
+      @error_description = 'The gamer id could not be found'
+    else
+      @bets = user.ail_lotos.where("bet_status IS NOT NULL").order("created_at DESC").limit(5) rescue nil
+    end
+  end
+
   # Les notifications sont reçues et mises en attente changed
   def api_validate_transaction
     @error_code = ''

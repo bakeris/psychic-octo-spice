@@ -184,6 +184,9 @@ Rails.application.routes.draw do
   # Display the list of bets of a gamer
   get '/ail/loto/api/068c592ec4/gamer/bets/list/:gamer_id' => 'ail_loto#api_gamer_bets'
 
+  # USSD - Display the list of bets of a gamer
+  get '/ail/loto/ussd/064482ec4/gamer/bets/list/:msisdn' => 'ail_loto#ussd_gamer_bets'
+
   # Validate winning transaction
   post '/ail/loto/api/66378dffrz3/transaction/validate' => 'ail_loto#api_validate_transaction'
 
