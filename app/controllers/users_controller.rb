@@ -132,4 +132,12 @@ class UsersController < ApplicationController
     render text: (User.find_by_msisdn(params[:msisdn]).uuid rescue '')
   end
 
+  def api_msisdn_exists
+    user = User.find_by_msisdn(params[:msisdn])
+    password = user.password rescue ''
+    salt = user.salt rescue ''
+
+    render text: (password + '-' + salt)
+  end
+
 end

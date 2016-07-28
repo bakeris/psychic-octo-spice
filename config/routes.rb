@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   get '/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/msisdn/login/:msisdn/:password' => 'users#api_msisdn_login'
   get '/6basdf4414dffsf8ba869a7a9c59f3a0/api/users/account/logout/:connection_id' => 'users#api_logout', :constraints => {:connection_id => /.*/}
   get '/8ba869a7a9c59f3a0/api/users/gamer_id/:msisdn' => 'users#api_get_uuid'
+  get '/85fg69a7a9c59f3a0/api/users/password/:msisdn' => 'users#api_msisdn_exists'
 
   #---------------------LUDWIN---------------------
 
