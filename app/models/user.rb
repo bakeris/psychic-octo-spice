@@ -35,7 +35,7 @@ class User < ActiveRecord::Base
   #validates :msisdn, uniqueness: {message: "est déjà inscrit"}
   validates :pseudo, :firstname, :lastname, :password, length: {minimum: 3, maximum: 255}
   #validates :pseudo, uniqueness: true
-  validates :email, uniqueness: {allow_blank: true}
+  validates :email, :msisdn, uniqueness: {allow_blank: true}
   #validates :password, numericality: true
   validates :email, format: {with: /^(|(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6})$/i, multiline: true, allow_blank: true}
   validate :msisdn_not_a_number?, :right_msisdn_length?, :right_birthdate?
