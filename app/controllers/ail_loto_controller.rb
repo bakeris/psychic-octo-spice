@@ -781,7 +781,8 @@ class AilLotoController < ApplicationController
       @error_code = '4000'
       @error_description = 'The gamer id could not be found'
     else
-      @bets = user.ail_lotos.where("bet_status IS NOT NULL").order("created_at DESC").limit(5) rescue nil
+      @bets = AilLoto.where("bet_status IS NOT NULL AND gamer_id = '#{user.uuid}'").order("created_at DESC") rescue nil
+      #@bets = user.ail_lotos.where("bet_status IS NOT NULL").order("created_at DESC") rescue nil
     end
   end
 
