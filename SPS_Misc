@@ -1,3 +1,5 @@
+rails generate model DelayedPayment type:string transaction_id:string ticket_id:string cheque_id:string firstname:string lastname:string identity_number:string cheque_amount:float paymoney_account_number:string paymoney_amount:float
+
 Statut
 Jeux
 N° de transaction
