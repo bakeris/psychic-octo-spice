@@ -666,7 +666,7 @@ class GamersController < ApplicationController
 
   def postponed_winners_check_paymoney_account
     status = true
-    @paymoney_token_url = Parameters.first.paymoney_wallet_url + "/PAYMONEY_WALLET/rest/check2_compte/#{@paymoney_account_number}"
+    @paymoney_token_url = Parameters.first.paymoney_url + "/PAYMONEY_WALLET/rest/check2_compte/#{@paymoney_account_number}"
     @paymoney_token = RestClient.get(@paymoney_token_url) rescue nil
 
     if @paymoney_token.blank? || @paymoney_token == 'null'
