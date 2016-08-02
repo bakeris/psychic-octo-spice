@@ -1,0 +1,59 @@
+<div class="titleArea">
+    <div class="wrapper">
+        <div class="pageTitle">
+            <h5>Loto</h5>
+            <span>Paiement des gagnants millionnaires</span>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="line"></div>
+
+  <div class="horControlB">
+    <ul>
+    	<li><a href="javascript:history.go(-1);" title=""><img src="<%= asset_path 'icons/control/16/archives.png' %>" alt=""><span>Retour</span></a></li>
+      </ul>
+  </div>
+
+<div class="line"></div>
+
+<!-- Main content wrapper -->
+<div class="wrapper">
+
+  <%= flash_messages! %>
+  <%= form_tag(process_loto_postponed_winners_path, method: :post, :class => 'form') do %>
+
+    <fieldset>
+      <div class="widget">
+        <div class="title">
+          <img src="<%= asset_path 'icons/dark/users.png' %>" alt="" class="titleIcon" />
+          <h6>Formulaire de création de compte</h6>
+        </div>
+
+        <div class="formRow">
+          <label>Nom</label>
+          <div class="formRight">
+            <%= text_field_tag :firstname, placeholder: "Veuillez entrer le nom", class: 'form-control', autofocus: true %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Prénoms</label>
+          <div class="formRight">
+            <%= text_field_tag :lastname, placeholder: "Veuillez entrer les prénoms", class: 'form-control' %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <%= f.submit "Valider", class: 'basic' %>
+        </div>
+      </div>
+    </fieldset>
+  <% end %>
+
+</div>
+<!-- End Main content wrapper -->

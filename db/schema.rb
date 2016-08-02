@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160525234953) do
+ActiveRecord::Schema.define(version: 20160802205024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -478,6 +478,33 @@ ActiveRecord::Schema.define(version: 20160525234953) do
     t.datetime "updated_at"
   end
 
+  create_table "delayed_payments", force: true do |t|
+    t.string   "type"
+    t.string   "transaction_id"
+    t.string   "ticket_id"
+    t.string   "cheque_id"
+    t.string   "firstname"
+    t.string   "lastname"
+    t.string   "identity_number"
+    t.float    "cheque_amount"
+    t.string   "paymoney_account_number"
+    t.float    "paymoney_amount"
+    t.text     "winner_paymoney_account_request"
+    t.text     "winner_paymoney_account_response"
+    t.text     "paymoney_credit_request"
+    t.text     "paymoney_credit_response"
+    t.boolean  "paymoney_credit_status"
+    t.text     "cheque_credit_request"
+    t.text     "cheque_credit_response"
+    t.boolean  "cheque_credit_status"
+    t.text     "payback_request"
+    t.text     "payback_response"
+    t.boolean  "payback_status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "game"
+  end
+
   create_table "deposit_logs", force: true do |t|
     t.string   "game_token"
     t.string   "pos_id"
@@ -613,6 +640,7 @@ ActiveRecord::Schema.define(version: 20160525234953) do
     t.string   "paymoney_wallet_url"
     t.float    "sill_amount"
     t.string   "hub_front_office_url"
+    t.float    "postponed_winners_paymoney_default_amount"
   end
 
   create_table "pmu_bet_types", force: true do |t|

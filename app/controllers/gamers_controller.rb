@@ -606,6 +606,22 @@ class GamersController < ApplicationController
     end
   end
 
+  def loto_postponed_winners
+    @transaction = AilLoto.find_by_transaction_id(params[:transaction_id])
+
+    if @transaction.blank?
+      redirect_to loto_winners_on_hold_path
+    else
+      @paymoney_amount = Parameter.first.postponed_winners_paymoney_default_amount
+      @cheque_amount = @transaction.earning_amount.to_f - @paymoney_amount
+      @gamer = User.find_by_uuid(@transaction.gamer_id)
+    end
+  end
+
+  def process_loto_postponed_winners
+
+  end
+
   private
     def set_loto_search_params
       @sql_begin_date = ""

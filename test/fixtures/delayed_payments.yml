@@ -1,0 +1,47 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  type: 
+  transaction_id: MyString
+  ticket_id: MyString
+  cheque_id: MyString
+  firstname: MyString
+  lastname: MyString
+  identity_number: MyString
+  cheque_amount: 1.5
+  paymoney_account_number: MyString
+  paymoney_amount: 1.5
+  winner_paymoney_account_request: MyText
+  winner_paymoney_account_response: MyText
+  paymoney_credit_request: MyText
+  paymoney_credit_response: MyText
+  paymoney_credit_status: false
+  cheque_credit_request: MyText
+  cheque_credit_response: MyText
+  cheque_credit_status: false
+  payback_request: MyText
+  payback_response: MyText
+  payback_status: false
+
+two:
+  type: 
+  transaction_id: MyString
+  ticket_id: MyString
+  cheque_id: MyString
+  firstname: MyString
+  lastname: MyString
+  identity_number: MyString
+  cheque_amount: 1.5
+  paymoney_account_number: MyString
+  paymoney_amount: 1.5
+  winner_paymoney_account_request: MyText
+  winner_paymoney_account_response: MyText
+  paymoney_credit_request: MyText
+  paymoney_credit_response: MyText
+  paymoney_credit_status: false
+  cheque_credit_request: MyText
+  cheque_credit_response: MyText
+  cheque_credit_status: false
+  payback_request: MyText
+  payback_response: MyText
+  payback_status: false

@@ -358,6 +358,9 @@ Rails.application.routes.draw do
   get '/administrator/roles/management' => 'administrators#roles_management', as: :roles_management
   post '/administrator/roles/set' => 'administrators#set_administrator_role', as: :set_administrator_role
 
+  get '/administrator/loto/postponed_winner/:transaction_id' => 'gamers#loto_postponed_winners', as: :loto_postponed_winners
+  post '/administrator/loto/postponed_winner/process' => 'gamers#process_loto_postponed_winners', as: :process_loto_postponed_winners
+
   # Excel export
   get '/administrator/gamers/list/export' => 'gamers#export_gamers_list', as: :export_gamers_list
 
