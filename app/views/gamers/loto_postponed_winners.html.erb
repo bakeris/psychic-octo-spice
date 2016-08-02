@@ -83,7 +83,7 @@
         <div class="formRow">
           <label>Montant du chèque</label>
           <div class="formRight">
-            <%= text_field_tag :cheque_amount, @cheque_amount, placeholder: "Veuillez entrer le montant du chèque", class: 'form-control' %>
+            <%= text_field_tag :cheque_amount, @cheque_amount, disabled: true, class: 'form-control' %>
           </div>
           <div class="clear"></div>
         </div>
@@ -99,7 +99,7 @@
         <div class="formRow">
           <label>Montant à verser sur Paymoney</label>
           <div class="formRight">
-            <%= text_field_tag :paymoney_amount, @paymoney_amount, placeholder: "Veuillez entrer le montant à verser sur Paymoney", class: 'form-control' %>
+            <%= text_field_tag :paymoney_amount, @paymoney_amount, disabled: true, class: 'form-control' %>
           </div>
           <div class="clear"></div>
         </div>

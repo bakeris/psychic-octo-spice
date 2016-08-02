@@ -619,7 +619,60 @@ class GamersController < ApplicationController
   end
 
   def process_loto_postponed_winners
+    @transaction = AilLoto.find_by_transaction_id(params[:transaction_id])
+    @identity_number = params[:identity_number]
+    @cheque_id = params[:cheque_id]
+    @paymoney_account_number = params[:paymoney_account_number]
 
+    if @transaction.blank?
+      redirect_to loto_winners_on_hold_path
+    else
+
+
+      init_loto_postponed_winners
+
+      if check_required_fields
+        if postponed_winners_check_paymoney_account
+          delayed_payment = DelayedPayment.new(game: 'LOTO', type: 'Paiement partiel avec Paymoney', transaction_id: @transaction.transaction_id, ticket_id: @transaction.ticket_number, firstname: params[:firstname], lastname: params[:lastname], cheque_id: @cheque_id, cheque_amount: @cheque_amount, identity_number: @identity_number, paymoney_amount: @paymoney_amount, paymoney_account_number: @paymoney_account_number, winner_paymoney_account_request: @paymoney_token_url, winner_paymoney_account_response: @paymoney_token)
+        else
+          flash.now[:error] = "Le numéro de compte Paymoney n'a pas été trouvé"
+          render :loto_postponed_winners
+        end
+      else
+        flash.now[:error] = 'Veuillez renseigner tous les champs'
+        render :loto_postponed_winners
+      end
+    end
+  end
+
+  def check_required_fields
+    status = true
+    if @identity_number.blank? || @cheque_id.blank? || @paymoney_account_number.blank?
+      status = false
+    end
+
+    return status
+  end
+
+  def init_loto_postponed_winners
+    @gamer = User.find_by_uuid(@transaction.gamer_id)
+    params[:identity_number] = params[:identity_number]
+    params[:cheque_id] = params[:cheque_id]
+    params[:paymoney_account_number] = params[:paymoney_account_number]
+    @paymoney_amount = Parameters.first.postponed_winners_paymoney_default_amount
+    @cheque_amount = @transaction.earning_amount.to_f - @paymoney_amount
+  end
+
+  def postponed_winners_check_paymoney_account
+    status = true
+    @paymoney_token_url = Parameters.first.paymoney_wallet_url + "/PAYMONEY_WALLET/rest/check2_compte/#{@paymoney_account_number}"
+    @paymoney_token = RestClient.get(@paymoney_token_url) rescue nil
+
+    if @paymoney_token.blank? || @paymoney_token == 'null'
+      status = false
+    end
+
+    return status
   end
 
   private
