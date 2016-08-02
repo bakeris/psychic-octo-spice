@@ -31,6 +31,7 @@
           <img src="<%= asset_path 'icons/dark/users.png' %>" alt="" class="titleIcon" />
           <h6>Formulaire de création de compte</h6>
         </div>
+        <%= hidden_field_tag :transaction_id, @transaction.transaction_id %>
 
         <div class="formRow">
           <label>Id de transaction</label>
