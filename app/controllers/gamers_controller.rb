@@ -625,6 +625,7 @@ class GamersController < ApplicationController
     @paymoney_account_number = params[:paymoney_account_number]
 
     if @transaction.blank?
+      flash[:error] = "La transaction n'a pas été trouvée"
       redirect_to loto_winners_on_hold_path
     else
 
