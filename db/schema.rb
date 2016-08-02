@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160802205024) do
+ActiveRecord::Schema.define(version: 20160802232109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -641,6 +641,7 @@ ActiveRecord::Schema.define(version: 20160802205024) do
     t.float    "sill_amount"
     t.string   "hub_front_office_url"
     t.float    "postponed_winners_paymoney_default_amount"
+    t.string   "paymoney_url"
   end
 
   create_table "pmu_bet_types", force: true do |t|
