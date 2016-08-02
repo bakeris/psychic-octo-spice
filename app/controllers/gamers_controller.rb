@@ -612,7 +612,7 @@ class GamersController < ApplicationController
     if @transaction.blank?
       redirect_to loto_winners_on_hold_path
     else
-      @paymoney_amount = Parameter.first.postponed_winners_paymoney_default_amount
+      @paymoney_amount = Parameters.first.postponed_winners_paymoney_default_amount
       @cheque_amount = @transaction.earning_amount.to_f - @paymoney_amount
       @gamer = User.find_by_uuid(@transaction.gamer_id)
     end
