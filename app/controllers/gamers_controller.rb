@@ -628,21 +628,30 @@ class GamersController < ApplicationController
       flash[:error] = "La transaction n'a pas été trouvée"
       redirect_to loto_winners_on_hold_path
     else
-
-
       init_loto_postponed_winners
 
       if check_required_fields
         if postponed_winners_check_paymoney_account
-          delayed_payment = DelayedPayment.new(game: 'LOTO', type: 'Paiement partiel avec Paymoney', transaction_id: @transaction.transaction_id, ticket_id: @transaction.ticket_number, firstname: params[:firstname], lastname: params[:lastname], cheque_id: @cheque_id, cheque_amount: @cheque_amount, identity_number: @identity_number, paymoney_amount: @paymoney_amount, paymoney_account_number: @paymoney_account_number, winner_paymoney_account_request: @paymoney_token_url, winner_paymoney_account_response: @paymoney_token)
+          @delayed_payment = DelayedPayment.new(game: 'LOTO', type: 'Paiement partiel avec Paymoney', transaction_id: @transaction.transaction_id, ticket_id: @transaction.ticket_number, firstname: params[:firstname], lastname: params[:lastname], cheque_id: @cheque_id, cheque_amount: @cheque_amount, identity_number: @identity_number, paymoney_amount: @paymoney_amount, paymoney_account_number: @paymoney_account_number, winner_paymoney_account_request: @paymoney_token_url, winner_paymoney_account_response: @paymoney_token)
+          # Débit du compte TRJ et crédit du compte Paymoney
+          if paymoney_credit
+            if credit_pos_account
+              @transaction.update_attributes(bet_status: 'Gagnant', on_hold_winner_paid_at: DateTime.now)
+              flash.now[:success] = "Le dépôt a été effectué avec succès"
+              redirect_to loto_winners_on_hold_path
+            else
+              flash.now[:error] = "Le compte chèque n'a pas pu être crédité"
+            end
+          else
+            flash.now[:error] = "Le compte du parieur n'a pas pu être crédité"
+          end
         else
           flash.now[:error] = "Le numéro de compte Paymoney n'a pas été trouvé"
-          render :loto_postponed_winners
         end
       else
         flash.now[:error] = 'Veuillez renseigner tous les champs'
-        render :loto_postponed_winners
       end
+      render :loto_postponed_winners
     end
   end
 
@@ -674,6 +683,50 @@ class GamersController < ApplicationController
     end
 
     return status
+  end
+
+  def paymoney_credit
+    status = true
+    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s
+    paymoney_credit_request = Parameters.first.paymoney_wallet_url + "/api/86d1798bc43ed59e5207c68e864564/earnings/pay/TRJ/#{@paymoney_token}/#{transaction_id}/#{@paymoney_amount}"
+    paymoney_credit_response = RestClient.get(paymoney_credit_request) rescue nil
+
+    if paymoney_credit_response.blank? || paymoney_credit_response.include?('|')
+      status = false
+    end
+
+    @delayed_payment.update_attributes(paymoney_credit_request: paymoney_credit_request, paymoney_credit_response: paymoney_credit_response, paymoney_credit_status: status)
+
+    return status
+  end
+
+  def credit_pos_account
+    status = true
+    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s
+    cheque_credit_request = Parameters.first.paymoney_wallet_url + "/api/86d1798bc43ed59e5207c68e864564/earnings/pay/TRJ/DNLiVHcI/#{transaction_id}/#{@cheque_amount}"
+    cheque_credit_response = RestClient.get(cheque_credit_request) rescue nil
+
+    if cheque_credit_response.blank? || cheque_credit_response.include?('|')
+      payback_paymoney_credit
+      status = false
+    end
+
+    @delayed_payment.update_attributes(cheque_credit_request: cheque_credit_request, cheque_credit_response: cheque_credit_response, cheque_credit_status: status)
+
+    return status
+  end
+
+  def payback_paymoney_credit
+    status = true
+    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s
+    payback_request = Parameters.first.paymoney_wallet_url + "/api/86d1798bc43ed59e5207c68e864564/earnings/pay/#{@paymoney_token}/TRJ/#{transaction_id}/#{@paymoney_amount}"
+    payback_response = RestClient.get(payback_request) rescue nil
+
+    if payback_response.blank? || payback_response.include?('|')
+      status = false
+    end
+
+    @delayed_payment.update_attributes(payback_request: payback_request, payback_response: payback_response, payback_status: status)
   end
 
   private
