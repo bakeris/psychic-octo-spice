@@ -1,0 +1,116 @@
+<div class="titleArea">
+    <div class="wrapper">
+        <div class="pageTitle">
+            <h5>PMU ALR</h5>
+            <span>Paiement des gagnants millionnaires</span>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="line"></div>
+
+  <div class="horControlB">
+    <ul>
+    	<li><a href="javascript:history.go(-1);" title=""><img src="<%= asset_path 'icons/control/16/archives.png' %>" alt=""><span>Retour</span></a></li>
+      </ul>
+  </div>
+
+<div class="line"></div>
+
+<!-- Main content wrapper -->
+<div class="wrapper">
+
+  <%= flash_messages! %>
+  <%= form_tag(process_alr_postponed_winners_path, method: :post, :class => 'form') do %>
+
+    <fieldset>
+      <div class="widget">
+        <div class="title">
+          <img src="<%= asset_path 'icons/dark/users.png' %>" alt="" class="titleIcon" />
+          <h6>Formulaire de création de compte</h6>
+        </div>
+        <%= hidden_field_tag :transaction_id, @transaction.transaction_id %>
+
+        <div class="formRow">
+          <label>Id de transaction</label>
+          <div class="formRight">
+            <%= text_field_tag :transaction_id, @transaction.transaction_id, disabled: true, class: 'form-control' %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>N° de ticket</label>
+          <div class="formRight">
+            <%= text_field_tag :ticket_id, @transaction.ticket_number, disabled: true, class: 'form-control' %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Nom</label>
+          <div class="formRight">
+            <%= text_field_tag :firstname, @gamer.firstname, placeholder: "Veuillez entrer le nom", class: 'form-control', disabled: true %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Prénoms</label>
+          <div class="formRight">
+            <%= text_field_tag :lastname, @gamer.lastname, placeholder: "Veuillez entrer les prénoms", class: 'form-control', disabled: true %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>N° de pièce d'identité</label>
+          <div class="formRight">
+            <%= text_field_tag :identity_number, params[:identity_number], placeholder: "Veuillez entrer le numéro de pièce d'identité", class: 'form-control' %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>N° du chèque</label>
+          <div class="formRight">
+            <%= text_field_tag :cheque_id, params[:cheque_id], placeholder: "Veuillez entrer le numéro du chèque", class: 'form-control' %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Montant du chèque</label>
+          <div class="formRight">
+            <%= text_field_tag :cheque_amount, @cheque_amount, disabled: true, class: 'form-control' %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>N° de compte Paymoney</label>
+          <div class="formRight">
+            <%= text_field_tag :paymoney_account_number, @transaction.paymoney_account_number, placeholder: "Veuillez entrer le numéro du compte Paymoney", class: 'form-control' %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <label>Montant à verser sur Paymoney</label>
+          <div class="formRight">
+            <%= text_field_tag :paymoney_amount, @paymoney_amount, disabled: true, class: 'form-control' %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
+          <%= submit_tag "Valider", class: 'basic' %>
+        </div>
+      </div>
+    </fieldset>
+  <% end %>
+
+</div>
+<!-- End Main content wrapper -->

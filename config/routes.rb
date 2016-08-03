@@ -358,8 +358,15 @@ Rails.application.routes.draw do
   get '/administrator/roles/management' => 'administrators#roles_management', as: :roles_management
   post '/administrator/roles/set' => 'administrators#set_administrator_role', as: :set_administrator_role
 
+  # Postponed winners payment
   get '/administrator/loto/postponed_winner/:transaction_id' => 'gamers#loto_postponed_winners', as: :loto_postponed_winners
   post '/administrator/loto/postponed_winner/process' => 'gamers#process_loto_postponed_winners', as: :process_loto_postponed_winners
+  get '/administrator/plr/postponed_winner/:transaction_id' => 'gamers#plr_postponed_winners', as: :plr_postponed_winners
+  post '/administrator/plr/postponed_winner/process' => 'gamers#process_plr_postponed_winners', as: :process_plr_postponed_winners
+  get '/administrator/sportcash/postponed_winner/:transaction_id' => 'gamers#sportcash_postponed_winners', as: :sportcash_postponed_winners
+  post '/administrator/sportcash/postponed_winner/process' => 'gamers#process_sportcash_postponed_winners', as: :process_sportcash_postponed_winners
+  get '/administrator/alr/postponed_winner/:transaction_id' => 'gamers#alr_postponed_winners', as: :alr_postponed_winners
+  post '/administrator/alr/postponed_winner/process' => 'gamers#process_alr_postponed_winners', as: :process_alr_postponed_winners
 
   # Excel export
   get '/administrator/gamers/list/export' => 'gamers#export_gamers_list', as: :export_gamers_list
