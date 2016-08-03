@@ -713,21 +713,24 @@ class GamersController < ApplicationController
           if paymoney_credit
             if credit_pos_account
               @transaction.update_attributes(bet_status: 'Gagnant', on_hold_winner_paid_at: DateTime.now)
-              flash.now[:success] = "Le dépôt a été effectué avec succès"
+              flash[:success] = "Le dépôt a été effectué avec succès"
               redirect_to loto_winners_on_hold_path
             else
               flash.now[:error] = "Le compte chèque n'a pas pu être crédité"
+              render :plr_postponed_winners
             end
           else
             flash.now[:error] = "Le compte du parieur n'a pas pu être crédité"
+            render :plr_postponed_winners
           end
         else
           flash.now[:error] = "Le numéro de compte Paymoney n'a pas été trouvé"
+          render :plr_postponed_winners
         end
       else
         flash.now[:error] = 'Veuillez renseigner tous les champs'
+        render :plr_postponed_winners
       end
-      render :plr_postponed_winners
     end
   end
 
@@ -750,21 +753,24 @@ class GamersController < ApplicationController
           if paymoney_credit
             if credit_pos_account
               @transaction.update_attributes(bet_status: 'Gagnant', on_hold_winner_paid_at: DateTime.now)
-              flash.now[:success] = "Le dépôt a été effectué avec succès"
+              flash[:success] = "Le dépôt a été effectué avec succès"
               redirect_to spc_winners_on_hold_path
             else
               flash.now[:error] = "Le compte chèque n'a pas pu être crédité"
+              render :sportcash_postponed_winners
             end
           else
             flash.now[:error] = "Le compte du parieur n'a pas pu être crédité"
+            render :sportcash_postponed_winners
           end
         else
           flash.now[:error] = "Le numéro de compte Paymoney n'a pas été trouvé"
+          render :sportcash_postponed_winners
         end
       else
         flash.now[:error] = 'Veuillez renseigner tous les champs'
+        render :sportcash_postponed_winners
       end
-      render :sportcash_postponed_winners
     end
   end
 
@@ -787,21 +793,25 @@ class GamersController < ApplicationController
           if paymoney_credit
             if credit_pos_account
               @transaction.update_attributes(bet_status: 'Gagnant', on_hold_winner_paid_at: DateTime.now)
-              flash.now[:success] = "Le dépôt a été effectué avec succès"
+              flash[:success] = "Le dépôt a été effectué avec succès"
               redirect_to cm_winners_on_hold_path
             else
               flash.now[:error] = "Le compte chèque n'a pas pu être crédité"
+              render :alr_postponed_winners
             end
           else
             flash.now[:error] = "Le compte du parieur n'a pas pu être crédité"
+            render :alr_postponed_winners
           end
         else
           flash.now[:error] = "Le numéro de compte Paymoney n'a pas été trouvé"
+          render :alr_postponed_winners
         end
       else
         flash.now[:error] = 'Veuillez renseigner tous les champs'
+        render :alr_postponed_winners
       end
-      render :alr_postponed_winners
+
     end
   end
 
