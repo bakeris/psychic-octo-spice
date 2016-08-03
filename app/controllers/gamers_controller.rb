@@ -714,7 +714,7 @@ class GamersController < ApplicationController
             if credit_pos_account
               @transaction.update_attributes(bet_status: 'Gagnant', on_hold_winner_paid_at: DateTime.now)
               flash[:success] = "Le dépôt a été effectué avec succès"
-              redirect_to loto_winners_on_hold_path
+              redirect_to pmu_plr_winners_on_hold_path
             else
               flash.now[:error] = "Le compte chèque n'a pas pu être crédité"
               render :plr_postponed_winners
