@@ -673,7 +673,7 @@ class GamersController < ApplicationController
           if paymoney_credit
             if credit_pos_account
               @transaction.update_attributes(bet_status: 'Gagnant', on_hold_winner_paid_at: DateTime.now)
-              flash.now[:success] = "Le dépôt a été effectué avec succès"
+              flash[:success] = "Le dépôt a été effectué avec succès"
               redirect_to loto_winners_on_hold_path
             else
               flash.now[:error] = "Le compte chèque n'a pas pu être crédité"
@@ -862,7 +862,7 @@ class GamersController < ApplicationController
   def credit_pos_account
     status = true
     transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s
-    cheque_credit_request = Parameters.first.paymoney_wallet_url + "/api/86d1798bc43ed59e5207c68e864564/earnings/pay/TRJ/DNLiVHcI/#{transaction_id}/#{@cheque_amount}"
+    cheque_credit_request = Parameters.first.paymoney_wallet_url + "/api/86d1798bc43ed59e5207c68e864564/earnings/pay/TRJ/wFBKENwq/#{transaction_id}/#{@cheque_amount}"
     cheque_credit_response = RestClient.get(cheque_credit_request) rescue nil
 
     if cheque_credit_response.blank? || cheque_credit_response.include?('|')
