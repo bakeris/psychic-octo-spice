@@ -843,7 +843,7 @@ class GamersController < ApplicationController
   end
 
   def init_alr_postponed_winners
-    @gamer = User.find_by_uuid(@transaction.gamer_account_token)
+    @gamer = User.find_by_uuid(@transaction.game_account_token)
     params[:identity_number] = params[:identity_number]
     params[:cheque_id] = params[:cheque_id]
     params[:paymoney_account_number] = params[:paymoney_account_number]
