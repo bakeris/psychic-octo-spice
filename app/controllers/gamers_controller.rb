@@ -650,7 +650,7 @@ class GamersController < ApplicationController
     else
       @paymoney_amount = Parameters.first.postponed_winners_paymoney_default_amount
       @cheque_amount = @transaction.win_amount.to_f - @paymoney_amount
-      @gamer = User.find_by_game_account_token(@transaction.gamer_id)
+      @gamer = User.find_by_game_account_token(@transaction.game_account_token)
     end
   end
 
