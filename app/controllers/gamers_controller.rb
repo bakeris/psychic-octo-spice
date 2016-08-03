@@ -677,17 +677,20 @@ class GamersController < ApplicationController
               redirect_to loto_winners_on_hold_path
             else
               flash.now[:error] = "Le compte chèque n'a pas pu être crédité"
+              render :loto_postponed_winners
             end
           else
             flash.now[:error] = "Le compte du parieur n'a pas pu être crédité"
+            render :loto_postponed_winners
           end
         else
           flash.now[:error] = "Le numéro de compte Paymoney n'a pas été trouvé"
+          render :loto_postponed_winners
         end
       else
         flash.now[:error] = 'Veuillez renseigner tous les champs'
+        render :loto_postponed_winners
       end
-      render :loto_postponed_winners
     end
   end
 
