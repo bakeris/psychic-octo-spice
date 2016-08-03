@@ -744,7 +744,7 @@ class GamersController < ApplicationController
       flash[:error] = "La transaction n'a pas été trouvée"
       redirect_to spc_winners_on_hold_path
     else
-      init_postponed_winners
+      init_sportcash_postponed_winners
 
       if check_required_fields
         if postponed_winners_check_paymoney_account
@@ -831,6 +831,15 @@ class GamersController < ApplicationController
     params[:paymoney_account_number] = params[:paymoney_account_number]
     @paymoney_amount = Parameters.first.postponed_winners_paymoney_default_amount
     @cheque_amount = @transaction.earning_amount.to_f - @paymoney_amount
+  end
+
+  def init_sportcash_postponed_winners
+    @gamer = User.find_by_uuid(@transaction.gamer_id)
+    params[:identity_number] = params[:identity_number]
+    params[:cheque_id] = params[:cheque_id]
+    params[:paymoney_account_number] = params[:paymoney_account_number]
+    @paymoney_amount = Parameters.first.postponed_winners_paymoney_default_amount
+    @cheque_amount = @transaction.win_amount.to_f - @paymoney_amount
   end
 
   def init_alr_postponed_winners
