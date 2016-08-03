@@ -848,7 +848,7 @@ class GamersController < ApplicationController
     params[:cheque_id] = params[:cheque_id]
     params[:paymoney_account_number] = params[:paymoney_account_number]
     @paymoney_amount = Parameters.first.postponed_winners_paymoney_default_amount
-    @cheque_amount = @transaction.earning_amount.to_f - @paymoney_amount
+    @cheque_amount = @transaction.win_amount.to_f - @paymoney_amount
   end
 
   def postponed_winners_check_paymoney_account
