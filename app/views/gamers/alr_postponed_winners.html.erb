@@ -36,7 +36,7 @@
         <div class="formRow">
           <label>Id de transaction</label>
           <div class="formRight">
-            <%= text_field_tag :transaction_id, @transaction.transaction_id, disabled: true, class: 'form-control' %>
+            <%= text_field_tag :transaction_id, @transaction.sale_client_id, disabled: true, class: 'form-control' %>
           </div>
           <div class="clear"></div>
         </div>
@@ -44,7 +44,7 @@
         <div class="formRow">
           <label>N° de ticket</label>
           <div class="formRight">
-            <%= text_field_tag :ticket_id, @transaction.ticket_number, disabled: true, class: 'form-control' %>
+            <%= text_field_tag :ticket_id, @transaction.serial_number, disabled: true, class: 'form-control' %>
           </div>
           <div class="clear"></div>
         </div>
