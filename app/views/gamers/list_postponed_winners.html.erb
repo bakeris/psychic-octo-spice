@@ -1,0 +1,30 @@
+<!-- Title area -->
+<div class="titleArea">
+    <div class="wrapper">
+        <div class="pageTitle">
+            <h5>Liste des gagnants Millionnaires</h5>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="line"></div>
+
+  <div class="horControlB">
+    <ul>
+    	<li><a href="javascript:history.go(-1);" title=""><img src="<%= asset_path 'icons/control/16/archives.png' %>" alt=""><span>Retour</span></a></li>
+      </ul>
+  </div>
+
+<div class="line"></div>
+
+<!-- Main content wrapper -->
+<div class="wrapper">
+  <%= flash_messages! %>
+<!-- Widgets -->
+
+  <a href="<%#= export_pmu_plr_winners_on_hold_path %>" title="" class="wButton orangewB ml15 m10"><span>Exporter</span></a>
+
+  <%= render "billionaires_list" %>
+</div>
+<!-- End Main content wrapper -->

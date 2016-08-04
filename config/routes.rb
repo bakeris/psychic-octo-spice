@@ -367,6 +367,7 @@ Rails.application.routes.draw do
   post '/administrator/sportcash/postponed_winner/process' => 'gamers#process_sportcash_postponed_winners', as: :process_sportcash_postponed_winners
   get '/administrator/alr/postponed_winner/:transaction_id' => 'gamers#alr_postponed_winners', as: :alr_postponed_winners
   post '/administrator/alr/postponed_winner/process' => 'gamers#process_alr_postponed_winners', as: :process_alr_postponed_winners
+  get '/administrator/postponed_winners/list' => 'gamers#list_postponed_winners', as: :list_postponed_winners
 
   # Excel export
   get '/administrator/gamers/list/export' => 'gamers#export_gamers_list', as: :export_gamers_list

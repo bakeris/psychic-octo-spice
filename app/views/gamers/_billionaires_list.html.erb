@@ -1,0 +1,51 @@
+<div class="widget">
+  <div class="title"><img src="<%= asset_path 'icons/dark/full2.png' %>" alt="" class="titleIcon" /><h6>Liste des transactions des gagnants millionnaires</h6></div>
+  <table cellpadding="0" cellspacing="0" border="0" class="display dTable taskWidget">
+    <thead>
+      <tr>
+        <th>N° de ticket</th>
+        <th>Mt prise de pari</th>
+        <th>Mt des gains</th>
+        <th>Date de prise du pari</th>
+        <th>N° chèque</th>
+        <th>Mt chèque</th>
+        <th>Nom</th>
+        <th>N° de pièce</th>
+        <th>N° cpt Paymoney</th>
+        <th>Mt Paymoney</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% unless @delayed_payments.blank? %>
+        <% @delayed_payments.each do |delayed_payment| %>
+          <tr class="gradeA">
+            <td>
+              <%= delayed_payment.ticket_id %>
+            </td>
+            <td>
+              <%= delayed_payment.bet_amount %>
+            </td>
+            <td>
+              <%= delayed_payment.paymoney_amount.to_f + delayed_payment.cheque_amount.to_f %>
+            </td>
+            <td>
+              <%= delayed_payment.bet_placed_at %>
+            </td>
+            <td>
+              <%= delayed_payment.cheque_id %>
+            </td>
+            <td>
+              <%= delayed_payment.cheque_amount.to_f %>
+            </td>
+            <td>
+              <%= delayed_payment.paymoney_account_number %>
+            </td>
+            <td>
+              <%= delayed_payment.paymoney_amount.to_f %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>

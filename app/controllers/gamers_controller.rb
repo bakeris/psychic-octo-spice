@@ -668,7 +668,7 @@ class GamersController < ApplicationController
 
       if check_required_fields
         if postponed_winners_check_paymoney_account
-          @delayed_payment = DelayedPayment.create(game: 'LOTO', transaction_type: 'Paiement partiel avec Paymoney', transaction_id: @transaction.transaction_id, ticket_id: @transaction.ticket_number, firstname: params[:firstname], lastname: params[:lastname], cheque_id: @cheque_id, cheque_amount: @cheque_amount, identity_number: @identity_number, paymoney_amount: @paymoney_amount, paymoney_account_number: @paymoney_account_number, winner_paymoney_account_request: @paymoney_token_url, winner_paymoney_account_response: @paymoney_token)
+          @delayed_payment = DelayedPayment.create(game: 'LOTO', transaction_type: 'Paiement partiel avec Paymoney', transaction_id: @transaction.transaction_id, ticket_id: @transaction.ticket_number, firstname: params[:firstname], lastname: params[:lastname], cheque_id: @cheque_id, cheque_amount: @cheque_amount, identity_number: @identity_number, paymoney_amount: @paymoney_amount, paymoney_account_number: @paymoney_account_number, winner_paymoney_account_request: @paymoney_token_url, winner_paymoney_account_response: @paymoney_token, bet_amount: @transaction.bet_cost_amount, bet_placed_at: @transaction.created_at.strftime("%d-%m-%Y") + " à " + @transaction.created_at.strftime("%Hh %Mmn"))
           # Débit du compte TRJ et crédit du compte Paymoney
           if paymoney_credit
             if credit_pos_account
@@ -708,7 +708,7 @@ class GamersController < ApplicationController
 
       if check_required_fields
         if postponed_winners_check_paymoney_account
-          @delayed_payment = DelayedPayment.create(game: 'PMU PLR', transaction_type: 'Paiement partiel avec Paymoney', transaction_id: @transaction.transaction_id, ticket_id: @transaction.ticket_number, firstname: params[:firstname], lastname: params[:lastname], cheque_id: @cheque_id, cheque_amount: @cheque_amount, identity_number: @identity_number, paymoney_amount: @paymoney_amount, paymoney_account_number: @paymoney_account_number, winner_paymoney_account_request: @paymoney_token_url, winner_paymoney_account_response: @paymoney_token)
+          @delayed_payment = DelayedPayment.create(game: 'PMU PLR', transaction_type: 'Paiement partiel avec Paymoney', transaction_id: @transaction.transaction_id, ticket_id: @transaction.ticket_number, firstname: params[:firstname], lastname: params[:lastname], cheque_id: @cheque_id, cheque_amount: @cheque_amount, identity_number: @identity_number, paymoney_amount: @paymoney_amount, paymoney_account_number: @paymoney_account_number, winner_paymoney_account_request: @paymoney_token_url, winner_paymoney_account_response: @paymoney_token, bet_amount: @transaction.bet_cost_amount, bet_placed_at: @transaction.created_at.strftime("%d-%m-%Y") + " à " + @transaction.created_at.strftime("%Hh %Mmn"))
           # Débit du compte TRJ et crédit du compte Paymoney
           if paymoney_credit
             if credit_pos_account
@@ -748,7 +748,7 @@ class GamersController < ApplicationController
 
       if check_required_fields
         if postponed_winners_check_paymoney_account
-          @delayed_payment = DelayedPayment.create(game: 'SPORTCASH', transaction_type: 'Paiement partiel avec Paymoney', transaction_id: @transaction.transaction_id, ticket_id: @transaction.ticket_id, firstname: params[:firstname], lastname: params[:lastname], cheque_id: @cheque_id, cheque_amount: @cheque_amount, identity_number: @identity_number, paymoney_amount: @paymoney_amount, paymoney_account_number: @paymoney_account_number, winner_paymoney_account_request: @paymoney_token_url, winner_paymoney_account_response: @paymoney_token)
+          @delayed_payment = DelayedPayment.create(game: 'SPORTCASH', transaction_type: 'Paiement partiel avec Paymoney', transaction_id: @transaction.transaction_id, ticket_id: @transaction.ticket_id, firstname: params[:firstname], lastname: params[:lastname], cheque_id: @cheque_id, cheque_amount: @cheque_amount, identity_number: @identity_number, paymoney_amount: @paymoney_amount, paymoney_account_number: @paymoney_account_number, winner_paymoney_account_request: @paymoney_token_url, winner_paymoney_account_response: @paymoney_token, bet_amount: @transaction.amount, bet_placed_at: @transaction.created_at.strftime("%d-%m-%Y") + " à " + @transaction.created_at.strftime("%Hh %Mmn"))
           # Débit du compte TRJ et crédit du compte Paymoney
           if paymoney_credit
             if credit_pos_account
@@ -788,7 +788,7 @@ class GamersController < ApplicationController
 
       if check_required_fields
         if postponed_winners_check_paymoney_account
-          @delayed_payment = DelayedPayment.create(game: 'PMU ALR', transaction_type: 'Paiement partiel avec Paymoney', transaction_id: @transaction.sale_client_id, ticket_id: @transaction.serial_number, firstname: params[:firstname], lastname: params[:lastname], cheque_id: @cheque_id, cheque_amount: @cheque_amount, identity_number: @identity_number, paymoney_amount: @paymoney_amount, paymoney_account_number: @paymoney_account_number, winner_paymoney_account_request: @paymoney_token_url, winner_paymoney_account_response: @paymoney_token)
+          @delayed_payment = DelayedPayment.create(game: 'PMU ALR', transaction_type: 'Paiement partiel avec Paymoney', transaction_id: @transaction.sale_client_id, ticket_id: @transaction.serial_number, firstname: params[:firstname], lastname: params[:lastname], cheque_id: @cheque_id, cheque_amount: @cheque_amount, identity_number: @identity_number, paymoney_amount: @paymoney_amount, paymoney_account_number: @paymoney_account_number, winner_paymoney_account_request: @paymoney_token_url, winner_paymoney_account_response: @paymoney_token, bet_amount: @transaction.amount, bet_placed_at: @transaction.created_at.strftime("%d-%m-%Y") + " à " + @transaction.created_at.strftime("%Hh %Mmn"))
           # Débit du compte TRJ et crédit du compte Paymoney
           if paymoney_credit
             if credit_pos_account
@@ -905,6 +905,10 @@ class GamersController < ApplicationController
     end
 
     @delayed_payment.update_attributes(payback_request: payback_request, payback_response: payback_response, payback_status: status)
+  end
+
+  def list_postponed_winners
+    @delayed_payments = DelayedPayment.all.order("created_at DESC")
   end
 
   private
