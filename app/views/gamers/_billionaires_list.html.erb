@@ -38,7 +38,7 @@
               <%= delayed_payment.cheque_amount.to_f %>
             </td>
             <td>
-              <%= delayed_payment.firstname + " " + delayed_payment.lastname %>
+              <%= (delayed_payment.firstname rescue '') + " " + (delayed_payment.lastname rescue '') %>
             </td>
             <td>
               <%= delayed_payment.identity_id %>
