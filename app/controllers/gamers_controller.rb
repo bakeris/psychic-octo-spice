@@ -894,9 +894,9 @@ class GamersController < ApplicationController
       if paymoney_credit_response.blank? || paymoney_credit_response.include?('|')
         status = false
       end
-
-      @delayed_payment.update_attributes(paymoney_credit_request: paymoney_credit_request, paymoney_credit_response: paymoney_credit_response, paymoney_credit_status: status)
     end
+
+    @delayed_payment.update_attributes(paymoney_credit_request: paymoney_credit_request, paymoney_credit_response: paymoney_credit_response, paymoney_credit_status: status)
 
     return status
   end
