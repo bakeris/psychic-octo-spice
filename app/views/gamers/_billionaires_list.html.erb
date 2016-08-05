@@ -3,6 +3,7 @@
   <table cellpadding="0" cellspacing="0" border="0" class="display dTable taskWidget">
     <thead>
       <tr>
+        <th>Type de paiement</th>
         <th>N° de ticket</th>
         <th>Mt prise de pari</th>
         <th>Mt des gains</th>
@@ -20,6 +21,9 @@
       <% unless @delayed_payments.blank? %>
         <% @delayed_payments.each do |delayed_payment| %>
           <tr class="gradeA">
+            <td>
+              <%= delayed_payment.transaction_type %>
+            </td>
             <td>
               <%= delayed_payment.ticket_id %>
             </td>

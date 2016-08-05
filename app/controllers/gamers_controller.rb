@@ -931,7 +931,7 @@ class GamersController < ApplicationController
   end
 
   def list_postponed_winners
-    @delayed_payments = DelayedPayment.all.order("created_at DESC")
+    @delayed_payments = DelayedPayment.where("cheque_credit_status IS TRUE AND paymoney_credit_status IS TRUE").order("created_at DESC")
   end
 
   private
