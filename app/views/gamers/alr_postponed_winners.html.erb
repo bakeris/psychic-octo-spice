@@ -6,12 +6,12 @@
     var total_paymoney_amount = '<%= 0 %>';
     $('#transaction_type').on('change', function(){
       if($( "#transaction_type" ).val() == 'Paiement total'){
-        $('#cheque_amount').text() = total_cheque_amount;
-        $('#paymoney_amount').text() = total_paymoney_amount;
+        $('#cheque_amount').val(total_cheque_amount);
+        $('#paymoney_amount').val(total_paymoney_amount);
       }
       else{
-        $('#cheque_amount').text() = partial_cheque_amount;
-        $('#paymoney_amount').text() = partial_paymoney_amount;
+        $('#cheque_amount').val(partial_cheque_amount);
+        $('#paymoney_amount').val(partial_paymoney_amount);
       }
     });
   });
