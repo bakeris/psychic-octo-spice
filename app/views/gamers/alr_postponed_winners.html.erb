@@ -1,7 +1,22 @@
 <script type = "text/javascript">
-  $('#transaction_type').change(function() {
-    alert( this.value ); // or $(this).val()
+  $( document ).ready(function() {
+    var partial_cheque_amount = '<%= @cheque_amount %>';
+    var partial_paymoney_amount = '<%= @paymoney_amount %>';
+    var total_cheque_amount = '<%= @cheque_amount + @paymoney_amount %>';
+    var total_paymoney_amount = '<%= 0 %>';
+    $('#transaction_type').on('change', function(){
+      if($( "#transaction_type" ).val() == 'Paiement total'){
+        $('#cheque_amount').text() = total_cheque_amount;
+        $('#paymoney_amount').text() = total_paymoney_amount;
+      }
+      else{
+        $('#cheque_amount').text() = partial_cheque_amount;
+        $('#paymoney_amount').text() = partial_paymoney_amount;
+      }
+    });
   });
+</script>
+
 </script>
 
 <div class="titleArea">
