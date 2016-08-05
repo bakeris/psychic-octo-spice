@@ -1,3 +1,9 @@
+<script type = "text/javascript">
+  $('#transaction_type').on('change', function() {
+    alert( this.value ); // or $(this).val()
+  });
+</script>
+
 <div class="titleArea">
     <div class="wrapper">
         <div class="pageTitle">
@@ -32,6 +38,14 @@
           <h6>Formulaire de création de compte</h6>
         </div>
         <%= hidden_field_tag :transaction_id, @transaction.sale_client_id %>
+
+        <div class="formRow">
+          <label>Type de transaction</label>
+          <div class="formRight">
+            <%= select_tag "transaction_type", options_for_select([ "Paiement total", "Paiement partiel" ]), prompt: "Veuillez choisir un statut", class: "form-control" %>
+          </div>
+          <div class="clear"></div>
+        </div>
 
         <div class="formRow">
           <label>Id de transaction</label>
