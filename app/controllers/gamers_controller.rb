@@ -849,10 +849,10 @@ class GamersController < ApplicationController
     params[:paymoney_account_number] = params[:paymoney_account_number]
     if @payment_type == 'Paiement total'
       @paymoney_amount = 0
-      @cheque_amount = @transaction.earning_amount.to_f
+      @cheque_amount = @transaction.win_amount.to_f
     else
       @paymoney_amount = Parameters.first.postponed_winners_paymoney_default_amount
-      @cheque_amount = @transaction.earning_amount.to_f - @paymoney_amount
+      @cheque_amount = @transaction.win_amount.to_f - @paymoney_amount
     end
   end
 
@@ -863,10 +863,10 @@ class GamersController < ApplicationController
     params[:paymoney_account_number] = params[:paymoney_account_number]
     if @payment_type == 'Paiement total'
       @paymoney_amount = 0
-      @cheque_amount = @transaction.earning_amount.to_f
+      @cheque_amount = @transaction.win_amount.to_f
     else
       @paymoney_amount = Parameters.first.postponed_winners_paymoney_default_amount
-      @cheque_amount = @transaction.earning_amount.to_f - @paymoney_amount
+      @cheque_amount = @transaction.win_amount.to_f - @paymoney_amount
     end
   end
 
