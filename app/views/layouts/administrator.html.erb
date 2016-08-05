@@ -55,7 +55,7 @@
           <% end %>
         </ul>
       </li>
-      <li class="tables"><a href="#" title="" class="exp" id = "<%= @winners_on_hold_menu_style %>"><span>En attente de paiement</span><strong>4</strong></a>
+      <li class="tables"><a href="#" title="" class="exp" id = "<%= @winners_on_hold_menu_style %>"><span>En attente de paiement</span><strong>5</strong></a>
         <ul class="sub">
           <% if @profile.list_loto_on_hold_transactions_transactions_right == true || @profile.list_pmu_plr_on_hold_transactions_transactions_right == true || @profile.list_spc_on_hold_transactions_transactions_right == true || @profile.list_pmu_alr_on_hold_transactions_transactions_right == true %>
             <li class = "<%= @loto_winner_on_hold_menu_style %><%= @pmu_plr_winner_on_hold_menu_style %><%= @spc_winner_on_hold_menu_style %><%= @cm_winner_on_hold_menu_style %>"><a href="<%= list_postponed_winners_path %>" title="">Liste des paiements validés</a></li>

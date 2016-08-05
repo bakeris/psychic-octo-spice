@@ -13,6 +13,7 @@
         <th>N° de pièce</th>
         <th>N° cpt Paymoney</th>
         <th>Mt Paymoney</th>
+        <th>Date de traitement</th>
       </tr>
     </thead>
     <tbody>
@@ -48,6 +49,9 @@
             </td>
             <td>
               <%= delayed_payment.paymoney_amount.to_f %>
+            </td>
+            <td>
+              <%= delayed_payment.created_at.strftime("%d-%m-%Y") + " à " + delayed_payment.created_at.strftime("%Hh %Mmn") %>
             </td>
           </tr>
         <% end %>
