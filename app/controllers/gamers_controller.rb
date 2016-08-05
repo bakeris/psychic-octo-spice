@@ -659,7 +659,7 @@ class GamersController < ApplicationController
     @identity_number = params[:identity_number]
     @cheque_id = params[:cheque_id]
     @paymoney_account_number = params[:paymoney_account_number]
-    payment_type = params[:transaction_type]
+    @payment_type = params[:transaction_type]
 
     if @transaction.blank?
       flash[:error] = "La transaction n'a pas été trouvée"
@@ -700,6 +700,7 @@ class GamersController < ApplicationController
     @identity_number = params[:identity_number]
     @cheque_id = params[:cheque_id]
     @paymoney_account_number = params[:paymoney_account_number]
+    @payment_type = params[:transaction_type]
 
     if @transaction.blank?
       flash[:error] = "La transaction n'a pas été trouvée"
@@ -740,6 +741,7 @@ class GamersController < ApplicationController
     @identity_number = params[:identity_number]
     @cheque_id = params[:cheque_id]
     @paymoney_account_number = params[:paymoney_account_number]
+    @payment_type = params[:transaction_type]
 
     if @transaction.blank?
       flash[:error] = "La transaction n'a pas été trouvée"
@@ -780,6 +782,7 @@ class GamersController < ApplicationController
     @identity_number = params[:identity_number]
     @cheque_id = params[:cheque_id]
     @paymoney_account_number = params[:paymoney_account_number]
+    @payment_type = params[:transaction_type]
 
     if @transaction.blank?
       flash[:error] = "La transaction n'a pas été trouvée"
@@ -830,8 +833,13 @@ class GamersController < ApplicationController
     params[:identity_number] = params[:identity_number]
     params[:cheque_id] = params[:cheque_id]
     params[:paymoney_account_number] = params[:paymoney_account_number]
-    @paymoney_amount = Parameters.first.postponed_winners_paymoney_default_amount
-    @cheque_amount = @transaction.earning_amount.to_f - @paymoney_amount
+    if @payment_type == 'Paiement total'
+      @paymoney_amount = 0
+      @cheque_amount = @transaction.earning_amount.to_f
+    else
+      @paymoney_amount = Parameters.first.postponed_winners_paymoney_default_amount
+      @cheque_amount = @transaction.earning_amount.to_f - @paymoney_amount
+    end
   end
 
   def init_sportcash_postponed_winners
@@ -839,8 +847,13 @@ class GamersController < ApplicationController
     params[:identity_number] = params[:identity_number]
     params[:cheque_id] = params[:cheque_id]
     params[:paymoney_account_number] = params[:paymoney_account_number]
-    @paymoney_amount = Parameters.first.postponed_winners_paymoney_default_amount
-    @cheque_amount = @transaction.win_amount.to_f - @paymoney_amount
+    if @payment_type == 'Paiement total'
+      @paymoney_amount = 0
+      @cheque_amount = @transaction.earning_amount.to_f
+    else
+      @paymoney_amount = Parameters.first.postponed_winners_paymoney_default_amount
+      @cheque_amount = @transaction.earning_amount.to_f - @paymoney_amount
+    end
   end
 
   def init_alr_postponed_winners
@@ -848,8 +861,13 @@ class GamersController < ApplicationController
     params[:identity_number] = params[:identity_number]
     params[:cheque_id] = params[:cheque_id]
     params[:paymoney_account_number] = params[:paymoney_account_number]
-    @paymoney_amount = Parameters.first.postponed_winners_paymoney_default_amount
-    @cheque_amount = @transaction.win_amount.to_f - @paymoney_amount
+    if @payment_type == 'Paiement total'
+      @paymoney_amount = 0
+      @cheque_amount = @transaction.earning_amount.to_f
+    else
+      @paymoney_amount = Parameters.first.postponed_winners_paymoney_default_amount
+      @cheque_amount = @transaction.earning_amount.to_f - @paymoney_amount
+    end
   end
 
   def postponed_winners_check_paymoney_account
@@ -866,15 +884,19 @@ class GamersController < ApplicationController
 
   def paymoney_credit
     status = true
-    transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s
-    paymoney_credit_request = Parameters.first.paymoney_wallet_url + "/api/86d1798bc43ed59e5207c68e864564/earnings/pay/TRJ/#{@paymoney_token}/#{transaction_id}/#{@paymoney_amount}"
-    paymoney_credit_response = RestClient.get(paymoney_credit_request) rescue nil
 
-    if paymoney_credit_response.blank? || paymoney_credit_response.include?('|')
-      status = false
+    if @paymoney_amount != 0
+      transaction_id = Digest::SHA1.hexdigest([DateTime.now.iso8601(6), rand].join).hex.to_s
+
+        paymoney_credit_request = Parameters.first.paymoney_wallet_url + "/api/86d1798bc43ed59e5207c68e864564/earnings/pay/TRJ/#{@paymoney_token}/#{transaction_id}/#{@paymoney_amount}"
+        paymoney_credit_response = RestClient.get(paymoney_credit_request) rescue nil
+
+      if paymoney_credit_response.blank? || paymoney_credit_response.include?('|')
+        status = false
+      end
+
+      @delayed_payment.update_attributes(paymoney_credit_request: paymoney_credit_request, paymoney_credit_response: paymoney_credit_response, paymoney_credit_status: status)
     end
-
-    @delayed_payment.update_attributes(paymoney_credit_request: paymoney_credit_request, paymoney_credit_response: paymoney_credit_response, paymoney_credit_status: status)
 
     return status
   end
