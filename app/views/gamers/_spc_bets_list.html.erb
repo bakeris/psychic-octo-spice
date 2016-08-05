@@ -50,8 +50,7 @@
             <td class = "actBtns">
               <a href="<%= gamer_spc_bet_details_path(bet.id) %>" class="tipS" original-title="Détails"><%= image_tag('icons/color/user-black.png', alt: '') %></a>
               <% if bet.bet_status == 'Vainqueur en attente de paiement' %>
-                <a href="<%= validate_on_hold_spc_winner_path(bet.id) %>" class="tipS" alt="Valider le paiement" onclick="return confirm('Êtes vous sûr de vouloir effectuer un paiement total en chèque?')"><%= image_tag('icons/color/bank.png', alt: '') %></a>
-                <a href="<%= sportcash_postponed_winners_path(bet.transaction_id) %>" class="tipS" alt="Paiement partiel en chèque" onclick="return confirm('Êtes vous sûr de vouloir effectuer un paiement partiel en chèque?')"><%= image_tag('icons/color/currency.png', alt: '') %></a>
+                <a href="<%= sportcash_postponed_winners_path(bet.transaction_id) %>" class="tipS"><%= image_tag('icons/color/currency.png', alt: '') %></a>
               <% end %>
             </td>
           </tr>
