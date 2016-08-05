@@ -36,6 +36,14 @@
         <%= hidden_field_tag :transaction_id, @transaction.transaction_id %>
 
         <div class="formRow">
+          <label>Type de transaction</label>
+          <div class="formRight">
+            <%= select_tag "transaction_type", options_for_select([ "Paiement total", "Paiement partiel" ]), prompt: "Veuillez choisir un statut", class: "form-control" %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="formRow">
           <label>Id de transaction</label>
           <div class="formRight">
             <%= text_field_tag :transaction_id, @transaction.transaction_id, disabled: true, class: 'form-control' %>
