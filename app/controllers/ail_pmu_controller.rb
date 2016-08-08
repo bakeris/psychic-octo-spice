@@ -729,6 +729,20 @@ class AilPmuController < ApplicationController
     end
   end
 
+  def ussd_gamer_bets
+    @error_code = ''
+    @error_description = ''
+
+    user = User.find_by_msisdn(params[:msisdn])
+
+    if user.blank?
+      @error_code = '4000'
+      @error_description = 'The gamer id could not be found'
+    else
+      @bets = AilPmu.where("bet_status IS NOT NULL AND gamer_id = '#{user.uuid}'").order("created_at DESC") rescue nil
+    end
+  end
+
   # Les notifications sont reçues et mises en attente
   def api_validate_transaction
     @error_code = ''

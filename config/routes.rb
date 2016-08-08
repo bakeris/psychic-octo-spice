@@ -139,6 +139,9 @@ Rails.application.routes.draw do
   # Display the list of bets of a gamer
   get '/ail/pmu/api/66307a2f93/gamer/bets/list/:gamer_id' => 'ail_pmu#api_gamer_bets'
 
+  # USSD - Display the list of bets of a gamer
+  get '/ail/pmu/ussd/064582ec4/gamer/bets/list/:msisdn' => 'ail_pmu#ussd_gamer_bets'
+
   # Validate winning transaction
   post '/ail/pmu/api/66378514493/transaction/validate' => 'ail_pmu#api_validate_transaction'
 
