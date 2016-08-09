@@ -93,6 +93,9 @@ Rails.application.routes.draw do
   # Display the list of bets of a gamer
   get '/spc/api/47855ddf93/gamer/bets/list/:gamer_id' => 'ludwin_api#api_gamer_bets'
 
+  # USSD - Display the list of bets of a gamer
+  get '/ail/sportcash/ussd/064582ec8/gamer/bets/list/:msisdn' => 'ludwin_api#ussd_gamer_bets'
+
   # Sandbox
   get '/sandbox/patron' => 'sandbox#patron_client'
 
@@ -276,6 +279,9 @@ Rails.application.routes.draw do
 
   # Display the list of bets of a gamer
   get '/cm3/api/yhf74493/gamer/bets/list/:gamer_id' => 'cm#api_gamer_bets'
+
+  # USSD - Display the list of bets of a gamer
+  get '/ail/pmu_alr/ussd/064582ec2/gamer/bets/list/:msisdn' => 'cm#ussd_gamer_bets'
 
   # Administration
   get '/administrator/gamers' => 'gamers#index', as: :gamers
