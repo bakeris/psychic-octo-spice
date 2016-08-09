@@ -1282,6 +1282,20 @@ class LudwinApiController < ApplicationController
     end
   end
 
+  def ussd_gamer_bets
+    @error_code = ''
+    @error_description = ''
+
+    user = User.find_by_msisdn(params[:msisdn])
+
+    if user.blank?
+      @error_code = '4000'
+      @error_description = 'The gamer id could not be found'
+    else
+      @bets = Bet.where("gamer_id = '#{user.uuid}' AND bet_status IS NOT NULL").order("created_at DESC")
+    end
+  end
+
   def terminals_status
     terminals = SpcTerminal.all
     status = ""

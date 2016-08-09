@@ -802,6 +802,20 @@ class CmController < ApplicationController
     end
   end
 
+  def ussd_gamer_bets
+    @error_code = ''
+    @error_description = ''
+
+    user = User.find_by_msisdn(params[:msisdn])
+
+    if user.blank?
+      @error_code = '4000'
+      @error_description = "Ce parieur n'a pas été trouvé."
+    else
+      @bets = Cm.where("punter_id = '#{user.uuid}' AND bet_status IS NOT NULL").order("created_at DESC")
+    end
+  end
+
 
   def send_request(body, url)
     @request_result = nil
