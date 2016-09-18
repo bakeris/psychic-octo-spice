@@ -113,7 +113,7 @@ class EpplController < ApplicationController
       validate_bet("PExxGeLY", bets_amount)
     end
 
-    render nothing: true
+    return true#render nothing: true
   end
 
   def set_place_bet_params(gamer_id, transaction_amount)
