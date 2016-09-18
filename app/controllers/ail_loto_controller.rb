@@ -995,6 +995,8 @@ class AilLotoController < ApplicationController
          end
        end
      end
+
+     return true
   end
 
   def validate_payment_notifications

@@ -956,6 +956,7 @@ if @bet.blank? || !["1", "2", "0"].include?(amount_type)
          end
        end
      end
+     return true
   end
 
   def validate_payment_notifications
