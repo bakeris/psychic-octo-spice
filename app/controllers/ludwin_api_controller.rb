@@ -1245,6 +1245,8 @@ class LudwinApiController < ApplicationController
     end
 
     LudwinLog.create(operation: "Validation périodique de coupons", response_body: status_message, sent_body: url)
+
+    return true
   end
 
   def send_winning_notification
