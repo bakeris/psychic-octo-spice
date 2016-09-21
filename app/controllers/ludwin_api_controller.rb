@@ -1176,6 +1176,8 @@ class LudwinApiController < ApplicationController
               print @bet.inspect
               if !@bet.blank?
                 ticket_status = ticket.at('Statut').content
+                amount_to_pay = ticket.at('Gain').content
+                @bet.update_attributes(win_amount: amount_to_pay)
                 print ticket_status
                 if ticket_status == 'PERDANT'
                   print 'PERDANT'
