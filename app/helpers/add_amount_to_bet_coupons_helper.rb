@@ -1,0 +1,2 @@
+module AddAmountToBetCouponsHelper
+end

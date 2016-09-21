@@ -640,7 +640,7 @@ class LudwinApiController < ApplicationController
       @win_amount =   (@win_amount * ((odd.to_f rescue 0) / 100)).to_i rescue 0
 
       unless pal_code.blank? || event_code.blank? || bet_code.blank? || draw_code.blank? || odd.blank?
-        @bet.bet_coupons.create(pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd, begin_date: begin_date, teams: teams, sport: sport)
+        @bet.bet_coupons.create(pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd, begin_date: begin_date, teams: teams, sport: sport, amount: amount)
         tmp_coupons_body << %Q[<BetCoupon><CodPal>#{pal_code}</CodPal><CodEvent>#{event_code}</CodEvent><CodBet>#{bet_code}</CodBet><CodDraw>#{draw_code}</CodDraw><Odd>#{odd}</Odd></BetCoupon>]
       end
     end
@@ -724,12 +724,16 @@ class LudwinApiController < ApplicationController
                     if !nokogiri_response.blank?
                       response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
                       if response_code == '0' || response_code == '1024'
-                        amount_to_win = (nokogiri_response.xpath('//SellResponse').at('AmountWin').content rescue nil)
+                        amount_to_win = (nokogiri_response.xpath('//SellResponse').at('AmountWin').content rescue 0)
+                        #odd = amount_to_win.to_i / @amount
                         @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
                         # débit du compte paymoney
                         if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, @amount)
                           ticket_status = true
                           bet_status = 'En cours'
+                          @bet.bet_coupons.each do |bet_coupon|
+                            bet_coupon.update_attributes(odd: (amount_to_win.to_i / bet_coupon.amount.to_i).to_s)
+                          end
                         else
                           ticket_status = false
                           bet_status = nil
