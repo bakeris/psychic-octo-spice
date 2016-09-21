@@ -585,3 +585,10 @@ DF690817F14F6102B26C
 response_body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentResponse><ReturnCode><Code>0</Code><Description>OK</Description><FlgRetry>false</FlgRetry></ReturnCode></PaymentResponse></ServicesPSQF>]
 
 <Code>-5172</Code><Description>TICKET NON PAYABLE - RESULTATS INDISPONIBLES</Description>
+
+
+SELECT distinct bets.*,
+replace(replace(substring(substring( substring(ludwin_logs.response_body FROM position(bets.ticket_id in ludwin_logs.response_body) FOR 400) from '<Gain>.*</Gain>') FROM 1 FOR       position('</Gain>' IN substring( substring(ludwin_logs.response_body FROM position(bets.ticket_id in ludwin_logs.response_body) FOR 400) from '<Gain>.*</Gain>')) ), '<Gain>', ''), '<', '')
+FROM bets, ludwin_logs
+WHERE validated IS TRUE AND bet_status = 'Gagnant' AND sent_body LIKE '%' || bets.ticket_id || '%'
+AND operation = 'Validation périodique de coupons' AND LEFT(ludwin_logs.response_body, 5) = '<?xml'

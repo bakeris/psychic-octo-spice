@@ -724,6 +724,7 @@ class LudwinApiController < ApplicationController
                     if !nokogiri_response.blank?
                       response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
                       if response_code == '0' || response_code == '1024'
+                        amount_to_win = (nokogiri_response.xpath('//SellResponse').at('AmountWin').content rescue nil)
                         @bet_info = (nokogiri_response.xpath('//SellResponse') rescue nil)
                         # débit du compte paymoney
                         if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, @amount)
@@ -733,7 +734,7 @@ class LudwinApiController < ApplicationController
                           ticket_status = false
                           bet_status = nil
                         end
-                        @bet.update_attributes(validated: ticket_status, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil), bet_status: bet_status)
+                        @bet.update_attributes(validated: ticket_status, validated_at: DateTime.now, ticket_id: (@bet_info.at('TicketSogei').content rescue nil), ticket_timestamp: (@bet_info.at('TimeStamp').content rescue nil), bet_status: bet_status, win_amount: amount_to_win)
                         @coupons = @bet.bet_coupons
                       else
                         # Remboursement tu ticket en cas d'erreur chez Ludwin
