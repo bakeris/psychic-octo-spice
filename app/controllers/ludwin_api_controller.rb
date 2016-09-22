@@ -731,9 +731,9 @@ class LudwinApiController < ApplicationController
                         if place_bet_without_cancellation(@bet, "LhSpwtyN", params[:paymoney_account_number], password, @amount)
                           ticket_status = true
                           bet_status = 'En cours'
-                          #@bet.bet_coupons.each do |bet_coupon|
-                            #bet_coupon.update_attributes(odd: (amount_to_win.to_i / bet_coupon.amount.to_i).to_s)
-                          #end
+                          @bet.bet_coupons.each do |bet_coupon|
+                            bet_coupon.update_attributes(odd: (amount_to_win.to_i / bet_coupon.amount.to_i).to_s)
+                          end
                         else
                           ticket_status = false
                           bet_status = nil

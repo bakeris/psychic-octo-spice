@@ -592,3 +592,11 @@ replace(replace(substring(substring( substring(ludwin_logs.response_body FROM po
 FROM bets, ludwin_logs
 WHERE validated IS TRUE AND bet_status = 'Gagnant' AND sent_body LIKE '%' || bets.ticket_id || '%'
 AND operation = 'Validation périodique de coupons' AND LEFT(ludwin_logs.response_body, 5) = '<?xml'
+
+
+SELECT distinct bets.*,
+replace(replace(substring( substring(ludwin_logs.response_body FROM 1 FOR position('</Amount>' IN ludwin_logs.response_body))    FROM position('<Amount>' IN substring(ludwin_logs.response_body FROM 1 FOR position('</Amount>' IN ludwin_logs.response_body))) FOR 100), '<Amount>', ''), '<', '')
+FROM bets, ludwin_logs
+WHERE validated IS TRUE AND bet_status = 'Gagnant' AND sent_body LIKE '%' || bets.ticket_id || '%'
+AND operation = 'Paiement de coupon' AND LEFT(ludwin_logs.response_body, 5) = '<?xml'
+AND ludwin_logs.response_body LIKE '%</Amount>%'
