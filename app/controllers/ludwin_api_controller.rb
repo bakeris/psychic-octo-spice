@@ -1188,7 +1188,7 @@ class LudwinApiController < ApplicationController
                   print 'PERDANT'
                   @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Perdant")
                 end
-                if ticket_status == 'PAYABLE'
+                if ticket_status == 'PAYABLE' || (ticket_status == 'PAYE' && @bet.pr_status.blank?)
                   print 'PAYABLE'
                   unless terminal_selected
                     status_message = "Terminal non disponible"
