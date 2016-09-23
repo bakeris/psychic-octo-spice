@@ -1182,7 +1182,8 @@ class LudwinApiController < ApplicationController
               if !@bet.blank?
                 ticket_status = ticket.at('Statut').content
                 amount_to_pay = ticket.at('Gain').content
-                @bet.update_attributes(win_amount: amount_to_pay)
+
+
                 print ticket_status
                 if ticket_status == 'PERDANT'
                   print 'PERDANT'
@@ -1190,6 +1191,7 @@ class LudwinApiController < ApplicationController
                 end
                 if ticket_status == 'PAYABLE' || (ticket_status == 'PAYE' && @bet.pr_status.blank?)
                   print 'PAYABLE'
+                  @bet.update_attributes(win_amount: amount_to_pay)
                   unless terminal_selected
                     status_message = "Terminal non disponible"
                     print 'Terminal non disponible'
@@ -1223,6 +1225,7 @@ class LudwinApiController < ApplicationController
                           else
                             if response_code == '5177' || response_code == '-5177'
                               @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Perdant")
+                              odd: (amount_to_win.to_i / bet_coupon.amount.to_i).to_s
                             end
                            status_message = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
                           end
