@@ -1219,13 +1219,13 @@ class LudwinApiController < ApplicationController
                               # Paymoney payment
                               if pay_earnings(@bet, "LhSpwtyN", @bet.win_amount)
                                 @bet.update_attributes(pr_status: true, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Gagnant")
+                                @bet.update_attributes(odd: (amount_to_pay.to_f / @bet.amount.to_f).round(2).to_s) rescue nil
                                 send_winning_notification
                               end
                             end
                           else
                             if response_code == '5177' || response_code == '-5177'
                               @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Perdant")
-                              @bet.update_attributes(odd: (amount_to_pay.to_f / @bet.amount.to_f).round(2).to_s) rescue nil
                             end
                            status_message = nokogiri_response.xpath('//ReturnCode').at('Description').content rescue ""
                           end
