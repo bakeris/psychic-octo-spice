@@ -732,7 +732,7 @@ class LudwinApiController < ApplicationController
                           ticket_status = true
                           bet_status = 'En cours'
                           @bet.bet_coupons.each do |bet_coupon|
-                            bet_coupon.update_attributes(odd: (amount_to_win.to_i / bet_coupon.amount.to_i).to_s)
+                            bet_coupon.update_attributes(odd: (amount_to_win.to_f / bet_coupon.amount.to_f).round(2).to_s) rescue nil
                           end
                         else
                           ticket_status = false
@@ -1190,7 +1190,6 @@ class LudwinApiController < ApplicationController
                   @bet.update_attributes(pr_status: false, payment_status_datetime: DateTime.now, pr_transaction_id: transaction_id, bet_status: "Perdant")
                 end
                 if ticket_status == 'PAYABLE' || (ticket_status == 'PAYE' && @bet.pr_status.blank?)
-                  print 'PAYABLE'
                   @bet.update_attributes(win_amount: amount_to_pay)
                   unless terminal_selected
                     status_message = "Terminal non disponible"
@@ -1198,7 +1197,6 @@ class LudwinApiController < ApplicationController
                   else
                     body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentRequest><CodConc>#{license_code}</CodConc><CodDiritto>#{point_of_sale_code}</CodDiritto><IdTerminal>#{@terminal.code}</IdTerminal><TransactionID>#{transaction_id}</TransactionID><TicketSogei>#{@bet.ticket_id}</TicketSogei></PaymentRequest></ServicesPSQF>]
 
-                    print body
                     request = Typhoeus::Request.new(payment_url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
 
                     request.on_complete do |response|
@@ -1208,7 +1206,6 @@ class LudwinApiController < ApplicationController
 
                         if !nokogiri_response.blank?
                           response_code = (nokogiri_response.xpath('//ReturnCode').at('Code').content rescue nil)
-                          print response_code
                           if response_code == '0' || response_code == '1024' || response_code == '5174' || response_code == '-1024' || response_code == '-5174' || response_code == '-0'
                             @sill_amount = Parameters.first.sill_amount rescue 0
 
