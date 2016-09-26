@@ -732,7 +732,7 @@ class LudwinApiController < ApplicationController
                           ticket_status = true
                           bet_status = 'En cours'
                           @bet.bet_coupons.each do |bet_coupon|
-                            bet_coupon.update_attributes(odd: (amount_to_win.to_f / bet_coupon.amount.to_f).round(2).to_s) rescue nil
+                            bet_coupon.update_attributes(odd: (amount_to_win.to_f / @amount.to_f).round(2).to_s) rescue nil
                           end
                         else
                           ticket_status = false
