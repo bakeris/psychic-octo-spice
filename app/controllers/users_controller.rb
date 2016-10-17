@@ -10,7 +10,7 @@ class UsersController < ApplicationController
         render text: %Q({"errors":[{"message":"Le mot de passe et sa confirmation ne concordent pas"}]})
       else
         @status = false
-        creation_mode == '2' ? confirmed_at = DateTime.now : confirmed_at = nil
+        creation_mode.to_s == '2' ? confirmed_at = DateTime.now : confirmed_at = nil
         @user = User.new(params.merge({creation_mode_id: creation_mode.id, salt: SecureRandom.base64(8).to_s, confirmation_token: SecureRandom.hex.to_s, uuid: SecureRandom.uuid, confirmed_at: confirmed_at}))
 
         if @user.save
