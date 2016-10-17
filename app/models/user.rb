@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   belongs_to :sex
 
   # Set accessible fields
-  attr_accessible :civility_id, :sex_id, :pseudo, :firstname, :lastname, :email, :password, :msisdn, :birthdate, :creation_mode_id, :reset_pasword_token, :salt, :confirmation_token, :confirmed_at, :reset_password_token, :password_reseted_at, :account_enabled, :uuid, :last_successful_message, :login_status, :last_connection_date
+  attr_accessible :civility_id, :sex_id, :pseudo, :firstname, :lastname, :email, :password, :msisdn, :birthdate, :creation_mode_id, :reset_pasword_token, :salt, :confirmation_token, :confirmed_at, :reset_password_token, :password_reseted_at, :account_enabled, :uuid, :last_successful_message, :login_status, :last_connection_date, :confirmed_at
 
 # Renaming attributes into more friendly text
   HUMANIZED_ATTRIBUTES = {

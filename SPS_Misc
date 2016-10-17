@@ -604,4 +604,4 @@ AND ludwin_logs.response_body LIKE '%</Amount>%'
 
 UPDATE bet_coupons
 SET odd = ROUND((cast((SELECT win_amount FROM bets WHERE bet_id = bets.id) as double precision) / cast((SELECT bets.amount FROM bets WHERE bet_id = bets.id) as double precision))::numeric, 2)::TEXT
-WHERE (SELECT bet_status FROM bets WHERE bet_id = bets.id) IS NOT NULL
+WHERE (SELECT bet_status FROM bets WHERE bet_id = bets.id) IS NOT NULL AND odd = 'Infinity'
