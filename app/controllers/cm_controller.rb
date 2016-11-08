@@ -422,13 +422,13 @@ class CmController < ApplicationController
               @serial_number = (@request_result.xpath('//ticket').at('serialNumber').content)
               @amount = (@request_result.xpath('//ticket').at('amount').content rescue nil)
 
-              @bet.update_attributes(serial_number: @serial_number, placement_request: body, placement_response: @response_body, paymoney_account_number: paymoney_account_number, bet_identifier: "#{DateTime.now.to_i}-#{@program_id}-#{@race_id}", bet_status: "En cours")
+              @bet.update_attributes(serial_number: @serial_number, placement_request: request_body + body, placement_response: @response_body, paymoney_account_number: paymoney_account_number, bet_identifier: "#{DateTime.now.to_i}-#{@program_id}-#{@race_id}", bet_status: "En cours")
             else
               # Remboursement tu ticket en cas d'erreur chez CM3
               payback_unplaced_bet_cm3(@bet)
               @error_code = error_code
               @error_description = error_message
-              CmLog.create(operation: "Prise de pari", sell_ticket_request: body, sell_ticket_response: @response_body, sell_ticket_code: error_code, connection_id: @connection_id)
+              CmLog.create(operation: "Prise de pari", sell_ticket_request: request_body + body, sell_ticket_response: @response_body, sell_ticket_code: error_code, connection_id: @connection_id)
 
               reset_connection_id(error_code)
             end
@@ -436,12 +436,12 @@ class CmController < ApplicationController
         else
           @error_code = '3008'
           @error_description = "Les paramètres du pari ne sont pas valides."
-          CmLog.create(operation: "Prise de pari", sell_ticket_request: body, sell_ticket_response: @error_description, sell_ticket_code: @error_code, connection_id: @connection_id)
+          CmLog.create(operation: "Prise de pari", sell_ticket_request: request_body + body, sell_ticket_response: @error_description, sell_ticket_code: @error_code, connection_id: @connection_id)
         end
       else
         @error_code = '3009'
         @error_description = "Le compte parieur n'a pas été trouvé."
-        CmLog.create(operation: "Prise de pari", sell_ticket_request: body, sell_ticket_response: @error_description, sell_ticket_code: @error_code, connection_id: @connection_id)
+        CmLog.create(operation: "Prise de pari", sell_ticket_request: request_body + body, sell_ticket_response: @error_description, sell_ticket_code: @error_code, connection_id: @connection_id)
       end
     end
   end

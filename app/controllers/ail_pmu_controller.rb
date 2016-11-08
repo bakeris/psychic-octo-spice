@@ -774,7 +774,7 @@ class AilPmuController < ApplicationController
           amount_type = notification_object["OperationType"].to_s rescue ""
 
           @bet = AilPmu.where(ref_number: ref_number, ticket_number: ticket_number, earning_paid: nil, refund_paid: nil, earning_notification_received: nil, refund_notification_received: nil, bet_status: 'En cours').first rescue nil
-if @bet.blank? || !["1", "2", "0"].include?(amount_type)
+          if @bet.blank? || !["1", "2", "0"].include?(amount_type)
             error_array << notification_object.to_s
           else
             success_array << notification_object.to_s
