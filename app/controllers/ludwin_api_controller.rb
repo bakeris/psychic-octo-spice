@@ -640,7 +640,7 @@ class LudwinApiController < ApplicationController
       @win_amount =   (@win_amount * ((odd.to_f rescue 0) / 100)).to_i rescue 0
 
       unless pal_code.blank? || event_code.blank? || bet_code.blank? || draw_code.blank? || odd.blank?
-        @bet.bet_coupons.create(pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd, begin_date: begin_date, teams: teams.encode("Windows-1252", invalid: :replace, undef: :replace), sport: sport.encode("Windows-1252", invalid: :replace, undef: :replace), amount: amount)
+        @bet.bet_coupons.create(pal_code: pal_code, event_code: event_code, bet_code: bet_code, draw_code: draw_code, odd: odd, begin_date: begin_date, teams: teams.force_encoding('iso8859-1').encode('utf-8'), sport: sport.force_encoding('iso8859-1').encode('utf-8'), amount: amount)
         tmp_coupons_body << %Q[<BetCoupon><CodPal>#{pal_code}</CodPal><CodEvent>#{event_code}</CodEvent><CodBet>#{bet_code}</CodBet><CodDraw>#{draw_code}</CodDraw><Odd>#{odd}</Odd></BetCoupon>]
       end
     end
