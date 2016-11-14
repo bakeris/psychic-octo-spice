@@ -780,7 +780,7 @@ class AilPmuController < ApplicationController
             success_array << notification_object.to_s
             if amount_type == "0"
               @bet.update_attribute(:bet_status, 'Perdant') #rescue nil
-              #validate_bet_ail("ApXTrliOp", (@bet.bet_cost_amount.to_f rescue 0), "ail_pmus")
+              validate_bet_ail("ApXTrliOp", (@bet.bet_cost_amount.to_f rescue 0), "ail_pmus")
             else
               if amount_type == "1"
                 notification_field = "earning"
