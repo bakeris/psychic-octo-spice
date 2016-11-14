@@ -788,7 +788,7 @@ class AilPmuController < ApplicationController
                 notification_field = "refund"
               end
             end
-            @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => amount, :"#{notification_field}_notification_received_at" => DateTime.now, bet_status: "En cours") rescue nil
+            @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => amount, :"#{notification_field}_notification_received_at" => DateTime.now) rescue nil
           end
         end
       end
