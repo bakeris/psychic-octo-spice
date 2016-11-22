@@ -855,15 +855,15 @@ class AilPmuController < ApplicationController
                 client_to_trj
               end
 
-  =begin
-              if amount_type == "1"
-                @bet.update_attributes(earning_notification_received: true, earning_amount: amount, refund_amount: 0)
-                payment_notification_earning
-              else
-                @bet.update_attributes(refund_notification_received: true, refund_amount: amount, earning_amount: 0)
-                payment_notification_refund
-              end
-  =end
+=begin
+            if amount_type == "1"
+              @bet.update_attributes(earning_notification_received: true, earning_amount: amount, refund_amount: 0)
+              payment_notification_earning
+            else
+              @bet.update_attributes(refund_notification_received: true, refund_amount: amount, earning_amount: 0)
+              payment_notification_refund
+            end
+=end
 
             end
           end
@@ -875,8 +875,7 @@ class AilPmuController < ApplicationController
     end
 
     render text: %Q[{
-        "success":#{success_array},
-        "error": #{error_array}
+        "success":"success"
       }
     ]
 
