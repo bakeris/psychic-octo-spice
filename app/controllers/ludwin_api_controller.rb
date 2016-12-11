@@ -766,13 +766,14 @@ class LudwinApiController < ApplicationController
                 @error_description = 'Veuillez vérifier votre compte et votre solde.'
               end
 
-              LudwinLog.create(operation: "Prise de pari", transaction_id: (@terminal.code rescue ""), error_code: @error_code, sent_body: body, response_body: response_body, remote_ip_address: remote_ip_address)
+              LudwinLog.create(operation: "Prise de pari", sent_body: (request.body.read rescue nil), remote_ip_address: remote_ip_address)
             end
             #end
           end
         else
           @error_code = '5000'
           @error_description = 'Invalid JSON data.'
+          LudwinLog.create(operation: "Prise de pari", transaction_id: (@terminal.code rescue ""), error_code: @error_code, sent_body: body, response_body: response_body, remote_ip_address: remote_ip_address)
         end
 
 
