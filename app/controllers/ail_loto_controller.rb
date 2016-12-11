@@ -799,6 +799,8 @@ class AilLotoController < ApplicationController
     remote_ip_address = request.remote_ip
     @sill_amount = Parameters.first.sill_amount rescue 0
 
+    AilLotoLog.create(operation: message_type, sent_params: raw_data, remote_ip_address: remote_ip_address)
+
     if notification_objects.blank? || (bets.class.to_s rescue nil) != "Array"
       @error_code = '5000'
       @error_description = 'Invalid JSON data.'
@@ -806,8 +808,6 @@ class AilLotoController < ApplicationController
       audit_id = notification_objects["AuditId"] rescue ""
       message_id = notification_objects["messageID"] rescue ""
       message_type = set_message_type(notification_objects["messageType"]) rescue ""
-
-      AilLotoLog.create(operation: message_type, sent_params: raw_data, remote_ip_address: remote_ip_address)
 
       if message_type == "Notification" || message_type == ""
         bets.each do |notification_object|
