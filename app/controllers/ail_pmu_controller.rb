@@ -756,7 +756,7 @@ class AilPmuController < ApplicationController
     remote_ip_address = request.remote_ip
     @sill_amount = Parameters.first.sill_amount rescue 0
 
-    AilPmuLog.create(operation: message_type, sent_params: raw_data, remote_ip_address: remote_ip_address)
+    AilPmuLog.create(operation: "Notification", sent_params: raw_data, remote_ip_address: remote_ip_address)
 
     Thread.new do
       if notification_objects.blank? || (bets.class.to_s rescue nil) != "Array"

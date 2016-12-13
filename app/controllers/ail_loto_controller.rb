@@ -799,7 +799,7 @@ class AilLotoController < ApplicationController
     remote_ip_address = request.remote_ip
     @sill_amount = Parameters.first.sill_amount rescue 0
 
-    AilLotoLog.create(operation: message_type, sent_params: raw_data, remote_ip_address: remote_ip_address)
+    AilLotoLog.create(operation: "Notification", sent_params: raw_data, remote_ip_address: remote_ip_address)
 
     if notification_objects.blank? || (bets.class.to_s rescue nil) != "Array"
       @error_code = '5000'
