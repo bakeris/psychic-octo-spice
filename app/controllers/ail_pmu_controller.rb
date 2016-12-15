@@ -766,16 +766,16 @@ class AilPmuController < ApplicationController
       message_id = notification_objects["messageID"] rescue ""
       message_type = set_message_type(notification_objects["messageType"]) rescue ""
 
-        bets.each do |notification_object|
-          ref_number = notification_object["RefNumber"] rescue ""
-          ticket_number = notification_object["TicketNumber"] rescue ""
-          amount = notification_object["Amount"] rescue ""
-          amount_type = notification_object["OperationType"].to_s rescue ""
+      bets.each do |notification_object|
+        ref_number = notification_object["RefNumber"] rescue ""
+        ticket_number = notification_object["TicketNumber"] rescue ""
+        amount = notification_object["Amount"] rescue ""
+        amount_type = notification_object["OperationType"].to_s rescue ""
 
-          @bet = AilPmu.where(ref_number: ref_number, ticket_number: ticket_number, earning_paid: nil, refund_paid: nil, earning_notification_received: nil, refund_notification_received: nil, bet_status: 'En cours', validation_on_hold: nil).first.update_attributes(validation_on_hold: false) rescue nil
-        end
+        @bet = AilPmu.where(ref_number: ref_number, ticket_number: ticket_number, earning_paid: nil, refund_paid: nil, earning_notification_received: nil, refund_notification_received: nil, bet_status: 'En cours', validation_on_hold: nil).first.update_attributes(validation_on_hold: false) rescue nil
+      end
     end
-
+=begin
     Thread.new do
       if notification_objects.blank? || (bets.class.to_s rescue nil) != "Array"
         @error_code = '5000'
@@ -873,16 +873,6 @@ class AilPmuController < ApplicationController
                 client_to_trj
               end
 
-=begin
-            if amount_type == "1"
-              @bet.update_attributes(earning_notification_received: true, earning_amount: amount, refund_amount: 0)
-              payment_notification_earning
-            else
-              @bet.update_attributes(refund_notification_received: true, refund_amount: amount, earning_amount: 0)
-              payment_notification_refund
-            end
-=end
-
             end
           end
         end
@@ -891,6 +881,7 @@ class AilPmuController < ApplicationController
 
       validate_payment_notifications
     end
+=end
 
     render text: %Q[{
         "success":"success"
