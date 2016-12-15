@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160921223051) do
+ActiveRecord::Schema.define(version: 20161215203157) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -233,6 +233,7 @@ ActiveRecord::Schema.define(version: 20160921223051) do
     t.string   "bet_status"
     t.string   "bet_date"
     t.datetime "on_hold_winner_paid_at"
+    t.boolean  "validation_on_hold"
   end
 
   create_table "bet_coupons", force: true do |t|

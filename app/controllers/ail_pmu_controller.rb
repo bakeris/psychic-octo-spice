@@ -758,6 +758,24 @@ class AilPmuController < ApplicationController
 
     AilPmuLog.create(operation: "Notification", sent_params: raw_data, remote_ip_address: remote_ip_address)
 
+    if notification_objects.blank? || (bets.class.to_s rescue nil) != "Array"
+      @error_code = '5000'
+      @error_description = 'Invalid JSON data.'
+    else
+      audit_id = notification_objects["AuditId"] rescue ""
+      message_id = notification_objects["messageID"] rescue ""
+      message_type = set_message_type(notification_objects["messageType"]) rescue ""
+
+        bets.each do |notification_object|
+          ref_number = notification_object["RefNumber"] rescue ""
+          ticket_number = notification_object["TicketNumber"] rescue ""
+          amount = notification_object["Amount"] rescue ""
+          amount_type = notification_object["OperationType"].to_s rescue ""
+
+          @bet = AilPmu.where(ref_number: ref_number, ticket_number: ticket_number, earning_paid: nil, refund_paid: nil, earning_notification_received: nil, refund_notification_received: nil, bet_status: 'En cours', validation_on_hold: nil).first.update_attributes(validation_on_hold: false) rescue nil
+        end
+    end
+
     Thread.new do
       if notification_objects.blank? || (bets.class.to_s rescue nil) != "Array"
         @error_code = '5000'
@@ -774,7 +792,7 @@ class AilPmuController < ApplicationController
             amount = notification_object["Amount"] rescue ""
             amount_type = notification_object["OperationType"].to_s rescue ""
 
-            @bet = AilPmu.where(ref_number: ref_number, ticket_number: ticket_number, earning_paid: nil, refund_paid: nil, earning_notification_received: nil, refund_notification_received: nil, bet_status: 'En cours').first rescue nil
+            @bet = AilPmu.where(ref_number: ref_number, ticket_number: ticket_number, earning_paid: nil, refund_paid: nil, earning_notification_received: nil, refund_notification_received: nil, bet_status: 'En cours', validation_on_hold: false).first rescue nil
             if @bet.blank? || !["1", "2", "0"].include?(amount_type)
               error_array << notification_object.to_s
             else
@@ -789,7 +807,7 @@ class AilPmuController < ApplicationController
                   notification_field = "refund"
                 end
               end
-              @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => amount, :"#{notification_field}_notification_received_at" => DateTime.now) rescue nil
+              @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => amount, :"#{notification_field}_notification_received_at" => DateTime.now, validation_on_hold => true) rescue nil
             end
           end
         end
@@ -803,7 +821,7 @@ class AilPmuController < ApplicationController
             amount = notification_object["NewAmount"] rescue ""
             @adjustment_amount = notification_object["AdjustmentAmount"].to_i rescue ""
 
-            @bet = AilPmu.where("ticket_number = '#{ticket_number}' AND (earning_paid IS NOT NULL OR refund_paid IS NOT NULL) AND (earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En cours'").first rescue nil
+            @bet = AilPmu.where("ticket_number = '#{ticket_number}' AND (earning_paid IS NOT NULL OR refund_paid IS NOT NULL) AND (earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En cours' AND validation_on_hold IS FALSE").first rescue nil
             if @bet.blank? || !["0", "1", "2"].include?(original_operation_type) || !["0", "1", "2"].include?(new_operation_type)
               error_array << notification_object.to_s
             else
