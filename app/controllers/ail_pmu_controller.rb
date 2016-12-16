@@ -775,7 +775,7 @@ class AilPmuController < ApplicationController
         @bet = AilPmu.where(ref_number: ref_number, ticket_number: ticket_number, earning_paid: nil, refund_paid: nil, earning_notification_received: nil, refund_notification_received: nil, bet_status: 'En cours', validation_on_hold: nil).first.update_attributes(validation_on_hold: false) rescue nil
       end
     end
-=begin
+
     Thread.new do
       if notification_objects.blank? || (bets.class.to_s rescue nil) != "Array"
         @error_code = '5000'
@@ -881,7 +881,6 @@ class AilPmuController < ApplicationController
 
       validate_payment_notifications
     end
-=end
 
     render text: %Q[{
         "success":"success"
