@@ -776,7 +776,7 @@ class AilPmuController < ApplicationController
       end
     end
 
-    #Thread.new do
+    Thread.new do
       if notification_objects.blank? || (bets.class.to_s rescue nil) != "Array"
         @error_code = '5000'
         @error_description = 'Invalid JSON data.'
@@ -807,7 +807,7 @@ class AilPmuController < ApplicationController
                   notification_field = "refund"
                 end
               end
-              @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => amount, :"#{notification_field}_notification_received_at" => DateTime.now, :validation_on_hold => true) #rescue nil
+              @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => amount, :"#{notification_field}_notification_received_at" => DateTime.now, :validation_on_hold => true) rescue nil
             end
           end
         end
@@ -880,7 +880,7 @@ class AilPmuController < ApplicationController
       end
 
       validate_payment_notifications
-    #end
+    end
 
     render text: %Q[{
         "success":"success"
