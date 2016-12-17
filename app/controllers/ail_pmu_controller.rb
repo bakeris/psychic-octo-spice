@@ -776,7 +776,7 @@ class AilPmuController < ApplicationController
       end
     end
 
-    Thread.new do
+    #Thread.new do
       if notification_objects.blank? || (bets.class.to_s rescue nil) != "Array"
         @error_code = '5000'
         @error_description = 'Invalid JSON data.'
@@ -880,7 +880,7 @@ class AilPmuController < ApplicationController
       end
 
       validate_payment_notifications
-    end
+    #end
 
     render text: %Q[{
         "success":"success"
@@ -970,15 +970,15 @@ class AilPmuController < ApplicationController
 
   def validate_payment_notifications
     #{DateTime.now - 16.minutes}
-    bets = AilPmu.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En cours' AND placement_acknowledge IS TRUE AND (earning_notification_received_at  < '#{DateTime.now + 5.minutes}' OR refund_notification_received_at  < '#{DateTime.now + 5.minutes}') AND earning_paid IS NULL AND refund_paid IS NULL")
+    bets = AilPmu.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En cours' AND placement_acknowledge IS TRUE AND earning_paid IS NULL AND refund_paid IS NULL")
     draw_ids = bets.pluck(:draw_id) rescue nil
 
 
     unless draw_ids.blank?
 
       draw_ids.each do |draw_id|
-        bets = AilPmu.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En cours' AND placement_acknowledge IS TRUE AND (earning_notification_received_at  < '#{DateTime.now + 5.minutes}' OR refund_notification_received_at  < '#{DateTime.now + 5.minutes}') AND earning_paid IS NULL AND refund_paid IS NULL AND draw_id = '#{draw_id}'")
-        cancel_amount = AilPmu.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En cours' AND placement_acknowledge IS TRUE AND (earning_notification_received_at  < '#{DateTime.now + 5.minutes}' OR refund_notification_received_at  < '#{DateTime.now + 5.minutes}') AND earning_paid IS NULL AND refund_paid IS NULL AND draw_id = '#{draw_id}' AND bet_cancelled IS TRUE").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0
+        bets = AilPmu.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En cours' AND placement_acknowledge IS TRUE AND earning_paid IS NULL AND refund_paid IS NULL AND draw_id = '#{draw_id}'")
+        cancel_amount = AilPmu.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En cours' AND placement_acknowledge IS TRUE AND earning_paid IS NULL AND refund_paid IS NULL AND draw_id = '#{draw_id}' AND bet_cancelled IS TRUE").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0
 
         bets_amount = (bets.map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0) #- cancel_amount
         if validate_bet_ail("ApXTrliOp", bets_amount, "ail_pmus")
