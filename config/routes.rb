@@ -33,6 +33,7 @@ Rails.application.routes.draw do
   get '/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password/:parameter' => 'users#api_reset_password', :constraints => {:parameter => /[^\/]+/}
   get '/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/reset_password_activation/:reset_password_token/:password/:password_confirmation' => 'users#api_reset_password_activation'
   get '/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/update/:id/:civility_id/:sex_id/:pseudo/:firstname/:lastname/:email/:msisdn/:birthdate' => 'users#api_update', :constraints => {:email => /[^\/]+/}
+  get '/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/update/:id/:civility_id/:sex_id/:pseudo/:firstname/:lastname/:email/:msisdn/:birthdate/:paymoney_account' => 'users#api_update', :constraints => {:email => /[^\/]+/}
   get '/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/email/login/:email/:password' => 'users#api_email_login', :constraints => {:email => /[^\/]+/}
   get '/6ba041bf35229938ba869a7a9c59f3a0/api/users/account/msisdn/login/:msisdn/:password' => 'users#api_msisdn_login'
   get '/6basdf4414dffsf8ba869a7a9c59f3a0/api/users/account/logout/:connection_id' => 'users#api_logout', :constraints => {:connection_id => /[^\/]+/}
@@ -396,6 +397,9 @@ Rails.application.routes.draw do
 
   get "users/administrators/disable/:administrator_id" => "administrators#disable_administrator_account", as: :disable_administrator_account
   get "users/administrators/enable/:administrator_id" => "administrators#enable_administrator_account", as: :enable_administrator_account
+
+  get "users/ussd/uncompleted_accounts" => "users#api_display_ussd_uncompleted_profiles_account"
+  get "users/web/uncompleted_accounts" => "users#api_display_web_uncompleted_profiles_account"
 
   # Deposit
   #get '/api/86d13843ed59e5207c68e864564/deposit/:account_number/:transaction_amount' => 'accounts#api_deposit', :constraints => {:transaction_amount => /(\d+(.\d+)?)/}

@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   belongs_to :sex
 
   # Set accessible fields
-  attr_accessible :civility_id, :sex_id, :pseudo, :firstname, :lastname, :email, :password, :msisdn, :birthdate, :creation_mode_id, :reset_pasword_token, :salt, :confirmation_token, :confirmed_at, :reset_password_token, :password_reseted_at, :account_enabled, :uuid, :last_successful_message, :login_status, :last_connection_date, :confirmed_at
+  attr_accessible :civility_id, :sex_id, :pseudo, :firstname, :lastname, :email, :password, :msisdn, :birthdate, :creation_mode_id, :reset_pasword_token, :salt, :confirmation_token, :confirmed_at, :reset_password_token, :password_reseted_at, :account_enabled, :uuid, :paymoney_account, :last_successful_message, :login_status, :last_connection_date, :confirmed_at
 
 # Renaming attributes into more friendly text
   HUMANIZED_ATTRIBUTES = {
@@ -22,7 +22,8 @@ class User < ActiveRecord::Base
     password: 'Le mot de passe',
     msisdn: "Le numéro de téléphone",
     birthdate: "La date de naissance",
-    uuid: "UUID"
+    uuid: "UUID",
+    paymoney_account: "Numéro de compte Paymoney"
   }
 
   # Using friendly attribute name if it exists and default name otherwise
@@ -74,13 +75,13 @@ class User < ActiveRecord::Base
   end
 
   def self.to_csv
-    attributes = %w{ID Email Nom Prénom Téléphone Civilité Sexe Id-parieur Date-de-naissance Date-de-création Date-dactivation Date-de-dernière-connexion}
+    attributes = %w{ID Email Nom Prénom Téléphone Civilité Sexe Id-parieur Compte-Paymoney Date-de-naissance Date-de-création Date-dactivation Date-de-dernière-connexion}
 
     CSV.generate(headers: true) do |csv|
       csv << attributes
 
       all.each do |user|
-        csv << [user.id, user.email, user.firstname, user.firstname, user.msisdn, (user.civility.name rescue nil), (user.sex.name rescue nil), user.uuid, user.birthdate, user.created_at, user.confirmed_at, user.last_connection_date]
+        csv << [user.id, user.email, user.firstname, user.firstname, user.msisdn, (user.civility.name rescue nil), (user.sex.name rescue nil), user.uuid, user.paymoney_account, user.birthdate, user.created_at, user.confirmed_at, user.last_connection_date]
         #csv << attributes.map{ |attr| user.send(attr) }
       end
     end

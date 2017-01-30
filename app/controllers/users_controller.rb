@@ -141,4 +141,12 @@ class UsersController < ApplicationController
     render text: (password + '-' + salt)
   end
 
+  def api_display_ussd_uncompleted_profiles_account
+    @users = User.where("creation_mode_id = #{CreationMode.find_by_name('USSD')} AND LEFT(email, 4) = 'ussd'")
+  end
+
+  def api_display_web_uncompleted_profiles_account
+    @users = User.where("confirmed_at IS NULL")
+  end
+
 end
