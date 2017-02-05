@@ -1079,6 +1079,9 @@ class LudwinApiController < ApplicationController
                 request = Typhoeus::Request.new(url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
 
                 request.on_complete do |response|
+                  # Free the terminal
+                  @terminal.update_attributes(busy: false)
+
                   if response.success?
                     response_body = response.body
                     #response_body = %Q[<?xml version="1.0" encoding="UTF-8"?><ServicesPSQF><PaymentResponse><ReturnCode><Code>0</Code><Description>OK</Description><FlgRetry>false</FlgRetry></ReturnCode></PaymentResponse></ServicesPSQF>]
@@ -1139,9 +1142,6 @@ class LudwinApiController < ApplicationController
       end
     end
 
-    # Free the terminal
-    @terminal.update_attributes(busy: false)
-
     body = %Q[<?xml version="1.0" encoding="UTF-8"?>
               <ServicesPSQF>
                 <PaymentNotificationResponse>
@@ -1201,6 +1201,10 @@ class LudwinApiController < ApplicationController
                     request = Typhoeus::Request.new(payment_url, body: body, followlocation: true, method: :post, headers: {'Content-Type'=> "text/xml"}, ssl_verifypeer: false, ssl_verifyhost: 0)
 
                     request.on_complete do |response|
+
+                      # Free the terminal
+                      @terminal.update_attributes(busy: false)
+
                       if response.success?
                         response_body = response.body
                         nokogiri_response = (Nokogiri::XML(response_body) rescue nil)
@@ -1235,8 +1239,7 @@ class LudwinApiController < ApplicationController
 
                     request.run
 
-                    # Free the terminal
-                    @terminal.update_attributes(busy: false)
+
                   end
                 end
               end
