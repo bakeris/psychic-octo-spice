@@ -284,18 +284,18 @@ class ApplicationController < ActionController::Base
         response_body = response.body
 
         if !response_body.include?("|")
-          ActiveRecord::Base.connection.execute("UPDATE cms SET p_validation_id = '#{response_body}', p_validated = TRUE, p_validated_at = '#{DateTime.now}' WHERE win_reason IS NOT NULL AND program_id = '#{program_id}' AND race_id = '#{race_id}' AND p_validated IS NULL")
+          ActiveRecord::Base.connection.execute("UPDATE cms SET p_validation_id = '#{response_body}', p_validated = TRUE, p_validated_at = '#{DateTime.now}' WHERE AND program_id = '#{program_id}' AND race_id = '#{race_id}' AND p_validated IS NULL")
           #bet.update_attributes(paymoney_transaction_id: response_body, bet_placed: true, bet_placed_at: DateTime.now)
           status = true
         else
           @error_code = '5000'
-          ActiveRecord::Base.connection.execute("UPDATE cms SET p_validation_response = '#{response_body}' WHERE win_reason IS NOT NULL AND race_id = '#{race_id}' AND p_validated IS NULL")
+          ActiveRecord::Base.connection.execute("UPDATE cms SET p_validation_response = '#{response_body}' WHERE AND race_id = '#{race_id}' AND p_validated IS NULL")
           #bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
         end
       else
         @error_code = '4000'
         @error_description = "Le serveur de paiement n'est pas accessible."
-        ActiveRecord::Base.connection.execute("UPDATE cms SET p_validation_response = '#{response_body}' WHERE win_reason IS NOT NULL AND race_id = '#{race_id}' AND p_validated IS NULL")
+        ActiveRecord::Base.connection.execute("UPDATE cms SET p_validation_response = '#{response_body}' WHERE AND race_id = '#{race_id}' AND p_validated IS NULL")
       end
     end
 
