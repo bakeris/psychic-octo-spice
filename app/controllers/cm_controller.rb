@@ -599,7 +599,7 @@ class CmController < ApplicationController
       if (error_code.blank? && @error != true) || total == '0' #|| error_code.to_s == '457'
         update_winners_list
         if @validated == true
-          Cm.where("program_id = '#{@program_id}' AND race_id = '#{@race_id}' AND p_validated IS NULL AND bet_status = 'En cours'").update_all(bet_status: "Perdant") rescue nil
+          Cm.where("program_id = '#{@program_id}' AND race_id = '#{@race_id}' AND p_validated IS TRUE AND bet_status = 'En cours'").update_all(bet_status: "Perdant") rescue nil
         end
       else
         @error_code = error_code
@@ -625,7 +625,7 @@ class CmController < ApplicationController
             @sill_amount = Parameters.first.sill_amount rescue 0
             winnings.each do |winning|
 
-              bet = Cm.where("sale_client_id = '#{winning.at('transactionId').content}' AND serial_number = '#{winning.at('serialNumber').content}' AND p_validated IS NULL AND bet_status = 'En cours'").first rescue nil
+              bet = Cm.where("sale_client_id = '#{winning.at('transactionId').content}' AND serial_number = '#{winning.at('serialNumber').content}' AND p_validated IS TRUE AND bet_status = 'En cours'").first rescue nil
               unless bet.blank?
                 bet.update_attributes(win_reason: winning.at('reason').content, win_amount: winning.at('amount').content, bet_status: "Gagnant")
                 bet_id = winning.at('betId').content rescue nil
