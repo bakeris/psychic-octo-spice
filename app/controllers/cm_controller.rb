@@ -594,7 +594,7 @@ class CmController < ApplicationController
 
       error_code = (@request_result.xpath('//return').at('error').content rescue nil)
       error_message = (@request_result.xpath('//return').at('message').content rescue nil)
-      total = (@request_result.xpath('//total').at('message').content rescue nil)
+      total = (@request_result.xpath('//winnings').at('total').content rescue nil)
 
       if (error_code.blank? && @error != true) || total == '0' #|| error_code.to_s == '457'
         update_winners_list
