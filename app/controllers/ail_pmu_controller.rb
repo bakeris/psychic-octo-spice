@@ -776,110 +776,112 @@ class AilPmuController < ApplicationController
       end
     end
 
-    Thread.new do
-      if notification_objects.blank? || (bets.class.to_s rescue nil) != "Array"
-        @error_code = '5000'
-        @error_description = 'Invalid JSON data.'
-      else
-        audit_id = notification_objects["AuditId"] rescue ""
-        message_id = notification_objects["messageID"] rescue ""
-        message_type = set_message_type(notification_objects["messageType"]) rescue ""
+    ActiveRecord::Base.connection_pool.with_connection do
+      Thread.new do
+        if notification_objects.blank? || (bets.class.to_s rescue nil) != "Array"
+          @error_code = '5000'
+          @error_description = 'Invalid JSON data.'
+        else
+          audit_id = notification_objects["AuditId"] rescue ""
+          message_id = notification_objects["messageID"] rescue ""
+          message_type = set_message_type(notification_objects["messageType"]) rescue ""
 
-        if message_type == "Notification" || message_type == ""
-          bets.each do |notification_object|
-            ref_number = notification_object["RefNumber"] rescue ""
-            ticket_number = notification_object["TicketNumber"] rescue ""
-            amount = notification_object["Amount"] rescue ""
-            amount_type = notification_object["OperationType"].to_s rescue ""
+          if message_type == "Notification" || message_type == ""
+            bets.each do |notification_object|
+              ref_number = notification_object["RefNumber"] rescue ""
+              ticket_number = notification_object["TicketNumber"] rescue ""
+              amount = notification_object["Amount"] rescue ""
+              amount_type = notification_object["OperationType"].to_s rescue ""
 
-            @bet = AilPmu.where(ref_number: ref_number, ticket_number: ticket_number, earning_paid: nil, refund_paid: nil, earning_notification_received: nil, refund_notification_received: nil, bet_status: 'En cours', validation_on_hold: false).first rescue nil
-            if @bet.blank? || !["1", "2", "0"].include?(amount_type)
-              error_array << notification_object.to_s
-            else
-              success_array << notification_object.to_s
-              if amount_type == "0"
-                @bet.update_attributes(bet_status: 'Perdant') #rescue nil
-                validate_bet_ail("ApXTrliOp", (@bet.bet_cost_amount.to_f rescue 0), "ail_pmus")
+              @bet = AilPmu.where(ref_number: ref_number, ticket_number: ticket_number, earning_paid: nil, refund_paid: nil, earning_notification_received: nil, refund_notification_received: nil, bet_status: 'En cours', validation_on_hold: false).first rescue nil
+              if @bet.blank? || !["1", "2", "0"].include?(amount_type)
+                error_array << notification_object.to_s
               else
-                if amount_type == "1"
-                  notification_field = "earning"
+                success_array << notification_object.to_s
+                if amount_type == "0"
+                  @bet.update_attributes(bet_status: 'Perdant') #rescue nil
+                  validate_bet_ail("ApXTrliOp", (@bet.bet_cost_amount.to_f rescue 0), "ail_pmus", @bet)
                 else
-                  notification_field = "refund"
+                  if amount_type == "1"
+                    notification_field = "earning"
+                  else
+                    notification_field = "refund"
+                  end
                 end
+                @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => amount, :"#{notification_field}_notification_received_at" => DateTime.now, :validation_on_hold => true) rescue nil
               end
-              @bet.update_attributes(:"#{notification_field}_notification_received" => true, :"#{notification_field}_amount" => amount, :"#{notification_field}_notification_received_at" => DateTime.now, :validation_on_hold => true) rescue nil
             end
           end
-        end
 
-        if message_type == "Correction"
-          bets.each do |notification_object|
-            ref_number = notification_object["RefNumber"] rescue ""
-            ticket_number = notification_object["TicketNumber"] rescue ""
-            original_operation_type = notification_object["OriginalOperationType"] rescue ""
-            new_operation_type = notification_object["NewOperationType"].to_s rescue ""
-            amount = notification_object["NewAmount"] rescue ""
-            @adjustment_amount = notification_object["AdjustmentAmount"].to_i rescue ""
+          if message_type == "Correction"
+            bets.each do |notification_object|
+              ref_number = notification_object["RefNumber"] rescue ""
+              ticket_number = notification_object["TicketNumber"] rescue ""
+              original_operation_type = notification_object["OriginalOperationType"] rescue ""
+              new_operation_type = notification_object["NewOperationType"].to_s rescue ""
+              amount = notification_object["NewAmount"] rescue ""
+              @adjustment_amount = notification_object["AdjustmentAmount"].to_i rescue ""
 
-            @bet = AilPmu.where("ticket_number = '#{ticket_number}' AND (earning_paid IS NOT NULL OR refund_paid IS NOT NULL) AND (earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En cours' AND validation_on_hold IS FALSE").first rescue nil
-            if @bet.blank? || !["0", "1", "2"].include?(original_operation_type) || !["0", "1", "2"].include?(new_operation_type)
-              error_array << notification_object.to_s
-            else
-              success_array << notification_object.to_s
+              @bet = AilPmu.where("ticket_number = '#{ticket_number}' AND (earning_paid IS NOT NULL OR refund_paid IS NOT NULL) AND (earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En cours' AND validation_on_hold IS FALSE").first rescue nil
+              if @bet.blank? || !["0", "1", "2"].include?(original_operation_type) || !["0", "1", "2"].include?(new_operation_type)
+                error_array << notification_object.to_s
+              else
+                success_array << notification_object.to_s
 
-              if original_operation_type == "1" && new_operation_type == "0"
-                @bet.update_attributes(earning_amount: (@bet.earning_amount.to_i + @adjustment_amount))
-                #Client vers trj
-                client_to_trj
-              end
-
-              if original_operation_type == "1" && new_operation_type == "1"
-                @bet.update_attributes(earning_amount: (@bet.earning_amount.to_i + @adjustment_amount))
-                if adjustment_amount < 0
+                if original_operation_type == "1" && new_operation_type == "0"
+                  @bet.update_attributes(earning_amount: (@bet.earning_amount.to_i + @adjustment_amount))
                   #Client vers trj
                   client_to_trj
-                else
+                end
+
+                if original_operation_type == "1" && new_operation_type == "1"
+                  @bet.update_attributes(earning_amount: (@bet.earning_amount.to_i + @adjustment_amount))
+                  if adjustment_amount < 0
+                    #Client vers trj
+                    client_to_trj
+                  else
+                    #Paiement de gain
+                    payment_notification_earning
+                  end
+                end
+
+                if original_operation_type == "0" && new_operation_type == "1"
+                  @bet.update_attributes(earning_amount: (@bet.earning_amount.to_i + @adjustment_amount))
                   #Paiement de gain
                   payment_notification_earning
                 end
-              end
 
-              if original_operation_type == "0" && new_operation_type == "1"
-                @bet.update_attributes(earning_amount: (@bet.earning_amount.to_i + @adjustment_amount))
-                #Paiement de gain
-                payment_notification_earning
-              end
-
-              if original_operation_type == "0" && new_operation_type == "2"
-                @bet.update_attributes(refund_amount: (@bet.refund_amount.to_i + @adjustment_amount))
-                #Paiement de gain
-                payment_notification_earning
-              end
-
-              if original_operation_type == "2" && new_operation_type == "2"
-                @bet.update_attributes(refund_amount: (@bet.refund_amount.to_i + @adjustment_amount))
-                if adjustment_amount < 0
-                  #Client vers trj
-                  client_to_trj
-                else
+                if original_operation_type == "0" && new_operation_type == "2"
+                  @bet.update_attributes(refund_amount: (@bet.refund_amount.to_i + @adjustment_amount))
                   #Paiement de gain
                   payment_notification_earning
                 end
-              end
 
-              if original_operation_type == "2" && new_operation_type == "0"
-                @bet.update_attributes(refund_amount: (@bet.refund_amount.to_i + @adjustment_amount))
-                #Client vers trj
-                client_to_trj
-              end
+                if original_operation_type == "2" && new_operation_type == "2"
+                  @bet.update_attributes(refund_amount: (@bet.refund_amount.to_i + @adjustment_amount))
+                  if adjustment_amount < 0
+                    #Client vers trj
+                    client_to_trj
+                  else
+                    #Paiement de gain
+                    payment_notification_earning
+                  end
+                end
 
+                if original_operation_type == "2" && new_operation_type == "0"
+                  @bet.update_attributes(refund_amount: (@bet.refund_amount.to_i + @adjustment_amount))
+                  #Client vers trj
+                  client_to_trj
+                end
+
+              end
             end
           end
+
         end
 
+        validate_payment_notifications
       end
-
-      validate_payment_notifications
     end
 
     render text: %Q[{
@@ -973,10 +975,10 @@ class AilPmuController < ApplicationController
     bets = AilPmu.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En cours' AND placement_acknowledge IS TRUE AND earning_paid IS NULL AND refund_paid IS NULL")
     draw_ids = bets.pluck(:draw_id) rescue nil
 
-
     unless draw_ids.blank?
 
       draw_ids.each do |draw_id|
+        @draw_id = draw_id
         bets = AilPmu.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En cours' AND placement_acknowledge IS TRUE AND earning_paid IS NULL AND refund_paid IS NULL AND draw_id = '#{draw_id}'")
         cancel_amount = AilPmu.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En cours' AND placement_acknowledge IS TRUE AND earning_paid IS NULL AND refund_paid IS NULL AND draw_id = '#{draw_id}' AND bet_cancelled IS TRUE").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0
 

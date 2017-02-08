@@ -253,18 +253,51 @@ class ApplicationController < ActionController::Base
         response_body = response.body
 
         if !response_body.include?("|")
-          ActiveRecord::Base.connection.execute("UPDATE #{ail_object} SET paymoney_validation_id = '#{response_body}', bet_validated = TRUE, bet_validated_at = '#{DateTime.now}' WHERE game_account_token = '#{game_account_token}' AND bet_validated IS NULL")
+          ActiveRecord::Base.connection.execute("UPDATE #{ail_object} SET paymoney_validation_id = '#{response_body}', bet_validated = TRUE, bet_validated_at = '#{DateTime.now}' WHERE game_account_token = '#{game_account_token} AND draw_id = '#{@draw_id}' AND bet_validated IS NULL")
           #bet.update_attributes(paymoney_transaction_id: response_body, bet_placed: true, bet_placed_at: DateTime.now)
           status = true
         else
           @error_code = '5000'
-          ActiveRecord::Base.connection.execute("UPDATE #{ail_object} SET error_code = '#{@error_code}', error_description = '#{response_body}' WHERE game_account_token = '#{game_account_token}' AND bet_validated IS NULL")
+          ActiveRecord::Base.connection.execute("UPDATE #{ail_object} SET error_code = '#{@error_code}', error_description = '#{response_body}' WHERE game_account_token = '#{game_account_token}' AND draw_id = '#{@draw_id}' AND bet_validated IS NULL")
           #bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
         end
       else
         @error_code = '4000'
         @error_description = 'Cannot join paymoney wallet server.'
-        ActiveRecord::Base.connection.execute("UPDATE #{ail_object} SET error_code = '#{@error_code}', error_description = '#{@error_description}' WHERE game_account_token = '#{game_account_token}' AND bet_validated IS NULL")
+        ActiveRecord::Base.connection.execute("UPDATE #{ail_object} SET error_code = '#{@error_code}', error_description = '#{@error_description}' WHERE game_account_token = '#{game_account_token}' AND draw_id = '#{@draw_id}' AND bet_validated IS NULL")
+      end
+    end
+
+    request.run
+
+    return status
+  end
+
+  def validate_bet_ail(game_account_token, transaction_amount, ail_object, bet)
+    paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
+    status = false
+
+    @url = "#{paymoney_wallet_url}/api/06331525768e6a95680c8bb0dcf55/bet/validate/#{game_account_token}/#{transaction_amount}"
+
+    LogRequests.create(description: "Validation de pari AIL", request: @url)
+
+    request = Typhoeus::Request.new(@url, followlocation: true, method: :get)
+
+    request.on_complete do |response|
+      if response.success?
+        response_body = response.body
+
+        if !response_body.include?("|")
+          #bet.update_attributes(paymoney_transaction_id: response_body, bet_placed: true, bet_placed_at: DateTime.now)
+          status = true
+        else
+          @error_code = '5000'
+          bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
+        end
+      else
+        @error_code = '4000'
+        @error_description = 'Cannot join paymoney wallet server.'
+        bet.update_attributes(error_code: @error_code, error_description: @error_description, response_body: response_body)
       end
     end
 

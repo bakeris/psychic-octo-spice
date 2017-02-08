@@ -978,6 +978,7 @@ class AilLotoController < ApplicationController
 
      unless draw_ids.blank?
        draw_ids.each do |draw_id|
+          @draw_id = draw_id
          orphan_bets = AilLoto.where("TO_TIMESTAMP(end_date, 'DD/MM/YYYY HH24:MI:SS')  < '#{DateTime.now - 2.hour}' AND draw_id = '#{draw_id}' AND bet_status = 'En cours'") rescue nil
         cancel_amount = AilLoto.where("TO_TIMESTAMP(end_date, 'DD/MM/YYYY HH24:MI:SS')  < '#{DateTime.now - 2.hour}' AND draw_id = '#{draw_id}' AND bet_cancelled IS TRUE").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0
 
@@ -1007,6 +1008,7 @@ class AilLotoController < ApplicationController
     unless draw_ids.blank?
 
       draw_ids.each do |draw_id|
+        @draw_id = draw_id
         bets = AilLoto.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En cours' AND placement_acknowledge IS TRUE AND (earning_notification_received_at  < '#{DateTime.now + 5.minutes}' OR refund_notification_received_at  < '#{DateTime.now + 5.minutes}') AND earning_paid IS NULL AND refund_paid IS NULL AND draw_id = '#{draw_id}'")
         cancel_amount = AilLoto.where("(earning_notification_received IS TRUE OR refund_notification_received IS TRUE) AND bet_status = 'En cours' AND placement_acknowledge IS TRUE AND (earning_notification_received_at  < '#{DateTime.now + 5.minutes}' OR refund_notification_received_at  < '#{DateTime.now + 5.minutes}') AND earning_paid IS NULL AND refund_paid IS NULL AND draw_id = '#{draw_id}' AND bet_cancelled IS TRUE").map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0
         bets_amount = (bets.map{|bet| (bet.bet_cost_amount.to_f rescue 0)}.sum rescue 0) #- cancel_amount
