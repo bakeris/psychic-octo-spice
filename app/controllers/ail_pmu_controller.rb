@@ -776,8 +776,8 @@ class AilPmuController < ApplicationController
       end
     end
 
-    ActiveRecord::Base.connection_pool.with_connection do
-      Thread.new do
+    #Thread.new do
+      #ActiveRecord::Base.connection_pool.with_connection do
         if notification_objects.blank? || (bets.class.to_s rescue nil) != "Array"
           @error_code = '5000'
           @error_description = 'Invalid JSON data.'
@@ -881,8 +881,8 @@ class AilPmuController < ApplicationController
         end
 
         validate_payment_notifications
-      end
-    end
+      #end
+    #end
 
     render text: %Q[{
         "success":"success"
