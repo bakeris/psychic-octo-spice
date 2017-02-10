@@ -1102,7 +1102,7 @@ class AilLotoController < ApplicationController
         unless bets.blank?
 
           bets_amount = bets.map{|bet| (bet.earning_amount.to_f rescue 0) + (bet.refund_amount.to_f rescue 0)}.sum rescue 0
-          if validate_bet_ail("ApXTrliOp", bets_amount, "ail_pmus")
+          if validate_bet_ail("ApXTrliOp", bets_amount, "ail_lotos")
             bets_payout = AilLoto.where("earning_notification_received IS TRUE AND draw_id = '#{draw_id}' AND paymoney_earning_id IS NULL")
             unless bets_payout.blank?
               bets_payout.each do |bet_payout|

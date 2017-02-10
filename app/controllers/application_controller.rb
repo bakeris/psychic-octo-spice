@@ -273,7 +273,7 @@ class ApplicationController < ActionController::Base
     return status
   end
 
-  def validate_bet_ail(game_account_token, transaction_amount, ail_object, bet)
+  def validate_bet_ail2(game_account_token, transaction_amount, ail_object, bet)
     paymoney_wallet_url = (Parameters.first.paymoney_wallet_url rescue "")
     status = false
 
