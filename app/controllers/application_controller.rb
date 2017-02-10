@@ -253,7 +253,7 @@ class ApplicationController < ActionController::Base
         response_body = response.body
 
         if !response_body.include?("|")
-          ActiveRecord::Base.connection.execute("UPDATE #{ail_object} SET paymoney_validation_id = '#{response_body}', bet_validated = TRUE, bet_validated_at = '#{DateTime.now}' WHERE game_account_token = '#{game_account_token} AND draw_id = '#{@draw_id}' AND bet_validated IS NULL")
+          ActiveRecord::Base.connection.execute("UPDATE #{ail_object} SET paymoney_validation_id = '#{response_body}', bet_validated = TRUE, bet_validated_at = '#{DateTime.now}' WHERE game_account_token = '#{game_account_token}' AND draw_id = '#{@draw_id}' AND bet_validated IS NULL")
           #bet.update_attributes(paymoney_transaction_id: response_body, bet_placed: true, bet_placed_at: DateTime.now)
           status = true
         else
